@@ -1,0 +1,227 @@
+.header {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+
+    .header-top-container {
+        display: flex;
+        width: 100%;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        align-items: center;
+        background-color: #F8FAF9;
+
+        .header-top-right {
+            display: flex;
+            width: 100%;
+            justify-content: flex-end;
+            align-items: center;
+
+            .support-box {
+                display: inline-flex;
+                align-items: center;
+                margin-right: 30px;
+                font-weight: 500;
+                font-size: 13px;
+                line-height: 30px;
+                color: #1A1A1A;
+
+                img {
+                    max-width: 30px;
+                    margin-right: 10px;
+                }
+            }
+
+            .deliver-box {
+                display: inline-flex;
+                align-items: center;
+                margin-right: 30px;
+                line-height: 30px;
+                font-weight: 500;
+                font-size: 13px;
+                color: #1A1A1A;
+
+                img {
+                    max-width: 30px;
+                    margin-left: 10px;
+                    margin-right: 10px;
+                }
+
+                span {
+                    color: #1F9151;
+                }
+            }
+
+            .language-list-box {
+                display: inline-flex;
+                align-items: center;
+                line-height: 30px;
+
+                .css-1eed5fa-MuiInputBase-root-MuiInput-root {
+                    &::before {
+                        border-bottom: none;
+                        display: none;
+                    }
+
+                    &::after {
+                        border-bottom: none;
+                        display: none;
+                    }
+
+                    select {
+                        padding-right: 20px;
+                    }
+
+                    .css-1g12qau-MuiSvgIcon-root-MuiNativeSelect-icon {
+                        right: -5px;
+                    }
+                }
+            }
+        }
+
+    }
+
+    .header-bottom-container {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        padding-top: 20px;
+        padding-bottom: 20px;
+
+        .categories-toggle {
+            display: inline-flex;
+            width: 82%;
+            font-size: 15px;
+            line-height: 24px;
+            color: #ffffff;
+            font-weight: 500;
+            padding: 7px 15px 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: #1F9151;
+
+            span {
+                margin-left: 20px;
+            }
+        }
+
+        .categories-box {
+            display: none;
+            width: 430px;
+
+            .categories {
+                display: inline-flex;
+                width: 230px;
+                flex-wrap: wrap;
+                background-color: #172E22;
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+                position: relative;
+
+                h2 {
+                    display: flex;
+                    width: 100%;
+                    color: #ffffff;
+                    font-size: 18px;
+                    line-height: 24px;
+                    font-weight: 500;
+                    padding: 12px 25px;
+                    border-bottom: 2px solid #fff;
+                }
+                ul {
+                    list-style: none;
+                    padding: 0px 25px;
+                    li {
+                        display: flex;
+                        width: 100%;
+                        a{
+                            display: flex;
+                        }
+                    }
+                }
+
+                .sub-categories {
+                    left: 230px;
+                    top: 0;
+                    position: absolute;
+                    width: 200px;
+                    height: 100%;
+                    background-color: #F3FBF7;
+                    border-top-right-radius: 10px;
+                    border-bottom-right-radius: 10px;
+
+                }
+            }
+        }
+
+        .search-box {
+            display: inline-flex;
+            width: 100%;
+
+            .search {
+                width: 100%;
+
+                input {
+                    padding-top: 15px;
+                    padding-bottom: 12px;
+                }
+            }
+
+            .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root {
+                &.Mui-focused {
+                    .MuiOutlinedInput-notchedOutline {
+                        border-color: #1F9151;
+                    }
+                }
+
+            }
+        }
+
+        .notification {
+            padding: 0;
+            border: none;
+            position: relative;
+            min-width: 24px;
+            margin-right: 30px;
+
+            span {
+                margin: 0;
+            }
+
+            p {
+                position: absolute;
+                right: -5px;
+                bottom: -2px;
+                width: 14px;
+                height: 14px;
+                border-radius: 50%;
+                background-color: #C83C3C;
+            }
+        }
+
+        .card {
+            padding: 0;
+            border: none;
+            position: relative;
+            min-width: 24px;
+
+            span {
+                margin: 0;
+            }
+
+            p {
+                position: absolute;
+                right: -5px;
+                top: -2px;
+                width: 14px;
+                height: 14px;
+                font-size: 10px;
+                line-height: 14px;
+                font-weight: 500;
+                color: #ffffff;
+                border-radius: 50%;
+                background-color: #1F9151;
+            }
+        }
+    }
+}
