@@ -49,9 +49,11 @@ input:focus-visible {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-thumb-hover-bg-color);
 }
-.w-100{
+
+.w-100 {
   width: 100%;
 }
+
 a {
   text-decoration: none !important;
 }
@@ -114,6 +116,10 @@ p {
   align-items: end;
 }
 
+.text-center {
+  text-align: center;
+}
+
 .main-container {
   display: flex;
   width: 100%;
@@ -136,5 +142,32 @@ button {
       background-color: #1F9151;
       box-shadow: none;
     }
+  }
+}
+
+.common-symbol {
+  display: flex;
+  justify-content: center;
+
+  .outer-symbol {
+    width: 88px;
+    height: 88px;
+    border-radius: 100%;
+    background: linear-gradient(180deg, rgba(31, 145, 81, 0.2) 0%, rgba(31, 145, 81, 0) 100%, rgba(228, 229, 231, 0) 100%);
+    border: 1px solid;
+    border-image-source: linear-gradient(180deg, #E4E5E7 0%, rgba(228, 229, 231, 0) 76.56%);
+    padding: 14px;
+  }
+
+
+  .inner-box {
+    border: 1px solid var(--stroke-soft-200, #E2E4E9);
+    background-color: #FFFFFF;
+    height: 56px;
+    width: 56px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
