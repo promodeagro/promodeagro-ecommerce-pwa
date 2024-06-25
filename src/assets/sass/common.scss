@@ -61,9 +61,11 @@ a {
 .mb-0 {
   margin-bottom: 0px !important;
 }
+
 .mt-0 {
   margin-top: 0px !important;
 }
+
 h2 {
   margin: 0;
   color: var(--page-heading-color);
@@ -108,4 +110,10 @@ p {
 
 .align-items-end {
   align-items: end;
+}
+
+.main-container {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
 }

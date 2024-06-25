@@ -7,6 +7,7 @@ import NativeSelect from '@mui/material/NativeSelect';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Button from '@mui/material/Button';
 import Logo from "../../assets/img/logo.png";
 import supportIcon from "../../assets/img/support-icon.png";
@@ -19,12 +20,18 @@ class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      CategoriesToggle: false
     };
   }
-
+  handleClickCategoriesToggle = () => {
+    this.setState({
+      CategoriesToggle: !this.state.CategoriesToggle,
+    });
+  };
 
 
   render() {
+    const { CategoriesToggle } = this.state;
     return (
       <div className="header">
         <Box className="header-top-container">
@@ -61,55 +68,64 @@ class Header extends Component {
           <Container>
             <Grid container spacing={2} alignItems={'center'}>
               <Grid item xs={6} sm={6} md={3}>
-                <Box className="categories-toggle">
-                  Shop by Categories <span><KeyboardArrowDownIcon /></span>
-                </Box>
-                <Box className="categories-box">
-                  <Box className="categories">
-                    <h2>Vegetables</h2>
-                    <ul>
-                      <li><a href="#">Cut & peeled Veggies </a>
-                        <Box className="sub-categories">
-                          <h3>Fruits </h3>
-                          <ul>
-                            <li><a href="#">Exotic Fruits</a></li>
-                            <li><a href="#">Seasonal Fruits</a></li>
-                            <li><a href="#">Juices & Mixes</a></li>
-                          </ul>
-                        </Box>
-                      </li>
-                      <li><a href="#">Leafy Vegetables </a>
-                        <Box className="sub-categories">
-                          <h3>Fruits </h3>
-                          <ul>
-                            <li><a href="#">Exotic Fruits</a></li>
-                            <li><a href="#">Seasonal Fruits</a></li>
-                            <li><a href="#">Juices & Mixes</a></li>
-                          </ul>
-                        </Box>
-                      </li>
-                      <li><a href="#">Fresh Vegetables </a>
-                        <Box className="sub-categories">
-                          <h3>Fruits </h3>
-                          <ul>
-                            <li><a href="#">Exotic Fruits</a></li>
-                            <li><a href="#">Seasonal Fruits</a></li>
-                            <li><a href="#">Juices & Mixes</a></li>
-                          </ul>
-                        </Box>
-                      </li>
-                      <li><a href="#">Herbs and Seasoning </a>
-                        <Box className="sub-categories">
-                          <h3>Fruits </h3>
-                          <ul>
-                            <li><a href="#">Exotic Fruits</a></li>
-                            <li><a href="#">Seasonal Fruits</a></li>
-                            <li><a href="#">Juices & Mixes</a></li>
-                          </ul>
-                        </Box>
-                      </li>
-                    </ul>
+                <Box className="categories-container">
+
+                  <Box className="categories-toggle" onClick={this.handleClickCategoriesToggle}>
+                    Shop by Categories <span>{CategoriesToggle ? (<KeyboardArrowUpIcon />) : (
+                      <KeyboardArrowDownIcon />
+                    )}</span>
                   </Box>
+                  {CategoriesToggle ? (
+                    <Box className="categories-box">
+                      <Box className="categories">
+                        <h2>Vegetables</h2>
+                        <ul>
+                          <li><a href="#">Cut & peeled Veggies </a>
+                            <Box className="sub-categories">
+                              <h3>Fruits </h3>
+                              <ul>
+                                <li><a href="#">Exotic Fruits</a></li>
+                                <li><a href="#">Seasonal Fruits</a></li>
+                                <li><a href="#">Juices & Mixes</a></li>
+                              </ul>
+                            </Box>
+                          </li>
+                          <li><a href="#">Leafy Vegetables </a>
+                            <Box className="sub-categories">
+                              <h3>Fruits </h3>
+                              <ul>
+                                <li><a href="#">Exotic Fruits</a></li>
+                                <li><a href="#">Seasonal Fruits</a></li>
+                                <li><a href="#">Juices & Mixes</a></li>
+                              </ul>
+                            </Box>
+                          </li>
+                          <li><a href="#">Fresh Vegetables </a>
+                            <Box className="sub-categories">
+                              <h3>Fruits </h3>
+                              <ul>
+                                <li><a href="#">Exotic Fruits</a></li>
+                                <li><a href="#">Seasonal Fruits</a></li>
+                                <li><a href="#">Juices & Mixes</a></li>
+                              </ul>
+                            </Box>
+                          </li>
+                          <li><a href="#">Herbs and Seasoning </a>
+                            <Box className="sub-categories">
+                              <h3>Fruits </h3>
+                              <ul>
+                                <li><a href="#">Exotic Fruits</a></li>
+                                <li><a href="#">Seasonal Fruits</a></li>
+                                <li><a href="#">Juices & Mixes</a></li>
+                              </ul>
+                            </Box>
+                          </li>
+                        </ul>
+                      </Box>
+                    </Box>
+                  ) : (
+                    ""
+                  )}
                 </Box>
               </Grid>
               <Grid item xs={6} sm={6} md={6}>
