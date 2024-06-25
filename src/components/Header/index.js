@@ -64,6 +64,32 @@ class Header extends Component {
             </Grid>
           </Container>
         </Box>
+        <Box className="header-categories-container">
+          <Container>
+            <Grid container spacing={2}>
+              <Grid item xs={6} sm={6} md={8}>
+                <Box className="categories">
+                  <ul>
+                    <li><a href="#">Quick Links</a></li>
+                    <li><a href="#">Exotic Fruits</a></li>
+                    <li><a href="#">Leafy Vegetables</a></li>
+                    <li><a href="#">Fresh fruits</a></li>
+                    <li><a href="#">Cuts & Sprouts</a></li>
+                  </ul>
+                </Box>
+              </Grid>
+              <Grid item xs={6} sm={6} md={4}>
+                <Box className="categories" justifyContent={"flex-end"}>
+                  <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                  </ul>
+                </Box>
+              </Grid>
+            </Grid>
+          </Container>
+        </Box>
         <Box className="header-bottom-container">
           <Container>
             <Grid container spacing={2} alignItems={'center'}>
