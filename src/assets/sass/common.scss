@@ -49,7 +49,9 @@ input:focus-visible {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-thumb-hover-bg-color);
 }
-
+.w-100{
+  width: 100%;
+}
 a {
   text-decoration: none !important;
 }
@@ -116,4 +118,23 @@ p {
   display: flex;
   width: 100%;
   flex-wrap: wrap;
+}
+
+button {
+  &.common-btn {
+    background-color: #1F9151;
+    height: 46px;
+    border-radius: 6px;
+    font-weight: 500;
+    line-height: 22px;
+    color: #FFFFFF;
+    font-size: 18px;
+    box-shadow: none;
+    text-transform: capitalize;
+
+    &:hover {
+      background-color: #1F9151;
+      box-shadow: none;
+    }
+  }
 }

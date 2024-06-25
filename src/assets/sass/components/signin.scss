@@ -1,0 +1,120 @@
+.signin-container {
+    .signin-form-container {
+        .signin-form-details {
+            width: 75%;
+            margin-top: 100px;
+            margin-bottom: 320px;
+
+            .title {
+                color: #2A3A31;
+                margin-bottom: 50px;
+                display: block;
+            }
+
+            .add-account-symbol {
+                display: flex;
+                justify-content: center;
+
+                .outer-symbol {
+                    width: 88px;
+                    height: 88px;
+                    border-radius: 100%;
+                    background: linear-gradient(180deg, rgba(31, 145, 81, 0.2) 0%, rgba(31, 145, 81, 0) 100%, rgba(228, 229, 231, 0) 100%);
+                    border: 1px solid;
+                    border-image-source: linear-gradient(180deg, #E4E5E7 0%, rgba(228, 229, 231, 0) 76.56%);
+                    padding: 14px;
+                }
+
+
+                .inner-box {
+                    border: 1px solid var(--stroke-soft-200, #E2E4E9);
+                    background-color: #FFFFFF;
+                    height: 56px;
+                    width: 56px;
+                    border-radius: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
+
+            .google-login-box {
+                height: 40px;
+                border: 1px solid #E2E4E9;
+                border-radius: 4px;
+                margin-top: 24px;
+            }
+
+            .more-option {
+                margin-top: 24px;
+                span {
+                    margin: 0px 10px;
+                    font-size: 11px;
+                    line-height: 12px;
+                    font-weight: 500;
+                color: #868C98;                }
+
+                hr {
+                    width: 45%;
+                }
+            }
+
+            .number-input {
+                margin-top: 24px;
+
+                label {
+                    font-size: 14px;
+                    line-height: 20px;
+                    font-weight: 500;
+                    color: #0A0D14;
+                    margin-bottom: 4px;
+
+                    .validate-icon {
+                        color: #D91515;
+                        font-size: 18px;
+                    }
+                }
+
+                .number-textfield {
+                    .css-8j6b76-MuiInputBase-root-MuiOutlinedInput-root {
+                        height: 40px;
+                        border-radius: 4px;
+                    }
+
+                    .css-1pnmrwp-MuiTypography-root {
+                        color: #868C98;
+                        font-size: 14px;
+                        line-height: 20px;
+                    }
+                }
+            }
+
+            .term-condition-container {
+                margin-top: 14px;
+                margin-bottom: 24px;
+
+                .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root {
+                    padding: 0px;
+                    margin-right: 10px;
+
+                    &.Mui-checked {
+                        color: #037F0C;
+                    }
+                }
+
+                .agree-text {
+                    font-weight: 500;
+                    line-height: 20px;
+                    font-size: 14px;
+                    color: #525866;
+                }
+
+                a {
+                    color: #0A0D14;
+                    text-decoration: underline !important;
+                    padding-bottom: 5px;
+                }
+            }
+        }
+    }
+}

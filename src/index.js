@@ -4,6 +4,7 @@ import './index.css';
 import './assets/sass/style.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import "animate.css/animate.compat.css";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
