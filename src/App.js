@@ -18,7 +18,7 @@ function App() {
         <Header />
         <Suspense fallback={<div>Loading...</div>}>
           <Routes>
-            <Route exact path={`/home`} element={<Home />} />
+            <Route exact path={`/`} element={<Home />} />
             <Route exact path={`/signin`} element={<Signin />} />
           </Routes>
         </Suspense>

@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import Box from "@mui/material/Box";
-import Container from '@mui/material/Container';
-import Grid from "@mui/material/Grid";
-
+import { Box } from "@mui/material";
+import MainBanner from "./components/mainBanner";
+import FeaturedProducts from "./components/featuredProducts";
+import Service from "./components/service";
+import OffersYouMightLike from "./components/offersYouMightLike";
+import CustomersSays from "./components/customersSays";
 
 class Home extends Component {
   constructor(props) {
@@ -15,11 +17,13 @@ class Home extends Component {
 
   render() {
     return (
-      <div className="main-container">
-        <Container>
-          Home
-        </Container>
-      </div>
+      <Box className="main-container">
+        <MainBanner />
+        <FeaturedProducts />
+        <Service />
+        <OffersYouMightLike />
+        <CustomersSays />
+      </Box>
     );
   }
 }

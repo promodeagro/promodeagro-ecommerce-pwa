@@ -4,7 +4,10 @@
 /* COMPONENTS */
 @import "./components/header";
 @import "./components/footer";
-@import "./components/signin.scss";
 
 /* COMMON */
 @import "./common";
+
+/* PAGES */
+@import "./pages/home";
+@import "./components/signin";
