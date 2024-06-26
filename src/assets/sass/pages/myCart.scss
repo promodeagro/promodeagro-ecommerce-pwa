@@ -153,4 +153,139 @@
             }
         }
     }
+
+    .cart-item-list {
+        margin-bottom: 150px;
+
+        .cart-item-title {
+            margin-top: 32px;
+            font-size: 18px;
+            line-height: 22px;
+            color: #707070;
+            font-weight: 500;
+            padding: 0px 28px;
+        }
+
+        .product-cart-container {
+            height: 168px;
+            padding: 0px 55px 0px 24px;
+            border: 1px solid #D2D2D2;
+            background-color: #FFFFFF;
+            margin-top: 28px;
+            border-radius: 8px;
+
+            >.MuiGrid-item {
+                padding-top: 0px;
+                padding-left: 0px;
+            }
+
+            .product-cart-list {
+                .name {
+                    font-size: 28px;
+                    line-height: 52px;
+                    color: #2A3A31;
+                    font-weight: 500;
+                }
+
+                .discount-amount {
+                    font-size: 18px;
+                    line-height: 27px;
+                    color: #1A1A1A;
+                    font-weight: 600;
+                }
+
+                .amount {
+                    font-size: 16px;
+                    line-height: 27px;
+                    color: #ADADAD;
+                    font-weight: 500;
+                    margin-left: 8px;
+                }
+            }
+        }
+
+        .number-input-container {
+            display: flex;
+
+            .symbol {
+                width: 78px;
+                border: 1px solid #1F9151;
+                background-color: #1F9151;
+                height: 44px;
+                cursor: pointer;
+                font-size: 24px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #FFFFFF;
+                border-radius: 4px 0px 0px 4px;
+
+                &:last-child {
+                    border-radius: 0px 4px 4px 0px;
+                }
+            }
+
+            .Number {
+                width: 78px;
+                border: 1px solid #1F9151;
+                background-color: #FFFFFF;
+                height: 44px;
+                font-size: 16px;
+                line-height: 24px;
+                color: #1F9151;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 500;
+            }
+
+        }
+
+        .btn-group {
+            margin-top: 16px;
+
+            button {
+                color: #797979;
+                border-right: 1px solid #797979;
+                padding: 0px;
+                border-radius: 0px;
+                padding-right: 10px;
+                margin-right: 10px;
+                text-transform: capitalize;
+                color: #797979;
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 24px;
+
+                &:last-child {
+                    border-right: none;
+                    padding-right: 0px;
+                    margin-right: 0px;
+                }
+            }
+        }
+
+        .sub-total {
+            .final-amount {
+                font-size: 22px;
+                line-height: 33px;
+                font-weight: 600;
+                color: #1A1A1A;
+            }
+
+            .save-amount {
+                font-size: 16px;
+                line-height: 22px;
+                color: #1F9151;
+                font-weight: 500;
+
+                strong {
+                    line-height: 24px;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+
+
 }
