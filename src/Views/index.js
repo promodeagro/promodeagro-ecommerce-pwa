@@ -14,6 +14,7 @@ import Footer from "./../components/Footer";
 const Home = lazy(() => import("./../Views/PostLogin/home"));
 const MyCart = lazy(() => import("./../Views/PostLogin/MyCart"));
 const SignIn = lazy(() => import("./../components/SignIn"));
+const Address = lazy(() => import("./../Views/PostLogin/MyCart/components/address"));
 const Views = () => {
     const location = useLocation();
     return (
@@ -34,7 +35,7 @@ const Views = () => {
                     <Route exact path={`/`} element={<Home />} />
                     <Route exact path={`/myCart`} element={<MyCart />} />
                     <Route exact path={`/signin`} element={<SignIn />} />
-
+                    <Route exact path={`/myCart/address`} element={<Address />} />
 
                     {/* <Route path="*" element={<PathNotFOund />} /> */}
                 </Routes>

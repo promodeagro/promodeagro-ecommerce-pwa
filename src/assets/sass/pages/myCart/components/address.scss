@@ -1,0 +1,210 @@
+.address-container {
+    margin: 54px 0px 135px 0px;
+    display: flex;
+    justify-content: center;
+
+    .address-stepper-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 70px;
+
+        .css-10mg1vw-MuiStepper-root {
+            width: 55%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .css-zpcwqm-MuiStepConnector-root {
+
+            .css-z7uhs0-MuiStepConnector-line {
+                border: none;
+                position: absolute;
+                left: 140px;
+                top: -10px;
+
+                &::before {
+                    display: "flex";
+                    justify-content: center;
+                    content: url("../../../../img/right-arrow.png");
+                }
+
+
+            }
+
+        }
+
+        .css-ascpo7-MuiStepLabel-root {
+            position: relative;
+
+            .MuiStepLabel-iconContainer {
+                .Mui-active {
+                    color: rgba(0, 0, 0, 0.38);
+                }
+
+                .Mui-completed {
+                    border-radius: 100%;
+                   color: #1F9151;
+                }
+            }
+
+            .MuiStepLabel-labelContainer {
+                position: absolute;
+                top: -12px;
+                left: 80px;
+
+                .Mui-disabled,
+                .Mui-active {
+                    font-size: 16px;
+                    line-height: 22px;
+                    font-weight: 400;
+                    color: #B8B8B8;
+                }
+
+                .Mui-completed {
+                    font-size: 16px;
+                    line-height: 22px;
+                    font-weight: 400;
+                    color: #1F9151;
+                }
+            }
+        }
+    }
+
+    .address-select-container {
+        width: 100%;
+        justify-content: center;
+        display: flex;
+
+        .address-details {
+            width: 85%;
+
+            .contain {
+                margin-bottom: 40px;
+
+                h2 {
+                    font-weight: 500;
+                    color: #2A3A31;
+                    margin-bottom: 4px;
+                }
+
+                p {
+                    font-size: 18px;
+                    line-height: 18px;
+                    color: #969696;
+                    font-weight: 400;
+                }
+            }
+
+            .address-card-container {
+                padding: 18px 20px;
+                border: 1px solid #D6D6D6;
+                border-radius: 16px;
+                position: relative;
+                cursor: pointer;
+                height: 320px;
+
+                &.active {
+                    border: 1px solid #1F9151;
+                    box-shadow: 0px 4px 24px 0px #8E8E8E40;
+                }
+
+                .active-check {
+                    height: 36px;
+                    width: 36px;
+                    background-color: #1F9151;
+                    color: #FFFFFF;
+                    border-radius: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: absolute;
+                    right: -15px;
+                    top: -15px;
+                }
+
+                .address-btn {
+                    height: 32px;
+                    width: 32px;
+                    border-radius: 100%;
+                    margin-right: 12px;
+                    border: 1px solid #303030;
+                    color: #303030;
+
+                    svg {
+                        font-size: 18px;
+                    }
+
+                    &:last-child {
+                        margin-right: 0px;
+                    }
+
+                    &.active {
+                        border: 1px solid #1F9151;
+                        color: #1F9151;
+                    }
+                }
+
+                .person-name {
+                    margin-top: 22px;
+                    color: #303030;
+                }
+
+                address {
+                    color: #6D6D6D;
+                    font-size: 16px;
+                    line-height: 20px;
+                    margin: 14px 0px 26px 0px;
+                }
+
+                .contact-number {
+                    .contact-heading {
+                        font-size: 16px;
+                        line-height: 20px;
+                        font-weight: 600;
+                        color: #303030;
+                        margin-bottom: 8px;
+                    }
+
+                    .title {
+                        width: 80px;
+                        font-size: 14px;
+                        line-height: 24px;
+                        font-weight: 400;
+                        color: #3C3C3C;
+                    }
+
+                    .details {
+                        font-size: 14px;
+                        line-height: 24px;
+                        font-weight: 400;
+                        color: #6D6D6D;
+                    }
+                }
+
+                .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root {
+                    color: #1F9151;
+
+                    &.Mui-checked {
+                        color: #1F9151;
+                        border-color: #1F9151;
+                    }
+                }
+
+                .css-ahj2mt-MuiTypography-root {
+                    font-size: 12px;
+                    line-height: 15px;
+                    color: #B1B1B1;
+                    font-weight: 500;
+                }
+            }
+
+            .proceed-btn {
+                width: auto;
+                margin-top: 28px;
+            }
+        }
+
+    }
+
+}

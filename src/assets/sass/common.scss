@@ -143,7 +143,27 @@ button {
       box-shadow: none;
     }
   }
+  &.outline-common-btn {
+    border: 1px solid #1F9151 ;
+    color: #1F9151 ;
+    height: 46px;
+    border-radius: 4px ;
+    text-transform: capitalize ;
+    box-shadow: none;
+    font-weight: 500;
+    line-height: 20px;
+    font-size: 14px;
+    &:hover {
+      border: 1px solid #1F9151 ;
+      box-shadow: none;
+    }
+    svg{
+      font-size: 28px !important;
+    }
+  }
 }
+
+
 
 .common-symbol {
   display: flex;
