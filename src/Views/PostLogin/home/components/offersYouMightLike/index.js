@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Box, Container, Grid } from "@mui/material";
-import offersBanner1 from "../../../../assets/img/offers-banner1.png";
-import offersBanner2 from "../../../../assets/img/offers-banner2.png";
-import offersBanner3 from "../../../../assets/img/offers-banner3.png";
+import offersBanner1 from "../../../../../assets/img/offers-banner1.png";
+import offersBanner2 from "../../../../../assets/img/offers-banner2.png";
+import offersBanner3 from "../../../../../assets/img/offers-banner3.png";
 
 class OffersYouMightLike extends Component {
   constructor(props) {

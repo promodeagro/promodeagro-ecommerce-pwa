@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Box, Container, FormControl, NativeSelect, Button } from "@mui/material";
 import StarIcon from '@mui/icons-material/Star';
 import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
-import productImg from "../../../../assets/img/product-img.png";
-import priceIcon from "../../../../assets/img/price-icon.png"
+import productImg from "../../../../../assets/img/product-img.png";
+import priceIcon from "../../../../../assets/img/price-icon.png"
 
 class FeaturedProducts extends Component {
   constructor(props) {

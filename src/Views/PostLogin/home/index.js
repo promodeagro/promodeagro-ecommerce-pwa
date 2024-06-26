@@ -5,8 +5,8 @@ import FeaturedProducts from "./components/featuredProducts";
 import Service from "./components/service";
 import OffersYouMightLike from "./components/offersYouMightLike";
 import CustomersSays from "./components/customersSays";
-import { fetchHome } from "../../Redux/Home/HomeThunk";
-import status from "../../Redux/Constants"
+import { fetchHome } from "../../../Redux/Home/HomeThunk";
+import status from "../../../Redux/Constants"
 import { connect } from "react-redux"
 class Home extends Component {
   constructor(props) {

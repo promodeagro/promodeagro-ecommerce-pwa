@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import { Box, Container, Button, Grid, IconButton } from "@mui/material";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Link } from "react-router-dom";
-import realtedProdctImg1 from "../../assets/img/realted-product-1.png";
-import starIcon from "../../assets/img/star.png";
+import realtedProdctImg1 from "../../../assets/img/realted-product-1.png";
+import starIcon from "../../../assets/img/star.png";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import productCartImg from "../../assets/img/product-cart-img.png";
+import productCartImg from "../../../assets/img/product-cart-img.png";
 
 class MyCart extends Component {
   constructor(props) {

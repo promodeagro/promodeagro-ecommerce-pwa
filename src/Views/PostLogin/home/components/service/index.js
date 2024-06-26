@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Box, Container } from "@mui/material";
-import deliveryTruck from "../../../../assets/img/delivery-truck.png";
-import customerSupport from "../../../../assets/img/customer-support.png";
-import lockSync from "../../../../assets/img/lock-sync.png";
-import securityCheck from "../../../../assets/img/security-check.png";
+import deliveryTruck from "../../../../../assets/img/delivery-truck.png";
+import customerSupport from "../../../../../assets/img/customer-support.png";
+import lockSync from "../../../../../assets/img/lock-sync.png";
+import securityCheck from "../../../../../assets/img/security-check.png";
 
 class Service extends Component {
   constructor(props) {

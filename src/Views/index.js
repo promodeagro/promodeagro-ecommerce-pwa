@@ -11,8 +11,8 @@ import Header from "./../components/Header";
 import Footer from "./../components/Footer";
 
 
-const Home = lazy(() => import("./../pages/home"));
-const MyCart = lazy(() => import("./../pages/MyCart"));
+const Home = lazy(() => import("./../Views/PostLogin/home"));
+const MyCart = lazy(() => import("./../Views/PostLogin/MyCart"));
 const SignIn = lazy(() => import("./../components/SignIn"));
 const Views = () => {
     const location = useLocation();
