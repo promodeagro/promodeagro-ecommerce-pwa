@@ -5,14 +5,18 @@ import FeaturedProducts from "./components/featuredProducts";
 import Service from "./components/service";
 import OffersYouMightLike from "./components/offersYouMightLike";
 import CustomersSays from "./components/customersSays";
-
+import { fetchHome } from "../../Redux/Home/HomeThunk";
+import status from "../../Redux/Constants"
+import { connect } from "react-redux"
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
     };
   }
-
+  componentDidMount() {
+    this.props.fetchHome()
+  }
 
 
   render() {
@@ -29,4 +33,12 @@ class Home extends Component {
 }
 
 
-export default Home;
+function mapStateToProps(state) {
+  const { } = state;
+  return {};
+}
+
+const mapDispatchToProps = { fetchHome };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
+
