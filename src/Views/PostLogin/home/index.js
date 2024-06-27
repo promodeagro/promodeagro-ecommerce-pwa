@@ -4,6 +4,7 @@ import MainBanner from "./components/mainBanner";
 import FeaturedProducts from "./components/featuredProducts";
 import Service from "./components/service";
 import OffersYouMightLike from "./components/offersYouMightLike";
+import TopSellingCategories from "./components/topSellingCategories";
 import CustomersSays from "./components/customersSays";
 import { fetchHome } from "../../../Redux/Home/HomeThunk";
 import status from "../../../Redux/Constants"
@@ -44,6 +45,7 @@ class Home extends Component {
 
         <Service />
         <OffersYouMightLike />
+        <TopSellingCategories />
         <CustomersSays />
       </Box>
     );
