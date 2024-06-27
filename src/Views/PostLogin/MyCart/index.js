@@ -35,14 +35,16 @@ class MyCart extends Component {
                 <strong className="title">Savings : </strong>
                 <strong className="number">₹ 120.12</strong>
               </Box>
-              <Button
-                variant="contained"
-                fullWidth
-                className="common-btn"
-                endIcon={<NavigateNextIcon />}
-              >
-                Checkout
-              </Button>
+              <Link to={"/myCart/address"}>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  className="common-btn"
+                  endIcon={<NavigateNextIcon />}
+                >
+                  Checkout
+                </Button>
+              </Link>
             </Box>
           </Box>
           <Box className="cart-item-list">

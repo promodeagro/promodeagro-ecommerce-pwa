@@ -26,6 +26,8 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import InfoIcon from "@mui/icons-material/Info";
 import CloseIcon from "@mui/icons-material/Close";
+import { Link } from "react-router-dom";
+
 const steps = ["Delivery Address", "Delivery Options", "Payment Option"];
 
 class Address extends Component {
@@ -161,14 +163,16 @@ class Address extends Component {
                     </Box>
                   </Grid>
                   <Grid item xs={4}>
-                    <Button
-                      variant="outlined"
-                      fullWidth
-                      className="outline-common-btn"
-                      startIcon={<AddIcon />}
-                    >
-                      Add New Address
-                    </Button>
+                    <Link to={"/myCart/address/add-new-address"}>
+                      <Button
+                        variant="outlined"
+                        fullWidth
+                        className="outline-common-btn"
+                        startIcon={<AddIcon />}
+                      >
+                        Add New Address
+                      </Button>
+                    </Link>
                   </Grid>
                 </Grid>
                 <Box className="d-flex justify-content-end w-100">

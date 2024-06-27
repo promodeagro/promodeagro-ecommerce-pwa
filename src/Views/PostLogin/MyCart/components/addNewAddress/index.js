@@ -26,7 +26,12 @@ class AddNewAddress extends Component {
   render() {
     return (
       <Container>
-        <Box className="add-new-address-container">
+        <Box
+          className="add-new-address-container"
+          data-aos="fade-down"
+          data-aos-easing="linear"
+          data-aos-duration="400"
+        >
           <Box className="address-details ">
             <h2>Add new address</h2>
             <Box className="form-info">
@@ -115,7 +120,7 @@ class AddNewAddress extends Component {
                     type="number"
                   />
                 </Grid>
-                <Grid item xs={6} >
+                <Grid item xs={6}>
                   <Button
                     variant="contained"
                     fullWidth

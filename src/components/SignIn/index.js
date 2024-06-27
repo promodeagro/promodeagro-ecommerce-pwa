@@ -127,14 +127,16 @@ class Signin extends Component {
               onChange={this.handleChange}
               className="otp-input-container"
             />
-            <Button
-              variant="contained"
-              fullWidth
-              className="common-btn"
-              onClick={this.handleOpen}
-            >
-              Verify
-            </Button>
+            <Link to={"/myCart"}>
+              <Button
+                variant="contained"
+                fullWidth
+                className="common-btn"
+                onClick={this.handleOpen}
+              >
+                Verify
+              </Button>
+            </Link>
             <Box className="resend-code-container text-center d-block">
               <span className="code-issue d-block">
                 Experiencing issues receiving the code?
