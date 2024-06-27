@@ -4,12 +4,18 @@ import StarIcon from '@mui/icons-material/Star';
 import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
 import productImg from "../../../../../assets/img/product-img.png";
 import priceIcon from "../../../../../assets/img/price-icon.png"
-
+import { ErrorMessages } from "Views/Utills/helperFunctions";
 class FeaturedProducts extends Component {
   constructor(props) {
     super(props);
     this.state = {
     };
+  }
+
+
+  handleAddToCart = (id) => {
+    ErrorMessages.success("added to cart")
+
   }
 
   render() {
@@ -19,7 +25,7 @@ class FeaturedProducts extends Component {
         <Container>
           <Box className="heading">Featured Products</Box>
           <Box className="products">
-            {data?.length && data.map((item, index) => {
+            {data?.length && data.slice(0, 5).map((item, index) => {
               debugger
               return <Box className="product-box">
                 <Box className="sale">
@@ -48,7 +54,7 @@ class FeaturedProducts extends Component {
                   </FormControl>
                 </Box>
                 <Box className="add-cart">
-                  <Button variant="outlined">Add to cart</Button>
+                  <Button variant="outlined" onClick={() => this.handleAddToCart()}>Add to cart</Button>
                 </Box>
               </Box>
             })}
