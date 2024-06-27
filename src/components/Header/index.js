@@ -15,7 +15,7 @@ import deliverIcon from "../../assets/img/deliver-icon.png";
 import notificationIcon from "../../assets/img/notification-icon.png";
 import cardIcon from "../../assets/img/card-icon.png";
 import searchIcon from "../../assets/img/search-icon.png";
-
+import { connect } from "react-redux"
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -171,7 +171,7 @@ class Header extends Component {
                     <p></p>
                   </Button>
                   <Button variant="outlined" className="card" startIcon={<img src={cardIcon} alt="" />}>
-                    <p>2</p>
+                    <p>{this.props?.cartData?.length ? this.props.cartData.length : <></>}</p>
                   </Button>
                 </Box>
               </Grid>
@@ -184,4 +184,13 @@ class Header extends Component {
 }
 
 
-export default Header;
+
+function mapStateToProps(state) {
+  const { cartData } = state.home;
+
+  return { cartData };
+}
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

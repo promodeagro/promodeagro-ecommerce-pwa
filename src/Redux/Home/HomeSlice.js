@@ -10,9 +10,15 @@ const HomeSlice = createSlice({
         homeData: {
             status: null,
         },
+        cartData: [],
 
     },
-    reducers: {},
+    reducers: {
+        addDataInCart: (state, action) => {
+            // Since cartData is an array, you should update it accordingly
+            state.cartData = [...state.cartData, action.payload];
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchHome.pending.toString(), (state, action) => {
@@ -44,4 +50,5 @@ const HomeSlice = createSlice({
     },
 });
 
+export const { addDataInCart } = HomeSlice.actions;
 export default HomeSlice.reducer;

@@ -5,17 +5,26 @@ import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
 import productImg from "../../../../../assets/img/product-img.png";
 import priceIcon from "../../../../../assets/img/price-icon.png"
 import { ErrorMessages } from "Views/Utills/helperFunctions";
+import { addDataInCart } from "../../../../../Redux/Home/HomeSlice";
+import { connect } from "react-redux"
+import _ from "lodash"
 class FeaturedProducts extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      cartData: []
     };
   }
 
 
-  handleAddToCart = (id) => {
-    ErrorMessages.success("added to cart")
-
+  handleAddToCart = (item) => {
+    const { cartData } = this.state
+    let temp = _.cloneDeep(cartData);
+    temp.push(item);
+    this.props.addDataInCart(item);
+    this.setState({
+      cartData: temp
+    });
   }
 
   render() {
@@ -26,7 +35,6 @@ class FeaturedProducts extends Component {
           <Box className="heading">Featured Products</Box>
           <Box className="products">
             {data?.length && data.slice(0, 5).map((item, index) => {
-              debugger
               return <Box className="product-box">
                 <Box className="sale">
                   Sale 50%
@@ -54,7 +62,7 @@ class FeaturedProducts extends Component {
                   </FormControl>
                 </Box>
                 <Box className="add-cart">
-                  <Button variant="outlined" onClick={() => this.handleAddToCart()}>Add to cart</Button>
+                  <Button variant="outlined" onClick={() => this.handleAddToCart(item)}>Add to cart</Button>
                 </Box>
               </Box>
             })}
@@ -189,4 +197,14 @@ class FeaturedProducts extends Component {
   }
 }
 
-export default FeaturedProducts;
+
+
+function mapStateToProps(state) {
+  const { homeData } = state.home;
+  console.log("home data", state.home)
+  return { homeData };
+}
+
+const mapDispatchToProps = { addDataInCart };
+
+export default connect(mapStateToProps, mapDispatchToProps)(FeaturedProducts);
