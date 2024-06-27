@@ -33,7 +33,7 @@ class Address extends Component {
     super(props);
     this.state = {
       open: false,
-      activeStep: 1,
+      activeStep: 0,
       value: 0,
       timneValue: 0,
     };
@@ -284,7 +284,7 @@ class Address extends Component {
             <Box className="modal-header">
               <Box className="d-flex align-items-center justify-content-between w-100">
                 <h3 className="modal-title">Delivery Slot</h3>
-                <IconButton aria-label="close"   onClick={this.handleClose}>
+                <IconButton aria-label="close" onClick={this.handleClose}>
                   <CloseIcon className="modal-close-icon" />
                 </IconButton>
               </Box>
@@ -312,36 +312,35 @@ class Address extends Component {
                   <Tab label="Afternoon " />
                   <Tab label="Evening" />
                 </Tabs>
-               
               </Box>
               {timneValue === 0 ? (
-                  <Box className="time-slot-checkbox">
-                    <RadioGroup
-                      row
-                      aria-labelledby="demo-row-radio-buttons-group-label"
-                      name="row-radio-buttons-group"
-                    >
-                      <Grid container spacing={2}>
-                        <Grid item xs={4}>
-                          <FormControlLabel
-                            value="afternoonSlot"
-                            control={<Radio />}
-                            label="2:00 PM - 4:00 PM"
-                          />
-                        </Grid>
-                        <Grid item xs={4}>
-                          <FormControlLabel
-                            value="eveningSlot"
-                            control={<Radio />}
-                            label="4:00 PM - 6:00 PM"
-                          />
-                        </Grid>
+                <Box className="time-slot-checkbox">
+                  <RadioGroup
+                    row
+                    aria-labelledby="demo-row-radio-buttons-group-label"
+                    name="row-radio-buttons-group"
+                  >
+                    <Grid container spacing={2}>
+                      <Grid item xs={4}>
+                        <FormControlLabel
+                          value="afternoonSlot"
+                          control={<Radio />}
+                          label="2:00 PM - 4:00 PM"
+                        />
                       </Grid>
-                    </RadioGroup>
-                  </Box>
-                ) : (
-                  ""
-                )}
+                      <Grid item xs={4}>
+                        <FormControlLabel
+                          value="eveningSlot"
+                          control={<Radio />}
+                          label="4:00 PM - 6:00 PM"
+                        />
+                      </Grid>
+                    </Grid>
+                  </RadioGroup>
+                </Box>
+              ) : (
+                ""
+              )}
             </Box>
           </Box>
         </Modal>

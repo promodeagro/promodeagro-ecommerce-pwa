@@ -7,6 +7,7 @@ const Category = lazy(() => import("./../Views/PostLogin/category"));
 const MyCart = lazy(() => import("./../Views/PostLogin/MyCart"));
 const SignIn = lazy(() => import("./../components/SignIn"));
 const Address = lazy(() => import("./../Views/PostLogin/MyCart/components/address"));
+const AddNewAddress = lazy(() => import("./../Views/PostLogin/MyCart/components/addNewAddress"));
 
 const Views = () => {
   const location = useLocation();
@@ -19,6 +20,7 @@ const Views = () => {
           <Route exact path={`/myCart`} element={<MyCart />} />
           <Route exact path={`/signin`} element={<SignIn />} />
           <Route exact path={`/myCart/address`} element={<Address />} />
+          <Route exact path={`/myCart/address/add-new-address`} element={<AddNewAddress/>} />
         </Routes>
       </Suspense>
     </>
