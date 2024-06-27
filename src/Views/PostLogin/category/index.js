@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Box, Container, Grid } from "@mui/material";
 import SideBar from "./sideBar";
 import List from "./list";
+import RecentlyViewedItems from "./recentlyViewedItems";
 
 class Category extends Component {
   constructor(props) {
@@ -23,6 +24,7 @@ class Category extends Component {
             </Grid>
           </Grid>
         </Container>
+        <RecentlyViewedItems />
       </Box>
     );
   }

@@ -173,8 +173,13 @@
 
             .image {
                 display: flex;
+                justify-content: center;
+                align-items: center;
                 width: 100%;
                 margin-bottom: 10px;
+                img {
+                    max-height: 200px;
+                }
             }
 
             .name {
@@ -615,8 +620,13 @@
 
         .image {
             display: flex;
+            justify-content: center;
+            align-items: center;
             width: 100%;
             margin-bottom: 10px;
+            img {
+                max-height: 200px;
+            }
         }
 
         .name {

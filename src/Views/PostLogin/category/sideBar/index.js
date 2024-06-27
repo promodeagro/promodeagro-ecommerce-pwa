@@ -67,7 +67,7 @@ class Category extends Component {
           </Box>
           <Box className="filter">
             <h3>Rating</h3>
-            <ul className="rating-checkbox">
+            <ul className="checkbox">
               <li><Checkbox /> <Box className="star"><StarIcon /><StarIcon /><StarIcon /><StarIcon /><StarIcon /></Box> 5.0</li>
               <li><Checkbox checked /> <Box className="star"><StarIcon /><StarIcon /><StarIcon /><StarIcon /><StarIcon className="gray" /></Box> 4.0 & up</li>
               <li><Checkbox /> <Box className="star"><StarIcon /><StarIcon /><StarIcon /><StarIcon className="gray" /><StarIcon className="gray" /></Box> 3.0 & up</li>
@@ -76,7 +76,7 @@ class Category extends Component {
           </Box>
           <Box className="filter">
             <h3>Discount</h3>
-            <ul className="rating-checkbox">
+            <ul className="checkbox">
               <li><Checkbox /> Upto 5%</li>
               <li><Checkbox /> 10% - 15%</li>
               <li><Checkbox /> 15% - 25%</li>
@@ -89,6 +89,7 @@ class Category extends Component {
               aria-labelledby="demo-radio-buttons-group-label"
               defaultValue="india"
               name="radio-buttons-group"
+              className="radio-group"
             >
               <FormControlLabel value="india" control={<Radio />} label="India" />
               <FormControlLabel value="usa" control={<Radio />} label="USA" />
@@ -96,14 +97,14 @@ class Category extends Component {
           </Box>
           <Box className="filter">
             <h3>Product Type</h3>
-            <ul className="rating-checkbox">
+            <ul className="checkbox">
               <li><Checkbox /> Combo</li>
               <li><Checkbox /> Super Saver</li>
             </ul>
           </Box>
           <Box className="filter">
             <h3>Pack Size</h3>
-            <ul className="rating-checkbox">
+            <ul className="checkbox">
               <li><Checkbox /> Combo 5 Items</li>
               <li><Checkbox /> Combo 4 Items</li>
               <li><Checkbox /> Combo 3 Items</li>
