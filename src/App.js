@@ -1,59 +1,15 @@
-// import React, { lazy, Suspense } from "react";
-// import {
-//   BrowserRouter as Router,
-//   Routes,
-//   Route,
-//   Navigate,
-// } from "react-router-dom";
-// import Header from "./components/Header";
-// import Footer from "./components/Footer";
-
-
-// const Home = lazy(() => import("./pages/home"));
-// const MyCart = lazy(() => import("./pages/MyCart"));
-// const SignIn = lazy(() => import("./components/SignIn"));
-// function App() {
-//   return (
-//     <div className="app">
-//       <Router>
-//         <Header />
-//         <Suspense fallback={<div>Loading...</div>}>
-//           <Routes>
-//             <Route exact path={`/`} element={<Home />} />
-//             <Route exact path={`/myCart`} element={<MyCart />} />
-//             <Route exact path={`/signin`} element={<SignIn />} />
-//           </Routes>
-//         </Suspense>
-//         <Footer />
-//       </Router>
-//     </div>
-//   );
-// }
-
-// export default App;
-
-
-
-
-
-
-
-
-
-
-
 
 import React, { useEffect } from "react";
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // import Header from "./components/Header";
 import Views from "./Views/index";
 // import { useLocation } from "react-router-dom";
 // import { pathFile } from "Utils/helperFunctions";
-// import { ToastContainer } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { connect } from "react-redux";
-// import { setThemeMode } from "Redux-Store/ThemeMode/ThemeModeSlice";
-// import { getThemeModeFromLocalStorage } from "Utils";
+
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -70,7 +26,7 @@ function App(props) {
         <Header />
         <MainContent />
         <Footer />
-        {/* <ToastContainer
+        <ToastContainer
           position="top-right"
           autoClose={5000}
           hideProgressBar={false}
@@ -81,7 +37,7 @@ function App(props) {
           draggable
           pauseOnHover
           theme="light"
-        /> */}
+        />
       </div>
     </Router>
   );

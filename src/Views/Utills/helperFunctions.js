@@ -1,4 +1,6 @@
 import { Box, CircularProgress } from "@mui/material";
+import { toast } from "react-toastify";
+
 export const Loader = {
     commonLoader() {
         return (
@@ -8,6 +10,49 @@ export const Loader = {
         );
     },
 };
+
+
+export const ErrorMessages = {
+    error: (message) =>
+      toast.error(message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      }),
+    success: (message) =>
+      toast.success(message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      }),
+    info: (message) =>
+      toast.info(message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      }),
+  };
+
+
+
+
+
+
 
 export const pathFile = {
     // dashboard: "DashBoard",
