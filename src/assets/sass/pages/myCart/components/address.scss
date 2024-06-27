@@ -44,7 +44,7 @@
 
                 .Mui-completed {
                     border-radius: 100%;
-                   color: #1F9151;
+                    color: #1F9151;
                 }
             }
 
@@ -205,6 +205,196 @@
             }
         }
 
+    }
+
+    .select-delivery-option-container {
+        .delivery-option-details {
+            padding: 42px 24px 20px;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+
+            h3 {
+                font-weight: 500;
+                margin-bottom: 32px;
+            }
+
+            .delivery-inner-box {
+                border: 1px solid #E0E0E0;
+                padding: 68px 52px 20px 34px;
+                box-shadow: 0px 4px 12px 0px #B6B6B640;
+                border-radius: 8px;
+
+
+                .product-img-box {
+                    width: 64px;
+                    height: 64px;
+                    border-radius: 8px;
+                    border: 1px solid #E0E0E0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-right: 22px;
+
+                    img {
+                        width: 50px;
+                    }
+
+                    &:last-child {
+                        margin-right: 0px;
+                    }
+                }
+
+                .view-all-img-box {
+                    width: 72px;
+                    height: 64px;
+                    border: 1px dashed #2A3A31CC;
+                    background-color: #1F91511A;
+                    color: #1F9151;
+                    font-size: 12px;
+                    line-height: 17px;
+                    font-weight: 500;
+                    border-radius: 4px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    text-align: center;
+                    cursor: pointer;
+                }
+
+                .delivery-slot-select {
+                    height: 86px;
+                    border: 1px solid #E0E0E0;
+                    border-radius: 8px;
+                    display: flex;
+                    align-items: center;
+                    padding: 0px 29px 0px 18px;
+                    margin-top: 36px;
+
+                    .title {
+                        font-size: 18px;
+                        line-height: 18px;
+                        color: #2A3A31;
+                        font-weight: 500;
+                        border-right: 1px solid #E0E0E0;
+                        height: 100%;
+                        display: flex;
+                        align-items: center;
+                        padding-right: 19px;
+                        margin-right: 30px;
+                    }
+
+                    .time-icon {
+                        font-size: 28px;
+                        margin-right: 7px;
+                        color: #2A3A31;
+                    }
+
+                    .slot-time {
+                        font-size: 18px;
+                        line-height: 18px;
+                        color: #2A3A31;
+                        font-weight: 500;
+                    }
+
+                    .down-arrow-icon {
+                        color: #141B34;
+                    }
+                }
+
+                .proceed-payment-btn {
+                    width: auto;
+                    margin-top: 28px;
+                }
+            }
+        }
+
+        .order-summary-container {
+            padding: 24px 16px 13px;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+
+            .order-title {
+                color: #2A3A31;
+                font-weight: 500;
+                padding-bottom: 28px;
+                margin-bottom: 40px;
+                border-bottom: 1px solid #E0E0E0;
+            }
+
+            .product-list {
+
+                border-bottom: 1px solid #E0E0E0;
+                padding-bottom: 17px;
+                margin-bottom: 32px;
+
+                .product-name {
+                    color: #2A3A31;
+                    font-size: 14px;
+                    line-height: 14px;
+                    font-weight: 500;
+                }
+
+                .product-weight {
+                    font-size: 16px;
+                    line-height: 24px;
+                    font-weight: 500;
+                    color: #1A1A1A;
+                }
+            }
+
+            .total-amount {
+                .heading {
+                    font-size: 18px;
+                    line-height: 18px;
+                    color: #2A3A31;
+                    font-weight: 500;
+                }
+
+                .amount {
+                    font-size: 22px;
+                    line-height: 33px;
+                    font-weight: 600;
+                    color: #1A1A1A;
+                }
+            }
+
+            .total-saving {
+                padding: 8px 13px;
+                background-color: #1F91511A;
+                margin: 16px 0px 25px 0px;
+
+                .heading {
+                    font-size: 16px;
+                    line-height: 16px;
+                    color: #1F9151;
+                    font-weight: 500;
+                }
+
+                .amount {
+                    font-size: 18px;
+                    line-height: 27px;
+                    font-weight: 600;
+                    color: #1F9151;
+                }
+            }
+
+            .information {
+                padding: 8px 16px;
+                background-color: #FFFAE6;
+
+                .info-icon {
+                    color: #141B34;
+                    margin-right: 12px;
+                }
+
+                .text {
+                    color: #000000;
+                    font-size: 12px;
+                    line-height: 18px;
+                    font-weight: 400;
+                }
+            }
+        }
     }
 
 }

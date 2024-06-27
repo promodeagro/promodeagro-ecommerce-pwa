@@ -15,6 +15,7 @@ const Home = lazy(() => import("./../Views/PostLogin/home"));
 const MyCart = lazy(() => import("./../Views/PostLogin/MyCart"));
 const SignIn = lazy(() => import("./../components/SignIn"));
 const Address = lazy(() => import("./../Views/PostLogin/MyCart/components/address"));
+
 const Views = () => {
     const location = useLocation();
     return (
