@@ -8,7 +8,6 @@ import {
   Checkbox,
   Divider,
   Modal,
-  Typography,
 } from "@mui/material";
 import addSymbol from "../../assets/img/add-symbol.svg";
 import googleIcon from "../../assets/img/google.svg";
@@ -108,7 +107,7 @@ class Signin extends Component {
           aria-describedby="modal-modal-description"
           data-aos="flip-left"
         >
-          <Box className="otp-modal-container">
+          <Box className="common-modal otp-modal-container">
             <Box className="common-symbol d-flex justify-content-center">
               <Box className="outer-symbol">
                 <Box className="inner-box">

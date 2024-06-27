@@ -97,76 +97,72 @@
 
 }
 
-.otp-modal-container {
+.common-modal {
+    &.otp-modal-container {
+        width: 400px;
+        height: auto;
+        padding: 48px 24px;
+        border-radius: 12px;
 
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    background-color: #FFFFFF;
-    transform: translate(-50%, -50%);
-    width: 400px;
-    height: auto;
-    padding: 48px 24px;
-    border-radius: 12px;
-
-    .title {
-        color: #0A0D14;
-        margin-bottom: 4px;
-    }
-
-    .code-send-number {
-        color: #525866;
-        font-size: 16px;
-        line-height: 24px;
-        font-weight: 400;
-
-        strong {
+        .title {
             color: #0A0D14;
-            font-weight: 500;
-        }
-    }
-
-    hr {
-        margin: 24px 0px;
-    }
-
-    .otp-input-container {
-        margin-bottom: 24px;
-
-        .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
-            width: 80px;
-            height: 64px;
-
-            .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
-                padding: 0px;
-                font-size: 24px;
-                line-height: 32px;
-                font-weight: 500;
-                color: #0A0D14;
-            }
-
-            .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
-                border: 1px solid #E2E4E9;
-                border-radius: 10px;
-            }
-        }
-    }
-
-    .resend-code-container {
-        margin-top: 24px;
-        font-size: 14px;
-        line-height: 20px;
-
-        .code-issue {
-            color: #525866;
-            font-weight: 400;
             margin-bottom: 4px;
         }
 
-        a {
-            color: #0A0D14;
-            text-decoration: underline !important;
-            font-weight: 500;
+        .code-send-number {
+            color: #525866;
+            font-size: 16px;
+            line-height: 24px;
+            font-weight: 400;
+
+            strong {
+                color: #0A0D14;
+                font-weight: 500;
+            }
+        }
+
+        hr {
+            margin: 24px 0px;
+        }
+
+        .otp-input-container {
+            margin-bottom: 24px;
+
+            .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
+                width: 80px;
+                height: 64px;
+
+                .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+                    padding: 0px;
+                    font-size: 24px;
+                    line-height: 32px;
+                    font-weight: 500;
+                    color: #0A0D14;
+                }
+
+                .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+                    border: 1px solid #E2E4E9;
+                    border-radius: 10px;
+                }
+            }
+        }
+
+        .resend-code-container {
+            margin-top: 24px;
+            font-size: 14px;
+            line-height: 20px;
+
+            .code-issue {
+                color: #525866;
+                font-weight: 400;
+                margin-bottom: 4px;
+            }
+
+            a {
+                color: #0A0D14;
+                text-decoration: underline !important;
+                font-weight: 500;
+            }
         }
     }
 }

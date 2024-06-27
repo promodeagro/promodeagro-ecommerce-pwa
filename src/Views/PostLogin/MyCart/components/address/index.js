@@ -10,6 +10,12 @@ import {
   FormControlLabel,
   Checkbox,
   Button,
+  Modal,
+  Tabs,
+  Tab,
+  Divider,
+  RadioGroup,
+  Radio,
 } from "@mui/material";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -19,19 +25,33 @@ import productImg from "../../../../../assets/img/product-img.png";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import InfoIcon from "@mui/icons-material/Info";
-
+import CloseIcon from "@mui/icons-material/Close";
 const steps = ["Delivery Address", "Delivery Options", "Payment Option"];
 
 class Address extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      open: false,
       activeStep: 1,
+      value: 0,
+      timneValue: 0,
     };
   }
-
+  handleOpen = () => {
+    this.setState({ open: true });
+  };
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+  handleChange = (event, newValue) => {
+    this.setState({ value: newValue });
+  };
+  timingSlotHandleChange = (event, newTimeValue) => {
+    this.setState({ timneValue: newTimeValue });
+  };
   render() {
-    const { activeStep } = this.state;
+    const { activeStep, value, timneValue } = this.state;
     return (
       <Box className="address-container">
         <Container>
@@ -164,7 +184,7 @@ class Address extends Component {
             </Box>
           ) : (
             <Box className="select-delivery-option-container">
-              <Grid container spacing={2}>
+              <Grid container spacing={2} data-aos="zoom-in-down">
                 <Grid item xs={8}>
                   <Box className="delivery-option-details">
                     <h3>Select a delivery option</h3>
@@ -183,7 +203,10 @@ class Address extends Component {
                           <span className="d-block">View all 3 items </span>
                         </Box>
                       </Box>
-                      <Box className="delivery-slot-select">
+                      <Box
+                        className="delivery-slot-select"
+                        onClick={this.handleOpen}
+                      >
                         <span className="title">Delivery Slot</span>
                         <Box className="d-flex align-items-center justify-content-between w-100">
                           <Box className="d-flex align-items-center">
@@ -237,7 +260,7 @@ class Address extends Component {
                       <span className="d-block amount">₹ 200.12</span>
                     </Box>
                     <Box className="information d-flex ">
-                      <InfoIcon className="info-icon"/>
+                      <InfoIcon className="info-icon" />
                       <p className="d-block text">
                         Select your address and delivery slot to know accurate
                         delivery charges. You can save more by applying a
@@ -250,6 +273,78 @@ class Address extends Component {
             </Box>
           )}
         </Container>
+        <Modal
+          open={this.state.open}
+          onClose={this.handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          data-aos="flip-left"
+        >
+          <Box className="common-modal select-slot-modal-container">
+            <Box className="modal-header">
+              <Box className="d-flex align-items-center justify-content-between w-100">
+                <h3 className="modal-title">Delivery Slot</h3>
+                <IconButton aria-label="close"   onClick={this.handleClose}>
+                  <CloseIcon className="modal-close-icon" />
+                </IconButton>
+              </Box>
+            </Box>
+            <Box className="modal-body">
+              <Box className="days-slot-tab">
+                <Tabs
+                  value={this.state.value}
+                  onChange={this.handleChange}
+                  aria-label="basic tabs example"
+                >
+                  <Tab label="Today" />
+                  <Tab label="Tomorrow " />
+                  <Tab label="30-05-2024" />
+                </Tabs>
+              </Box>
+              <Divider />
+              <Box className="slot-timing-tab">
+                <Tabs
+                  value={this.state.timneValue}
+                  onChange={this.timingSlotHandleChange}
+                  aria-label="basic tabs example"
+                >
+                  <Tab label="All Slots" />
+                  <Tab label="Afternoon " />
+                  <Tab label="Evening" />
+                </Tabs>
+               
+              </Box>
+              {timneValue === 0 ? (
+                  <Box className="time-slot-checkbox">
+                    <RadioGroup
+                      row
+                      aria-labelledby="demo-row-radio-buttons-group-label"
+                      name="row-radio-buttons-group"
+                    >
+                      <Grid container spacing={2}>
+                        <Grid item xs={4}>
+                          <FormControlLabel
+                            value="afternoonSlot"
+                            control={<Radio />}
+                            label="2:00 PM - 4:00 PM"
+                          />
+                        </Grid>
+                        <Grid item xs={4}>
+                          <FormControlLabel
+                            value="eveningSlot"
+                            control={<Radio />}
+                            label="4:00 PM - 6:00 PM"
+                          />
+                        </Grid>
+                      </Grid>
+                    </RadioGroup>
+                  </Box>
+                ) : (
+                  ""
+                )}
+            </Box>
+          </Box>
+        </Modal>
       </Box>
     );
   }

@@ -343,6 +343,8 @@
             }
 
             .total-amount {
+                padding-top: 33px;
+
                 .heading {
                     font-size: 18px;
                     line-height: 18px;
@@ -397,4 +399,120 @@
         }
     }
 
+
+}
+
+.common-modal {
+    &.select-slot-modal-container {
+        width: 900px;
+        height: 460px;
+
+        .modal-header {
+            height: 70px;
+            padding: 0px 32px;
+            background-color: #EDEDED;
+            border-radius: 8px 8px 0px 0px;
+            display: flex;
+            align-items: center;
+
+            .modal-title {
+                font-weight: 500;
+                color: #000000;
+            }
+
+            .modal-close-icon {
+                color: #141B34;
+            }
+        }
+
+        .modal-body {
+            .days-slot-tab {
+                padding: 24px 32px 15px;
+
+                .css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
+                    height: 42px;
+                    border: 1px solid #CDCDCD;
+                    border-radius: 4px;
+                    font-size: 18px;
+                    line-height: 18px;
+                    font-weight: 500;
+                    color: #5A5A5A;
+                    text-transform: capitalize;
+                    margin-right: 27px;
+                    padding: 24px 12px;
+
+                    &.Mui-selected {
+                        background-color: #1F91511A;
+                        border: none;
+                        color: #1F9151;
+
+                    }
+
+                    &:last-child {
+                        margin-right: 0px;
+                    }
+                }
+
+                .css-1aquho2-MuiTabs-indicator {
+                    display: none;
+                }
+            }
+
+            hr {
+                color: #AEAEAE;
+            }
+
+            .slot-timing-tab {
+                padding: 0px 32px;
+                background-color: #EDEDEDCC;
+                opacity: 80%;
+
+                .css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
+                    padding: 0px;
+                    margin-right: 25px;
+                    text-transform: capitalize;
+                    font-size: 14px;
+                    line-height: 14px;
+                    font-weight: 500;
+                    color: #1A1A1A;
+
+                    &:last-child {
+                        margin-right: 0px;
+                    }
+
+                    &.Mui-selected {
+                        color: #000000;
+                        font-weight: 600;
+                    }
+                }
+
+                .css-1aquho2-MuiTabs-indicator {
+                    background-color: #1A1A1A;
+                }
+                
+            }
+            .time-slot-checkbox{
+                margin-top: 41px;
+                padding: 0px 32px;
+                .css-j204z7-MuiFormControlLabel-root{
+                    margin-right: 0px;
+                    height: 48px;
+                    border: 1px solid #1F9151;
+                    width: 100%;
+                    .css-ahj2mt-MuiTypography-root{
+                        font-size: 18px;
+                        line-height: 18px;
+                        font-weight: 500;
+                        color: #000000;
+                    }
+                    .css-vqmohf-MuiButtonBase-root-MuiRadio-root{
+                        color: #BEBEBE;
+                        &.Mui-checked{
+                            color: #1F9151;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

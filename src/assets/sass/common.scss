@@ -143,21 +143,24 @@ button {
       box-shadow: none;
     }
   }
+
   &.outline-common-btn {
-    border: 1px solid #1F9151 ;
-    color: #1F9151 ;
+    border: 1px solid #1F9151;
+    color: #1F9151;
     height: 46px;
-    border-radius: 4px ;
-    text-transform: capitalize ;
+    border-radius: 4px;
+    text-transform: capitalize;
     box-shadow: none;
     font-weight: 500;
     line-height: 20px;
     font-size: 14px;
+
     &:hover {
-      border: 1px solid #1F9151 ;
+      border: 1px solid #1F9151;
       box-shadow: none;
     }
-    svg{
+
+    svg {
       font-size: 28px !important;
     }
   }
@@ -190,4 +193,13 @@ button {
     align-items: center;
     justify-content: center;
   }
+}
+
+.common-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background-color: #FFFFFF;
+  transform: translate(-50%, -50%);
+  outline: none
 }
