@@ -16,6 +16,7 @@ import {
   Divider,
   RadioGroup,
   Radio,
+  TextField,
 } from "@mui/material";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -27,15 +28,19 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import InfoIcon from "@mui/icons-material/Info";
 import CloseIcon from "@mui/icons-material/Close";
 import { Link } from "react-router-dom";
+import cardTypeImg1 from "../../../../../assets/img/visa-logo.png";
+import cardTypeImg2 from "../../../../../assets/img/Stripe.png";
+import cardTypeImg3 from "../../../../../assets/img/Mastercard.png";
 
 const steps = ["Delivery Address", "Delivery Options", "Payment Option"];
+const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 class Address extends Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
-      activeStep: 0,
+      activeStep: 2,
       value: 0,
       timneValue: 0,
     };
@@ -186,7 +191,7 @@ class Address extends Component {
                 </Box>
               </Box>
             </Box>
-          ) : (
+          ) : activeStep === 1 ? (
             <Box className="select-delivery-option-container">
               <Grid container spacing={2} data-aos="zoom-in-down">
                 <Grid item xs={8}>
@@ -275,6 +280,143 @@ class Address extends Component {
                 </Grid>
               </Grid>
             </Box>
+          ) : activeStep === 2 ? (
+            <Box className="payment-option-container">
+              <Box className="payment-details">
+                <Box className="payment-option-box active">
+                  <Box className="d-flex align-items-center justify-content-between">
+                    <Box className="d-flex align-items-center">
+                      <Checkbox {...label} defaultChecked />
+                      <span className="d-block payment-title">
+                        Pay with Credit Card
+                      </span>
+                    </Box>
+                    <Box className="d-flex align-items-center">
+                      <Box className="card-type-img">
+                        <img src={cardTypeImg1} alt="cart-type" />
+                      </Box>
+                      <Box className="card-type-img">
+                        <img src={cardTypeImg2} alt="cart-type" />
+                      </Box>
+                      <Box className="card-type-img">
+                        <img src={cardTypeImg3} alt="cart-type" />
+                      </Box>
+                    </Box>
+                  </Box>
+                  <Grid container spacing={2} marginTop={"8px"}>
+                    <Grid item xs={9}>
+                      <label className="d-block form-field-title">
+                        Name on card
+                      </label>
+                      <TextField
+                        id="outlined-basic"
+                        variant="outlined"
+                        fullWidth
+                        className="form-text-field"
+                        placeholder="Olivia Rhye"
+                      />
+                    </Grid>
+                    <Grid item xs={3}>
+                      <label className="d-block form-field-title">
+                        Name on card
+                      </label>
+                      <TextField
+                        id="outlined-basic"
+                        variant="outlined"
+                        fullWidth
+                        className="form-text-field"
+                        placeholder="06 / 2024"
+                      />
+                    </Grid>
+                    <Grid item xs={9}>
+                      <label className="d-block form-field-title">
+                        Card number
+                      </label>
+                      <TextField
+                        id="outlined-basic"
+                        variant="outlined"
+                        fullWidth
+                        className="form-text-field"
+                        placeholder="Olivia Rhye"
+                      />
+                    </Grid>
+                    <Grid item xs={3}>
+                      <label className="d-block form-field-title">CVV</label>
+                      <TextField
+                        id="outlined-basic"
+                        variant="outlined"
+                        fullWidth
+                        className="form-text-field"
+                        placeholder="06 / 2024"
+                      />
+                    </Grid>
+                  </Grid>
+                </Box>
+                <Box className="payment-option-box ">
+                  <Box className="d-flex justify-content-between align-items-flex-start">
+                    <Box className="d-flex align-items-flex-start">
+                      <Checkbox {...label} />
+                      <Box className="d-block">
+                        <span className="d-block payment-title">UPI</span>
+                        <p className="d-block info">
+                          Unlimited users and unlimited individual data.
+                        </p>
+                      </Box>
+                    </Box>
+                    <Box className="d-flex align-items-center">
+                      <Box className="card-type-img">
+                        <img src={cardTypeImg1} alt="cart-type" />
+                      </Box>
+                      <Box className="card-type-img">
+                        <img src={cardTypeImg2} alt="cart-type" />
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+                <Box className="payment-option-box ">
+                  <Box className="d-flex justify-content-between align-items-flex-start">
+                    <Box className="d-flex align-items-flex-start">
+                      <Checkbox {...label} />
+                      <Box className="d-block">
+                        <span className="d-block payment-title">Paypal</span>
+                        <p className="d-block info">
+                          You will be redirected to the PayPal website after
+                          submitting your order{" "}
+                        </p>
+                      </Box>
+                    </Box>
+                    <Box className="d-flex align-items-center">
+                      <Box className="card-type-img">
+                        <img src={cardTypeImg1} alt="cart-type" />
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+                <Box className="payment-option-box ">
+                  <Box className="d-flex justify-content-between align-items-flex-start">
+                    <Box className="d-flex align-items-flex-start">
+                      <Checkbox {...label} />
+                      <Box className="d-block">
+                        <span className="d-block payment-title">
+                          Cash on delivery
+                        </span>
+                        <p className="d-block info">
+                          You will be redirected to the PayPal website after
+                          submitting your order{" "}
+                        </p>{" "}
+                      </Box>
+                    </Box>
+                    <Box className="d-flex align-items-center">
+                      <Box className="card-type-img">
+                        <img src={cardTypeImg1} alt="cart-type" />
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
+          ) : (
+            ""
           )}
         </Container>
         <Modal
