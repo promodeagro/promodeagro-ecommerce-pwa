@@ -28,7 +28,7 @@ const HomeSlice = createSlice({
                     ...state,
                     homeData: {
                         status: status.SUCCESS,
-                        data: payload.data,
+                        data: payload,
                     },
                 };
             })
