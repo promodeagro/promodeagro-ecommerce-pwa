@@ -29,9 +29,14 @@ import InfoIcon from "@mui/icons-material/Info";
 import CloseIcon from "@mui/icons-material/Close";
 import { Link } from "react-router-dom";
 import cardTypeImg1 from "../../../../../assets/img/visa-logo.png";
-import cardTypeImg2 from "../../../../../assets/img/Stripe.png";
-import cardTypeImg3 from "../../../../../assets/img/Mastercard.png";
-
+import cardTypeImg2 from "../../../../../assets/img/stripe.png";
+import cardTypeImg3 from "../../../../../assets/img/masterCard.png";
+import cashOnDeliveryImg from "../../../../../assets/img/cash.png";
+import paypalImg from "../../../../../assets/img/pay-pal.png";
+import upiImg1 from "../../../../../assets/img/amazon-pay.png";
+import upiImg2 from "../../../../../assets/img/g-pay.png";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 const steps = ["Delivery Address", "Delivery Options", "Payment Option"];
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -281,12 +286,22 @@ class Address extends Component {
               </Grid>
             </Box>
           ) : activeStep === 2 ? (
-            <Box className="payment-option-container">
+            <Box
+              className="payment-option-container"
+              data-aos="fade-right"
+              data-aos-offset="300"
+              data-aos-easing="ease-in-sine"
+            >
               <Box className="payment-details">
                 <Box className="payment-option-box active">
                   <Box className="d-flex align-items-center justify-content-between">
                     <Box className="d-flex align-items-center">
-                      <Checkbox {...label} defaultChecked />
+                      <Checkbox
+                        {...label}
+                        defaultChecked
+                        icon={<RadioButtonUncheckedIcon />}
+                        checkedIcon={<CheckCircleIcon />}
+                      />
                       <span className="d-block payment-title">
                         Pay with Credit Card
                       </span>
@@ -317,9 +332,7 @@ class Address extends Component {
                       />
                     </Grid>
                     <Grid item xs={3}>
-                      <label className="d-block form-field-title">
-                        Name on card
-                      </label>
+                      <label className="d-block form-field-title">Expiry</label>
                       <TextField
                         id="outlined-basic"
                         variant="outlined"
@@ -346,8 +359,8 @@ class Address extends Component {
                         id="outlined-basic"
                         variant="outlined"
                         fullWidth
+                        type="password"
                         className="form-text-field"
-                        placeholder="06 / 2024"
                       />
                     </Grid>
                   </Grid>
@@ -355,7 +368,11 @@ class Address extends Component {
                 <Box className="payment-option-box ">
                   <Box className="d-flex justify-content-between align-items-flex-start">
                     <Box className="d-flex align-items-flex-start">
-                      <Checkbox {...label} />
+                      <Checkbox
+                        {...label}
+                        icon={<RadioButtonUncheckedIcon />}
+                        checkedIcon={<CheckCircleIcon />}
+                      />
                       <Box className="d-block">
                         <span className="d-block payment-title">UPI</span>
                         <p className="d-block info">
@@ -365,10 +382,10 @@ class Address extends Component {
                     </Box>
                     <Box className="d-flex align-items-center">
                       <Box className="card-type-img">
-                        <img src={cardTypeImg1} alt="cart-type" />
+                        <img src={upiImg1} alt="cart-type" />
                       </Box>
                       <Box className="card-type-img">
-                        <img src={cardTypeImg2} alt="cart-type" />
+                        <img src={upiImg2} alt="cart-type" />
                       </Box>
                     </Box>
                   </Box>
@@ -376,7 +393,11 @@ class Address extends Component {
                 <Box className="payment-option-box ">
                   <Box className="d-flex justify-content-between align-items-flex-start">
                     <Box className="d-flex align-items-flex-start">
-                      <Checkbox {...label} />
+                      <Checkbox
+                        {...label}
+                        icon={<RadioButtonUncheckedIcon />}
+                        checkedIcon={<CheckCircleIcon />}
+                      />
                       <Box className="d-block">
                         <span className="d-block payment-title">Paypal</span>
                         <p className="d-block info">
@@ -387,7 +408,7 @@ class Address extends Component {
                     </Box>
                     <Box className="d-flex align-items-center">
                       <Box className="card-type-img">
-                        <img src={cardTypeImg1} alt="cart-type" />
+                        <img src={paypalImg} alt="cart-type" />
                       </Box>
                     </Box>
                   </Box>
@@ -395,7 +416,11 @@ class Address extends Component {
                 <Box className="payment-option-box ">
                   <Box className="d-flex justify-content-between align-items-flex-start">
                     <Box className="d-flex align-items-flex-start">
-                      <Checkbox {...label} />
+                      <Checkbox
+                        {...label}
+                        icon={<RadioButtonUncheckedIcon />}
+                        checkedIcon={<CheckCircleIcon />}
+                      />
                       <Box className="d-block">
                         <span className="d-block payment-title">
                           Cash on delivery
@@ -408,10 +433,21 @@ class Address extends Component {
                     </Box>
                     <Box className="d-flex align-items-center">
                       <Box className="card-type-img">
-                        <img src={cardTypeImg1} alt="cart-type" />
+                        <img src={cashOnDeliveryImg} alt="cart-type" />
                       </Box>
                     </Box>
                   </Box>
+                </Box>
+                <Box className="w-100 d-flex justify-content-end">
+                  <Link to={"/myCart/address/order-placed"}>
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      className="common-btn place-order-btn"
+                    >
+                      Place Order
+                    </Button>
+                  </Link>
                 </Box>
               </Box>
             </Box>

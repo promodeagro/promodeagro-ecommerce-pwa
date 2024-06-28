@@ -1,0 +1,64 @@
+.order-placed-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 100px 0px 380px 0px;
+
+    .order-placed-message {
+        width: 50%;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+
+        .rating {
+            margin: 28px 0px 16px 0px;
+
+    
+
+            .rating-info {
+                font-size: 14px;
+                line-height: 28px;
+                color: #454545;
+                font-weight: 500;
+                margin-left: 16px;
+            }
+        }
+
+        .title {
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .thank-you-message {
+         
+                font-size: 14px;
+                line-height: 24px;
+                color: #4B4E4C80;
+                width: 80%;
+                strong{
+                    color: #161D25;
+                }
+        }
+
+        .order-btn {
+            margin-top: 28px;
+
+            .back-shopping-btn {
+                border: none !important;
+                font-size: 16px;
+                line-height: 22px;
+                font-weight: 500;
+width: auto;
+margin-right: 20px;
+                svg {
+                    font-size: 12px !important;
+                }
+            }
+            .trach-order-btn{
+                width: auto;
+            }
+        }
+    }
+
+}
