@@ -1,11 +1,20 @@
 import React, { Component } from "react";
-import { Box, Container, FormControl, NativeSelect, Button } from "@mui/material";
+import { Box, Container, FormControl, NativeSelect, Button, Tab } from "@mui/material";
 import Carousel from "react-multi-carousel";
 import StarIcon from '@mui/icons-material/Star';
 import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
 import productImg from "../../../../../assets/img/product-img.png";
 import priceIcon from "../../../../../assets/img/price-icon.png"
 
+
+
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+import All from "./Components/All";
+import LeafyVejetable from "./Components/LeafyVejetable";
+import ExoticFruits from "./Components/ExoticFruits";
+import SeasonalFruits from "./Components/SeasonalFruits";
 const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
@@ -28,8 +37,18 @@ class TopSellingCategories extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      value: "1"
     };
   }
+
+
+  handleChange = (event, newValue) => {
+    debugger
+    this.setState({
+      value: newValue
+    })
+
+  };
 
   render() {
     return (
@@ -37,313 +56,33 @@ class TopSellingCategories extends Component {
         <Container>
           <Box className="heading">Top Selling Categories</Box>
 
-          <Carousel
-            id="carousel-2"
-            showDots={true}
-            responsive={responsive}
-            containerClass="carousel-banner-container"
-          >
-            <Box className="product-box">
-              <Box className="sale">
-                Sale 50%
-              </Box>
-              <Box className="icon">
-                <TurnedInNotOutlinedIcon />
-              </Box>
-              <Box className="image">
-                <img src={productImg} alt="" />
-              </Box>
-              <Box className="name">
-                <a href="#">Green Apple</a>
-              </Box>
-              <Box className="price-ratting">
-                <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-                <Box className="ratting"><StarIcon /> 4.5</Box>
-              </Box>
-              <Box className="select">
-                <FormControl fullWidth>
-                  <NativeSelect defaultValue={10}>
-                    <option value={10}>1Kg</option>
-                    <option value={20}>500 Gm</option>
-                    <option value={30}>2Kg</option>
-                  </NativeSelect>
-                </FormControl>
-              </Box>
-              <Box className="add-cart">
-                <Button variant="outlined">Add to cart</Button>
-              </Box>
+          <TabContext value={this.state.value}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <TabList onChange={this.handleChange} aria-label="lab API tabs example">
+                <Tab label="All" value="1" />
+                <Tab label="Leafy Vegetables" value="2" />
+                <Tab label="Exotic Fruit" value="3" />
+                <Tab label="Seasonal Fruits" value="4" />
+              </TabList>
             </Box>
-            <Box className="product-box">
-              <Box className="sale">
-                Sale 50%
-              </Box>
-              <Box className="icon">
-                <TurnedInNotOutlinedIcon />
-              </Box>
-              <Box className="image">
-                <img src={productImg} alt="" />
-              </Box>
-              <Box className="name">
-                <a href="#">Green Apple</a>
-              </Box>
-              <Box className="price-ratting">
-                <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-                <Box className="ratting"><StarIcon /> 4.5</Box>
-              </Box>
-              <Box className="select">
-                <FormControl fullWidth>
-                  <NativeSelect defaultValue={10}>
-                    <option value={10}>1Kg</option>
-                    <option value={20}>500 Gm</option>
-                    <option value={30}>2Kg</option>
-                  </NativeSelect>
-                </FormControl>
-              </Box>
-              <Box className="add-cart">
-                <Button variant="outlined">Add to cart</Button>
-              </Box>
-            </Box>
-            <Box className="product-box">
-              <Box className="sale">
-                Sale 50%
-              </Box>
-              <Box className="icon">
-                <TurnedInNotOutlinedIcon />
-              </Box>
-              <Box className="image">
-                <img src={productImg} alt="" />
-              </Box>
-              <Box className="name">
-                <a href="#">Green Apple</a>
-              </Box>
-              <Box className="price-ratting">
-                <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-                <Box className="ratting"><StarIcon /> 4.5</Box>
-              </Box>
-              <Box className="select">
-                <FormControl fullWidth>
-                  <NativeSelect defaultValue={10}>
-                    <option value={10}>1Kg</option>
-                    <option value={20}>500 Gm</option>
-                    <option value={30}>2Kg</option>
-                  </NativeSelect>
-                </FormControl>
-              </Box>
-              <Box className="add-cart">
-                <Button variant="outlined">Add to cart</Button>
-              </Box>
-            </Box>
-            <Box className="product-box">
-              <Box className="sale">
-                Sale 50%
-              </Box>
-              <Box className="icon">
-                <TurnedInNotOutlinedIcon />
-              </Box>
-              <Box className="image">
-                <img src={productImg} alt="" />
-              </Box>
-              <Box className="name">
-                <a href="#">Green Apple</a>
-              </Box>
-              <Box className="price-ratting">
-                <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-                <Box className="ratting"><StarIcon /> 4.5</Box>
-              </Box>
-              <Box className="select">
-                <FormControl fullWidth>
-                  <NativeSelect defaultValue={10}>
-                    <option value={10}>1Kg</option>
-                    <option value={20}>500 Gm</option>
-                    <option value={30}>2Kg</option>
-                  </NativeSelect>
-                </FormControl>
-              </Box>
-              <Box className="add-cart">
-                <Button variant="outlined">Add to cart</Button>
-              </Box>
-            </Box>
-            <Box className="product-box">
-              <Box className="sale">
-                Sale 50%
-              </Box>
-              <Box className="icon">
-                <TurnedInNotOutlinedIcon />
-              </Box>
-              <Box className="image">
-                <img src={productImg} alt="" />
-              </Box>
-              <Box className="name">
-                <a href="#">Green Apple</a>
-              </Box>
-              <Box className="price-ratting">
-                <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-                <Box className="ratting"><StarIcon /> 4.5</Box>
-              </Box>
-              <Box className="select">
-                <FormControl fullWidth>
-                  <NativeSelect defaultValue={10}>
-                    <option value={10}>1Kg</option>
-                    <option value={20}>500 Gm</option>
-                    <option value={30}>2Kg</option>
-                  </NativeSelect>
-                </FormControl>
-              </Box>
-              <Box className="add-cart">
-                <Button variant="outlined">Add to cart</Button>
-              </Box>
-            </Box>
-            <Box className="product-box">
-              <Box className="sale">
-                Sale 50%
-              </Box>
-              <Box className="icon">
-                <TurnedInNotOutlinedIcon />
-              </Box>
-              <Box className="image">
-                <img src={productImg} alt="" />
-              </Box>
-              <Box className="name">
-                <a href="#">Green Apple</a>
-              </Box>
-              <Box className="price-ratting">
-                <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-                <Box className="ratting"><StarIcon /> 4.5</Box>
-              </Box>
-              <Box className="select">
-                <FormControl fullWidth>
-                  <NativeSelect defaultValue={10}>
-                    <option value={10}>1Kg</option>
-                    <option value={20}>500 Gm</option>
-                    <option value={30}>2Kg</option>
-                  </NativeSelect>
-                </FormControl>
-              </Box>
-              <Box className="add-cart">
-                <Button variant="outlined">Add to cart</Button>
-              </Box>
-            </Box>
-            <Box className="product-box">
-              <Box className="sale">
-                Sale 50%
-              </Box>
-              <Box className="icon">
-                <TurnedInNotOutlinedIcon />
-              </Box>
-              <Box className="image">
-                <img src={productImg} alt="" />
-              </Box>
-              <Box className="name">
-                <a href="#">Green Apple</a>
-              </Box>
-              <Box className="price-ratting">
-                <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-                <Box className="ratting"><StarIcon /> 4.5</Box>
-              </Box>
-              <Box className="select">
-                <FormControl fullWidth>
-                  <NativeSelect defaultValue={10}>
-                    <option value={10}>1Kg</option>
-                    <option value={20}>500 Gm</option>
-                    <option value={30}>2Kg</option>
-                  </NativeSelect>
-                </FormControl>
-              </Box>
-              <Box className="add-cart">
-                <Button variant="outlined">Add to cart</Button>
-              </Box>
-            </Box>
-            <Box className="product-box">
-              <Box className="sale">
-                Sale 50%
-              </Box>
-              <Box className="icon">
-                <TurnedInNotOutlinedIcon />
-              </Box>
-              <Box className="image">
-                <img src={productImg} alt="" />
-              </Box>
-              <Box className="name">
-                <a href="#">Green Apple</a>
-              </Box>
-              <Box className="price-ratting">
-                <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-                <Box className="ratting"><StarIcon /> 4.5</Box>
-              </Box>
-              <Box className="select">
-                <FormControl fullWidth>
-                  <NativeSelect defaultValue={10}>
-                    <option value={10}>1Kg</option>
-                    <option value={20}>500 Gm</option>
-                    <option value={30}>2Kg</option>
-                  </NativeSelect>
-                </FormControl>
-              </Box>
-              <Box className="add-cart">
-                <Button variant="outlined">Add to cart</Button>
-              </Box>
-            </Box>
-            <Box className="product-box">
-              <Box className="sale">
-                Sale 50%
-              </Box>
-              <Box className="icon">
-                <TurnedInNotOutlinedIcon />
-              </Box>
-              <Box className="image">
-                <img src={productImg} alt="" />
-              </Box>
-              <Box className="name">
-                <a href="#">Green Apple</a>
-              </Box>
-              <Box className="price-ratting">
-                <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-                <Box className="ratting"><StarIcon /> 4.5</Box>
-              </Box>
-              <Box className="select">
-                <FormControl fullWidth>
-                  <NativeSelect defaultValue={10}>
-                    <option value={10}>1Kg</option>
-                    <option value={20}>500 Gm</option>
-                    <option value={30}>2Kg</option>
-                  </NativeSelect>
-                </FormControl>
-              </Box>
-              <Box className="add-cart">
-                <Button variant="outlined">Add to cart</Button>
-              </Box>
-            </Box>
-            <Box className="product-box">
-              <Box className="sale">
-                Sale 50%
-              </Box>
-              <Box className="icon">
-                <TurnedInNotOutlinedIcon />
-              </Box>
-              <Box className="image">
-                <img src={productImg} alt="" />
-              </Box>
-              <Box className="name">
-                <a href="#">Green Apple</a>
-              </Box>
-              <Box className="price-ratting">
-                <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-                <Box className="ratting"><StarIcon /> 4.5</Box>
-              </Box>
-              <Box className="select">
-                <FormControl fullWidth>
-                  <NativeSelect defaultValue={10}>
-                    <option value={10}>1Kg</option>
-                    <option value={20}>500 Gm</option>
-                    <option value={30}>2Kg</option>
-                  </NativeSelect>
-                </FormControl>
-              </Box>
-              <Box className="add-cart">
-                <Button variant="outlined">Add to cart</Button>
-              </Box>
-            </Box>
-          </Carousel>
+            <TabPanel value="1">
+              <All responsive={responsive} productImg={productImg} priceIcon={priceIcon} />
+            </TabPanel>
+            <TabPanel value="2">
+              <LeafyVejetable responsive={responsive} productImg={productImg} priceIcon={priceIcon} />
+            </TabPanel>
+            <TabPanel value="3">
+              <ExoticFruits responsive={responsive} productImg={productImg} priceIcon={priceIcon} />
+            </TabPanel>
+            <TabPanel value="4">
+              <SeasonalFruits responsive={responsive} productImg={productImg} priceIcon={priceIcon} />
+            </TabPanel>
+          </TabContext>
+
+
+
+
+
 
         </Container>
       </Box>
