@@ -43,7 +43,6 @@ class TopSellingCategories extends Component {
 
 
   handleChange = (event, newValue) => {
-    debugger
     this.setState({
       value: newValue
     })

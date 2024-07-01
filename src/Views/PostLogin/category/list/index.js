@@ -12,7 +12,12 @@ class List extends Component {
     };
   }
 
+  handleAddToCart(id){
+    
+  }
+
   render() {
+    const { data } = this.props
     return (
       <Box className="listing-container">
         <Box className="heading">
@@ -42,7 +47,43 @@ class List extends Component {
           </Grid>
         </Box>
         <Box className="products">
-          <Box className="product-box">
+          {data?.length && data.map(item => {
+            return <Box className="product-box">
+              <Box className="sale">
+                Sale 50%
+              </Box>
+              <Box className="icon">
+                <TurnedInNotOutlinedIcon />
+              </Box>
+              <Box className="image">
+                <img src={item?.image} alt="" />
+              </Box>
+              <Box className="name">
+                <a href="#">{item?.name}</a>
+              </Box>
+              <Box className="price-ratting">
+                <Box className="price"><img src={priceIcon} alt="" /> {item?.price}
+                 {/* <span>20.99</span> */}
+                 </Box>
+                <Box className="ratting"><StarIcon /> 4.5</Box>
+              </Box>
+              <Box className="select">
+              <Box className="ratting"> {item.unit}</Box>
+                {/* <FormControl fullWidth>
+                  <NativeSelect defaultValue={10}>
+                    <option value={10}>1Kg</option>
+                    <option value={20}>500 Gm</option>
+                    <option value={30}>2Kg</option>
+                  </NativeSelect>
+                </FormControl> */}
+              </Box>
+              <Box className="add-cart">
+                <Button variant="outlined" onClick={()=>{this.handleAddToCart(item.id)}}>Add to cart</Button>
+              </Box>
+            </Box>
+          })}
+
+          {/* <Box className="product-box">
             <Box className="sale">
               Sale 50%
             </Box>
@@ -281,37 +322,7 @@ class List extends Component {
             <Box className="add-cart">
               <Button variant="outlined">Add to cart</Button>
             </Box>
-          </Box>
-          <Box className="product-box">
-            <Box className="sale">
-              Sale 50%
-            </Box>
-            <Box className="icon">
-              <TurnedInNotOutlinedIcon />
-            </Box>
-            <Box className="image">
-              <img src={productImg} alt="" />
-            </Box>
-            <Box className="name">
-              <a href="#">Green Apple</a>
-            </Box>
-            <Box className="price-ratting">
-              <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-              <Box className="ratting"><StarIcon /> 4.5</Box>
-            </Box>
-            <Box className="select">
-              <FormControl fullWidth>
-                <NativeSelect defaultValue={10}>
-                  <option value={10}>1Kg</option>
-                  <option value={20}>500 Gm</option>
-                  <option value={30}>2Kg</option>
-                </NativeSelect>
-              </FormControl>
-            </Box>
-            <Box className="add-cart">
-              <Button variant="outlined">Add to cart</Button>
-            </Box>
-          </Box>
+          </Box> */}
         </Box>
       </Box>
     );

@@ -7,6 +7,7 @@ const Config = {
     TOP_SELLING: `${BASE_URL1}/products`,
     SIGN_UP: `${BASE_URL}/register`,
     SIGN_IN: `${BASE_URL}/login`,
+    ALL_PRODUCTS:`${BASE_URL}/product`,
 
 };
 
