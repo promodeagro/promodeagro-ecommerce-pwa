@@ -1,10 +1,13 @@
 import React, { Component } from "react";
+import { addItemToCart } from "../../../../Redux/Cart/CartThunk";
+import { connect } from "react-redux"
 import { Box, FormControl, NativeSelect, Button, Grid } from "@mui/material";
 import StarIcon from '@mui/icons-material/Star';
 import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
 import productImg from "../../../../assets/img/product-img.png";
 import priceIcon from "../../../../assets/img/price-icon.png"
-
+import status from "../../../../Redux/Constants";
+import { ErrorMessages } from "Views/Utills/helperFunctions";
 class List extends Component {
   constructor(props) {
     super(props);
@@ -12,8 +15,34 @@ class List extends Component {
     };
   }
 
-  handleAddToCart(id){
-    
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.additems.status !==
+      this.props.additems.status &&
+      this.props.additems.status === status.SUCCESS &&
+      this.props.additems.data
+    ) {
+      ErrorMessages.success(this.props.additems.data.message)
+
+    }
+  }
+
+
+
+  handleAddToCart(id) {
+
+    const items = JSON.parse(localStorage.getItem("login"));
+    if (items) {
+
+
+    } else {
+      alert("please login")
+    }
+    this.props.addItemToCart({
+      "userId": "9c49d0c8-4415-46e2-91fe-28d5292f1dd9",
+      "productId": id,
+      "quantity": "1"
+    })
   }
 
   render() {
@@ -63,12 +92,12 @@ class List extends Component {
               </Box>
               <Box className="price-ratting">
                 <Box className="price"><img src={priceIcon} alt="" /> {item?.price}
-                 {/* <span>20.99</span> */}
-                 </Box>
+                  {/* <span>20.99</span> */}
+                </Box>
                 <Box className="ratting"><StarIcon /> 4.5</Box>
               </Box>
               <Box className="select">
-              <Box className="ratting"> {item.unit}</Box>
+                <Box className="ratting"> {item.unit}</Box>
                 {/* <FormControl fullWidth>
                   <NativeSelect defaultValue={10}>
                     <option value={10}>1Kg</option>
@@ -78,7 +107,7 @@ class List extends Component {
                 </FormControl> */}
               </Box>
               <Box className="add-cart">
-                <Button variant="outlined" onClick={()=>{this.handleAddToCart(item.id)}}>Add to cart</Button>
+                <Button variant="outlined" onClick={() => { this.handleAddToCart(item.id) }}>Add to cart</Button>
               </Box>
             </Box>
           })}
@@ -329,6 +358,16 @@ class List extends Component {
   }
 }
 
+// addItemToCart
 
-export default List;
+
+function mapStateToProps(state) {
+  const { additems } = state.cartitem;
+  return { additems };
+}
+
+const mapDispatchToProps = { addItemToCart };
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(List);
 

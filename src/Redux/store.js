@@ -3,11 +3,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import HomeReducer from "./Home/HomeSlice";
 import SigninSlice from "./Signin/SigninSlice";
 import AllProductReducer from "./AllProducts/AllProductSlice";
+import CartItemReducer from "./Cart/CartSlice"
 const store = configureStore({
     reducer: {
         home: HomeReducer,
         login: SigninSlice,
-        allproducts: AllProductReducer
+        allproducts: AllProductReducer,
+        cartitem: CartItemReducer
     },
 });
 
