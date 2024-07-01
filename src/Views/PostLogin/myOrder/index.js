@@ -130,7 +130,45 @@ class MyOrder extends Component {
                     </span>
                   </Box>
                 </Grid>
-                <Grid item xs={4}></Grid>
+                <Grid item xs={4}>
+                  <Box className="order-summary-container">
+                    <span className="d-block title">Order Summary</span>
+                    <Box className="d-flex justify-content-between">
+                      <span className="d-block summary-title">
+                        Order Amount
+                      </span>
+                      <span className="d-block order-amount">RS. 200.12</span>
+                    </Box>
+                    <Box className="d-flex justify-content-between">
+                      <span className="d-block summary-title">Savings</span>
+                      <span className="d-block saving-amount">RS. 100.12</span>
+                    </Box>
+                    <Box className="top-cricle circle-1">
+                      <span className="d-block cricle"></span>
+                    </Box>
+                    <Box className="top-cricle circle-2">
+                      <span className="d-block cricle"></span>
+                    </Box>
+                    <Box className="top-cricle circle-3">
+                      <span className="d-block cricle"></span>
+                    </Box>
+                    <Box className="top-cricle circle-4">
+                      <span className="d-block cricle"></span>
+                    </Box>
+                    <Box className="bottom-cricle circle-1">
+                      <span className="d-block cricle"></span>
+                    </Box>
+                    <Box className="bottom-cricle circle-2">
+                      <span className="d-block cricle"></span>
+                    </Box>
+                    <Box className="bottom-cricle circle-3">
+                      <span className="d-block cricle"></span>
+                    </Box>
+                    <Box className="bottom-cricle circle-4">
+                      <span className="d-block cricle"></span>
+                    </Box>
+                  </Box>
+                </Grid>
               </Grid>
               <Box className="more-order-details">
                 <span className="d-block text">More with this order</span>
