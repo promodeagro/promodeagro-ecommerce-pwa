@@ -11,3 +11,37 @@ export const addItemToCart = createAsyncThunk("additems", async (params) => {
         return error;
     }
 });
+
+export const updateItemToCart = createAsyncThunk("updateitems", async (params) => {
+    try {
+        let url = config.UPDATE_ITEM;
+        const response = await postLoginService.post(url, params);
+        return response.data;
+    } catch (error) {
+        return error;
+    }
+});
+
+export const deleteItemToCart = createAsyncThunk("deleteitems", async (params) => {
+    try {
+        let url = config.DELETE_ITEM;
+        const response = await postLoginService.post(url, params);
+        return response.data;
+    } catch (error) {
+        return error;
+    }
+});
+
+
+export const fetchCartItems = createAsyncThunk("cartitems", async (params) => {
+    try {
+        let url = config.FETCH_CART_ITEMS + `/${params.userId}`;
+        const response = await postLoginService.get(url);
+        return response.data;
+    } catch (error) {
+        debugger
+        return error;
+    }
+});
+
+

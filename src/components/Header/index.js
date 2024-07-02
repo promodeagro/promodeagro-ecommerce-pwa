@@ -16,6 +16,7 @@ import notificationIcon from "../../assets/img/notification-icon.png";
 import cardIcon from "../../assets/img/card-icon.png";
 import searchIcon from "../../assets/img/search-icon.png";
 import { connect } from "react-redux"
+import { Link } from "react-router-dom";
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -170,9 +171,11 @@ class Header extends Component {
                   <Button variant="outlined" className="notification" startIcon={<img src={notificationIcon} alt="" />}>
                     <p></p>
                   </Button>
-                  <Button variant="outlined" className="card" startIcon={<img src={cardIcon} alt="" />}>
-                    <p>{this.props?.cartData?.length ? this.props.cartData.length : <></>}</p>
-                  </Button>
+                  <Link to={"/myCart"}>
+                    <Button variant="outlined" className="card" startIcon={<img src={cardIcon} alt="" />}>
+                      <p>{this.props?.cartData?.length ? this.props.cartData.length : <></>}</p>
+                    </Button>
+                  </Link>
                 </Box>
               </Grid>
             </Grid>
