@@ -289,3 +289,10 @@
 
 
 }
+@media only screen and (max-width: 850px) {
+    .mycart-container {
+        .sub-total-container{
+display: block;
+        }
+    }
+}

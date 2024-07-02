@@ -1,22 +1,28 @@
-import React, { Component } from 'react'
-import { Box, Container, FormControl, NativeSelect, Button, Tab } from "@mui/material";
+import React, { Component } from "react";
+import {
+  Box,
+  Container,
+  FormControl,
+  NativeSelect,
+  Button,
+  Tab,
+} from "@mui/material";
 import Carousel from "react-multi-carousel";
-import StarIcon from '@mui/icons-material/Star';
-import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
+import StarIcon from "@mui/icons-material/Star";
+import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
 class SeasonalFruits extends Component {
   render() {
-    const {responsive,productImg,priceIcon}=this.props
+    const { responsive, productImg, priceIcon } = this.props;
     return (
       <Carousel
         id="carousel-2"
-        showDots={true}
+        showDots={false}
         responsive={responsive}
         containerClass="carousel-banner-container"
+        infinite={true} // Make the carousel loop infinitely
       >
         <Box className="product-box">
-          <Box className="sale">
-            Sale 50%
-          </Box>
+          <Box className="sale">Sale 50%</Box>
           <Box className="icon">
             <TurnedInNotOutlinedIcon />
           </Box>
@@ -27,8 +33,12 @@ class SeasonalFruits extends Component {
             <a href="#">Green Apple</a>
           </Box>
           <Box className="price-ratting">
-            <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-            <Box className="ratting"><StarIcon /> 4.5</Box>
+            <Box className="price">
+              <img src={priceIcon} alt="" /> 14.99 <span>20.99</span>
+            </Box>
+            <Box className="ratting">
+              <StarIcon /> 4.5
+            </Box>
           </Box>
           <Box className="select">
             <FormControl fullWidth>
@@ -44,9 +54,7 @@ class SeasonalFruits extends Component {
           </Box>
         </Box>
         <Box className="product-box">
-          <Box className="sale">
-            Sale 50%
-          </Box>
+          <Box className="sale">Sale 50%</Box>
           <Box className="icon">
             <TurnedInNotOutlinedIcon />
           </Box>
@@ -57,8 +65,12 @@ class SeasonalFruits extends Component {
             <a href="#">Green Apple</a>
           </Box>
           <Box className="price-ratting">
-            <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-            <Box className="ratting"><StarIcon /> 4.5</Box>
+            <Box className="price">
+              <img src={priceIcon} alt="" /> 14.99 <span>20.99</span>
+            </Box>
+            <Box className="ratting">
+              <StarIcon /> 4.5
+            </Box>
           </Box>
           <Box className="select">
             <FormControl fullWidth>
@@ -74,9 +86,7 @@ class SeasonalFruits extends Component {
           </Box>
         </Box>
         <Box className="product-box">
-          <Box className="sale">
-            Sale 50%
-          </Box>
+          <Box className="sale">Sale 50%</Box>
           <Box className="icon">
             <TurnedInNotOutlinedIcon />
           </Box>
@@ -87,8 +97,12 @@ class SeasonalFruits extends Component {
             <a href="#">Green Apple</a>
           </Box>
           <Box className="price-ratting">
-            <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-            <Box className="ratting"><StarIcon /> 4.5</Box>
+            <Box className="price">
+              <img src={priceIcon} alt="" /> 14.99 <span>20.99</span>
+            </Box>
+            <Box className="ratting">
+              <StarIcon /> 4.5
+            </Box>
           </Box>
           <Box className="select">
             <FormControl fullWidth>
@@ -104,9 +118,7 @@ class SeasonalFruits extends Component {
           </Box>
         </Box>
         <Box className="product-box">
-          <Box className="sale">
-            Sale 50%
-          </Box>
+          <Box className="sale">Sale 50%</Box>
           <Box className="icon">
             <TurnedInNotOutlinedIcon />
           </Box>
@@ -117,8 +129,12 @@ class SeasonalFruits extends Component {
             <a href="#">Green Apple</a>
           </Box>
           <Box className="price-ratting">
-            <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-            <Box className="ratting"><StarIcon /> 4.5</Box>
+            <Box className="price">
+              <img src={priceIcon} alt="" /> 14.99 <span>20.99</span>
+            </Box>
+            <Box className="ratting">
+              <StarIcon /> 4.5
+            </Box>
           </Box>
           <Box className="select">
             <FormControl fullWidth>
@@ -134,9 +150,7 @@ class SeasonalFruits extends Component {
           </Box>
         </Box>
         <Box className="product-box">
-          <Box className="sale">
-            Sale 50%
-          </Box>
+          <Box className="sale">Sale 50%</Box>
           <Box className="icon">
             <TurnedInNotOutlinedIcon />
           </Box>
@@ -147,8 +161,12 @@ class SeasonalFruits extends Component {
             <a href="#">Green Apple</a>
           </Box>
           <Box className="price-ratting">
-            <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-            <Box className="ratting"><StarIcon /> 4.5</Box>
+            <Box className="price">
+              <img src={priceIcon} alt="" /> 14.99 <span>20.99</span>
+            </Box>
+            <Box className="ratting">
+              <StarIcon /> 4.5
+            </Box>
           </Box>
           <Box className="select">
             <FormControl fullWidth>
@@ -164,9 +182,7 @@ class SeasonalFruits extends Component {
           </Box>
         </Box>
         <Box className="product-box">
-          <Box className="sale">
-            Sale 50%
-          </Box>
+          <Box className="sale">Sale 50%</Box>
           <Box className="icon">
             <TurnedInNotOutlinedIcon />
           </Box>
@@ -177,8 +193,12 @@ class SeasonalFruits extends Component {
             <a href="#">Green Apple</a>
           </Box>
           <Box className="price-ratting">
-            <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-            <Box className="ratting"><StarIcon /> 4.5</Box>
+            <Box className="price">
+              <img src={priceIcon} alt="" /> 14.99 <span>20.99</span>
+            </Box>
+            <Box className="ratting">
+              <StarIcon /> 4.5
+            </Box>
           </Box>
           <Box className="select">
             <FormControl fullWidth>
@@ -194,9 +214,7 @@ class SeasonalFruits extends Component {
           </Box>
         </Box>
         <Box className="product-box">
-          <Box className="sale">
-            Sale 50%
-          </Box>
+          <Box className="sale">Sale 50%</Box>
           <Box className="icon">
             <TurnedInNotOutlinedIcon />
           </Box>
@@ -207,8 +225,12 @@ class SeasonalFruits extends Component {
             <a href="#">Green Apple</a>
           </Box>
           <Box className="price-ratting">
-            <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-            <Box className="ratting"><StarIcon /> 4.5</Box>
+            <Box className="price">
+              <img src={priceIcon} alt="" /> 14.99 <span>20.99</span>
+            </Box>
+            <Box className="ratting">
+              <StarIcon /> 4.5
+            </Box>
           </Box>
           <Box className="select">
             <FormControl fullWidth>
@@ -224,9 +246,7 @@ class SeasonalFruits extends Component {
           </Box>
         </Box>
         <Box className="product-box">
-          <Box className="sale">
-            Sale 50%
-          </Box>
+          <Box className="sale">Sale 50%</Box>
           <Box className="icon">
             <TurnedInNotOutlinedIcon />
           </Box>
@@ -237,8 +257,12 @@ class SeasonalFruits extends Component {
             <a href="#">Green Apple</a>
           </Box>
           <Box className="price-ratting">
-            <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-            <Box className="ratting"><StarIcon /> 4.5</Box>
+            <Box className="price">
+              <img src={priceIcon} alt="" /> 14.99 <span>20.99</span>
+            </Box>
+            <Box className="ratting">
+              <StarIcon /> 4.5
+            </Box>
           </Box>
           <Box className="select">
             <FormControl fullWidth>
@@ -254,9 +278,7 @@ class SeasonalFruits extends Component {
           </Box>
         </Box>
         <Box className="product-box">
-          <Box className="sale">
-            Sale 50%
-          </Box>
+          <Box className="sale">Sale 50%</Box>
           <Box className="icon">
             <TurnedInNotOutlinedIcon />
           </Box>
@@ -267,8 +289,12 @@ class SeasonalFruits extends Component {
             <a href="#">Green Apple</a>
           </Box>
           <Box className="price-ratting">
-            <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-            <Box className="ratting"><StarIcon /> 4.5</Box>
+            <Box className="price">
+              <img src={priceIcon} alt="" /> 14.99 <span>20.99</span>
+            </Box>
+            <Box className="ratting">
+              <StarIcon /> 4.5
+            </Box>
           </Box>
           <Box className="select">
             <FormControl fullWidth>
@@ -284,9 +310,7 @@ class SeasonalFruits extends Component {
           </Box>
         </Box>
         <Box className="product-box">
-          <Box className="sale">
-            Sale 50%
-          </Box>
+          <Box className="sale">Sale 50%</Box>
           <Box className="icon">
             <TurnedInNotOutlinedIcon />
           </Box>
@@ -297,8 +321,12 @@ class SeasonalFruits extends Component {
             <a href="#">Green Apple</a>
           </Box>
           <Box className="price-ratting">
-            <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-            <Box className="ratting"><StarIcon /> 4.5</Box>
+            <Box className="price">
+              <img src={priceIcon} alt="" /> 14.99 <span>20.99</span>
+            </Box>
+            <Box className="ratting">
+              <StarIcon /> 4.5
+            </Box>
           </Box>
           <Box className="select">
             <FormControl fullWidth>
@@ -314,8 +342,8 @@ class SeasonalFruits extends Component {
           </Box>
         </Box>
       </Carousel>
-    )
+    );
   }
 }
 
-export default SeasonalFruits
+export default SeasonalFruits;

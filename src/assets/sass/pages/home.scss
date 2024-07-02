@@ -5,6 +5,53 @@
     .carousel-banner-container {
         display: flex;
         width: 100%;
+
+        .react-multi-carousel-dot-list {
+            left: 50%;
+            bottom: 10px;
+        }
+
+        .react-multiple-carousel__arrow {
+            background-color: transparent;
+            box-shadow: 0px 2px 4px 0px #CAF4DD33;
+            border: 1px solid #1F915166;
+
+            &::before {
+                color: #00B207;
+            }
+        }
+
+        .react-multiple-carousel__arrow--left {
+            position: absolute;
+            bottom: 0;
+            left: calc(88% + 21px);
+
+        }
+
+        .react-multiple-carousel__arrow--right {
+            position: absolute;
+            bottom: 0;
+            left: calc(94% + 21px);
+
+        }
+
+        .react-multi-carousel-dot {
+            button {
+                border-color: transparent;
+                background-color: #B4CCB4;
+                min-width: 12px;
+            }
+
+            &.react-multi-carousel-dot--active {
+                button {
+                    background-color: #00B207;
+                    width: 24px;
+                    border-radius: 50px;
+                }
+
+            }
+        }
+
     }
 
     .banner-contents {
@@ -177,6 +224,7 @@
                 align-items: center;
                 width: 100%;
                 margin-bottom: 10px;
+
                 img {
                     max-height: 200px;
                 }
@@ -421,25 +469,26 @@
         .carousel-container {
             padding-left: 0px;
             padding-right: 0px;
+            position: inherit;
 
             .react-multiple-carousel__arrow {
-                min-width: 24px;
-                min-height: 24px;
+                min-width: 42px;
+                min-height: 42px;
                 border-radius: 50%;
                 background-color: #FFFFFF;
 
                 &::before {
-                    font-size: 12px;
+                    font-size: 20px;
                     color: #2B3E34;
                 }
             }
 
             .react-multiple-carousel__arrow--left {
-                left: 0px;
+                left: 45px;
             }
 
             .react-multiple-carousel__arrow--right {
-                right: 0px;
+                right: 45px;
             }
 
             .react-multi-carousel-item {
@@ -557,6 +606,28 @@
     width: 100%;
     flex-wrap: wrap;
 
+    .css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
+        font-size: 16px;
+        line-height: 24px;
+        color: #848D88;
+        font-weight: 500;
+        text-transform: capitalize;
+        padding: 12px;
+        min-height: auto;
+        padding:0px 10px 0px 10px;
+        border-right: 1px solid #B4CCB4;
+        &.Mui-selected{
+            color: #1F9151;
+        }
+        &:last-child{
+            border-right: none;
+        }
+    }
+    .css-1aquho2-MuiTabs-indicator{
+        background-color: #1F9151;
+        bottom: 10px;
+    }
+
     .heading {
         display: flex;
         width: 100%;
@@ -624,6 +695,7 @@
             align-items: center;
             width: 100%;
             margin-bottom: 10px;
+
             img {
                 max-height: 200px;
             }
@@ -728,5 +800,24 @@
             }
         }
     }
+  
+        .react-multi-carousel-list{
+            align-items:start;
+        }
+        .react-multiple-carousel__arrow{
+            border: 1px solid #324A3D66;
+            background-color: transparent;
+          
+            &::before{
+                color: #324A3D;
+            }
+            &:hover{
+                background-color: transparent;
+            }
+        }
+        .react-multiple-carousel__arrow--left {
+            left: calc(85% + 1px);
+            
+        }    
+          
 }
-

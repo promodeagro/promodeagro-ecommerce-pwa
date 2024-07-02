@@ -9,7 +9,7 @@ import customerBg from "../../../../../assets/img/customer-bg.png";
 const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: 3,
+    items: 4,
     slidesToSlide: 1 // optional, default to 1.
   },
   tablet: {
@@ -42,6 +42,7 @@ class CustomersSays extends Component {
               id="carousel-1"
               responsive={responsive}
               containerClass="carousel-container"
+              infinite={true} // Make the carousel loop infinitely
             >
               <Box className="customers-says">
                 <Box className="customers-info">

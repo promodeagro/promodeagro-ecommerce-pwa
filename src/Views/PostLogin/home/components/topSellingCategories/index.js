@@ -56,14 +56,13 @@ class TopSellingCategories extends Component {
           <Box className="heading">Top Selling Categories</Box>
 
           <TabContext value={this.state.value}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+   
               <TabList onChange={this.handleChange} aria-label="lab API tabs example">
                 <Tab label="All" value="1" />
                 <Tab label="Leafy Vegetables" value="2" />
                 <Tab label="Exotic Fruit" value="3" />
                 <Tab label="Seasonal Fruits" value="4" />
               </TabList>
-            </Box>
             <TabPanel value="1">
               <All responsive={responsive} productImg={productImg} priceIcon={priceIcon} />
             </TabPanel>

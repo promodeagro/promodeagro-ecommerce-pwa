@@ -3,16 +3,54 @@ import { Box, Container, FormControl, NativeSelect, Button, Tab } from "@mui/mat
 import Carousel from "react-multi-carousel";
 import StarIcon from '@mui/icons-material/Star';
 import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
+const CustomLeftArrow = ({ onClick }) => {
+    return (
+        <div
+            style={{
+                position: 'absolute',
+                left: '-40px', // Position it outside the carousel container
+                top: '50%',
+                transform: 'translateY(-50%)',
+                cursor: 'pointer',
+                zIndex: 2 // Ensure it appears on top
+            }}
+            onClick={onClick}
+        >
+            <TurnedInNotOutlinedIcon />
+        </div>
+    );
+};
+
+const CustomRightArrow = ({ onClick }) => {
+    return (
+        <div
+            style={{
+                position: 'absolute',
+                right: '-40px', // Position it outside the carousel container
+                top: '50%',
+                transform: 'translateY(-50%)',
+                cursor: 'pointer',
+                zIndex: 2 // Ensure it appears on top
+            }}
+            onClick={onClick}
+        >
+            <TurnedInNotOutlinedIcon />
+        </div>
+    );
+};
 class All extends Component {
     render() {
         const { responsive, productImg, priceIcon } = this.props
         return (
             <Carousel
                 id="carousel-2"
-                showDots={true}
+                showDots={false}
                 responsive={responsive}
                 containerClass="carousel-banner-container"
+              infinite={true} // Make the carousel loop infinitely
+              
             >
+                
                 <Box className="product-box">
                     <Box className="sale">
                         Sale 50%

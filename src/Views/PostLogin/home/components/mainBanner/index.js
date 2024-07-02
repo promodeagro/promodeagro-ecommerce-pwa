@@ -41,6 +41,8 @@ class MainBanner extends Component {
               showDots={true}
               responsive={responsive}
               containerClass="carousel-banner-container"
+              infinite={true} // Make the carousel loop infinitely
+
             >
               <Box className="banner-contents">
                 <Grid container spacing={2} alignItems={'center'}>

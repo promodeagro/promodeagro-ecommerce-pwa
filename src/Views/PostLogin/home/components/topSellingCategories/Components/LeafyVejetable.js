@@ -9,9 +9,11 @@ class LeafyVejetable extends Component {
         return (
             <Carousel
                 id="carousel-2"
-                showDots={true}
+                showDots={false}
                 responsive={responsive}
                 containerClass="carousel-banner-container"
+              infinite={true} // Make the carousel loop infinitely
+
             >
                 <Box className="product-box">
                     <Box className="sale">
