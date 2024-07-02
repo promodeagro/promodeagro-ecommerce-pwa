@@ -130,7 +130,7 @@ class Signin extends Component {
                         data-aos="zoom-in-right"
                     >
                         <Box className="signin-form-details d-flex justify-content-center">
-                            <Box className="d-block">
+                            <Box className="d-block w-100">
                                 <h2 className="title">Register or Sign-in to My Account</h2>
                                 <Box className="common-symbol d-flex justify-content-center">
                                     <Box className="outer-symbol">

@@ -1,7 +1,7 @@
 .signin-container {
     .signin-form-container {
         .signin-form-details {
-            width: 75%;
+            width: 35%;
             margin-top: 100px;
             margin-bottom: 320px;
 
@@ -9,6 +9,7 @@
                 color: #2A3A31;
                 margin-bottom: 50px;
                 display: block;
+                text-align: center;
             }
 
 
@@ -90,6 +91,9 @@
                     text-decoration: underline !important;
                     padding-bottom: 5px;
                 }
+            }
+            .sign-up-btn{
+                margin-top: 16px;
             }
         }
     }
@@ -175,9 +179,7 @@
                 width: 100%;
                 display: block;
 
-                .title {
-                    text-align: center;
-                }
+              
             }
         }
     }

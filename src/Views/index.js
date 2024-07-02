@@ -4,12 +4,21 @@ import { useLocation } from "react-router-dom";
 
 const Home = lazy(() => import("./../Views/PostLogin/home"));
 const Category = lazy(() => import("./../Views/PostLogin/category"));
-const ProductDetails = lazy(() => import("./../Views/PostLogin/productDetails"));
+const ProductDetails = lazy(() =>
+  import("./../Views/PostLogin/productDetails")
+);
 const MyCart = lazy(() => import("./../Views/PostLogin/MyCart"));
 const SignIn = lazy(() => import("./../Views/PreLogin/SignIn"));
-const Address = lazy(() => import("./../Views/PostLogin/MyCart/components/address"));
-const AddNewAddress = lazy(() => import("./../Views/PostLogin/MyCart/components/addNewAddress"));
-const OrderPlaced = lazy(() => import("./../Views/PostLogin/MyCart/components/orderPlaced"));
+const SignUp = lazy(() => import("./../Views/PreLogin/signUp"));
+const Address = lazy(() =>
+  import("./../Views/PostLogin/MyCart/components/address")
+);
+const AddNewAddress = lazy(() =>
+  import("./../Views/PostLogin/MyCart/components/addNewAddress")
+);
+const OrderPlaced = lazy(() =>
+  import("./../Views/PostLogin/MyCart/components/orderPlaced")
+);
 const MyOrder = lazy(() => import("./../Views/PostLogin/myOrder"));
 
 const Views = () => {
@@ -23,11 +32,19 @@ const Views = () => {
           <Route exact path={`/product-details`} element={<ProductDetails />} />
           <Route exact path={`/myCart`} element={<MyCart />} />
           <Route exact path={`/signin`} element={<SignIn />} />
+          <Route exact path={`/signup`} element={<SignUp />} />
           <Route exact path={`/myCart/address`} element={<Address />} />
-          <Route exact path={`/myCart/address/add-new-address`} element={<AddNewAddress />} />
-          <Route exact path={`/myCart/address/order-placed`} element={<OrderPlaced />} />
+          <Route
+            exact
+            path={`/myCart/address/add-new-address`}
+            element={<AddNewAddress />}
+          />
+          <Route
+            exact
+            path={`/myCart/address/order-placed`}
+            element={<OrderPlaced />}
+          />
           <Route exact path={`/my-order`} element={<MyOrder />} />
-
         </Routes>
       </Suspense>
     </>
