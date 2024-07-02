@@ -30,7 +30,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Link } from "react-router-dom";
 import cardTypeImg1 from "../../../../../assets/img/visa-logo.png";
 import cardTypeImg2 from "../../../../../assets/img/stripe.png";
-import cardTypeImg3 from "../../../../../assets/img/masterCard.png";
+import cardTypeImg3 from "../../../../../assets/img/mastercard.png";
 import cashOnDeliveryImg from "../../../../../assets/img/cash.png";
 import paypalImg from "../../../../../assets/img/pay-pal.png";
 import upiImg1 from "../../../../../assets/img/amazon-pay.png";

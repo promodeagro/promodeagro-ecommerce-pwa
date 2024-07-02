@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 
 const Home = lazy(() => import("./../Views/PostLogin/home"));
 const Category = lazy(() => import("./../Views/PostLogin/category"));
+const ProductDetails = lazy(() => import("./../Views/PostLogin/productDetails"));
 const MyCart = lazy(() => import("./../Views/PostLogin/MyCart"));
 const SignIn = lazy(() => import("./../Views/PreLogin/SignIn"));
 const Address = lazy(() => import("./../Views/PostLogin/MyCart/components/address"));
@@ -19,6 +20,7 @@ const Views = () => {
         <Routes>
           <Route exact path={`/`} element={<Home />} />
           <Route exact path={`/category`} element={<Category />} />
+          <Route exact path={`/product-details`} element={<ProductDetails />} />
           <Route exact path={`/myCart`} element={<MyCart />} />
           <Route exact path={`/signin`} element={<SignIn />} />
           <Route exact path={`/myCart/address`} element={<Address />} />
