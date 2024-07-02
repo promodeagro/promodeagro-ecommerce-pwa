@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Box, Container, Button, Grid, IconButton } from "@mui/material";
+import { fetchCartItems } from "../../../Redux/Cart/CartThunk";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Link } from "react-router-dom";
 import realtedProdctImg1 from "../../../assets/img/realted-product-1.png";
@@ -7,16 +8,44 @@ import starIcon from "../../../assets/img/star.png";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import productCartImg from "../../../assets/img/product-cart-img.png";
-
+import { connect } from "react-redux"
+import status from "../../../Redux/Constants";
+import { Loader } from "../../../Views/Utills/helperFunctions";
 class MyCart extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      cartList: []
+    };
   }
+
+  componentDidMount() {
+
+    const items = JSON.parse(localStorage.getItem("login"));
+    this.props.fetchCartItems({
+      userId: items.userId
+    })
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.cartItems.status !==
+      this.props.cartItems.status &&
+      this.props.cartItems.status === status.SUCCESS &&
+      this.props.cartItems.data
+    ) {
+      debugger
+      this.setState({
+        cartList: this.props.cartItems.data.items
+      })
+
+    }
+  }
+
 
   render() {
     return (
-      <Box className="mycart-container">
+      <>{this.props.cartItems.status === status.IN_PROGRESS ? Loader.commonLoader() : <Box className="mycart-container">
         <Container>
           <Box className="sub-total-container d-flex justify-content-between">
             <Box className="left-part">
@@ -48,140 +77,150 @@ class MyCart extends Component {
             </Box>
           </Box>
           <Box className="cart-item-list">
-            <Grid
-              container
-              spacing={2}
-              alignItems={"center"}
-              className="cart-item-title"
-              data-aos="zoom-in-right"
-            >
-              <Grid item xs={6}>
-                Items : 3
-              </Grid>
-              <Grid item xs={3}>
-                Quantity
-              </Grid>
-              <Grid item xs={3} justifyContent={"end"} display={"flex"}>
-                Sub total
-              </Grid>
-            </Grid>
-            <Grid
-              container
-              spacing={2}
-              className="product-cart-container"
-              alignItems={"center"}
-              data-aos="zoom-in-right"
-            >
-              <Grid item xs={6}>
-                <Box className="d-flex align-items-center product-cart-list">
-                  <img src={productCartImg} alt="product-cart-img" />
-                  <Box className="d-block">
-                    <span className="d-block name">Green Apple</span>
-                    <Box className="d-flex align-items-center">
-                      <span className="discount-amount">₹ 14.99</span>
-                      <s className="amount">₹ 20.99</s>
+            {this.state.cartList.length > 0 ?
+
+              <>
+                <Grid
+                  container
+                  spacing={2}
+                  alignItems={"center"}
+                  className="cart-item-title"
+                  data-aos="zoom-in-right"
+                >
+                  <Grid item xs={6}>
+                    Items : 3
+                  </Grid>
+                  <Grid item xs={3}>
+                    Quantity
+                  </Grid>
+                  <Grid item xs={3} justifyContent={"end"} display={"flex"}>
+                    Sub total
+                  </Grid>
+                </Grid>
+                {this.state.cartList.map((item) => {
+
+                  return <Grid
+                    container
+                    spacing={2}
+                    className="product-cart-container"
+                    alignItems={"center"}
+                    data-aos="zoom-in-right"
+                  >
+                    <Grid item xs={6}>
+                      <Box className="d-flex align-items-center product-cart-list">
+                        <img src={productCartImg} alt="product-cart-img" />
+                        <Box className="d-block">
+                          <span className="d-block name">Green Apple</span>
+                          <Box className="d-flex align-items-center">
+                            <span className="discount-amount">₹ 14.99</span>
+                            <s className="amount">₹ 20.99</s>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={3}>
+                      <Box className="number-input-container">
+                        <Box className="symbol">-</Box>
+                        <Box className="Number">3</Box>
+                        <Box className="symbol">+</Box>
+                      </Box>
+                      <Box className="d-flex align-items-ceneter btn-group">
+                        <Button>Delete</Button>
+                        <Button>Save it for later</Button>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={3} justifyContent={"end"} display={"flex"}>
+                      <Box className="sub-total ">
+                        <span className="d-block final-amount">₹ 200.12</span>
+                        <span className="d-block save-amount">
+                          Saved : <strong>₹ 120.12</strong>
+                        </span>
+                      </Box>
+                    </Grid>
+                  </Grid>
+                })}
+
+                {/* <Grid
+                  container
+                  spacing={2}
+                  className="product-cart-container"
+                  alignItems={"center"}
+                  data-aos="zoom-in-right"
+                >
+                  <Grid item xs={6}>
+                    <Box className="d-flex align-items-center product-cart-list">
+                      <img src={productCartImg} alt="product-cart-img" />
+                      <Box className="d-block">
+                        <span className="d-block name">Green Apple</span>
+                        <Box className="d-flex align-items-center">
+                          <span className="discount-amount">₹ 14.99</span>
+                          <s className="amount">₹ 20.99</s>
+                        </Box>
+                      </Box>
                     </Box>
-                  </Box>
-                </Box>
-              </Grid>
-              <Grid item xs={3}>
-                <Box className="number-input-container">
-                  <Box className="symbol">-</Box>
-                  <Box className="Number">3</Box>
-                  <Box className="symbol">+</Box>
-                </Box>
-                <Box className="d-flex align-items-ceneter btn-group">
-                  <Button>Delete</Button>
-                  <Button>Save it for later</Button>
-                </Box>
-              </Grid>
-              <Grid item xs={3} justifyContent={"end"} display={"flex"}>
-                <Box className="sub-total ">
-                  <span className="d-block final-amount">₹ 200.12</span>
-                  <span className="d-block save-amount">
-                    Saved : <strong>₹ 120.12</strong>
-                  </span>
-                </Box>
-              </Grid>
-            </Grid>
-            <Grid
-              container
-              spacing={2}
-              className="product-cart-container"
-              alignItems={"center"}
-              data-aos="zoom-in-right"
-            >
-              <Grid item xs={6}>
-                <Box className="d-flex align-items-center product-cart-list">
-                  <img src={productCartImg} alt="product-cart-img" />
-                  <Box className="d-block">
-                    <span className="d-block name">Green Apple</span>
-                    <Box className="d-flex align-items-center">
-                      <span className="discount-amount">₹ 14.99</span>
-                      <s className="amount">₹ 20.99</s>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Box className="number-input-container">
+                      <Box className="symbol">-</Box>
+                      <Box className="Number">3</Box>
+                      <Box className="symbol">+</Box>
                     </Box>
-                  </Box>
-                </Box>
-              </Grid>
-              <Grid item xs={3}>
-                <Box className="number-input-container">
-                  <Box className="symbol">-</Box>
-                  <Box className="Number">3</Box>
-                  <Box className="symbol">+</Box>
-                </Box>
-                <Box className="d-flex align-items-ceneter btn-group">
-                  <Button>Delete</Button>
-                  <Button>Save it for later</Button>
-                </Box>
-              </Grid>
-              <Grid item xs={3} justifyContent={"end"} display={"flex"}>
-                <Box className="sub-total ">
-                  <span className="d-block final-amount">₹ 200.12</span>
-                  <span className="d-block save-amount">
-                    Saved : <strong>₹ 120.12</strong>
-                  </span>
-                </Box>
-              </Grid>
-            </Grid>
-            <Grid
-              container
-              spacing={2}
-              className="product-cart-container"
-              alignItems={"center"}
-              data-aos="zoom-in-right"
-            >
-              <Grid item xs={6}>
-                <Box className="d-flex align-items-center product-cart-list">
-                  <img src={productCartImg} alt="product-cart-img" />
-                  <Box className="d-block">
-                    <span className="d-block name">Green Apple</span>
-                    <Box className="d-flex align-items-center">
-                      <span className="discount-amount">₹ 14.99</span>
-                      <s className="amount">₹ 20.99</s>
+                    <Box className="d-flex align-items-ceneter btn-group">
+                      <Button>Delete</Button>
+                      <Button>Save it for later</Button>
                     </Box>
-                  </Box>
-                </Box>
-              </Grid>
-              <Grid item xs={3}>
-                <Box className="number-input-container">
-                  <Box className="symbol">-</Box>
-                  <Box className="Number">3</Box>
-                  <Box className="symbol">+</Box>
-                </Box>
-                <Box className="d-flex align-items-ceneter btn-group">
-                  <Button>Delete</Button>
-                  <Button>Save it for later</Button>
-                </Box>
-              </Grid>
-              <Grid item xs={3} justifyContent={"end"} display={"flex"}>
-                <Box className="sub-total ">
-                  <span className="d-block final-amount">₹ 200.12</span>
-                  <span className="d-block save-amount">
-                    Saved : <strong>₹ 120.12</strong>
-                  </span>
-                </Box>
-              </Grid>
-            </Grid>
+                  </Grid>
+                  <Grid item xs={3} justifyContent={"end"} display={"flex"}>
+                    <Box className="sub-total ">
+                      <span className="d-block final-amount">₹ 200.12</span>
+                      <span className="d-block save-amount">
+                        Saved : <strong>₹ 120.12</strong>
+                      </span>
+                    </Box>
+                  </Grid>
+                </Grid>
+                <Grid
+                  container
+                  spacing={2}
+                  className="product-cart-container"
+                  alignItems={"center"}
+                  data-aos="zoom-in-right"
+                >
+                  <Grid item xs={6}>
+                    <Box className="d-flex align-items-center product-cart-list">
+                      <img src={productCartImg} alt="product-cart-img" />
+                      <Box className="d-block">
+                        <span className="d-block name">Green Apple</span>
+                        <Box className="d-flex align-items-center">
+                          <span className="discount-amount">₹ 14.99</span>
+                          <s className="amount">₹ 20.99</s>
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Box className="number-input-container">
+                      <Box className="symbol">-</Box>
+                      <Box className="Number">3</Box>
+                      <Box className="symbol">+</Box>
+                    </Box>
+                    <Box className="d-flex align-items-ceneter btn-group">
+                      <Button>Delete</Button>
+                      <Button>Save it for later</Button>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={3} justifyContent={"end"} display={"flex"}>
+                    <Box className="sub-total ">
+                      <span className="d-block final-amount">₹ 200.12</span>
+                      <span className="d-block save-amount">
+                        Saved : <strong>₹ 120.12</strong>
+                      </span>
+                    </Box>
+                  </Grid>
+                </Grid> */}
+              </>
+              : <></>}
+
           </Box>
         </Container>
         <Box className="Related-products-container">
@@ -274,9 +313,21 @@ class MyCart extends Component {
             </Grid>
           </Container>
         </Box>
-      </Box>
+      </Box>}</>
+
     );
   }
 }
 
-export default MyCart;
+
+function mapStateToProps(state) {
+  const { cartItems } = state.cartitem;
+  const { loginData } = state.login;
+  return { cartItems, loginData };
+
+
+}
+
+const mapDispatchToProps = { fetchCartItems };
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyCart);
