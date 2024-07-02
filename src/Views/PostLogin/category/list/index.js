@@ -109,6 +109,11 @@ class List extends Component {
               <Box className="add-cart">
                 <Button variant="outlined" onClick={() => { this.handleAddToCart(item.id) }}>Add to cart</Button>
               </Box>
+              <Box className="number-input-container">
+                  <Box className="symbol">-</Box>
+                  <Box className="Number">3</Box>
+                  <Box className="symbol">+</Box>
+                </Box>
             </Box>
           })}
 
