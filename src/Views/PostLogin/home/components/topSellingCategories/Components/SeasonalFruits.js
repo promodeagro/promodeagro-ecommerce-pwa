@@ -1,26 +1,48 @@
 import React, { Component } from "react";
-import {
-  Box,
-  Container,
-  FormControl,
-  NativeSelect,
-  Button,
-  Tab,
-} from "@mui/material";
-import Carousel from "react-multi-carousel";
+import { Box, FormControl, NativeSelect, Button } from "@mui/material";
+import Slider from "react-slick";
 import StarIcon from "@mui/icons-material/Star";
 import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
+
 class SeasonalFruits extends Component {
   render() {
-    const { responsive, productImg, priceIcon } = this.props;
+    const { productImg, priceIcon } = this.props;
+    var settings = {
+      dots: true,
+      infinite: false,
+      speed: 500,
+      slidesToShow: 5,
+      slidesToScroll: 1,
+      initialSlide: 0,
+      responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 4,
+            slidesToScroll: 1,
+            infinite: true,
+            dots: true,
+          },
+        },
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            initialSlide: 1,
+          },
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+          },
+        },
+      ],
+    };
     return (
-      <Carousel
-        id="carousel-2"
-        showDots={false}
-        responsive={responsive}
-        containerClass="carousel-banner-container"
-        infinite={true} // Make the carousel loop infinitely
-      >
+      <Slider {...settings}>
         <Box className="product-box">
           <Box className="sale">Sale 50%</Box>
           <Box className="icon">
@@ -341,7 +363,7 @@ class SeasonalFruits extends Component {
             <Button variant="outlined">Add to cart</Button>
           </Box>
         </Box>
-      </Carousel>
+      </Slider>
     );
   }
 }

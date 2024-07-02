@@ -1,24 +1,50 @@
-import React, { Component } from 'react'
-import { Box, Container, FormControl, NativeSelect, Button, Tab } from "@mui/material";
-import Carousel from "react-multi-carousel";
-import StarIcon from '@mui/icons-material/Star';
-import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
- class ExoticFruits extends Component {
-  render() {
-    const {responsive,productImg,priceIcon}=this.props
-    return (
-        <Carousel
-        id="carousel-2"
-        showDots={false}
-        responsive={responsive}
-        containerClass="carousel-banner-container"
-        infinite={true} // Make the carousel loop infinitely
+import React, { Component } from "react";
+import { Box, FormControl, NativeSelect, Button } from "@mui/material";
+import Slider from "react-slick";
+import StarIcon from "@mui/icons-material/Star";
+import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
 
-      >
+class ExoticFruits extends Component {
+  render() {
+    const { productImg, priceIcon } = this.props;
+    var settings = {
+      dots: true,
+      infinite: false,
+      speed: 500,
+      slidesToShow: 5,
+      slidesToScroll: 1,
+      initialSlide: 0,
+      responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 4,
+            slidesToScroll: 1,
+            infinite: true,
+            dots: true,
+          },
+        },
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            initialSlide: 1,
+          },
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+          },
+        },
+      ],
+    };
+    return (
+      <Slider {...settings}>
         <Box className="product-box">
-          <Box className="sale">
-            Sale 50%
-          </Box>
+          <Box className="sale">Sale 50%</Box>
           <Box className="icon">
             <TurnedInNotOutlinedIcon />
           </Box>
@@ -29,8 +55,12 @@ import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
             <a href="#">Green Apple</a>
           </Box>
           <Box className="price-ratting">
-            <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-            <Box className="ratting"><StarIcon /> 4.5</Box>
+            <Box className="price">
+              <img src={priceIcon} alt="" /> 14.99 <span>20.99</span>
+            </Box>
+            <Box className="ratting">
+              <StarIcon /> 4.5
+            </Box>
           </Box>
           <Box className="select">
             <FormControl fullWidth>
@@ -46,9 +76,7 @@ import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
           </Box>
         </Box>
         <Box className="product-box">
-          <Box className="sale">
-            Sale 50%
-          </Box>
+          <Box className="sale">Sale 50%</Box>
           <Box className="icon">
             <TurnedInNotOutlinedIcon />
           </Box>
@@ -59,8 +87,12 @@ import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
             <a href="#">Green Apple</a>
           </Box>
           <Box className="price-ratting">
-            <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-            <Box className="ratting"><StarIcon /> 4.5</Box>
+            <Box className="price">
+              <img src={priceIcon} alt="" /> 14.99 <span>20.99</span>
+            </Box>
+            <Box className="ratting">
+              <StarIcon /> 4.5
+            </Box>
           </Box>
           <Box className="select">
             <FormControl fullWidth>
@@ -76,9 +108,7 @@ import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
           </Box>
         </Box>
         <Box className="product-box">
-          <Box className="sale">
-            Sale 50%
-          </Box>
+          <Box className="sale">Sale 50%</Box>
           <Box className="icon">
             <TurnedInNotOutlinedIcon />
           </Box>
@@ -89,8 +119,12 @@ import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
             <a href="#">Green Apple</a>
           </Box>
           <Box className="price-ratting">
-            <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-            <Box className="ratting"><StarIcon /> 4.5</Box>
+            <Box className="price">
+              <img src={priceIcon} alt="" /> 14.99 <span>20.99</span>
+            </Box>
+            <Box className="ratting">
+              <StarIcon /> 4.5
+            </Box>
           </Box>
           <Box className="select">
             <FormControl fullWidth>
@@ -106,9 +140,7 @@ import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
           </Box>
         </Box>
         <Box className="product-box">
-          <Box className="sale">
-            Sale 50%
-          </Box>
+          <Box className="sale">Sale 50%</Box>
           <Box className="icon">
             <TurnedInNotOutlinedIcon />
           </Box>
@@ -119,8 +151,12 @@ import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
             <a href="#">Green Apple</a>
           </Box>
           <Box className="price-ratting">
-            <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-            <Box className="ratting"><StarIcon /> 4.5</Box>
+            <Box className="price">
+              <img src={priceIcon} alt="" /> 14.99 <span>20.99</span>
+            </Box>
+            <Box className="ratting">
+              <StarIcon /> 4.5
+            </Box>
           </Box>
           <Box className="select">
             <FormControl fullWidth>
@@ -136,9 +172,7 @@ import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
           </Box>
         </Box>
         <Box className="product-box">
-          <Box className="sale">
-            Sale 50%
-          </Box>
+          <Box className="sale">Sale 50%</Box>
           <Box className="icon">
             <TurnedInNotOutlinedIcon />
           </Box>
@@ -149,8 +183,12 @@ import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
             <a href="#">Green Apple</a>
           </Box>
           <Box className="price-ratting">
-            <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-            <Box className="ratting"><StarIcon /> 4.5</Box>
+            <Box className="price">
+              <img src={priceIcon} alt="" /> 14.99 <span>20.99</span>
+            </Box>
+            <Box className="ratting">
+              <StarIcon /> 4.5
+            </Box>
           </Box>
           <Box className="select">
             <FormControl fullWidth>
@@ -166,9 +204,7 @@ import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
           </Box>
         </Box>
         <Box className="product-box">
-          <Box className="sale">
-            Sale 50%
-          </Box>
+          <Box className="sale">Sale 50%</Box>
           <Box className="icon">
             <TurnedInNotOutlinedIcon />
           </Box>
@@ -179,8 +215,12 @@ import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
             <a href="#">Green Apple</a>
           </Box>
           <Box className="price-ratting">
-            <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-            <Box className="ratting"><StarIcon /> 4.5</Box>
+            <Box className="price">
+              <img src={priceIcon} alt="" /> 14.99 <span>20.99</span>
+            </Box>
+            <Box className="ratting">
+              <StarIcon /> 4.5
+            </Box>
           </Box>
           <Box className="select">
             <FormControl fullWidth>
@@ -196,9 +236,7 @@ import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
           </Box>
         </Box>
         <Box className="product-box">
-          <Box className="sale">
-            Sale 50%
-          </Box>
+          <Box className="sale">Sale 50%</Box>
           <Box className="icon">
             <TurnedInNotOutlinedIcon />
           </Box>
@@ -209,8 +247,12 @@ import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
             <a href="#">Green Apple</a>
           </Box>
           <Box className="price-ratting">
-            <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-            <Box className="ratting"><StarIcon /> 4.5</Box>
+            <Box className="price">
+              <img src={priceIcon} alt="" /> 14.99 <span>20.99</span>
+            </Box>
+            <Box className="ratting">
+              <StarIcon /> 4.5
+            </Box>
           </Box>
           <Box className="select">
             <FormControl fullWidth>
@@ -226,9 +268,7 @@ import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
           </Box>
         </Box>
         <Box className="product-box">
-          <Box className="sale">
-            Sale 50%
-          </Box>
+          <Box className="sale">Sale 50%</Box>
           <Box className="icon">
             <TurnedInNotOutlinedIcon />
           </Box>
@@ -239,8 +279,12 @@ import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
             <a href="#">Green Apple</a>
           </Box>
           <Box className="price-ratting">
-            <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-            <Box className="ratting"><StarIcon /> 4.5</Box>
+            <Box className="price">
+              <img src={priceIcon} alt="" /> 14.99 <span>20.99</span>
+            </Box>
+            <Box className="ratting">
+              <StarIcon /> 4.5
+            </Box>
           </Box>
           <Box className="select">
             <FormControl fullWidth>
@@ -256,9 +300,7 @@ import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
           </Box>
         </Box>
         <Box className="product-box">
-          <Box className="sale">
-            Sale 50%
-          </Box>
+          <Box className="sale">Sale 50%</Box>
           <Box className="icon">
             <TurnedInNotOutlinedIcon />
           </Box>
@@ -269,8 +311,12 @@ import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
             <a href="#">Green Apple</a>
           </Box>
           <Box className="price-ratting">
-            <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-            <Box className="ratting"><StarIcon /> 4.5</Box>
+            <Box className="price">
+              <img src={priceIcon} alt="" /> 14.99 <span>20.99</span>
+            </Box>
+            <Box className="ratting">
+              <StarIcon /> 4.5
+            </Box>
           </Box>
           <Box className="select">
             <FormControl fullWidth>
@@ -286,9 +332,7 @@ import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
           </Box>
         </Box>
         <Box className="product-box">
-          <Box className="sale">
-            Sale 50%
-          </Box>
+          <Box className="sale">Sale 50%</Box>
           <Box className="icon">
             <TurnedInNotOutlinedIcon />
           </Box>
@@ -299,8 +343,12 @@ import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
             <a href="#">Green Apple</a>
           </Box>
           <Box className="price-ratting">
-            <Box className="price"><img src={priceIcon} alt="" /> 14.99 <span>20.99</span></Box>
-            <Box className="ratting"><StarIcon /> 4.5</Box>
+            <Box className="price">
+              <img src={priceIcon} alt="" /> 14.99 <span>20.99</span>
+            </Box>
+            <Box className="ratting">
+              <StarIcon /> 4.5
+            </Box>
           </Box>
           <Box className="select">
             <FormControl fullWidth>
@@ -315,9 +363,9 @@ import TurnedInNotOutlinedIcon from '@mui/icons-material/TurnedInNotOutlined';
             <Button variant="outlined">Add to cart</Button>
           </Box>
         </Box>
-      </Carousel>
-    )
+      </Slider>
+    );
   }
 }
 
-export default ExoticFruits
+export default ExoticFruits;

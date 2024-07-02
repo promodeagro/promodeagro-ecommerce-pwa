@@ -1,49 +1,57 @@
 import React, { Component } from "react";
-import { Box, Container, Grid } from "@mui/material";
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
-import StarIcon from '@mui/icons-material/Star';
+import { Box, Container } from "@mui/material";
+import StarIcon from "@mui/icons-material/Star";
 import personImg from "../../../../../assets/img/person.png";
 import customerBg from "../../../../../assets/img/customer-bg.png";
-
-const responsive = {
-  desktop: {
-    breakpoint: { max: 3000, min: 1024 },
-    items: 4,
-    slidesToSlide: 1 // optional, default to 1.
-  },
-  tablet: {
-    breakpoint: { max: 1024, min: 464 },
-    items: 2,
-    slidesToSlide: 1 // optional, default to 1.
-  },
-  mobile: {
-    breakpoint: { max: 464, min: 0 },
-    items: 1,
-    slidesToSlide: 1 // optional, default to 1.
-  }
-};
-
+import Slider from "react-slick";
 
 class CustomersSays extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
 
   render() {
+    var settings = {
+      dots: true,
+      infinite: false,
+      speed: 500,
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      initialSlide: 0,
+      responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            infinite: true,
+            dots: true,
+          },
+        },
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 1,
+            initialSlide: 1,
+          },
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+          },
+        },
+      ],
+    };
     return (
       <Box className="customers-says-container">
         <Container>
           <Box className="heading">What our Customers Says</Box>
           <Box className="customers-container">
-            <Carousel
-              id="carousel-1"
-              responsive={responsive}
-              containerClass="carousel-container"
-              infinite={true} // Make the carousel loop infinitely
-            >
+            <Slider {...settings}>
               <Box className="customers-says">
                 <Box className="customers-info">
                   <Box className="ratting">
@@ -55,12 +63,18 @@ class CustomersSays extends Component {
                   </Box>
                   <Box className="name">On Time Delivery</Box>
                   <Box className="text">
-                    “Aenean et nisl eget eros consectetur vestibulum vel id erat. Aliquam feugiat massa dui. Sed sagittis diam sit amet ante sodales semper. ”
+                    “Aenean et nisl eget eros consectetur vestibulum vel id
+                    erat. Aliquam feugiat massa dui. Sed sagittis diam sit amet
+                    ante sodales semper. ”
                   </Box>
-                  <Box className="customer-bg"><img src={customerBg} alt="" /></Box>
+                  <Box className="customer-bg">
+                    <img src={customerBg} alt="" />
+                  </Box>
                 </Box>
                 <Box className="customers-person">
-                  <Box className="icon"><img src={personImg} alt="" /></Box>
+                  <Box className="icon">
+                    <img src={personImg} alt="" />
+                  </Box>
                   <Box className="info">
                     <Box className="name">Jenny Wilson</Box>
                     <Box className="customer">Customer</Box>
@@ -78,12 +92,18 @@ class CustomersSays extends Component {
                   </Box>
                   <Box className="name">On Time Delivery</Box>
                   <Box className="text">
-                    “Aenean et nisl eget eros consectetur vestibulum vel id erat. Aliquam feugiat massa dui. Sed sagittis diam sit amet ante sodales semper. ”
+                    “Aenean et nisl eget eros consectetur vestibulum vel id
+                    erat. Aliquam feugiat massa dui. Sed sagittis diam sit amet
+                    ante sodales semper. ”
                   </Box>
-                  <Box className="customer-bg"><img src={customerBg} alt="" /></Box>
+                  <Box className="customer-bg">
+                    <img src={customerBg} alt="" />
+                  </Box>
                 </Box>
                 <Box className="customers-person">
-                  <Box className="icon"><img src={personImg} alt="" /></Box>
+                  <Box className="icon">
+                    <img src={personImg} alt="" />
+                  </Box>
                   <Box className="info">
                     <Box className="name">Jenny Wilson</Box>
                     <Box className="customer">Customer</Box>
@@ -101,12 +121,18 @@ class CustomersSays extends Component {
                   </Box>
                   <Box className="name">On Time Delivery</Box>
                   <Box className="text">
-                    “Aenean et nisl eget eros consectetur vestibulum vel id erat. Aliquam feugiat massa dui. Sed sagittis diam sit amet ante sodales semper. ”
+                    “Aenean et nisl eget eros consectetur vestibulum vel id
+                    erat. Aliquam feugiat massa dui. Sed sagittis diam sit amet
+                    ante sodales semper. ”
                   </Box>
-                  <Box className="customer-bg"><img src={customerBg} alt="" /></Box>
+                  <Box className="customer-bg">
+                    <img src={customerBg} alt="" />
+                  </Box>
                 </Box>
                 <Box className="customers-person">
-                  <Box className="icon"><img src={personImg} alt="" /></Box>
+                  <Box className="icon">
+                    <img src={personImg} alt="" />
+                  </Box>
                   <Box className="info">
                     <Box className="name">Jenny Wilson</Box>
                     <Box className="customer">Customer</Box>
@@ -124,12 +150,18 @@ class CustomersSays extends Component {
                   </Box>
                   <Box className="name">On Time Delivery</Box>
                   <Box className="text">
-                    “Aenean et nisl eget eros consectetur vestibulum vel id erat. Aliquam feugiat massa dui. Sed sagittis diam sit amet ante sodales semper. ”
+                    “Aenean et nisl eget eros consectetur vestibulum vel id
+                    erat. Aliquam feugiat massa dui. Sed sagittis diam sit amet
+                    ante sodales semper. ”
                   </Box>
-                  <Box className="customer-bg"><img src={customerBg} alt="" /></Box>
+                  <Box className="customer-bg">
+                    <img src={customerBg} alt="" />
+                  </Box>
                 </Box>
                 <Box className="customers-person">
-                  <Box className="icon"><img src={personImg} alt="" /></Box>
+                  <Box className="icon">
+                    <img src={personImg} alt="" />
+                  </Box>
                   <Box className="info">
                     <Box className="name">Jenny Wilson</Box>
                     <Box className="customer">Customer</Box>
@@ -147,12 +179,18 @@ class CustomersSays extends Component {
                   </Box>
                   <Box className="name">On Time Delivery</Box>
                   <Box className="text">
-                    “Aenean et nisl eget eros consectetur vestibulum vel id erat. Aliquam feugiat massa dui. Sed sagittis diam sit amet ante sodales semper. ”
+                    “Aenean et nisl eget eros consectetur vestibulum vel id
+                    erat. Aliquam feugiat massa dui. Sed sagittis diam sit amet
+                    ante sodales semper. ”
                   </Box>
-                  <Box className="customer-bg"><img src={customerBg} alt="" /></Box>
+                  <Box className="customer-bg">
+                    <img src={customerBg} alt="" />
+                  </Box>
                 </Box>
                 <Box className="customers-person">
-                  <Box className="icon"><img src={personImg} alt="" /></Box>
+                  <Box className="icon">
+                    <img src={personImg} alt="" />
+                  </Box>
                   <Box className="info">
                     <Box className="name">Jenny Wilson</Box>
                     <Box className="customer">Customer</Box>
@@ -170,19 +208,25 @@ class CustomersSays extends Component {
                   </Box>
                   <Box className="name">On Time Delivery</Box>
                   <Box className="text">
-                    “Aenean et nisl eget eros consectetur vestibulum vel id erat. Aliquam feugiat massa dui. Sed sagittis diam sit amet ante sodales semper. ”
+                    “Aenean et nisl eget eros consectetur vestibulum vel id
+                    erat. Aliquam feugiat massa dui. Sed sagittis diam sit amet
+                    ante sodales semper. ”
                   </Box>
-                  <Box className="customer-bg"><img src={customerBg} alt="" /></Box>
+                  <Box className="customer-bg">
+                    <img src={customerBg} alt="" />
+                  </Box>
                 </Box>
                 <Box className="customers-person">
-                  <Box className="icon"><img src={personImg} alt="" /></Box>
+                  <Box className="icon">
+                    <img src={personImg} alt="" />
+                  </Box>
                   <Box className="info">
                     <Box className="name">Jenny Wilson</Box>
                     <Box className="customer">Customer</Box>
                   </Box>
                 </Box>
               </Box>
-            </Carousel>
+            </Slider>
           </Box>
         </Container>
       </Box>
