@@ -51,7 +51,7 @@ class TopSellingCategories extends Component {
               <Tab label="Exotic Fruit" value="3" />
               <Tab label="Seasonal Fruits" value="4" />
             </TabList>
-            <TabPanel value="1">
+            <TabPanel value="1" className="">
               <All productImg={productImg} priceIcon={priceIcon} />
             </TabPanel>
             <TabPanel value="2">

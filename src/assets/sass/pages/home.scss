@@ -636,14 +636,16 @@
   display: flex;
   width: 100%;
   flex-wrap: wrap;
+  margin-bottom: 60px;
 
   .css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
-    font-size: 16px;
-    line-height: 24px;
+    min-width: auto;
+    font-size: 14px;
+    line-height: 18px;
     color: #848d88;
     font-weight: 500;
     text-transform: capitalize;
-    padding: 12px;
+    padding: 0px;
     min-height: auto;
     padding: 0px 10px 0px 10px;
     border-right: 1px solid #b4ccb4;
@@ -654,9 +656,14 @@
       border-right: none;
     }
   }
+
   .css-1aquho2-MuiTabs-indicator {
     background-color: #1f9151;
-    bottom: 10px;
+    bottom: 22px;
+  }
+
+  .css-13xfq8m-MuiTabPanel-root {
+    padding: 0px;
   }
 
   .heading {
@@ -669,12 +676,56 @@
     margin-bottom: 30px;
   }
 
+  .slick-prev,
+  .slick-next {
+    width: 32px;
+    height: 32px;
+    top: -50px;
+    z-index: 10;
+    transform: translate(0, 0%);
+    &::before {
+      display: none;
+    }
+  }
+
+  .slick-next {
+    right: 0;
+    border-radius: 50%;
+    border: 1px solid #1f915166;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-image: url("../../img/slick-right-arrow.png");
+    &:hover,
+    &:focus {
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-image: url("../../img/slick-right-arrow.png");
+    }
+  }
+
+  .slick-prev {
+    left: auto;
+    right: 47px;
+    border-radius: 50%;
+    border: 1px solid #1f915166;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-image: url("../../img/slick-left-arrow.png");
+    &:hover,
+    &:focus {
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-image: url("../../img/slick-left-arrow.png");
+    }
+  }
+
   .product-box {
     display: inline-flex;
     flex-wrap: wrap;
-    width: 250px;
+    width: calc(100% - 10px) !important;
+    margin-left: 5px;
+    margin-right: 5px;
     padding: 10px;
-    margin-left: 10px;
     border-radius: 5px;
     border: 1px solid #e6e6e6;
     position: relative;
@@ -830,23 +881,5 @@
         text-transform: capitalize;
       }
     }
-  }
-
-  .react-multi-carousel-list {
-    align-items: start;
-  }
-  .react-multiple-carousel__arrow {
-    border: 1px solid #324a3d66;
-    background-color: transparent;
-
-    &::before {
-      color: #324a3d;
-    }
-    &:hover {
-      background-color: transparent;
-    }
-  }
-  .react-multiple-carousel__arrow--left {
-    left: calc(85% + 1px);
   }
 }

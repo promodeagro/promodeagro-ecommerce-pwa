@@ -8,9 +8,7 @@ import {
 } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
-import productImg from "../../../../../assets/img/product-img.png";
 import priceIcon from "../../../../../assets/img/price-icon.png";
-import { ErrorMessages } from "Views/Utills/helperFunctions";
 import { addDataInCart } from "../../../../../Redux/Home/HomeSlice";
 import { connect } from "react-redux";
 import _ from "lodash";
