@@ -166,3 +166,19 @@
         }
     }
 }
+
+
+@media only screen and (max-width: 600px) {
+    .signin-container {
+        .signin-form-container {
+            .signin-form-details {
+                width: 100%;
+                display: block;
+
+                .title {
+                    text-align: center;
+                }
+            }
+        }
+    }
+}
