@@ -20,7 +20,7 @@ const SignupSlice = createSlice({
             .addCase(signUp.pending.toString(), (state, action) => {
                 return {
                     ...state,
-                    loginData: {
+                    signupData: {
                         status: status.IN_PROGRESS,
                     },
                 };
@@ -28,7 +28,7 @@ const SignupSlice = createSlice({
             .addCase(signUp.fulfilled.toString(), (state, { payload }) => {
                 return {
                     ...state,
-                    loginData: {
+                    signupData: {
                         status: status.SUCCESS,
                         data: payload,
                     },
@@ -37,7 +37,7 @@ const SignupSlice = createSlice({
             .addCase(signUp.rejected.toString(), (state, action) => {
                 return {
                     ...state,
-                    loginData: {
+                    signupData: {
                         status: status.FAILURE,
                     },
                 };
