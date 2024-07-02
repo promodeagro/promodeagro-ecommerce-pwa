@@ -312,12 +312,12 @@ class MyCart extends Component {
               </Link>
             </Box>
             <Grid container spacing={2} data-aos="zoom-in">
-              <Grid item xs={4}>
+              <Grid item lg={4} md={6} sm={12} xs={12} >
                 <Box className="product-details d-flex align-items-center ">
                   <img src={realtedProdctImg1} alt="" />
                   <Box className="product-price-info">
                     <span className="d-block product-name">Green Apple</span>
-                    <Box className="d-flex align-items-center">
+                    <Box className="amount-info d-flex align-items-center">
                       <span className="drop-amount">₹ 14.99</span>
                       <s className="final-amount">₹ 20.99</s>
                     </Box>
@@ -338,12 +338,12 @@ class MyCart extends Component {
                   </Box>
                 </Box>
               </Grid>
-              <Grid item xs={4}>
+              <Grid item lg={4} md={6} sm={12} xs={12} >
                 <Box className="product-details d-flex align-items-center ">
                   <img src={realtedProdctImg1} alt="" />
                   <Box className="product-price-info">
                     <span className="d-block product-name">Green Apple</span>
-                    <Box className="d-flex align-items-center">
+                    <Box className="amount-info d-flex align-items-center">
                       <span className="drop-amount">₹ 14.99</span>
                       <s className="final-amount">₹ 20.99</s>
                     </Box>
@@ -364,12 +364,12 @@ class MyCart extends Component {
                   </Box>
                 </Box>
               </Grid>
-              <Grid item xs={4}>
+              <Grid item lg={4} md={6} sm={12} xs={12} >
                 <Box className="product-details d-flex align-items-center ">
                   <img src={realtedProdctImg1} alt="" />
                   <Box className="product-price-info">
                     <span className="d-block product-name">Green Apple</span>
-                    <Box className="d-flex align-items-center">
+                    <Box className="amount-info d-flex align-items-center">
                       <span className="drop-amount">₹ 14.99</span>
                       <s className="final-amount">₹ 20.99</s>
                     </Box>

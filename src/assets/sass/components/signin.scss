@@ -1,7 +1,7 @@
 .signin-container {
     .signin-form-container {
         .signin-form-details {
-            width: 35%;
+            width: 40%;
             margin-top: 100px;
             margin-bottom: 320px;
 
@@ -38,6 +38,9 @@
 
             .number-input {
                 margin-top: 24px;
+                .css-md26zr-MuiInputBase-root-MuiOutlinedInput-root {
+                    height: 40px;
+                }
 
                 label {
                     font-size: 14px;
@@ -176,10 +179,20 @@
     .signin-container {
         .signin-form-container {
             .signin-form-details {
-                width: 100%;
+                width: 100% !important;
                 display: block;
 
               
+            }
+        }
+    }
+}
+@media only screen and (max-width: 1150px ) {
+    .signin-container {
+        .signin-form-container {
+            .signin-form-details {
+                width: 50%;
+
             }
         }
     }

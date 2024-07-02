@@ -111,9 +111,11 @@ p {
 .align-items-center {
   align-items: center;
 }
+
 .align-items-flex-start {
   align-items: flex-start;
 }
+
 .align-items-end {
   align-items: flex-end;
 }
@@ -166,6 +168,15 @@ button {
       font-size: 28px !important;
     }
   }
+
+  .MuiCircularProgress-root {
+    width: 14px !important;
+    height: 14px !important;
+    color: #FFFFFF;
+
+  }
+
+
 }
 
 
