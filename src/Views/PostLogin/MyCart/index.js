@@ -34,7 +34,7 @@ class MyCart extends Component {
       this.props.cartItems.status === status.SUCCESS &&
       this.props.cartItems.data
     ) {
-      debugger
+    
       this.setState({
         cartList: this.props.cartItems.data.items
       })

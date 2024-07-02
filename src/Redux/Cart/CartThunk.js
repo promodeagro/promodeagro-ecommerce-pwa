@@ -4,6 +4,7 @@ import { postLoginService } from ".././../Services";
 
 export const addItemToCart = createAsyncThunk("additems", async (params) => {
     try {
+
         let url = config.ADD_ITEM;
         const response = await postLoginService.post(url, params);
         return response.data;
@@ -13,11 +14,13 @@ export const addItemToCart = createAsyncThunk("additems", async (params) => {
 });
 
 export const updateItemToCart = createAsyncThunk("updateitems", async (params) => {
+
     try {
         let url = config.UPDATE_ITEM;
-        const response = await postLoginService.post(url, params);
+        const response = await postLoginService.put(url, params);
         return response.data;
     } catch (error) {
+
         return error;
     }
 });
@@ -39,7 +42,6 @@ export const fetchCartItems = createAsyncThunk("cartitems", async (params) => {
         const response = await postLoginService.get(url);
         return response.data;
     } catch (error) {
-        debugger
         return error;
     }
 });

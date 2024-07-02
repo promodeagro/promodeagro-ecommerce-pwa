@@ -12,6 +12,7 @@ const Config = {
     ALL_PRODUCTS: `${BASE_URL}/product`,
     ADD_ITEM: `${BASE_URL}/cart/addItem`,
     FETCH_CART_ITEMS: `${BASE_URL}/cart/getItems`,
+    UPDATE_ITEM:`${BASE_URL}/cart/updateItem`,
 
 };
 

@@ -5,16 +5,22 @@ import SideBar from "./sideBar";
 import List from "./list";
 import RecentlyViewedItems from "./recentlyViewedItems";
 import { allProducts } from "../../../Redux/AllProducts/AllProductthunk";
+import { fetchCartItems } from "../../../Redux/Cart/CartThunk";
 import status from "../../../Redux/Constants";
 import { Loader } from "Views/Utills/helperFunctions";
 class Category extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      productsData: []
+      productsData: [],
+      cartList: []
     };
   }
   componentDidMount() {
+    const items = JSON.parse(localStorage.getItem("login"));
+    this.props.fetchCartItems({
+      userId: items.userId
+    })
     this.props.allProducts()
   }
 
@@ -30,11 +36,37 @@ class Category extends Component {
       })
 
     }
+
+
+    if (
+      prevProps.cartItems.status !==
+      this.props.cartItems.status &&
+      this.props.cartItems.status === status.SUCCESS &&
+      this.props.cartItems.data
+    ) {
+
+
+      this.setState({
+        cartList: this.props.cartItems.data.items
+      })
+
+    }
+
+
   }
 
 
+
+
+
+
+
+
+
+
+
   render() {
-    const {productsData}=this.state
+    const { productsData, cartList } = this.state
     return (
       <Box className="main-container">
         <Container>
@@ -44,9 +76,9 @@ class Category extends Component {
             </Grid>
             <Grid item xs={6} sm={6} md={9}>
               {
-                this.props.allProductsData.status === status.IN_PROGRESS ?
+                this.props.cartItems.status === status.IN_PROGRESS.status || this.props.allProductsData.status === status.IN_PROGRESS ?
                   Loader.commonLoader() :
-                  <List   data={productsData}/>
+                  <List data={productsData} cartItemsData={cartList} />
               }
 
             </Grid>
@@ -61,11 +93,13 @@ class Category extends Component {
 
 
 function mapStateToProps(state) {
-  const { allProductsData } = state.allproducts;
-  return { allProductsData };
+  const { allProductsData, } = state.allproducts;
+  const { cartItems } = state.cartitem;
+  return { allProductsData, cartItems };
+
 }
 
-const mapDispatchToProps = { allProducts };
+const mapDispatchToProps = { allProducts, fetchCartItems };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Category);
 

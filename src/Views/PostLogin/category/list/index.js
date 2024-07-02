@@ -1,14 +1,13 @@
 import React, { Component } from "react";
-import { addItemToCart } from "../../../../Redux/Cart/CartThunk";
+import { addItemToCart, fetchCartItems, updateItemToCart } from "../../../../Redux/Cart/CartThunk";
 import { connect } from "react-redux";
 import { Box, FormControl, NativeSelect, Button, Grid } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
-import productImg from "../../../../assets/img/product-img.png";
 import priceIcon from "../../../../assets/img/price-icon.png";
 import status from "../../../../Redux/Constants";
-import { ErrorMessages } from "Views/Utills/helperFunctions";
-import _ from "lodash"
+import _ from "lodash";
+
 class List extends Component {
   constructor(props) {
     super(props);
@@ -19,79 +18,73 @@ class List extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // Handle success message after adding item to cart if needed
     if (
       prevProps.additems.status !== this.props.additems.status &&
       this.props.additems.status === status.SUCCESS &&
       this.props.additems.data
     ) {
-      // ErrorMessages.success(this.props.additems.data.message);
+      this.setState({
+        addedProducts: [],
+        quantities: {}
+      });
+      const items = JSON.parse(localStorage.getItem("login"));
+      this.props.fetchCartItems({
+        userId: items.userId
+      });
+    }
+
+    if (
+      prevProps.updateItems.status !== this.props.updateItems.status &&
+      this.props.updateItems.status === status.SUCCESS &&
+      this.props.updateItems.data
+    ) {
+      this.setState({
+        addedProducts: [],
+        quantities: {}
+      });
+      const items = JSON.parse(localStorage.getItem("login"));
+      this.props.fetchCartItems({
+        userId: items.userId
+      });
     }
   }
 
   handleAddToCart(id) {
-
     const items = JSON.parse(localStorage.getItem("login"));
-    // if (!items) {
-    //   alert("Please login");
-    //   return;
-    // }
-
-    // Add item to cart (assuming this.props.addItemToCart is correctly wired up)
     this.props.addItemToCart({
       userId: items.userId,
       productId: id,
       quantity: "1",
     });
 
-    // Update local state to reflect added product and initial quantity
-    this.setState((prevState) => ({
-      addedProducts: [...prevState.addedProducts, id],
-      quantities: {
-        ...prevState.quantities,
-        [id]: prevState.quantities[id] ? prevState.quantities[id] + 1 : 1,
-      },
-    }));
+    // this.setState((prevState) => ({
+    //   addedProducts: [...prevState.addedProducts, id],
+    //   quantities: {
+    //     ...prevState.quantities,
+    //     [id]: prevState.quantities[id] ? prevState.quantities[id] + 1 : 1,
+    //   },
+    // }));
   }
 
-  handleQuantityChange(id, increment) {
+  handleQuantityChange(id, increment, productQuantity) {
     const items = JSON.parse(localStorage.getItem("login"));
     let cloneQuantities = _.cloneDeep(this.state.quantities);
-    cloneQuantities[id] = cloneQuantities[id] + increment
 
+    if (!productQuantity) {
+      cloneQuantities[id] = cloneQuantities[id] + increment;
+    } else {
+      productQuantity = productQuantity + increment
+    }
 
-    console.log(`Updating quantity for product ID ${id} by ${increment}`);
-
-    this.setState({
-      quantities: cloneQuantities
-    })
-
-    this.props.addItemToCart({
+    this.props.updateItemToCart({
       userId: items.userId,
       productId: id,
-      quantity: cloneQuantities[id],
+      quantity: cloneQuantities[id] ? cloneQuantities[id] : productQuantity.toString(),
     });
-
-
-
-
-    // // Simulated API call delay
-    // setTimeout(() => {
-    //   // Update local state to reflect quantity change
-    //   this.setState((prevState) => ({
-    //     quantities: {
-    //       ...prevState.quantities,
-    //       [id]: prevState.quantities[id] + increment,
-    //     },
-    //   }));
-
-    // }, 500);
-
-
   }
 
   render() {
-    const { data } = this.props;
+    const { data, cartItemsData } = this.props;
     const { addedProducts, quantities } = this.state;
 
     return (
@@ -112,8 +105,8 @@ class List extends Component {
                         id: 'uncontrolled-native',
                       }}
                     >
-                      <option value={10}>Sort by  Price - Low to High</option>
-                      <option value={20}>Sort by  Price - High to Low</option>
+                      <option value={10}>Sort by Price - Low to High</option>
+                      <option value={20}>Sort by Price - High to Low</option>
                     </NativeSelect>
                   </FormControl>
                 </Box>
@@ -123,66 +116,86 @@ class List extends Component {
           </Grid>
         </Box>
         <Box className="products">
-          {data?.length &&
-            data.map((item) => (
-              <Box className="product-box" key={item.id}>
-                <Box className="sale">Sale 50%</Box>
-                <Box className="icon">
-                  <TurnedInNotOutlinedIcon />
-                </Box>
-                <Box className="image">
-                  <img src={item.image} alt="" />
-                </Box>
-                <Box className="name">
-                  <a href="#">{item.name}</a>
-                </Box>
-                <Box className="price-ratting">
-                  <Box className="price">
-                    <img src={priceIcon} alt="" /> {item.price}
-                  </Box>
-                  <Box className="ratting">
-                    <StarIcon /> 4.5
-                  </Box>
-                </Box>
-                <Box className="select">
-                  <Box className="ratting"> {item.unit}</Box>
-                </Box>
-                <Box className="add-cart">
-                  {
-                    !addedProducts.includes(item.id) ? <Button
-                      variant="outlined"
-                      onClick={() => {
-                        this.handleAddToCart(item.id);
-                      }}
-                    >
-                      Add to cart
-                    </Button> : <></>
-                  }
+          {data?.length && cartItemsData !== undefined &&
+            data.map((item) => {
+              let itemId = cartItemsData?.find(x => x.ProductId === item.id);
 
-                </Box>
-                {addedProducts.includes(item.id) && ( // Conditionally render number-input-container
-                  <Box className="number-input-container">
-                    <Box
-                      className="symbol"
-                      onClick={() => {
-                        this.handleQuantityChange(item.id, -1);
-                      }}
-                    >
-                      -
+              return (
+                <Box className="product-box" key={item.id}>
+                  <Box className="sale">Sale 50%</Box>
+                  <Box className="icon">
+                    <TurnedInNotOutlinedIcon />
+                  </Box>
+                  <Box className="image">
+                    <img src={item.image} alt="" />
+                  </Box>
+                  <Box className="name">
+                    <a href="#">{item.name}</a>
+                  </Box>
+                  <Box className="price-ratting">
+                    <Box className="price">
+                      <img src={priceIcon} alt="" /> {item.price}
                     </Box>
-                    <Box className="Number">{quantities[item.id] || 0}</Box>
-                    <Box
-                      className="symbol"
-                      onClick={() => {
-                        this.handleQuantityChange(item.id, 1);
-                      }}
-                    >
-                      +
+                    <Box className="ratting">
+                      <StarIcon /> 4.5
                     </Box>
                   </Box>
-                )}
-              </Box>
-            ))}
+                  <Box className="select">
+                    <Box className="ratting"> {item.unit}</Box>
+                  </Box>
+
+                  {addedProducts.includes(item.id) || itemId ? (
+                    <Box className="number-input-container">
+                      {itemId && itemId.Quantity !== 0 ? (
+                        <Box
+                          className="symbol"
+                          onClick={() => {
+                            if (itemId?.ProductId) {
+                              let d = itemId.Quantity;
+                              this.handleQuantityChange(itemId.ProductId, -1, Number(d));
+                            } else {
+                              this.handleQuantityChange(item.id, -1);
+                            }
+                          }}
+                        >
+                          -
+                        </Box>
+                      ) : (
+                        <></>
+                      )}
+
+                      <Box className="Number">{quantities[item.id] ? quantities[item.id] : (itemId?.Quantity || 0)}</Box>
+                      <Box
+                        className="symbol"
+                        onClick={() => {
+                          if (itemId?.ProductId) {
+                            let d = itemId.Quantity;
+                            this.handleQuantityChange(itemId.ProductId, 1, Number(d));
+                          } else {
+                            this.handleQuantityChange(item.id, 1);
+                          }
+                        }}
+                      >
+                        +
+                      </Box>
+                    </Box>
+                  ) : (
+                    <Box className="add-cart">
+                      <Button
+                        variant="outlined"
+                        onClick={() => {
+                          this.handleAddToCart(item.id);
+                        }}
+
+                        disabled={this.props.additems.status == status.IN_PROGRESS}
+                      >
+                        Add to cart
+                      </Button>
+                    </Box>
+                  )}
+                </Box>
+              );
+            })}
         </Box>
       </Box>
     );
@@ -190,10 +203,10 @@ class List extends Component {
 }
 
 function mapStateToProps(state) {
-  const { additems } = state.cartitem;
-  return { additems };
+  const { additems, cartItems, updateItems } = state.cartitem;
+  return { additems, cartItems, updateItems };
 }
 
-const mapDispatchToProps = { addItemToCart };
+const mapDispatchToProps = { addItemToCart, fetchCartItems, updateItemToCart };
 
 export default connect(mapStateToProps, mapDispatchToProps)(List);
