@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { addItemToCart, fetchCartItems, updateItemToCart } from "../../../../Redux/Cart/CartThunk";
+import { addItemToCart, fetchCartItems, updateItemToCart, deleteItemToCart } from "../../../../Redux/Cart/CartThunk";
 import { connect } from "react-redux";
 import { Box, FormControl, NativeSelect, Button, Grid } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
@@ -47,6 +47,21 @@ class List extends Component {
         userId: items.userId
       });
     }
+
+    if (
+      prevProps.deleteItems.status !== this.props.deleteItems.status &&
+      this.props.deleteItems.status === status.SUCCESS &&
+      this.props.deleteItems.data
+    ) {
+      this.setState({
+        addedProducts: [],
+        quantities: {}
+      });
+      const items = JSON.parse(localStorage.getItem("login"));
+      this.props.fetchCartItems({
+        userId: items.userId
+      });
+    }
   }
 
   handleAddToCart(id) {
@@ -57,13 +72,7 @@ class List extends Component {
       quantity: "1",
     });
 
-    // this.setState((prevState) => ({
-    //   addedProducts: [...prevState.addedProducts, id],
-    //   quantities: {
-    //     ...prevState.quantities,
-    //     [id]: prevState.quantities[id] ? prevState.quantities[id] + 1 : 1,
-    //   },
-    // }));
+
   }
 
   handleQuantityChange(id, increment, productQuantity) {
@@ -75,12 +84,19 @@ class List extends Component {
     } else {
       productQuantity = productQuantity + increment
     }
+    if (cloneQuantities[id] || productQuantity != 0) {
+      this.props.updateItemToCart({
+        userId: items.userId,
+        productId: id,
+        quantity: cloneQuantities[id] ? cloneQuantities[id] : productQuantity.toString(),
+      });
+    } else {
+      this.props.deleteItemToCart({
+        userId: items.userId,
+        productId: id,
+      });
+    }
 
-    this.props.updateItemToCart({
-      userId: items.userId,
-      productId: id,
-      quantity: cloneQuantities[id] ? cloneQuantities[id] : productQuantity.toString(),
-    });
   }
 
   render() {
@@ -203,10 +219,10 @@ class List extends Component {
 }
 
 function mapStateToProps(state) {
-  const { additems, cartItems, updateItems } = state.cartitem;
-  return { additems, cartItems, updateItems };
+  const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
+  return { additems, cartItems, updateItems, deleteItems };
 }
 
-const mapDispatchToProps = { addItemToCart, fetchCartItems, updateItemToCart };
+const mapDispatchToProps = { addItemToCart, fetchCartItems, updateItemToCart, deleteItemToCart };
 
 export default connect(mapStateToProps, mapDispatchToProps)(List);

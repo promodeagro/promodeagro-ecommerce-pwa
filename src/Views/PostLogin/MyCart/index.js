@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Box, Container, Button, Grid, IconButton } from "@mui/material";
-import { fetchCartItems } from "../../../Redux/Cart/CartThunk";
+import { fetchCartItems, deleteItemToCart, updateItemToCart } from "../../../Redux/Cart/CartThunk";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Link } from "react-router-dom";
 import realtedProdctImg1 from "../../../assets/img/realted-product-1.png";
@@ -11,6 +11,7 @@ import productCartImg from "../../../assets/img/product-cart-img.png";
 import { connect } from "react-redux"
 import status from "../../../Redux/Constants";
 import { Loader } from "../../../Views/Utills/helperFunctions";
+import _ from "lodash"
 class MyCart extends Component {
   constructor(props) {
     super(props);
@@ -28,18 +29,65 @@ class MyCart extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const items = JSON.parse(localStorage.getItem("login"));
     if (
       prevProps.cartItems.status !==
       this.props.cartItems.status &&
       this.props.cartItems.status === status.SUCCESS &&
       this.props.cartItems.data
     ) {
-    
+
       this.setState({
         cartList: this.props.cartItems.data.items
       })
 
     }
+
+    if (
+      prevProps.updateItems.status !== this.props.updateItems.status &&
+      this.props.updateItems.status === status.SUCCESS &&
+      this.props.updateItems.data
+    ) {
+
+
+      this.props.fetchCartItems({
+        userId: items.userId
+      });
+    }
+
+
+
+
+    if (
+      prevProps.deleteItems.status !== this.props.deleteItems.status &&
+      this.props.deleteItems.status === status.SUCCESS &&
+      this.props.deleteItems.data
+    ) {
+
+      this.props.fetchCartItems({
+        userId: items.userId
+      });
+    }
+  }
+
+
+  handleQuantityChange(id, increment, productQuantity) {
+    const items = JSON.parse(localStorage.getItem("login"));
+    productQuantity = productQuantity + increment
+    if (productQuantity != 0) {
+      this.props.updateItemToCart({
+        userId: items.userId,
+        productId: id,
+        quantity: productQuantity.toString(),
+      });
+    } else {
+
+      this.props.deleteItemToCart({
+        userId: items.userId,
+        productId: id,
+      });
+    }
+
   }
 
 
@@ -120,12 +168,44 @@ class MyCart extends Component {
                     </Grid>
                     <Grid item xs={3}>
                       <Box className="number-input-container">
-                        <Box className="symbol">-</Box>
-                        <Box className="Number">3</Box>
-                        <Box className="symbol">+</Box>
+
+                        <Box className="number-input-container">
+                          <Box
+                            className="symbol"
+                            onClick={() => {
+
+                              let d = item.Quantity;
+                              this.handleQuantityChange(item.ProductId, -1, Number(d));
+
+                            }}
+                          >
+                            -
+                          </Box>
+
+                          <Box className="Number">{item?.Quantity}</Box>
+                          <Box
+                            className="symbol"
+                            onClick={() => {
+                              let d = item.Quantity;
+                              this.handleQuantityChange(item.ProductId, 1, Number(d));
+
+
+                            }}
+                          >
+                            +
+                          </Box>
+                        </Box>
+
                       </Box>
                       <Box className="d-flex align-items-ceneter btn-group">
-                        <Button>Delete</Button>
+                        <Button onClick={() => {
+                          console.log("item", item);
+                          const items = JSON.parse(localStorage.getItem("login"));
+                          this.props.deleteItemToCart({
+                            userId: items.userId,
+                            productId: item.ProductId,
+                          });
+                        }}>Delete</Button>
                         <Button>Save it for later</Button>
                       </Box>
                     </Grid>
@@ -321,13 +401,13 @@ class MyCart extends Component {
 
 
 function mapStateToProps(state) {
-  const { cartItems } = state.cartitem;
+  const { cartItems, deleteItems, updateItems } = state.cartitem;
   const { loginData } = state.login;
-  return { cartItems, loginData };
+  return { cartItems, loginData, deleteItems, updateItems };
 
 
 }
 
-const mapDispatchToProps = { fetchCartItems };
+const mapDispatchToProps = { fetchCartItems, deleteItemToCart, updateItemToCart };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyCart);

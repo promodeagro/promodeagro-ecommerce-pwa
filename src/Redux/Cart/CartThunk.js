@@ -28,7 +28,7 @@ export const updateItemToCart = createAsyncThunk("updateitems", async (params) =
 export const deleteItemToCart = createAsyncThunk("deleteitems", async (params) => {
     try {
         let url = config.DELETE_ITEM;
-        const response = await postLoginService.post(url, params);
+        const response = await postLoginService.delete(url, params);
         return response.data;
     } catch (error) {
         return error;
