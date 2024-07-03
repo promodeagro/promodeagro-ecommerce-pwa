@@ -1,35 +1,40 @@
 import React, { Component } from "react";
 import Box from "@mui/material/Box";
-import Container from '@mui/material/Container';
+import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import FormControl from '@mui/material/FormControl';
-import NativeSelect from '@mui/material/NativeSelect';
-import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import Button from '@mui/material/Button';
+import FormControl from "@mui/material/FormControl";
+import NativeSelect from "@mui/material/NativeSelect";
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import Button from "@mui/material/Button";
 import Logo from "../../assets/img/logo.png";
 import supportIcon from "../../assets/img/support-icon.png";
 import deliverIcon from "../../assets/img/deliver-icon.png";
 import notificationIcon from "../../assets/img/notification-icon.png";
 import cardIcon from "../../assets/img/card-icon.png";
 import searchIcon from "../../assets/img/search-icon.png";
-import { connect } from "react-redux"
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+
 class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      CategoriesToggle: false
+      CategoriesToggle: false,
+      matches: window.matchMedia("(max-width: 900px)").matches,
     };
+  }
+  componentDidMount() {
+    const handler = (e) => this.setState({ matches: e.matches });
+    window.matchMedia("(max-width: 900px)").addEventListener("change", handler);
   }
   handleClickCategoriesToggle = () => {
     this.setState({
       CategoriesToggle: !this.state.CategoriesToggle,
     });
   };
-
 
   render() {
     const { CategoriesToggle } = this.state;
@@ -38,20 +43,29 @@ class Header extends Component {
         <Box className="header-top-container">
           <Container>
             <Grid container spacing={2}>
-              <Grid item xs={6} sm={6} md={4}>
-                <Box className="logo"><img src={Logo} alt="" /></Box>
+              <Grid item xs={6} sm={4} md={4}>
+                <Box className="logo">
+                  <Link to={"/"}>
+                    <img src={Logo} alt="" />
+                  </Link>
+                </Box>
               </Grid>
-              <Grid item xs={6} sm={6} md={8}>
+              <Grid item xs={6} sm={8} md={8}>
                 <Box className="header-top-right">
-                  <Box className="support-box"><img src={supportIcon} alt="" /> Customer Support 24/7</Box>
-                  <Box className="deliver-box">Deliver to <img src={deliverIcon} alt="" /> <span>500005,Himayat Sagar Road </span></Box>
+                  <Box className="support-box">
+                    <img src={supportIcon} alt="" /> Customer Support 24/7
+                  </Box>
+                  <Box className="deliver-box">
+                    Deliver to <img src={deliverIcon} alt="" />{" "}
+                    <span>500005,Himayat Sagar Road </span>
+                  </Box>
                   <Box className="language-list-box">
                     <FormControl fullWidth>
                       <NativeSelect
                         defaultValue={10}
                         inputProps={{
-                          name: 'age',
-                          id: 'uncontrolled-native',
+                          name: "age",
+                          id: "uncontrolled-native",
                         }}
                       >
                         <option value={10}>English</option>
@@ -68,23 +82,43 @@ class Header extends Component {
         <Box className="header-categories-container">
           <Container>
             <Grid container spacing={2}>
-              <Grid item xs={6} sm={6} md={8}>
-                <Box className="categories">
+              {this.state.matches ? (
+                ""
+              ) : (
+                <Grid item xs={12} md={8}>
+                  <Box className="categories">
+                    <ul>
+                      <li>
+                        <a href="#">Quick Links</a>
+                      </li>
+                      <li>
+                        <a href="#">Exotic Fruits</a>
+                      </li>
+                      <li>
+                        <a href="#">Leafy Vegetables</a>
+                      </li>
+                      <li>
+                        <a href="#">Fresh fruits</a>
+                      </li>
+                      <li>
+                        <a href="#">Cuts & Sprouts</a>
+                      </li>
+                    </ul>
+                  </Box>
+                </Grid>
+              )}
+              <Grid item xs={12} md={4}>
+                <Box className="categories menu" justifyContent={"flex-end"}>
                   <ul>
-                    <li><a href="#">Quick Links</a></li>
-                    <li><a href="#">Exotic Fruits</a></li>
-                    <li><a href="#">Leafy Vegetables</a></li>
-                    <li><a href="#">Fresh fruits</a></li>
-                    <li><a href="#">Cuts & Sprouts</a></li>
-                  </ul>
-                </Box>
-              </Grid>
-              <Grid item xs={6} sm={6} md={4}>
-                <Box className="categories" justifyContent={"flex-end"}>
-                  <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact Us</a></li>
+                    <li>
+                      <Link to={"/"}>Home</Link>
+                    </li>
+                    <li>
+                      <Link to={"#"}>About Us</Link>
+                    </li>
+                    <li>
+                      <Link to={"#"}>Contact Us</Link>
+                    </li>
                   </ul>
                 </Box>
               </Grid>
@@ -93,57 +127,92 @@ class Header extends Component {
         </Box>
         <Box className="header-bottom-container">
           <Container>
-            <Grid container spacing={2} alignItems={'center'}>
-              <Grid item xs={6} sm={6} md={3}>
+            <Grid container spacing={2} alignItems={"center"}>
+              <Grid item xs={9} md={3} lg={3}>
                 <Box className="categories-container">
-
-                  <Box className="categories-toggle" onClick={this.handleClickCategoriesToggle}>
-                    Shop by Categories <span>{CategoriesToggle ? (<KeyboardArrowUpIcon />) : (
-                      <KeyboardArrowDownIcon />
-                    )}</span>
+                  <Box
+                    className="categories-toggle"
+                    onClick={this.handleClickCategoriesToggle}
+                  >
+                    Shop by Categories{" "}
+                    <span>
+                      {CategoriesToggle ? (
+                        <KeyboardArrowUpIcon />
+                      ) : (
+                        <KeyboardArrowDownIcon />
+                      )}
+                    </span>
                   </Box>
                   {CategoriesToggle ? (
                     <Box className="categories-box">
                       <Box className="categories">
                         <h2>Vegetables</h2>
                         <ul>
-                          <li><a href="#">Cut & peeled Veggies </a>
+                          <li>
+                            <a href="#">Cut & peeled Veggies </a>
                             <Box className="sub-categories">
                               <h3>Fruits </h3>
                               <ul>
-                                <li><a href="#">Exotic Fruits</a></li>
-                                <li><a href="#">Seasonal Fruits</a></li>
-                                <li><a href="#">Juices & Mixes</a></li>
+                                <li>
+                                  <a href="#">Exotic Fruits</a>
+                                </li>
+                                <li>
+                                  <a href="#">Seasonal Fruits</a>
+                                </li>
+                                <li>
+                                  <a href="#">Juices & Mixes</a>
+                                </li>
                               </ul>
                             </Box>
                           </li>
-                          <li><a href="#">Leafy Vegetables </a>
+                          <li>
+                            <a href="#">Leafy Vegetables </a>
                             <Box className="sub-categories">
                               <h3>Fruits </h3>
                               <ul>
-                                <li><a href="#">Exotic Fruits</a></li>
-                                <li><a href="#">Seasonal Fruits</a></li>
-                                <li><a href="#">Juices & Mixes</a></li>
+                                <li>
+                                  <a href="#">Exotic Fruits</a>
+                                </li>
+                                <li>
+                                  <a href="#">Seasonal Fruits</a>
+                                </li>
+                                <li>
+                                  <a href="#">Juices & Mixes</a>
+                                </li>
                               </ul>
                             </Box>
                           </li>
-                          <li><a href="#">Fresh Vegetables </a>
+                          <li>
+                            <a href="#">Fresh Vegetables </a>
                             <Box className="sub-categories">
                               <h3>Fruits </h3>
                               <ul>
-                                <li><a href="#">Exotic Fruits</a></li>
-                                <li><a href="#">Seasonal Fruits</a></li>
-                                <li><a href="#">Juices & Mixes</a></li>
+                                <li>
+                                  <a href="#">Exotic Fruits</a>
+                                </li>
+                                <li>
+                                  <a href="#">Seasonal Fruits</a>
+                                </li>
+                                <li>
+                                  <a href="#">Juices & Mixes</a>
+                                </li>
                               </ul>
                             </Box>
                           </li>
-                          <li><a href="#">Herbs and Seasoning </a>
+                          <li>
+                            <a href="#">Herbs and Seasoning </a>
                             <Box className="sub-categories">
                               <h3>Fruits </h3>
                               <ul>
-                                <li><a href="#">Exotic Fruits</a></li>
-                                <li><a href="#">Seasonal Fruits</a></li>
-                                <li><a href="#">Juices & Mixes</a></li>
+                                <li>
+                                  <a href="#">Exotic Fruits</a>
+                                </li>
+                                <li>
+                                  <a href="#">Seasonal Fruits</a>
+                                </li>
+                                <li>
+                                  <a href="#">Juices & Mixes</a>
+                                </li>
                               </ul>
                             </Box>
                           </li>
@@ -155,25 +224,53 @@ class Header extends Component {
                   )}
                 </Box>
               </Grid>
-              <Grid item xs={6} sm={6} md={6}>
-                <Box className="search-box">
-                  <TextField id="outlined-search" className="search" variant="outlined" InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <img src={searchIcon} alt="" />
-                      </InputAdornment>
-                    ),
-                  }} defaultValue="Search Your favorite veggies..." />
-                </Box>
-              </Grid>
-              <Grid item xs={6} sm={6} md={3}>
-                <Box display={'inline-flex'} justifyContent={'flex-end'} width={'100%'}>
-                  <Button variant="outlined" className="notification" startIcon={<img src={notificationIcon} alt="" />}>
+              {this.state.matches ? (
+                ""
+              ) : (
+                <Grid item xs={5} md={6} lg={6}>
+                  <Box className="search-box">
+                    <TextField
+                      id="outlined-search"
+                      className="search"
+                      variant="outlined"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <img src={searchIcon} alt="" />
+                          </InputAdornment>
+                        ),
+                      }}
+                      defaultValue="Search Your favorite veggies..."
+                    />
+                  </Box>
+                </Grid>
+              )}
+              <Grid item xs={3} md={3} lg={3}>
+                <Box
+                  display={"inline-flex"}
+                  justifyContent={"flex-end"}
+                  width={"100%"}
+                >
+                  <Button
+                    variant="outlined"
+                    className="notification"
+                    startIcon={<img src={notificationIcon} alt="" />}
+                  >
                     <p></p>
                   </Button>
                   <Link to={"/myCart"}>
-                    <Button variant="outlined" className="card" startIcon={<img src={cardIcon} alt="" />}>
-                      <p>{this.props?.cartData?.length ? this.props.cartData.length : <></>}</p>
+                    <Button
+                      variant="outlined"
+                      className="card"
+                      startIcon={<img src={cardIcon} alt="" />}
+                    >
+                      <p>
+                        {this.props?.cartData?.length ? (
+                          this.props.cartData.length
+                        ) : (
+                          <></>
+                        )}
+                      </p>
                     </Button>
                   </Link>
                 </Box>
@@ -185,8 +282,6 @@ class Header extends Component {
     );
   }
 }
-
-
 
 function mapStateToProps(state) {
   const { cartData } = state.home;

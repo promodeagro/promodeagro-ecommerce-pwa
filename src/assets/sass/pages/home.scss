@@ -457,9 +457,7 @@
     justify-content: center;
 
     .image {
-      display: flex;
-      width: 550px;
-      margin-bottom: 15px;
+      display: inline-flex;
     }
   }
 }

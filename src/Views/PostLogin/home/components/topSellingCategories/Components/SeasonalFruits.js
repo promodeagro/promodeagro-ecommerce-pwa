@@ -8,7 +8,7 @@ class SeasonalFruits extends Component {
   render() {
     const { productImg, priceIcon } = this.props;
     var settings = {
-      dots: true,
+      dots: false,
       infinite: false,
       speed: 500,
       slidesToShow: 5,

@@ -40,7 +40,7 @@ class FeaturedProducts extends Component {
             {data?.length &&
               data.slice(0, 5).map((item, index) => {
                 return (
-                  <Box className="product-box">
+                  <Box className="product-box" key={index}>
                     <Box className="sale">Sale 50%</Box>
                     <Box className="icon">
                       <TurnedInNotOutlinedIcon />
