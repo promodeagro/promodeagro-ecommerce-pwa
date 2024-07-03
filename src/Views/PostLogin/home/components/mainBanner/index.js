@@ -6,6 +6,7 @@ import uptoOffImg from "../../../../../assets/img/upto-off-img.png";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { Link } from "react-router-dom";
 
 class MainBanner extends Component {
   constructor(props) {
@@ -41,9 +42,9 @@ class MainBanner extends Component {
                         relax while we handle the delivery for you.
                       </Box>
                       <Box className="button">
-                        <Button>
+                        <Link to="/category">
                           Shop now <EastIcon />
-                        </Button>
+                        </Link>
                       </Box>
                     </Box>
                   </Grid>
@@ -74,9 +75,9 @@ class MainBanner extends Component {
                         relax while we handle the delivery for you.
                       </Box>
                       <Box className="button">
-                        <Button>
+                        <Link to="/category">
                           Shop now <EastIcon />
-                        </Button>
+                        </Link>
                       </Box>
                     </Box>
                   </Grid>
@@ -107,9 +108,9 @@ class MainBanner extends Component {
                         relax while we handle the delivery for you.
                       </Box>
                       <Box className="button">
-                        <Button>
+                        <Link to="/category">
                           Shop now <EastIcon />
-                        </Button>
+                        </Link>
                       </Box>
                     </Box>
                   </Grid>

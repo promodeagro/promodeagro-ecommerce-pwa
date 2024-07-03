@@ -17,6 +17,7 @@ import cardIcon from "../../assets/img/card-icon.png";
 import searchIcon from "../../assets/img/search-icon.png";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import status from "../../Redux/Constants";
 
 class Header extends Component {
   constructor(props) {
@@ -24,11 +25,23 @@ class Header extends Component {
     this.state = {
       CategoriesToggle: false,
       matches: window.matchMedia("(max-width: 900px)").matches,
+      cartList: [],
     };
   }
   componentDidMount() {
     const handler = (e) => this.setState({ matches: e.matches });
     window.matchMedia("(max-width: 900px)").addEventListener("change", handler);
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.cartItems.status !== this.props.cartItems.status &&
+      this.props.cartItems.status === status.SUCCESS &&
+      this.props.cartItems.data
+    ) {
+      this.setState({
+        cartList: this.props.cartItems.data.items,
+      });
+    }
   }
   handleClickCategoriesToggle = () => {
     this.setState({
@@ -89,19 +102,19 @@ class Header extends Component {
                   <Box className="categories">
                     <ul>
                       <li>
-                        <a href="#">Quick Links</a>
+                        <Link to="/category">Quick Links</Link>
                       </li>
                       <li>
-                        <a href="#">Exotic Fruits</a>
+                        <Link to="/category">Exotic Fruits</Link>
                       </li>
                       <li>
-                        <a href="#">Leafy Vegetables</a>
+                        <Link to="/category">Leafy Vegetables</Link>
                       </li>
                       <li>
-                        <a href="#">Fresh fruits</a>
+                        <Link to="/category">Fresh fruits</Link>
                       </li>
                       <li>
-                        <a href="#">Cuts & Sprouts</a>
+                        <Link to="/category">Cuts & Sprouts</Link>
                       </li>
                     </ul>
                   </Box>
@@ -264,13 +277,16 @@ class Header extends Component {
                       className="card"
                       startIcon={<img src={cardIcon} alt="" />}
                     >
-                      <p>
-                        {this.props?.cartData?.length ? (
-                          this.props.cartData.length
-                        ) : (
-                          <></>
-                        )}
-                      </p>
+                      {this.props?.cartData?.length ? (
+                        <p>{this.props.cartData.length}</p>
+                      ) : (
+                        <></>
+                      )}
+                      {this.state.cartList?.length ? (
+                        <p>{this.state.cartList.length}</p>
+                      ) : (
+                        <></>
+                      )}
                     </Button>
                   </Link>
                 </Box>
@@ -285,8 +301,9 @@ class Header extends Component {
 
 function mapStateToProps(state) {
   const { cartData } = state.home;
+  const { cartItems } = state.cartitem;
 
-  return { cartData };
+  return { cartData, cartItems };
 }
 
 const mapDispatchToProps = {};

@@ -77,7 +77,6 @@ h4,
 h5,
 h6 {
   margin: 0;
-
 }
 
 p {
@@ -132,25 +131,25 @@ p {
 
 button {
   &.common-btn {
-    background-color: #1F9151;
+    background-color: #1f9151;
     height: 46px;
     border-radius: 6px;
     font-weight: 500;
     line-height: 22px;
-    color: #FFFFFF;
+    color: #ffffff;
     font-size: 18px;
     box-shadow: none;
     text-transform: capitalize;
 
     &:hover {
-      background-color: #1F9151;
+      background-color: #1f9151;
       box-shadow: none;
     }
   }
 
   &.outline-common-btn {
-    border: 1px solid #1F9151;
-    color: #1F9151;
+    border: 1px solid #1f9151;
+    color: #1f9151;
     height: 46px;
     border-radius: 6px;
     text-transform: capitalize;
@@ -160,7 +159,7 @@ button {
     font-size: 14px;
 
     &:hover {
-      border: 1px solid #1F9151;
+      border: 1px solid #1f9151;
       box-shadow: none;
     }
 
@@ -172,14 +171,9 @@ button {
   .MuiCircularProgress-root {
     width: 14px !important;
     height: 14px !important;
-    color: #FFFFFF;
-
+    color: #ffffff;
   }
-
-
 }
-
-
 
 .common-symbol {
   display: flex;
@@ -189,16 +183,24 @@ button {
     width: 88px;
     height: 88px;
     border-radius: 100%;
-    background: linear-gradient(180deg, rgba(31, 145, 81, 0.2) 0%, rgba(31, 145, 81, 0) 100%, rgba(228, 229, 231, 0) 100%);
+    background: linear-gradient(
+      180deg,
+      rgba(31, 145, 81, 0.2) 0%,
+      rgba(31, 145, 81, 0) 100%,
+      rgba(228, 229, 231, 0) 100%
+    );
     border: 1px solid;
-    border-image-source: linear-gradient(180deg, #E4E5E7 0%, rgba(228, 229, 231, 0) 76.56%);
+    border-image-source: linear-gradient(
+      180deg,
+      #e4e5e7 0%,
+      rgba(228, 229, 231, 0) 76.56%
+    );
     padding: 14px;
   }
 
-
   .inner-box {
-    border: 1px solid var(--stroke-soft-200, #E2E4E9);
-    background-color: #FFFFFF;
+    border: 1px solid var(--stroke-soft-200, #e2e4e9);
+    background-color: #ffffff;
     height: 56px;
     width: 56px;
     border-radius: 100%;
@@ -212,7 +214,7 @@ button {
   position: absolute;
   top: 50%;
   left: 50%;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   transform: translate(-50%, -50%);
-  outline: none
+  outline: none;
 }

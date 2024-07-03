@@ -7,9 +7,7 @@ export const fetchHome = createAsyncThunk("home", async (params) => {
     let url = config.HOME;
     const response = await postLoginService.get(url, params);
     return response.data;
-    //   return batchsheet;
   } catch (error) {
     return error;
-    //   return batchsheet;
   }
 });

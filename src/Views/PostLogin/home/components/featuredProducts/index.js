@@ -9,15 +9,38 @@ import {
 import StarIcon from "@mui/icons-material/Star";
 import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
 import priceIcon from "../../../../../assets/img/price-icon.png";
+import noImage from "../../../../../assets/img/no-image.png";
 import { addDataInCart } from "../../../../../Redux/Home/HomeSlice";
+import { allProducts } from "../../../../../Redux/AllProducts/AllProductthunk";
 import { connect } from "react-redux";
 import _ from "lodash";
+import { Link } from "react-router-dom";
+import status from "../../../../../Redux/Constants";
+
 class FeaturedProducts extends Component {
   constructor(props) {
     super(props);
     this.state = {
       cartData: [],
+      productsData: [],
     };
+  }
+
+  componentDidMount() {
+    this.props.allProducts();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.allProductsData.status !== this.props.allProductsData.status &&
+      this.props.allProductsData.status === status.SUCCESS &&
+      this.props.allProductsData.data
+    ) {
+      console.log(this.props.allProductsData.data);
+      this.setState({
+        productsData: this.props.allProductsData.data,
+      });
+    }
   }
 
   handleAddToCart = (item) => {
@@ -32,13 +55,14 @@ class FeaturedProducts extends Component {
 
   render() {
     const { data } = this.props;
+    const { productsData } = this.state;
     return (
       <Box className="featured-products-container">
         <Container>
           <Box className="heading">Featured Products</Box>
           <Box className="products">
-            {data?.length &&
-              data.slice(0, 5).map((item, index) => {
+            {productsData?.length &&
+              productsData.slice(0, 5).map((item, index) => {
                 return (
                   <Box className="product-box" key={index}>
                     <Box className="sale">Sale 50%</Box>
@@ -46,29 +70,23 @@ class FeaturedProducts extends Component {
                       <TurnedInNotOutlinedIcon />
                     </Box>
                     <Box className="image">
-                      <img src={item?.image} alt="" />
+                      <Link to="/product-details">
+                        <img src={item?.image ? item?.image : noImage} alt="" />
+                      </Link>
                     </Box>
                     <Box className="name">
-                      <a href="#">{item?.category}</a>
+                      <Link to="/product-details">{item?.category}</Link>
                     </Box>
                     <Box className="price-ratting">
                       <Box className="price">
-                        <img src={priceIcon} alt="" /> {item?.price}{" "}
+                        <img src={priceIcon} alt="" /> {item?.price}
                         <span>20.99</span>
                       </Box>
                       <Box className="ratting">
-                        <StarIcon /> {item?.rating.rate}
+                        <StarIcon /> 4.5
                       </Box>
                     </Box>
-                    <Box className="select">
-                      <FormControl fullWidth>
-                        <NativeSelect defaultValue={10}>
-                          <option value={10}>1Kg</option>
-                          <option value={20}>500 Gm</option>
-                          <option value={30}>2Kg</option>
-                        </NativeSelect>
-                      </FormControl>
-                    </Box>
+                    <Box className="select">{item.unit}</Box>
                     <Box className="add-cart">
                       <Button
                         variant="outlined"
@@ -82,7 +100,7 @@ class FeaturedProducts extends Component {
               })}
           </Box>
           <Box className="load-more-btn">
-            <Button variant="outlined">Load More</Button>
+            <Link to="/category">Load More</Link>
           </Box>
         </Container>
       </Box>
@@ -92,10 +110,10 @@ class FeaturedProducts extends Component {
 
 function mapStateToProps(state) {
   const { homeData } = state.home;
-  console.log("home data", state.home);
-  return { homeData };
+  const { allProductsData } = state.allproducts;
+  return { allProductsData, homeData };
 }
 
-const mapDispatchToProps = { addDataInCart };
+const mapDispatchToProps = { allProducts, addDataInCart };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FeaturedProducts);
