@@ -20,12 +20,15 @@ function App(props) {
   return (
     <Router>
       <div className="app">
-        {/* {window.location.pathname !== "/auth/signup" &&
-          window.location.pathname !== "/auth/signin" &&
-          window.location.pathname !== "/auth/forgot-password" && <Header />} */}
-        <Header />
+        {window.location.pathname !== "/signup" &&
+          window.location.pathname !== "/signin" &&
+           <Header />}
         <MainContent />
-        <Footer />
+
+        {window.location.pathname !== "/signup" &&
+          window.location.pathname !== "/signin" &&
+          <Footer />}
+       
         <ToastContainer
           position="top-right"
           autoClose={5000}
