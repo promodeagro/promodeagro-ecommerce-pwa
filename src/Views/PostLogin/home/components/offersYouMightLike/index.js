@@ -3,12 +3,12 @@ import { Box, Container, Grid } from "@mui/material";
 import offersBanner1 from "../../../../../assets/img/offers-banner1.png";
 import offersBanner2 from "../../../../../assets/img/offers-banner2.png";
 import offersBanner3 from "../../../../../assets/img/offers-banner3.png";
+import { Link } from "react-router-dom";
 
 class OffersYouMightLike extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
 
   render() {
@@ -20,24 +20,24 @@ class OffersYouMightLike extends Component {
             <Grid container spacing={2}>
               <Grid item xs={12} sm={12} md={6}>
                 <Box className="image">
-                  <a href="#">
+                  <Link to="/category">
                     <img src={offersBanner1} alt="" />
-                  </a>
+                  </Link>
                 </Box>
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
                 <Box className="image">
-                  <a href="#">
+                  <Link to="/category">
                     <img src={offersBanner2} alt="" />
-                  </a>
+                  </Link>
                 </Box>
               </Grid>
               <Grid item xs={12} sm={12} md={12}>
                 <Box className="d-flex w-100 justify-content-center">
                   <Box className="image">
-                    <a href="#">
+                    <Link to="/category">
                       <img src={offersBanner3} alt="" />
-                    </a>
+                    </Link>
                   </Box>
                 </Box>
               </Grid>

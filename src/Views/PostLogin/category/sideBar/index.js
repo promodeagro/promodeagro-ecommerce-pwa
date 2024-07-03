@@ -69,7 +69,7 @@ class Category extends Component {
             <h3>Rating</h3>
             <ul className="checkbox">
               <li><Checkbox /> <Box className="star"><StarIcon /><StarIcon /><StarIcon /><StarIcon /><StarIcon /></Box> 5.0</li>
-              <li><Checkbox checked /> <Box className="star"><StarIcon /><StarIcon /><StarIcon /><StarIcon /><StarIcon className="gray" /></Box> 4.0 & up</li>
+              <li><Checkbox /> <Box className="star"><StarIcon /><StarIcon /><StarIcon /><StarIcon /><StarIcon className="gray" /></Box> 4.0 & up</li>
               <li><Checkbox /> <Box className="star"><StarIcon /><StarIcon /><StarIcon /><StarIcon className="gray" /><StarIcon className="gray" /></Box> 3.0 & up</li>
               <li><Checkbox /> <Box className="star"><StarIcon /><StarIcon /><StarIcon className="gray" /><StarIcon className="gray" /><StarIcon className="gray" /></Box> 2.0 & up</li>
             </ul>
@@ -87,7 +87,6 @@ class Category extends Component {
             <h3>Country of Origin</h3>
             <RadioGroup
               aria-labelledby="demo-radio-buttons-group-label"
-              defaultValue="india"
               name="radio-buttons-group"
               className="radio-group"
             >

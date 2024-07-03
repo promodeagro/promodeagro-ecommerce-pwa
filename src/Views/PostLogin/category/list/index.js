@@ -148,7 +148,10 @@ class List extends Component {
               let itemId = cartItemsData?.find((x) => x.ProductId === item.id);
               return (
                 <Box className="product-box" key={item.id}>
-                  <Box className="sale">Sale 50%</Box>
+                  {item.discount && (
+                    <Box className="sale">Sale {item.discount}%</Box>
+                  )}
+
                   <Box className="icon">
                     <TurnedInNotOutlinedIcon />
                   </Box>
@@ -163,10 +166,13 @@ class List extends Component {
                   <Box className="price-ratting">
                     <Box className="price">
                       <img src={priceIcon} alt="" /> {item.price}
+                      <span>{item.mrp}</span>
                     </Box>
-                    <Box className="ratting">
-                      <StarIcon /> 4.5
-                    </Box>
+                    {item.ratings && (
+                      <Box className="ratting">
+                        <StarIcon /> {item.ratings}
+                      </Box>
+                    )}
                   </Box>
                   <Box className="select">{item.unit}</Box>
                   {addedProducts.includes(item.id) || itemId ? (

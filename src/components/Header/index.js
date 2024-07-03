@@ -147,7 +147,7 @@ class Header extends Component {
                     className="categories-toggle"
                     onClick={this.handleClickCategoriesToggle}
                   >
-                    Shop by Categories{" "}
+                    Shop by Categories
                     <span>
                       {CategoriesToggle ? (
                         <KeyboardArrowUpIcon />
@@ -164,7 +164,7 @@ class Header extends Component {
                           <li>
                             <a href="#">Cut & peeled Veggies </a>
                             <Box className="sub-categories">
-                              <h3>Fruits </h3>
+                              <h3>Fruits</h3>
                               <ul>
                                 <li>
                                   <a href="#">Exotic Fruits</a>
