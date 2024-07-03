@@ -14,7 +14,7 @@
         .rating {
             margin: 28px 0px 16px 0px;
 
-    
+
 
             .rating-info {
                 font-size: 14px;
@@ -31,14 +31,15 @@
         }
 
         .thank-you-message {
-         
-                font-size: 14px;
-                line-height: 24px;
-                color: #4B4E4C80;
-                width: 80%;
-                strong{
-                    color: #161D25;
-                }
+
+            font-size: 14px;
+            line-height: 24px;
+            color: #4B4E4C80;
+            width: 80%;
+
+            strong {
+                color: #161D25;
+            }
         }
 
         .order-btn {
@@ -49,16 +50,72 @@
                 font-size: 16px;
                 line-height: 22px;
                 font-weight: 500;
-width: auto;
-margin-right: 20px;
+                width: auto;
+                margin-right: 20px;
+
                 svg {
                     font-size: 12px !important;
                 }
             }
-            .trach-order-btn{
+
+            .trach-order-btn {
                 width: auto;
             }
         }
     }
 
+}
+
+
+@media only screen and (max-width: 600px) {
+    .order-placed-container {
+        .order-placed-message {
+            width: 100%;
+
+            .thank-you-message {
+                width: 100%;
+                text-align: justify;
+            }
+
+            .order-btn {
+                display: block;
+            }
+
+            .back-shopping-btn {
+                width: 100% !important;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 976px) {
+    .order-placed-container {
+        .order-placed-message {
+            width: 75%;
+
+
+
+            .back-shopping-btn {
+                width: 100% !important;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 576px) {
+    .order-placed-container {
+        .order-placed-message {
+            width: 100%;
+        }
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .order-placed-container {
+        .order-placed-message {
+            .rating {
+                display: block;
+            }
+        }
+    }
 }
