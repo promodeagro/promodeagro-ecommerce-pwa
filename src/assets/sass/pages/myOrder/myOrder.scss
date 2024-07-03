@@ -34,7 +34,7 @@
 
         .order-status-collapsed {
             padding: 6px;
-            height: 104px;
+            min-height: 104px;
             border: 1px solid #BFBFBF;
             display: flex;
             align-items: center;
@@ -271,6 +271,7 @@
                 background-color: #1F91511A;
                 overflow: hidden;
                 position: relative;
+                max-width: 300px;
 
                 .title {
                     margin: 10px 0px;
@@ -369,3 +370,10 @@
     }
 }
 
+@media only screen and (max-width: 400px) {
+    .more-order-details {
+        Button {
+            width: 100% !important;
+        }
+    }
+}

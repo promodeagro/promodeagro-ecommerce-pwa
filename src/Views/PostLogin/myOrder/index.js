@@ -60,7 +60,7 @@ class MyOrder extends Component {
             </span>
             <Box className="order-status-collapsed" data-aos="zoom-in-right">
               <Grid container spacing={1} alignItems={"center"}>
-                <Grid item xs={3}>
+                <Grid item xs={12} lg={3} md={6} sm={6}>
                   <Box className="date-time-container order-progress">
                     <AccessTimeIcon />
                     <Box className="d-block">
@@ -69,7 +69,7 @@ class MyOrder extends Component {
                     </Box>
                   </Box>
                 </Grid>
-                <Grid item xs={5}>
+                <Grid item xs={12} lg={5} md={6} sm={6}>
                   <Box className="order-status-bar">
                     <Stepper activeStep={1} alternativeLabel>
                       {steps.map((label, index) => (
@@ -82,8 +82,8 @@ class MyOrder extends Component {
                     </Stepper>
                   </Box>
                 </Grid>
-                <Grid item xs={1}></Grid>
-                <Grid item xs={2}>
+                <Grid item xs={12} lg={1} md={6} sm={6}></Grid>
+                <Grid item xs={12} lg={2} md={6} sm={6}>
                   <Box className="order-id-container order-progress">
                     <span className="d-block title">Order ID :</span>
                     <Box className="d-flex align-items-center">
@@ -92,7 +92,7 @@ class MyOrder extends Component {
                     </Box>
                   </Box>
                 </Grid>
-                <Grid item xs={1}>
+                <Grid item xs={12} lg={1} md={12} sm={12}>
                   <Box className="collapsed-arrow">
                     <IconButton aria-label="arrow">
                       <KeyboardArrowDownIcon />
@@ -105,8 +105,8 @@ class MyOrder extends Component {
               <span className="d-block order-place-time">
                 Ordered 2hrs ago{" "}
               </span>
-              <Grid container spacing={12}>
-                <Grid item xs={4}>
+              <Grid container spacing={{ lg: 12, md: 4, sm: 4, xs: 4 }}>
+                <Grid item xs={12} lg={4} md={4} sm={6}>
                   <Box className="delivery-address">
                     <h3 className="d-block">Delivery Address</h3>
                     <span className="d-block info">Mubashir Nesar</span>
@@ -117,7 +117,7 @@ class MyOrder extends Component {
                     <span className="d-block info">Ph: 988821111</span>
                   </Box>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={12} lg={4} md={4} sm={6}>
                   <Box className="delivery-address">
                     <h3 className="d-block">Payment Information</h3>
                     <span className="d-block info">
@@ -130,7 +130,7 @@ class MyOrder extends Component {
                     </span>
                   </Box>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={12} lg={4} md={4} sm={12}>
                   <Box className="order-summary-container">
                     <span className="d-block title">Order Summary</span>
                     <Box className="d-flex justify-content-between">

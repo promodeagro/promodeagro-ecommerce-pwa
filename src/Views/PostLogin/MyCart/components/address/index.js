@@ -87,7 +87,7 @@ class Address extends Component {
                   </p>
                 </Box>
                 <Grid container spacing={4} alignItems={"center"}>
-                  <Grid item xs={4}>
+                  <Grid item xs={12} lg={4} md={6} sm={6}>
                     <Box
                       className="address-card-container active"
                       data-aos="zoom-in-down"
@@ -132,7 +132,7 @@ class Address extends Component {
                       </Box>
                     </Box>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={12} lg={4} md={6} sm={6}>
                     <Box
                       className="address-card-container "
                       data-aos="zoom-in-down"
@@ -172,7 +172,7 @@ class Address extends Component {
                       />
                     </Box>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={12} lg={4} md={12} sm={12}>
                     <Link to={"/myCart/address/add-new-address"}>
                       <Button
                         variant="outlined"
@@ -199,11 +199,11 @@ class Address extends Component {
           ) : activeStep === 1 ? (
             <Box className="select-delivery-option-container">
               <Grid container spacing={2} data-aos="zoom-in-down">
-                <Grid item xs={8}>
+                <Grid item xs={12} lg={8} md={12} sm={12}>
                   <Box className="delivery-option-details">
                     <h3>Select a delivery option</h3>
                     <Box className="delivery-inner-box">
-                      <Box className="d-flex align-items-center">
+                      <Box className="d-flex align-items-center flex-wrap">
                         <Box className="product-img-box">
                           <img src={productImg} alt="" />
                         </Box>
@@ -244,7 +244,7 @@ class Address extends Component {
                     </Box>
                   </Box>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={12} lg={4} md={12} sm={12}>
                   <Box className="order-summary-container">
                     <h3 className="order-title">Order Summary</h3>
                     <Box className="product-list d-flex align-items-center justify-content-between">
@@ -319,7 +319,7 @@ class Address extends Component {
                     </Box>
                   </Box>
                   <Grid container spacing={2} marginTop={"8px"}>
-                    <Grid item xs={9}>
+                    <Grid item xs={12} lg={9} md={9} sm={9}>
                       <label className="d-block form-field-title">
                         Name on card
                       </label>
@@ -331,7 +331,7 @@ class Address extends Component {
                         placeholder="Olivia Rhye"
                       />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={12} lg={3} md={3} sm={3}>
                       <label className="d-block form-field-title">Expiry</label>
                       <TextField
                         id="outlined-basic"
@@ -341,7 +341,7 @@ class Address extends Component {
                         placeholder="06 / 2024"
                       />
                     </Grid>
-                    <Grid item xs={9}>
+                    <Grid item xs={12} lg={9} md={9} sm={9}>
                       <label className="d-block form-field-title">
                         Card number
                       </label>
@@ -353,7 +353,7 @@ class Address extends Component {
                         placeholder="Olivia Rhye"
                       />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={12} lg={3} md={3} sm={3}>
                       <label className="d-block form-field-title">CVV</label>
                       <TextField
                         id="outlined-basic"
@@ -503,14 +503,14 @@ class Address extends Component {
                     name="row-radio-buttons-group"
                   >
                     <Grid container spacing={2}>
-                      <Grid item xs={4}>
+                      <Grid item xs={12} lg={4} md={4} sm={6}>
                         <FormControlLabel
                           value="afternoonSlot"
                           control={<Radio />}
                           label="2:00 PM - 4:00 PM"
                         />
                       </Grid>
-                      <Grid item xs={4}>
+                      <Grid item xs={12} lg={4} md={4} sm={6}>
                         <FormControlLabel
                           value="eveningSlot"
                           control={<Radio />}
