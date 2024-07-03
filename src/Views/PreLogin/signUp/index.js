@@ -10,6 +10,7 @@ import {
   Button,
   TextField,
   InputAdornment,
+  FormHelperText
 } from '@mui/material';
 import addSymbol from '../../../assets/img/add-symbol.svg';
 
@@ -59,7 +60,7 @@ const SignUp = ({ signUp, signupData }) => {
   useEffect(() => {
     if (
       signupData.status === status.SUCCESS &&
-      signupData.data
+      signupData.data && formData.isSubmit
     ) {
       setFormData({
         ...formData,
@@ -155,7 +156,13 @@ const SignUp = ({ signUp, signupData }) => {
                   value={name}
                   onChange={handleValueChange}
                   name="name"
+                  error={!errorData.name.isValid && isSubmit}
                 />
+                {isSubmit && (
+                  <FormHelperText error>
+                    {errorData?.name?.message}
+                  </FormHelperText>
+                )}
                 <p>{isSubmit && errorData.name.message}</p>
               </Box>
               <Box className="number-input">
@@ -170,13 +177,19 @@ const SignUp = ({ signUp, signupData }) => {
                   name="mobileNumber"
                   value={mobileNumber}
                   onChange={handleValueChange}
+                  error={!errorData.mobileNumber.isValid && isSubmit}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">+91</InputAdornment>
                     ),
                   }}
                 />
-                <p>{isSubmit && errorData.mobileNumber.message}</p>
+                {isSubmit && (
+                  <FormHelperText error>
+                    {errorData?.mobileNumber?.message}
+                  </FormHelperText>
+                )}
+
               </Box>
               <Box className="number-input">
                 <label className="d-block">
@@ -190,9 +203,14 @@ const SignUp = ({ signUp, signupData }) => {
                   type="password"
                   name="password"
                   value={password}
+                  error={!errorData.password.isValid && isSubmit}
                   onChange={handleValueChange}
                 />
-                <p>{isSubmit && errorData.password.message}</p>
+                {isSubmit && (
+                  <FormHelperText error>
+                    {errorData?.password?.message}
+                  </FormHelperText>
+                )}
               </Box>
               <Box className="number-input">
                 <label className="d-block">
@@ -206,9 +224,15 @@ const SignUp = ({ signUp, signupData }) => {
                   name="cnfPassword"
                   value={cnfPassword}
                   onChange={handleValueChange}
+                  error={!errorData.cnfPassword.isValid && isSubmit}
                   type="password"
                 />
-                <p>{isSubmit && errorData.cnfPassword.message}</p>
+                {isSubmit && (
+                  <FormHelperText error>
+                    {errorData?.cnfPassword?.message}
+                  </FormHelperText>
+                )}
+
               </Box>
               <Button
                 variant="contained"
