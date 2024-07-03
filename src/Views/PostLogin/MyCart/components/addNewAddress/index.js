@@ -36,7 +36,7 @@ class AddNewAddress extends Component {
             <h2>Add new address</h2>
             <Box className="form-info">
               <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={12} lg={6} md={6} sm={6}>
                   <label className="d-block form-field-title">Name</label>
                   <TextField
                     id="outlined-basic"
@@ -46,7 +46,7 @@ class AddNewAddress extends Component {
                     placeholder="John doe"
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} lg={6} md={6} sm={6}>
                   <label className="d-block form-field-title">Name</label>
                   <TextField
                     id="outlined-basic"
@@ -68,11 +68,12 @@ class AddNewAddress extends Component {
                     rows={4}
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} lg={6} md={6} sm={6}>
                   <label className="d-block form-field-title">Contact</label>
                   <OutlinedInput
                     className="form-text-field"
                     type="number"
+                    fullWidth
                     id="outlined-adornment-amount"
                     startAdornment={
                       <InputAdornment position="start">
@@ -95,7 +96,7 @@ class AddNewAddress extends Component {
                     placeholder="+91 0000 0000000"
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} lg={6} md={6} sm={6}>
                   <label className="d-block form-field-title">Country</label>
                   <Select
                     className="common-select-box"
@@ -109,7 +110,7 @@ class AddNewAddress extends Component {
                     <MenuItem value={30}>Thirty</MenuItem>
                   </Select>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} lg={6} md={6} sm={6}>
                   <label className="d-block form-field-title">Zip code</label>
                   <TextField
                     id="outlined-basic"
@@ -120,7 +121,7 @@ class AddNewAddress extends Component {
                     type="number"
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} lg={6} md={6} sm={6}>
                   <Button
                     variant="contained"
                     fullWidth
@@ -130,7 +131,7 @@ class AddNewAddress extends Component {
                     Current Location
                   </Button>
                 </Grid>
-                <Grid item xs={6} marginTop={"25px"}>
+                <Grid item xs={6} lg={6} md={6} sm={6} marginTop={"25px"}>
                   <Button
                     variant="outlined"
                     fullWidth
@@ -139,7 +140,7 @@ class AddNewAddress extends Component {
                     Cancel
                   </Button>
                 </Grid>
-                <Grid item xs={6} marginTop={"25px"}>
+                <Grid item xs={6} lg={6} md={6} sm={6} marginTop={"25px"}>
                   <Button variant="contained" fullWidth className="common-btn ">
                     Save
                   </Button>

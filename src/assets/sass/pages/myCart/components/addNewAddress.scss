@@ -81,3 +81,21 @@
         }
     }
 }
+@media only screen and (max-width: 1200px) {
+    .add-new-address-container {
+
+    
+        .address-details {
+            width: 75%;
+        }
+    }
+}
+@media only screen and (max-width: 796px) {
+    .add-new-address-container {
+
+    
+        .address-details {
+            width: 100%;
+        }
+    }
+}
