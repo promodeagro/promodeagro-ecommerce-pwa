@@ -7,7 +7,7 @@ import RecentlyViewedItems from "./recentlyViewedItems";
 import { allProducts } from "../../../Redux/AllProducts/AllProductthunk";
 import { fetchCartItems } from "../../../Redux/Cart/CartThunk";
 import status from "../../../Redux/Constants";
-import { Loader } from "Views/Utills/helperFunctions";
+import { Loader, loginDetails } from "Views/Utills/helperFunctions";
 class Category extends Component {
   constructor(props) {
     super(props);
@@ -17,7 +17,9 @@ class Category extends Component {
     };
   }
   componentDidMount() {
-    const items = JSON.parse(localStorage.getItem("login"));
+
+    let items = loginDetails()
+
     this.props.fetchCartItems({
       userId: items.userId
     })
@@ -31,6 +33,7 @@ class Category extends Component {
       this.props.allProductsData.status === status.SUCCESS &&
       this.props.allProductsData.data
     ) {
+      debugger
       this.setState({
         productsData: this.props.allProductsData.data
       })

@@ -10,7 +10,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import productCartImg from "../../../assets/img/product-cart-img.png";
 import { connect } from "react-redux"
 import status from "../../../Redux/Constants";
-import { Loader } from "../../../Views/Utills/helperFunctions";
+import { Loader ,loginDetails} from "../../../Views/Utills/helperFunctions";
 import _ from "lodash"
 class MyCart extends Component {
   constructor(props) {
@@ -22,14 +22,14 @@ class MyCart extends Component {
 
   componentDidMount() {
 
-    const items = JSON.parse(localStorage.getItem("login"));
+    const items =loginDetails()
     this.props.fetchCartItems({
       userId: items.userId
     })
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const items = JSON.parse(localStorage.getItem("login"));
+    const items = loginDetails()
     if (
       prevProps.cartItems.status !==
       this.props.cartItems.status &&
@@ -72,7 +72,7 @@ class MyCart extends Component {
 
 
   handleQuantityChange(id, increment, productQuantity) {
-    const items = JSON.parse(localStorage.getItem("login"));
+    const items = loginDetails()
     productQuantity = productQuantity + increment
     if (productQuantity != 0) {
       this.props.updateItemToCart({
@@ -200,7 +200,7 @@ class MyCart extends Component {
                       <Box className="d-flex align-items-ceneter btn-group">
                         <Button onClick={() => {
                           console.log("item", item);
-                          const items = JSON.parse(localStorage.getItem("login"));
+                          const items = loginDetails()
                           this.props.deleteItemToCart({
                             userId: items.userId,
                             productId: item.ProductId,

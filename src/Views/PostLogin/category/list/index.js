@@ -7,6 +7,7 @@ import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
 import priceIcon from "../../../../assets/img/price-icon.png";
 import status from "../../../../Redux/Constants";
 import _ from "lodash";
+import { loginDetails } from "../../../Utills/helperFunctions";
 
 class List extends Component {
   constructor(props) {
@@ -27,7 +28,9 @@ class List extends Component {
         addedProducts: [],
         quantities: {}
       });
-      const items = JSON.parse(localStorage.getItem("login"));
+      const items = loginDetails()
+      // const items = loginDetails()
+      debugger
       this.props.fetchCartItems({
         userId: items.userId
       });
@@ -42,7 +45,7 @@ class List extends Component {
         addedProducts: [],
         quantities: {}
       });
-      const items = JSON.parse(localStorage.getItem("login"));
+      const items = loginDetails()
       this.props.fetchCartItems({
         userId: items.userId
       });
@@ -57,7 +60,7 @@ class List extends Component {
         addedProducts: [],
         quantities: {}
       });
-      const items = JSON.parse(localStorage.getItem("login"));
+      const items = loginDetails()
       this.props.fetchCartItems({
         userId: items.userId
       });
@@ -65,7 +68,7 @@ class List extends Component {
   }
 
   handleAddToCart(id) {
-    const items = JSON.parse(localStorage.getItem("login"));
+    const items = loginDetails()
     this.props.addItemToCart({
       userId: items.userId,
       productId: id,
@@ -76,7 +79,7 @@ class List extends Component {
   }
 
   handleQuantityChange(id, increment, productQuantity) {
-    const items = JSON.parse(localStorage.getItem("login"));
+    const items = loginDetails()
     let cloneQuantities = _.cloneDeep(this.state.quantities);
 
     if (!productQuantity) {

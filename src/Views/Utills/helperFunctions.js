@@ -104,59 +104,63 @@ export const ValidationEngine = {
 
 
 export const Loader = {
-    commonLoader() {
-        return (
-            <Box className="d-flex align-items-center justify-content-center common-loader">
-                <CircularProgress />
-            </Box>
-        );
-    },
+  commonLoader() {
+    return (
+      <Box className="d-flex align-items-center justify-content-center common-loader">
+        <CircularProgress />
+      </Box>
+    );
+  },
 };
 
 
 export const ErrorMessages = {
-    error: (message) =>
-      toast.error(message, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      }),
-    success: (message) =>
-      toast.success(message, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      }),
-    info: (message) =>
-      toast.info(message, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      }),
-  };
+  error: (message) =>
+    toast.error(message, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    }),
+  success: (message) =>
+    toast.success(message, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    }),
+  info: (message) =>
+    toast.info(message, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    }),
+};
 
+export const loginDetails = () => {
+  const items = JSON.parse(localStorage.getItem("login"));
+  return items;
 
+}
 
 
 
 
 
 export const pathFile = {
-    // dashboard: "DashBoard",
-  
+  // dashboard: "DashBoard",
+
 };
