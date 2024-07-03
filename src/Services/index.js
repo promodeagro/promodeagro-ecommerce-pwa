@@ -1,6 +1,6 @@
 import axios from "axios";
 import config from "../Views/Config";
-
+import { loginDetails } from "../Views/Utills/helperFunctions";
 
 
 const service = axios.create({
@@ -11,6 +11,10 @@ const service = axios.create({
 service.interceptors.request.use(
     (request) => {
 
+        const token = loginDetails() // Fetch token from local storage or state
+        if (token) {
+            request.headers['Authorization'] = `Bearer ${token.token}`;
+        }
         return request;
     },
     (error) => {
