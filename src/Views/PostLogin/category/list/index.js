@@ -124,11 +124,11 @@ class List extends Component {
       <Box className="listing-container">
         <Box className="heading">
           <Grid container spacing={2} alignItems={"center"}>
-            <Grid item xs={6} sm={6} md={6}>
+            <Grid item xs={12} sm={12} md={6} lg={6}>
               <h2>Leafy Vegetable</h2>
             </Grid>
-            <Grid item xs={6} sm={6} md={6}>
-              <Box className="d-flex w-100 justify-content-end">
+            <Grid item xs={12} sm={12} md={6} lg={6}>
+              <Box className="d-flex w-100 justify-content-end flex-wrap">
                 <Box className="sort-by">
                   <FormControl fullWidth>
                     <NativeSelect
@@ -164,7 +164,9 @@ class List extends Component {
                   return (
                     <Box className="product-box" key={item.id}>
                       {item.savingsPercentage && (
-                        <Box className="sale">Sale {item.savingsPercentage}%</Box>
+                        <Box className="sale">
+                          Sale {item.savingsPercentage}%
+                        </Box>
                       )}
 
                       <Box className="icon">
