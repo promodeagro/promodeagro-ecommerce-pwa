@@ -376,6 +376,42 @@
       text-transform: capitalize;
     }
   }
+  .number-input-container {
+    display: flex;
+
+    .symbol {
+        width: 78px;
+        border: 1px solid #1F9151;
+        background-color: #1F9151;
+        height: 44px;
+        cursor: pointer;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #FFFFFF;
+        border-radius: 4px 0px 0px 4px;
+
+        &:last-child {
+            border-radius: 0px 4px 4px 0px;
+        }
+    }
+
+    .Number {
+        width: 78px;
+        border: 1px solid #1F9151;
+        background-color: #FFFFFF;
+        height: 44px;
+        font-size: 16px;
+        line-height: 24px;
+        color: #1F9151;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 500;
+    }
+
+}
 }
 
 .service-container {
