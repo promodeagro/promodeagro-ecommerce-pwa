@@ -37,6 +37,13 @@ const Views = () => {
             </>
           )}
 
+{!isLoggedIn && (
+            <>
+              <Route path={`/`} element={<Navigate to="/signin" replace />} />
+            </>
+          )}
+
+
           {/* Routes for authenticated and unauthenticated users */}
           <Route exact path={`/`} element={<Home />} />
           <Route exact path={`/category`} element={<Category />} />

@@ -5,7 +5,14 @@ import {
   FormControl,
   NativeSelect,
   Button,
+  CircularProgress
 } from "@mui/material";
+import {
+  addItemToCart,
+  fetchCartItems,
+  updateItemToCart,
+  deleteItemToCart,
+} from "../../../../../Redux/Cart/CartThunk";
 import StarIcon from "@mui/icons-material/Star";
 import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
 import priceIcon from "../../../../../assets/img/price-icon.png";
@@ -16,6 +23,7 @@ import { connect } from "react-redux";
 import _ from "lodash";
 import { Link } from "react-router-dom";
 import status from "../../../../../Redux/Constants";
+import { loginDetails } from "Views/Utills/helperFunctions";
 
 class FeaturedProducts extends Component {
   constructor(props) {
@@ -23,39 +31,131 @@ class FeaturedProducts extends Component {
     this.state = {
       cartData: [],
       productsData: [],
+      cartList: [],
+      dataId: ""
     };
   }
 
   componentDidMount() {
+    const items = loginDetails();
+    this.props.fetchCartItems({
+      userId: items.userId,
+    });
     this.props.allProducts();
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const items = loginDetails();
+
     if (
       prevProps.allProductsData.status !== this.props.allProductsData.status &&
       this.props.allProductsData.status === status.SUCCESS &&
       this.props.allProductsData.data
     ) {
-      console.log(this.props.allProductsData.data);
       this.setState({
         productsData: this.props.allProductsData.data,
       });
     }
+
+
+    if (
+      prevProps.additems.status !== this.props.additems.status &&
+      this.props.additems.status === status.SUCCESS &&
+      this.props.additems.data
+    ) {
+
+      this.props.fetchCartItems({
+        userId: items.userId,
+      });
+      this.setState({
+        dataId: ""
+      })
+    }
+
+    if (
+      prevProps.updateItems.status !== this.props.updateItems.status &&
+      this.props.updateItems.status === status.SUCCESS &&
+      this.props.updateItems.data
+    ) {
+
+      this.props.fetchCartItems({
+        userId: items.userId,
+      });
+      this.setState({
+        dataId: ""
+      })
+    }
+
+    if (
+      prevProps.deleteItems.status !== this.props.deleteItems.status &&
+      this.props.deleteItems.status === status.SUCCESS &&
+      this.props.deleteItems.data
+    ) {
+
+      this.props.fetchCartItems({
+        userId: items.userId,
+      });
+      this.setState({
+        dataId: ""
+      })
+    }
+
+    if (
+      prevProps.cartItems.status !==
+      this.props.cartItems.status &&
+      this.props.cartItems.status === status.SUCCESS &&
+      this.props.cartItems.data
+    ) {
+
+      this.setState({
+        cartList: this.props.cartItems.data.items
+      })
+      this.setState({
+        dataId: ""
+      })
+
+    }
   }
 
-  handleAddToCart = (item) => {
-    const { cartData } = this.state;
-    let temp = _.cloneDeep(cartData);
-    temp.push(item);
-    this.props.addDataInCart(item);
-    this.setState({
-      cartData: temp,
+  handleAddToCart = (id) => {
+    const items = loginDetails();
+    this.props.addItemToCart({
+      userId: items.userId,
+      productId: id,
+      quantity: "1",
     });
+    this.setState({
+      dataId: id
+    })
   };
+
+  handleQuantityChange(id, increment, productQuantity) {
+    const items = loginDetails()
+    this.setState({
+      dataId: id
+    })
+    productQuantity = productQuantity + increment
+    if (productQuantity != 0) {
+      this.props.updateItemToCart({
+        userId: items.userId,
+        productId: id,
+        quantity: productQuantity.toString(),
+      });
+    } else {
+
+      this.props.deleteItemToCart({
+        userId: items.userId,
+        productId: id,
+      });
+    }
+
+  }
+
+
 
   render() {
     const { data } = this.props;
-    const { productsData } = this.state;
+    const { productsData, cartList } = this.state;
     return (
       <Box className="featured-products-container">
         <Container>
@@ -63,6 +163,7 @@ class FeaturedProducts extends Component {
           <Box className="products">
             {productsData?.length &&
               productsData.slice(0, 5).map((item, index) => {
+                let itemId = cartList?.find((x) => x.ProductId === item.id);
                 return (
                   <Box className="product-box" key={index}>
                     <Box className="sale">Sale 50%</Box>
@@ -87,14 +188,77 @@ class FeaturedProducts extends Component {
                       </Box>
                     </Box>
                     <Box className="select">{item.unit}</Box>
-                    <Box className="add-cart">
-                      <Button
-                        variant="outlined"
-                        onClick={() => this.handleAddToCart(item)}
-                      >
-                        Add to cart
-                      </Button>
-                    </Box>
+                    {itemId ? (
+                      <Box className="number-input-container">
+                        {itemId && itemId.Quantity !== 0 ? (
+                          <Box
+                            className="symbol"
+                            onClick={() => {
+                              if (itemId?.ProductId) {
+                                let d = itemId.Quantity;
+                                this.handleQuantityChange(
+                                  itemId.ProductId,
+                                  -1,
+                                  Number(d)
+                                );
+                              } else {
+                                this.handleQuantityChange(item.id, -1);
+                              }
+                            }}
+                          >
+                            -
+                          </Box>
+                        ) : (
+                          <></>
+                        )}
+
+                        <Box className="Number">
+                          {
+                            itemId?.Quantity
+                          }
+                        </Box>
+                        <Box
+                          className="symbol"
+                          onClick={() => {
+                            if (itemId?.ProductId) {
+                              let d = itemId.Quantity;
+                              this.handleQuantityChange(
+                                itemId.ProductId,
+                                1,
+                                Number(d)
+                              );
+                            } else {
+                              this.handleQuantityChange(item.id, 1);
+                            }
+                          }}
+                        >
+                          +
+                        </Box>
+                      </Box>
+                    ) : (
+                      <Box className="add-cart">
+                        <Button
+                          variant="outlined"
+                          onClick={() => {
+                            this.handleAddToCart(item.id);
+                          }}
+                          disabled={
+                            this.props.additems.status == status.IN_PROGRESS && item.id == this.state.dataId
+                          }
+
+
+
+                        >
+                          {this.props.additems.status == status.IN_PROGRESS && item.id == this.state.dataId ? "loader" : "Add to cart"}
+                        </Button>
+                      </Box>
+                    )}
+
+
+
+
+
+
                   </Box>
                 );
               })}
@@ -111,9 +275,18 @@ class FeaturedProducts extends Component {
 function mapStateToProps(state) {
   const { homeData } = state.home;
   const { allProductsData } = state.allproducts;
-  return { allProductsData, homeData };
+  const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
+  return { allProductsData, homeData, additems, cartItems, updateItems, deleteItems };
 }
 
-const mapDispatchToProps = { allProducts, addDataInCart };
+const mapDispatchToProps = {
+  allProducts,
+  addItemToCart,
+  fetchCartItems,
+  updateItemToCart,
+  deleteItemToCart,
+
+
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(FeaturedProducts);
