@@ -238,7 +238,7 @@ class SideBar extends Component {
               </li>
             </ul>
           </Box>
-          <Box className="filter">
+          {/* <Box className="filter">
             <h3>Country of Origin</h3>
             <RadioGroup
               aria-labelledby="country-origin-radio-group-label"
@@ -341,7 +341,7 @@ class SideBar extends Component {
                 300 - 600 gm.
               </li>
             </ul>
-          </Box>
+          </Box> */}
         </Box>
       </Box>
     );
