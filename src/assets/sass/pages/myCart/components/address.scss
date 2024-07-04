@@ -523,7 +523,10 @@
         .modal-body {
             .days-slot-tab {
                 padding: 24px 32px 15px;
-
+                .css-jpln7h-MuiTabs-scroller{
+                    overflow-x: auto !important;
+                    padding-bottom: 10px;
+                }
                 .css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
                     height: 42px;
                     border: 1px solid #CDCDCD;
@@ -561,7 +564,9 @@
                 padding: 0px 32px;
                 background-color: #EDEDEDCC;
                 opacity: 80%;
-
+                .css-jpln7h-MuiTabs-scroller{
+                    overflow-x: auto !important;
+                }
                 .css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
                     padding: 0px;
                     margin-right: 25px;

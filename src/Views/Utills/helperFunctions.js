@@ -106,7 +106,7 @@ export const ValidationEngine = {
 export const Loader = {
   commonLoader() {
     return (
-      <Box className="d-flex align-items-center justify-content-center common-loader">
+      <Box className="d-flex align-items-center justify-content-center common-loader w-100">
         <CircularProgress />
       </Box>
     );

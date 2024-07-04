@@ -7,18 +7,18 @@ import OffersYouMightLike from "./components/offersYouMightLike";
 import TopSellingCategories from "./components/topSellingCategories";
 import CustomersSays from "./components/customersSays";
 import { fetchHome } from "../../../Redux/Home/HomeThunk";
-import status from "../../../Redux/Constants"
-import { connect } from "react-redux"
+import status from "../../../Redux/Constants";
+import { connect } from "react-redux";
 import { Loader } from "Views/Utills/helperFunctions";
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: []
+      data: [],
     };
   }
   componentDidMount() {
-    this.props.fetchHome()
+    this.props.fetchHome();
   }
   componentDidUpdate(prevProps, prevState) {
     if (
@@ -26,22 +26,22 @@ class Home extends Component {
       this.props.homeData.status === status.SUCCESS &&
       this.props.homeData?.data
     ) {
-
       this.setState({
-        data: this.props.homeData?.data
-      })
+        data: this.props.homeData?.data,
+      });
     }
   }
 
-
   render() {
-    const { data } = this.state
+    const { data } = this.state;
     return (
       <Box className="main-container">
         <MainBanner />
-        {this.props.homeData.status === status.IN_PROGRESS ?
+        {this.props.homeData.status === status.IN_PROGRESS ? (
           Loader.commonLoader()
-          : <FeaturedProducts data={data} />}
+        ) : (
+          <FeaturedProducts data={data} />
+        )}
 
         <Service />
         <OffersYouMightLike />
@@ -52,7 +52,6 @@ class Home extends Component {
   }
 }
 
-
 function mapStateToProps(state) {
   const { homeData } = state.home;
   return { homeData };
@@ -61,4 +60,3 @@ function mapStateToProps(state) {
 const mapDispatchToProps = { fetchHome };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
-

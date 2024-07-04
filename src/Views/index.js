@@ -27,7 +27,7 @@ const Views = () => {
 
   return (
     <>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense >
         <Routes>
           {/* Redirect to Home if user is logged in and tries to access signin or signup */}
           {isLoggedIn && (

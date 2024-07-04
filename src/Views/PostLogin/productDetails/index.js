@@ -80,7 +80,7 @@ class ProductDetails extends Component {
           </Box>
           <Box className="details-container">
             <Grid container spacing={2}>
-              <Grid item xs={6} sm={6} md={5}>
+              <Grid item xs={12} sm={12} md={5} lg={5}>
                 <Box className="product-images">
                   <Box className="big-image">
                     <Box className="icon">
@@ -114,7 +114,7 @@ class ProductDetails extends Component {
                   </Box>
                 </Box>
               </Grid>
-              <Grid item xs={6} sm={6} md={7}>
+              <Grid item xs={12} sm={12} md={7} lg={7}>
                 <Box className="product-info">
                   <Box className="product-name">Green Apple</Box>
                   <Box className="product-review">
@@ -139,12 +139,12 @@ class ProductDetails extends Component {
                   </Box>
                   <Box className="product-cart-buttons">
                     <Grid container spacing={2}>
-                      <Grid item xs={6} sm={6} md={8}>
+                      <Grid item xs={12} sm={6} md={8} lg={8}>
                         <Button className="add-cart-btn" variant="contained">
                           Add to Cart <ShoppingCartOutlinedIcon />
                         </Button>
                       </Grid>
-                      <Grid item xs={6} sm={6} md={4}>
+                      <Grid item xs={12} sm={6} md={4} lg={4}>
                         <Button className="view-cart-btn" variant="outlined">
                           View Cart Items
                         </Button>
@@ -160,128 +160,138 @@ class ProductDetails extends Component {
                       width={"100%"}
                       flexWrap={"wrap"}
                     >
-                      <Box className="pack-box active">
-                        <Box className="check">
-                          <CheckCircleOutlinedIcon />
-                        </Box>
-                        <Grid container spacing={0}>
-                          <Grid item xs={6} sm={6} md={5}>
-                            <Box className="left-contents">
-                              <strong>2x4 pcs</strong>
-                              <span>Multipack</span>
+                      <Grid container spacing={2}>
+                        <Grid item xs={12} sm={6} md={12} lg={6}>
+                          <Box className="pack-box active">
+                            <Box className="check">
+                              <CheckCircleOutlinedIcon />
                             </Box>
-                          </Grid>
-                          <Grid item xs={6} sm={6} md={7}>
-                            <Box className="right-contents">
-                              <Box className="product-price">
-                                <Box className="price">
-                                  <img src={rupeeIcon} alt="" /> 200.12
-                                  <span>
-                                    <img src={mdiRupee} alt="" />
-                                    30.12 / pc
-                                  </span>
+                            <Grid container spacing={0}>
+                              <Grid item xs={12} sm={12} md={5} lg={5}>
+                                <Box className="left-contents">
+                                  <strong>2x4 pcs</strong>
+                                  <span>Multipack</span>
                                 </Box>
-                              </Box>
-                              <Box className="product-save">
-                                <p>
-                                  <img src={mdiRupee} alt="" /> 320.99
-                                </p>
-                                <span>20% OFF</span>
-                              </Box>
-                            </Box>
-                          </Grid>
-                        </Grid>
-                      </Box>
-                      <Box className="pack-box">
-                        <Grid container spacing={0}>
-                          <Grid item xs={6} sm={6} md={5}>
-                            <Box className="left-contents">
-                              <strong>4 pcs</strong>
-                              <span>Approx. 500-600gm</span>
-                            </Box>
-                          </Grid>
-                          <Grid item xs={6} sm={6} md={7}>
-                            <Box className="right-contents">
-                              <Box className="product-price">
-                                <Box className="price">
-                                  <img src={rupeeIcon} alt="" /> 200.12
-                                  <span>
-                                    <img src={mdiRupee} alt="" />
-                                    30.12 / pc
-                                  </span>
+                              </Grid>
+                              <Grid item xs={12} sm={12} md={7} lg={7}>
+                                <Box className="right-contents">
+                                  <Box className="product-price">
+                                    <Box className="price">
+                                      <img src={rupeeIcon} alt="" /> 200.12
+                                      <span>
+                                        <img src={mdiRupee} alt="" />
+                                        30.12 / pc
+                                      </span>
+                                    </Box>
+                                  </Box>
+                                  <Box className="product-save">
+                                    <p>
+                                      <img src={mdiRupee} alt="" /> 320.99
+                                    </p>
+                                    <span>20% OFF</span>
+                                  </Box>
                                 </Box>
-                              </Box>
-                              <Box className="product-save">
-                                <p>
-                                  <img src={mdiRupee} alt="" /> 320.99
-                                </p>
-                                <span>20% OFF</span>
-                              </Box>
-                            </Box>
-                          </Grid>
+                              </Grid>
+                            </Grid>
+                          </Box>
                         </Grid>
-                      </Box>
-                      <Box className="pack-box">
-                        <Box className="check">
-                          <CheckCircleOutlinedIcon />
-                        </Box>
-                        <Grid container spacing={0}>
-                          <Grid item xs={6} sm={6} md={5}>
-                            <Box className="left-contents">
-                              <strong>4 pcs</strong>
-                              <span>Multipack</span>
-                            </Box>
-                          </Grid>
-                          <Grid item xs={6} sm={6} md={7}>
-                            <Box className="right-contents">
-                              <Box className="product-price">
-                                <Box className="price">
-                                  <img src={rupeeIcon} alt="" /> 200.12
-                                  <span>
-                                    <img src={mdiRupee} alt="" />
-                                    30.12 / pc
-                                  </span>
+                        <Grid item xs={12} sm={6} md={12} lg={6}>
+                          <Box className="pack-box">
+                            <Grid container spacing={0}>
+                              <Grid item xs={12} sm={12} md={5} lg={5}>
+                                <Box className="left-contents">
+                                  <strong>4 pcs</strong>
+                                  <span>Approx. 500-600gm</span>
                                 </Box>
-                              </Box>
-                              <Box className="product-save">
-                                <p>
-                                  <img src={mdiRupee} alt="" /> 320.99
-                                </p>
-                                <span>20% OFF</span>
-                              </Box>
-                            </Box>
-                          </Grid>
-                        </Grid>
-                      </Box>
-                      <Box className="pack-box">
-                        <Grid container spacing={0}>
-                          <Grid item xs={6} sm={6} md={5}>
-                            <Box className="left-contents">
-                              <strong>4 pcs</strong>
-                              <span>Approx. 500-600gm</span>
-                            </Box>
-                          </Grid>
-                          <Grid item xs={6} sm={6} md={7}>
-                            <Box className="right-contents">
-                              <Box className="product-price">
-                                <Box className="price">
-                                  <img src={rupeeIcon} alt="" /> 200.12
-                                  <span>
-                                    <img src={mdiRupee} alt="" />
-                                    30.12 / pc
-                                  </span>
+                              </Grid>
+                              <Grid item xs={12} sm={12} md={7} lg={7}>
+                                <Box className="right-contents">
+                                  <Box className="product-price">
+                                    <Box className="price">
+                                      <img src={rupeeIcon} alt="" /> 200.12
+                                      <span>
+                                        <img src={mdiRupee} alt="" />
+                                        30.12 / pc
+                                      </span>
+                                    </Box>
+                                  </Box>
+                                  <Box className="product-save">
+                                    <p>
+                                      <img src={mdiRupee} alt="" /> 320.99
+                                    </p>
+                                    <span>20% OFF</span>
+                                  </Box>
                                 </Box>
-                              </Box>
-                              <Box className="product-save">
-                                <p>
-                                  <img src={mdiRupee} alt="" /> 320.99
-                                </p>
-                                <span>20% OFF</span>
-                              </Box>
-                            </Box>
-                          </Grid>
+                              </Grid>
+                            </Grid>
+                          </Box>
                         </Grid>
-                      </Box>
+                        <Grid item xs={12} sm={6} md={12} lg={6}>
+                          <Box className="pack-box">
+                            <Box className="check">
+                              <CheckCircleOutlinedIcon />
+                            </Box>
+                            <Grid container spacing={0}>
+                              <Grid item xs={12} sm={12} md={5} lg={5}>
+                                <Box className="left-contents">
+                                  <strong>4 pcs</strong>
+                                  <span>Multipack</span>
+                                </Box>
+                              </Grid>
+                              <Grid item xs={12} sm={12} md={7} lg={7}>
+                                <Box className="right-contents">
+                                  <Box className="product-price">
+                                    <Box className="price">
+                                      <img src={rupeeIcon} alt="" /> 200.12
+                                      <span>
+                                        <img src={mdiRupee} alt="" />
+                                        30.12 / pc
+                                      </span>
+                                    </Box>
+                                  </Box>
+                                  <Box className="product-save">
+                                    <p>
+                                      <img src={mdiRupee} alt="" /> 320.99
+                                    </p>
+                                    <span>20% OFF</span>
+                                  </Box>
+                                </Box>
+                              </Grid>
+                            </Grid>
+                          </Box>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={12} lg={6}>
+                          <Box className="pack-box">
+                            <Grid container spacing={0}>
+                              <Grid item xs={12} sm={12} md={5} lg={5}>
+                                <Box className="left-contents">
+                                  <strong>4 pcs</strong>
+                                  <span>Approx. 500-600gm</span>
+                                </Box>
+                              </Grid>
+                              <Grid item xs={12} sm={12} md={7} lg={7}>
+                                <Box className="right-contents">
+                                  <Box className="product-price">
+                                    <Box className="price">
+                                      <img src={rupeeIcon} alt="" /> 200.12
+                                      <span>
+                                        <img src={mdiRupee} alt="" />
+                                        30.12 / pc
+                                      </span>
+                                    </Box>
+                                  </Box>
+                                  <Box className="product-save">
+                                    <p>
+                                      <img src={mdiRupee} alt="" /> 320.99
+                                    </p>
+                                    <span>20% OFF</span>
+                                  </Box>
+                                </Box>
+                              </Grid>
+                            </Grid>
+                          </Box>
+                        </Grid>
+                      </Grid>
                     </Box>
                     <Box className="combos-btn">
                       <Button>
@@ -301,7 +311,7 @@ class ProductDetails extends Component {
           >
             <Box className="heading">Why Choose us ?</Box>
             <Grid container spacing={5} justifyContent={"center"}>
-              <Grid item xs={6} sm={6} md={3}>
+              <Grid item xs={12} sm={6} md={3} lg={3}>
                 <Box className="choose-box">
                   <Box className="box">
                     <img src={deliveryTruck} alt="" />
@@ -310,7 +320,7 @@ class ProductDetails extends Component {
                   <p>Delivery at your door step</p>
                 </Box>
               </Grid>
-              <Grid item xs={6} sm={6} md={3}>
+              <Grid item xs={12} sm={6} md={3} lg={3}>
                 <Box className="choose-box">
                   <Box className="box">
                     <img src={timeIcon} alt="" />
@@ -319,7 +329,7 @@ class ProductDetails extends Component {
                   <p>Guarantee</p>
                 </Box>
               </Grid>
-              <Grid item xs={6} sm={6} md={3}>
+              <Grid item xs={12} sm={6} md={3} lg={3}>
                 <Box className="choose-box">
                   <Box className="box">
                     <img src={returnIcon} alt="" />
@@ -328,7 +338,7 @@ class ProductDetails extends Component {
                   <p>No Questions Asked</p>
                 </Box>
               </Grid>
-              <Grid item xs={6} sm={6} md={3}>
+              <Grid item xs={12} sm={6} md={3} lg={3}>
                 <Box className="choose-box">
                   <Box className="box">
                     <img src={organicIcon} alt="" />
@@ -366,7 +376,7 @@ class ProductDetails extends Component {
           </Box>
           <Box className="reviews-container">
             <Grid container spacing={2}>
-              <Grid item xs={6} sm={6} md={4}>
+              <Grid item xs={12} sm={12} md={4} lg={4}>
                 <Box className="heading">Customer Reviews</Box>
                 <Box className="rating">
                   <Rating
@@ -423,7 +433,7 @@ class ProductDetails extends Component {
                   <Button>Write a product Review</Button>
                 </Box>
               </Grid>
-              <Grid item xs={6} sm={6} md={8}>
+              <Grid item xs={12} sm={12} md={8} lg={8}>
                 <Box className="reviews">
                   <Box className="search-box">
                     <TextField
@@ -443,14 +453,18 @@ class ProductDetails extends Component {
                   <Box className="review-boxes">
                     <Box className="review-box">
                       <Grid container spacing={2}>
-                        <Grid item xs={6} sm={6} md={1}>
+                        <Grid item xs={2} sm={2} md={1} lg={1}>
                           <Box className="image">
                             <img src={reviewImg} alt="" />
                           </Box>
                         </Grid>
-                        <Grid item xs={6} sm={6} md={11}>
+                        <Grid item xs={10} sm={10} md={11} lg={11}>
                           <Box className="contents">
-                            <Rating defaultValue={5} readOnly className="rating" />
+                            <Rating
+                              defaultValue={5}
+                              readOnly
+                              className="rating"
+                            />
                             <p>
                               "We love Landingfolio! Our designers were using it
                               for their projects, so we already knew what kind
@@ -463,14 +477,18 @@ class ProductDetails extends Component {
                     </Box>
                     <Box className="review-box">
                       <Grid container spacing={2}>
-                        <Grid item xs={6} sm={6} md={1}>
+                        <Grid item xs={2} sm={2} md={1} lg={1}>
                           <Box className="image">
                             <img src={reviewImg} alt="" />
                           </Box>
                         </Grid>
-                        <Grid item xs={6} sm={6} md={11}>
+                        <Grid item xs={10} sm={10} md={11} lg={11}>
                           <Box className="contents">
-                            <Rating defaultValue={5} readOnly className="rating" />
+                            <Rating
+                              defaultValue={5}
+                              readOnly
+                              className="rating"
+                            />
                             <p>
                               "We love Landingfolio! Our designers were using it
                               for their projects, so we already knew what kind

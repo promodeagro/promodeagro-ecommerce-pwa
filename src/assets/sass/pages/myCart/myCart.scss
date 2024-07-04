@@ -119,9 +119,10 @@
 
         .number-input-container {
             display: flex;
+            width: 100%;
 
             .symbol {
-                width: 78px;
+                width: 33.33%;
                 border: 1px solid #1F9151;
                 background-color: #1F9151;
                 height: 44px;
@@ -139,7 +140,7 @@
             }
 
             .Number {
-                width: 78px;
+                width: 33.33%;
                 border: 1px solid #1F9151;
                 background-color: #FFFFFF;
                 height: 44px;
@@ -308,16 +309,18 @@
             display: block;
         }
 
-        .rating-info {
-            flex-wrap: wrap;
 
-            .rating {
-                margin-right: 12px !important;
-            }
-        }
+    }
 
-        .amount-info {
-            flex-wrap: wrap;
+    .rating-info {
+        flex-wrap: wrap;
+
+        .rating {
+            margin-right: 12px !important;
         }
+    }
+
+    .amount-info {
+        flex-wrap: wrap;
     }
 }

@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import StarIcon from "@mui/icons-material/Star";
-
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 40,
   height: 20,
@@ -104,6 +104,7 @@ class SideBar extends Component {
     } = this.state;
     return (
       <Box className="sidebar">
+{/* <FilterAltIcon/> */}
         <Box className="hide-filter">
           <p>Hide Filter</p> <AntSwitch />
         </Box>

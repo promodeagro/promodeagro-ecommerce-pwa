@@ -6,7 +6,7 @@ import {
   deleteItemToCart,
 } from "../../../../Redux/Cart/CartThunk";
 import { connect } from "react-redux";
-import { Box, FormControl, NativeSelect, Button, Grid } from "@mui/material";
+import { Box, FormControl, NativeSelect, Button, Grid,CircularProgress } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
 import priceIcon from "../../../../assets/img/price-icon.png";
@@ -250,7 +250,13 @@ class List extends Component {
                               this.props.additems.status == status.IN_PROGRESS
                             }
                           >
-                            Add to cart
+                            {this.props.additems.status ==
+                            status.IN_PROGRESS ? (
+                              <CircularProgress className="common-loader" />
+                            ) : (
+                              "Add to cart"
+                            )}
+                          
                           </Button>
                         </Box>
                       )}

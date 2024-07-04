@@ -5,7 +5,7 @@ import {
   FormControl,
   NativeSelect,
   Button,
-  CircularProgress
+  CircularProgress,
 } from "@mui/material";
 import {
   addItemToCart,
@@ -32,7 +32,7 @@ class FeaturedProducts extends Component {
       cartData: [],
       productsData: [],
       cartList: [],
-      dataId: ""
+      dataId: "",
     };
   }
 
@@ -57,19 +57,17 @@ class FeaturedProducts extends Component {
       });
     }
 
-
     if (
       prevProps.additems.status !== this.props.additems.status &&
       this.props.additems.status === status.SUCCESS &&
       this.props.additems.data
     ) {
-
       this.props.fetchCartItems({
         userId: items.userId,
       });
       this.setState({
-        dataId: ""
-      })
+        dataId: "",
+      });
     }
 
     if (
@@ -77,13 +75,12 @@ class FeaturedProducts extends Component {
       this.props.updateItems.status === status.SUCCESS &&
       this.props.updateItems.data
     ) {
-
       this.props.fetchCartItems({
         userId: items.userId,
       });
       this.setState({
-        dataId: ""
-      })
+        dataId: "",
+      });
     }
 
     if (
@@ -91,29 +88,25 @@ class FeaturedProducts extends Component {
       this.props.deleteItems.status === status.SUCCESS &&
       this.props.deleteItems.data
     ) {
-
       this.props.fetchCartItems({
         userId: items.userId,
       });
       this.setState({
-        dataId: ""
-      })
+        dataId: "",
+      });
     }
 
     if (
-      prevProps.cartItems.status !==
-      this.props.cartItems.status &&
+      prevProps.cartItems.status !== this.props.cartItems.status &&
       this.props.cartItems.status === status.SUCCESS &&
       this.props.cartItems.data
     ) {
-
       this.setState({
-        cartList: this.props.cartItems.data.items
-      })
+        cartList: this.props.cartItems.data.items,
+      });
       this.setState({
-        dataId: ""
-      })
-
+        dataId: "",
+      });
     }
   }
 
@@ -125,16 +118,16 @@ class FeaturedProducts extends Component {
       quantity: "1",
     });
     this.setState({
-      dataId: id
-    })
+      dataId: id,
+    });
   };
 
   handleQuantityChange(id, increment, productQuantity) {
-    const items = loginDetails()
+    const items = loginDetails();
     this.setState({
-      dataId: id
-    })
-    productQuantity = productQuantity + increment
+      dataId: id,
+    });
+    productQuantity = productQuantity + increment;
     if (productQuantity != 0) {
       this.props.updateItemToCart({
         userId: items.userId,
@@ -142,16 +135,12 @@ class FeaturedProducts extends Component {
         quantity: productQuantity.toString(),
       });
     } else {
-
       this.props.deleteItemToCart({
         userId: items.userId,
         productId: id,
       });
     }
-
   }
-
-
 
   render() {
     const { data } = this.props;
@@ -212,11 +201,7 @@ class FeaturedProducts extends Component {
                           <></>
                         )}
 
-                        <Box className="Number">
-                          {
-                            itemId?.Quantity
-                          }
-                        </Box>
+                        <Box className="Number">{itemId?.Quantity}</Box>
                         <Box
                           className="symbol"
                           onClick={() => {
@@ -243,22 +228,19 @@ class FeaturedProducts extends Component {
                             this.handleAddToCart(item.id);
                           }}
                           disabled={
-                            this.props.additems.status == status.IN_PROGRESS && item.id == this.state.dataId
+                            this.props.additems.status == status.IN_PROGRESS &&
+                            item.id == this.state.dataId
                           }
-
-
-
                         >
-                          {this.props.additems.status == status.IN_PROGRESS && item.id == this.state.dataId ? "loader" : "Add to cart"}
+                          {this.props.additems.status == status.IN_PROGRESS &&
+                          item.id == this.state.dataId ? (
+                            <CircularProgress className="common-loader" />
+                          ) : (
+                            "Add to cart"
+                          )}
                         </Button>
                       </Box>
                     )}
-
-
-
-
-
-
                   </Box>
                 );
               })}
@@ -276,7 +258,14 @@ function mapStateToProps(state) {
   const { homeData } = state.home;
   const { allProductsData } = state.allproducts;
   const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
-  return { allProductsData, homeData, additems, cartItems, updateItems, deleteItems };
+  return {
+    allProductsData,
+    homeData,
+    additems,
+    cartItems,
+    updateItems,
+    deleteItems,
+  };
 }
 
 const mapDispatchToProps = {
@@ -285,8 +274,6 @@ const mapDispatchToProps = {
   fetchCartItems,
   updateItemToCart,
   deleteItemToCart,
-
-
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FeaturedProducts);
