@@ -22,6 +22,7 @@ class List extends Component {
     this.state = {
       addedProducts: [], // Track added products
       quantities: {}, // Track quantities for each product
+      sortOrder: null, // Track sort order
     };
   }
 
@@ -36,7 +37,6 @@ class List extends Component {
         quantities: {},
       });
       const items = loginDetails();
-      // const items = loginDetails()
       this.props.fetchCartItems({
         userId: items.userId,
       });
@@ -107,9 +107,18 @@ class List extends Component {
     }
   }
 
+  handleSortChange = (event) => {
+    this.setState({ sortOrder: event.target.value });
+  };
+
   render() {
     const { data, cartItemsData } = this.props;
-    const { addedProducts, quantities } = this.state;
+    const { addedProducts, quantities, sortOrder } = this.state;
+
+    // Sort data based on sortOrder
+    const sortedData = sortOrder
+      ? _.orderBy(data, ["price"], [sortOrder === "lowToHigh" ? "asc" : "desc"])
+      : data;
 
     return (
       <Box className="listing-container">
@@ -123,123 +132,133 @@ class List extends Component {
                 <Box className="sort-by">
                   <FormControl fullWidth>
                     <NativeSelect
-                      defaultValue={10}
-                      inputProps={{
-                        name: "age",
-                        id: "uncontrolled-native",
-                      }}
+                      value={sortOrder || ""}
+                      onChange={this.handleSortChange}
                     >
-                      <option value={10}>Sort by Price - Low to High</option>
-                      <option value={20}>Sort by Price - High to Low</option>
+                      <option value={""}>Sort by Default</option>
+                      <option value={"lowToHigh"}>
+                        Sort by Price - Low to High
+                      </option>
+                      <option value={"highToLow"}>
+                        Sort by Price - High to Low
+                      </option>
                     </NativeSelect>
                   </FormControl>
                 </Box>
                 <Box className="results-text">
-                  <strong>52</strong> Results Found
+                  <strong>{data.length}</strong> Results Found
                 </Box>
               </Box>
             </Grid>
           </Grid>
         </Box>
         <Box className="products">
-          {data?.length &&
-            cartItemsData !== undefined &&
-            data.map((item) => {
-              let itemId = cartItemsData?.find((x) => x.ProductId === item.id);
-              return (
-                <Box className="product-box" key={item.id}>
-                  {item.discount && (
-                    <Box className="sale">Sale {item.discount}%</Box>
-                  )}
-
-                  <Box className="icon">
-                    <TurnedInNotOutlinedIcon />
-                  </Box>
-                  <Box className="image">
-                    <Link to="/product-details">
-                      <img src={item.image ? item.image : noImage} alt="" />
-                    </Link>
-                  </Box>
-                  <Box className="name">
-                    <Link to="/product-details">{item.name}</Link>
-                  </Box>
-                  <Box className="price-ratting">
-                    <Box className="price">
-                      <img src={priceIcon} alt="" /> {item.price}
-                      <span>{item.mrp}</span>
-                    </Box>
-                    {item.ratings && (
-                      <Box className="ratting">
-                        <StarIcon /> {item.ratings}
-                      </Box>
-                    )}
-                  </Box>
-                  <Box className="select">{item.unit}</Box>
-                  {addedProducts.includes(item.id) || itemId ? (
-                    <Box className="number-input-container">
-                      {itemId && itemId.Quantity !== 0 ? (
-                        <Box
-                          className="symbol"
-                          onClick={() => {
-                            if (itemId?.ProductId) {
-                              let d = itemId.Quantity;
-                              this.handleQuantityChange(
-                                itemId.ProductId,
-                                -1,
-                                Number(d)
-                              );
-                            } else {
-                              this.handleQuantityChange(item.id, -1);
-                            }
-                          }}
-                        >
-                          -
-                        </Box>
-                      ) : (
-                        <></>
+          {sortedData?.length > 0 ? (
+            <>
+              {sortedData?.length &&
+                cartItemsData !== undefined &&
+                sortedData.map((item) => {
+                  let itemId = cartItemsData?.find(
+                    (x) => x.ProductId === item.id
+                  );
+                  return (
+                    <Box className="product-box" key={item.id}>
+                      {item.savingsPercentage && (
+                        <Box className="sale">Sale {item.savingsPercentage}%</Box>
                       )}
 
-                      <Box className="Number">
-                        {quantities[item.id]
-                          ? quantities[item.id]
-                          : itemId?.Quantity || 0}
+                      <Box className="icon">
+                        <TurnedInNotOutlinedIcon />
                       </Box>
-                      <Box
-                        className="symbol"
-                        onClick={() => {
-                          if (itemId?.ProductId) {
-                            let d = itemId.Quantity;
-                            this.handleQuantityChange(
-                              itemId.ProductId,
-                              1,
-                              Number(d)
-                            );
-                          } else {
-                            this.handleQuantityChange(item.id, 1);
-                          }
-                        }}
-                      >
-                        +
+                      <Box className="image">
+                        <Link to="/product-details">
+                          <img src={item.image ? item.image : noImage} alt="" />
+                        </Link>
                       </Box>
+                      <Box className="name">
+                        <Link to="/product-details">{item.name}</Link>
+                      </Box>
+                      <Box className="price-ratting">
+                        <Box className="price">
+                          <img src={priceIcon} alt="" /> {item.price}
+                          <span>{item.mrp}</span>
+                        </Box>
+                        {item.ratings && (
+                          <Box className="ratting">
+                            <StarIcon /> {item.ratings}
+                          </Box>
+                        )}
+                      </Box>
+                      <Box className="select">{item.unit}</Box>
+                      {addedProducts.includes(item.id) || itemId ? (
+                        <Box className="number-input-container">
+                          {itemId && itemId.Quantity !== 0 ? (
+                            <Box
+                              className="symbol"
+                              onClick={() => {
+                                if (itemId?.ProductId) {
+                                  let d = itemId.Quantity;
+                                  this.handleQuantityChange(
+                                    itemId.ProductId,
+                                    -1,
+                                    Number(d)
+                                  );
+                                } else {
+                                  this.handleQuantityChange(item.id, -1);
+                                }
+                              }}
+                            >
+                              -
+                            </Box>
+                          ) : (
+                            <></>
+                          )}
+
+                          <Box className="Number">
+                            {quantities[item.id]
+                              ? quantities[item.id]
+                              : itemId?.Quantity || 0}
+                          </Box>
+                          <Box
+                            className="symbol"
+                            onClick={() => {
+                              if (itemId?.ProductId) {
+                                let d = itemId.Quantity;
+                                this.handleQuantityChange(
+                                  itemId.ProductId,
+                                  1,
+                                  Number(d)
+                                );
+                              } else {
+                                this.handleQuantityChange(item.id, 1);
+                              }
+                            }}
+                          >
+                            +
+                          </Box>
+                        </Box>
+                      ) : (
+                        <Box className="add-cart">
+                          <Button
+                            variant="outlined"
+                            onClick={() => {
+                              this.handleAddToCart(item.id);
+                            }}
+                            disabled={
+                              this.props.additems.status == status.IN_PROGRESS
+                            }
+                          >
+                            Add to cart
+                          </Button>
+                        </Box>
+                      )}
                     </Box>
-                  ) : (
-                    <Box className="add-cart">
-                      <Button
-                        variant="outlined"
-                        onClick={() => {
-                          this.handleAddToCart(item.id);
-                        }}
-                        disabled={
-                          this.props.additems.status == status.IN_PROGRESS
-                        }
-                      >
-                        Add to cart
-                      </Button>
-                    </Box>
-                  )}
-                </Box>
-              );
-            })}
+                  );
+                })}
+            </>
+          ) : (
+            <Box className="data-not-found-text">Data Not Found</Box>
+          )}
         </Box>
       </Box>
     );
@@ -248,7 +267,6 @@ class List extends Component {
 
 function mapStateToProps(state) {
   const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
-  console.log(cartItems);
   return { additems, cartItems, updateItems, deleteItems };
 }
 

@@ -8,14 +8,26 @@ import { allProducts } from "../../../Redux/AllProducts/AllProductthunk";
 import { fetchCartItems } from "../../../Redux/Cart/CartThunk";
 import status from "../../../Redux/Constants";
 import { Loader, loginDetails } from "Views/Utills/helperFunctions";
+
 class Category extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      products: [],
       productsData: [],
       cartList: [],
+      filters: {
+        minPrice: "",
+        maxPrice: "",
+        selectedRatings: [],
+        selectedDiscounts: [],
+        selectedCountry: "",
+        selectedProductTypes: [],
+        selectedPackSizes: [],
+      },
     };
   }
+
   componentDidMount() {
     let items = loginDetails();
 
@@ -32,6 +44,7 @@ class Category extends Component {
       this.props.allProductsData.data
     ) {
       this.setState({
+        products: this.props.allProductsData.data,
         productsData: this.props.allProductsData.data,
       });
     }
@@ -47,6 +60,65 @@ class Category extends Component {
     }
   }
 
+  handleFilterChange = (filters) => {
+    this.setState({ filters }, this.applyFilters);
+  };
+
+  applyFilters = () => {
+    const { products, filters } = this.state;
+    let productsData = products;
+
+    if (filters.minPrice || filters.maxPrice) {
+      productsData = productsData.filter((product) => {
+        const price = parseFloat(product.price);
+        return (
+          (!filters.minPrice || price >= parseFloat(filters.minPrice)) &&
+          (!filters.maxPrice || price <= parseFloat(filters.maxPrice))
+        );
+      });
+    }
+
+    if (filters.selectedRatings.length > 0) {
+      productsData = productsData.filter((product) =>
+        filters.selectedRatings.some((rating) => product.ratings >= rating)
+      );
+    }
+
+    if (filters.selectedDiscounts.length > 0) {
+      productsData = productsData.filter((product) => {
+        const savingsPercentage = parseInt(product.savingsPercentage);
+        return filters.selectedDiscounts.some((discountRange) => {
+          if (discountRange === "upto5") return savingsPercentage <= 5;
+          if (discountRange === "10to15")
+            return savingsPercentage >= 10 && savingsPercentage <= 15;
+          if (discountRange === "15to25")
+            return savingsPercentage >= 15 && savingsPercentage <= 25;
+          if (discountRange === "more25") return savingsPercentage > 25;
+        });
+      });
+    }
+
+    if (filters.selectedCountry) {
+      productsData = productsData.filter(
+        (product) => product.origin === filters.selectedCountry
+      );
+    }
+
+    if (filters.selectedProductTypes.length > 0) {
+      productsData = productsData.filter((product) =>
+        filters.selectedProductTypes.includes(product.type)
+      );
+    }
+
+    if (filters.selectedPackSizes.length > 0) {
+      productsData = productsData.filter((product) =>
+        filters.selectedPackSizes.some((size) => product.packSize === size)
+      );
+    }
+
+    this.setState({ productsData });
+  };
+
   render() {
     const { productsData, cartList } = this.state;
     return (
@@ -54,7 +126,7 @@ class Category extends Component {
         <Container>
           <Grid container spacing={2} alignItems={"flex-start"}>
             <Grid item xs={6} sm={6} md={3}>
-              <SideBar />
+              <SideBar onFilterChange={this.handleFilterChange} />
             </Grid>
             <Grid item xs={6} sm={6} md={9}>
               {this.props.cartItems.status === status.IN_PROGRESS.status ||
