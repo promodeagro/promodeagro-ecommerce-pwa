@@ -409,13 +409,14 @@
 
       .number-input-container {
         display: flex;
+        width: 100%;
         margin-top: 12px;
 
         .symbol {
-          width: 78px;
+          width: 33.33%;
           border: 1px solid #1f9151;
           background-color: #1f9151;
-          height: 35px;
+          height: 36px;
           cursor: pointer;
           font-size: 24px;
           display: flex;
@@ -430,10 +431,10 @@
         }
 
         .Number {
-          width: 78px;
+          width: 33.33%;
           border: 1px solid #1f9151;
           background-color: #ffffff;
-          height: 35px;
+          height: 36px;
           font-size: 16px;
           line-height: 24px;
           color: #1f9151;

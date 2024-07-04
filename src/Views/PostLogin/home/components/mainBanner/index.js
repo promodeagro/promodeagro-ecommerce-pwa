@@ -29,7 +29,14 @@ class MainBanner extends Component {
             <Slider {...settings}>
               <Box className="banner-contents">
                 <Grid container spacing={2} alignItems={"center"}>
-                  <Grid item xs={6} sm={6} md={6}>
+                  <Grid
+                    item
+                    xs={12}
+                    lg={6}
+                    md={6}
+                    sm={12}
+                    order={{ sm: 1, xs: 1, lg: 0, md: 0 }}
+                  >
                     <Box className="contents">
                       <Box className="mostly-organic">
                         <span>Mostly Organic</span>
@@ -48,7 +55,14 @@ class MainBanner extends Component {
                       </Box>
                     </Box>
                   </Grid>
-                  <Grid item xs={6} sm={6} md={6}>
+                  <Grid
+                    item
+                    xs={12}
+                    lg={6}
+                    md={6}
+                    sm={12}
+                    order={{ sm: 0, xs: 0, lg: 1, md: 1 }}
+                  >
                     <Box className="images">
                       <Box className="upto-off-img">
                         <img src={uptoOffImg} alt="" />
@@ -62,7 +76,14 @@ class MainBanner extends Component {
               </Box>
               <Box className="banner-contents">
                 <Grid container spacing={2} alignItems={"center"}>
-                  <Grid item xs={6} sm={6} md={6}>
+                  <Grid
+                    item
+                    xs={12}
+                    lg={6}
+                    md={6}
+                    sm={12}
+                    order={{ sm: 1, xs: 1, lg: 0, md: 0 }}
+                  >
                     <Box className="contents">
                       <Box className="mostly-organic">
                         <span>Mostly Organic</span>
@@ -81,7 +102,14 @@ class MainBanner extends Component {
                       </Box>
                     </Box>
                   </Grid>
-                  <Grid item xs={6} sm={6} md={6}>
+                  <Grid
+                    item
+                    xs={12}
+                    lg={6}
+                    md={6}
+                    sm={12}
+                    order={{ sm: 0, xs: 0, lg: 1, md: 1 }}
+                  >
                     <Box className="images">
                       <Box className="upto-off-img">
                         <img src={uptoOffImg} alt="" />
@@ -95,7 +123,14 @@ class MainBanner extends Component {
               </Box>
               <Box className="banner-contents">
                 <Grid container spacing={2} alignItems={"center"}>
-                  <Grid item xs={6} sm={6} md={6}>
+                  <Grid
+                    item
+                    xs={12}
+                    lg={6}
+                    md={6}
+                    sm={12}
+                    order={{ sm: 1, xs: 1, lg: 0, md: 0 }}
+                  >
                     <Box className="contents">
                       <Box className="mostly-organic">
                         <span>Mostly Organic</span>
@@ -114,7 +149,14 @@ class MainBanner extends Component {
                       </Box>
                     </Box>
                   </Grid>
-                  <Grid item xs={6} sm={6} md={6}>
+                  <Grid
+                    item
+                    xs={12}
+                    lg={6}
+                    md={6}
+                    sm={12}
+                    order={{ sm: 0, xs: 0, lg: 1, md: 1 }}
+                  >
                     <Box className="images">
                       <Box className="upto-off-img">
                         <img src={uptoOffImg} alt="" />
