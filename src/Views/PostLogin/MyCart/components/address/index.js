@@ -45,7 +45,7 @@ class Address extends Component {
     super(props);
     this.state = {
       open: false,
-      activeStep: 2,
+      activeStep: 1,
       value: 0,
       timneValue: 0,
     };

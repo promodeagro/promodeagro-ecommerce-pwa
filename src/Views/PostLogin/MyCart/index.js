@@ -103,7 +103,7 @@ class MyCart extends Component {
               </p>
             </Box>
             <Box className="right-part">
-              <Box className="sub-total d-flex align-items-center">
+              <Box className="sub-total d-flex align-items-center flex-wrap">
                 <strong className="title">Subtotal</strong>
                 <span className="item-count">(3 Items) :</span>
                 <strong className="number">₹ 200.12</strong>

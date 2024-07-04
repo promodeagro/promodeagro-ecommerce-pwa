@@ -139,7 +139,7 @@
 
       .categories-toggle {
         display: inline-flex;
-        width: 82%;
+        max-width: 225px;
         font-size: 15px;
         line-height: 24px;
         color: #ffffff;
@@ -377,13 +377,5 @@
 }
 
 @media (max-width: 600px) {
-  .header {
-    .header-bottom-container {
-      .categories-container {
-        .categories-toggle {
-          width: 96%;
-        }
-      }
-    }
-  }
+
 }

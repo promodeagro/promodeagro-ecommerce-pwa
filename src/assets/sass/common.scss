@@ -35,21 +35,18 @@ input:focus-visible {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: var(--scrollbar-track-bg-color);
-  border-radius: 3px;
+  background: #f1f1f1;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: var(--scrollbar-thumb-bg-color);
-  border-radius: 3px;
+  background: #d8d9da;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--scrollbar-thumb-hover-bg-color);
+  background: #c1c2c2;
 }
-
 .w-100 {
   width: 100%;
 }
