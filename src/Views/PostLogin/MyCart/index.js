@@ -10,7 +10,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import productCartImg from "../../../assets/img/product-cart-img.png";
 import { connect } from "react-redux"
 import status from "../../../Redux/Constants";
-import { Loader ,loginDetails} from "../../../Views/Utills/helperFunctions";
+import { Loader, loginDetails } from "../../../Views/Utills/helperFunctions";
 import _ from "lodash"
 class MyCart extends Component {
   constructor(props) {
@@ -22,7 +22,7 @@ class MyCart extends Component {
 
   componentDidMount() {
 
-    const items =loginDetails()
+    const items = loginDetails()
     this.props.fetchCartItems({
       userId: items.userId
     })
@@ -146,7 +146,6 @@ class MyCart extends Component {
                   </Grid>
                 </Grid>
                 {this.state.cartList.map((item) => {
-
                   return <Grid
                     container
                     spacing={2}
@@ -160,8 +159,8 @@ class MyCart extends Component {
                         <Box className="d-block">
                           <span className="d-block name">Green Apple</span>
                           <Box className="d-flex align-items-center">
-                            <span className="discount-amount">₹ 14.99</span>
-                            <s className="amount">₹ 20.99</s>
+                            <span className="discount-amount">₹ {item?.Price}</span>
+                            <s className="amount">₹ {item?.Mrp} </s>
                           </Box>
                         </Box>
                       </Box>
@@ -211,9 +210,9 @@ class MyCart extends Component {
                     </Grid>
                     <Grid item xs={3} justifyContent={"end"} display={"flex"}>
                       <Box className="sub-total ">
-                        <span className="d-block final-amount">₹ 200.12</span>
+                        <span className="d-block final-amount">₹ {item?.Subtotal}</span>
                         <span className="d-block save-amount">
-                          Saved : <strong>₹ 120.12</strong>
+                          Saved : <strong>₹ {item.Savings}</strong>
                         </span>
                       </Box>
                     </Grid>

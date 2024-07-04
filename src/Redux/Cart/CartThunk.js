@@ -27,10 +27,11 @@ export const updateItemToCart = createAsyncThunk(
 
 export const deleteItemToCart = createAsyncThunk(
   "deleteitems",
-  async (params) => {
+  async (params, thunkAPI) => {
     try {
       let url = config.DELETE_ITEM;
-      const response = await postLoginService.delete(url, params);
+      // Axios's delete method accepts an object where params are passed separately
+      const response = await postLoginService.delete(url, { data: params });
       return response.data;
     } catch (error) {
       return error;
