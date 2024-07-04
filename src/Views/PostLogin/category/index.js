@@ -125,10 +125,10 @@ class Category extends Component {
       <Box className="main-container">
         <Container>
           <Grid container spacing={2} alignItems={"flex-start"}>
-            <Grid item xs={6} sm={6} md={3}>
+            <Grid item xs={5} sm={4} md={3} lg={3}>
               <SideBar onFilterChange={this.handleFilterChange} />
             </Grid>
-            <Grid item xs={6} sm={6} md={9}>
+            <Grid item xs={7} sm={8} md={9} lg={9}>
               {this.props.cartItems.status === status.IN_PROGRESS.status ||
               this.props.allProductsData.status === status.IN_PROGRESS ? (
                 Loader.commonLoader()

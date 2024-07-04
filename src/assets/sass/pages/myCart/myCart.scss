@@ -65,94 +65,7 @@
         }
     }
 
-    .Related-products-container {
-        background-color: #1F915117;
-        padding: 30px 0px 60px 0px;
 
-        .heading-part {
-            margin-bottom: 16px;
-
-            .title {
-                font-size: 22px;
-                line-height: 33px;
-                color: #1A1A1A;
-                font-weight: 600;
-            }
-
-            a {
-                font-size: 16px;
-                line-height: 22px;
-                color: #1F9151;
-                font-weight: 500;
-            }
-        }
-
-        .product-details {
-            min-height: 176px;
-            background-color: #FFFFFF;
-            border-radius: 8px;
-            border: 1.5px solid #E6E6E6;
-            width: 100%;
-
-            .product-name {
-                font-size: 21px;
-                line-height: 32px;
-                color: #4D4D4D;
-                font-weight: 400;
-            }
-
-            .drop-amount {
-                font-size: 24px;
-                line-height: 36px;
-                color: #1A1A1A;
-                font-weight: 500;
-            }
-
-            .final-amount {
-                font-size: 16px;
-                line-height: 24px;
-                color: #ADADAD;
-                font-weight: 500;
-                margin-left: 8px;
-            }
-
-            .rating-info {
-                margin-top: 15px;
-
-                .rating {
-                    margin-right: 60px;
-
-                    .rating-number {
-                        margin-left: 3px;
-                        font-size: 16px;
-                        line-height: 24px;
-                        color: #1A1A1A;
-                        font-weight: 500;
-                    }
-
-
-                }
-
-                .icon-btn {
-                    height: 36px;
-                    width: 36px;
-                    border: 1px solid #E6E6E6;
-                    border-radius: 100%;
-                    margin-right: 22px;
-
-                    svg {
-                        font-size: 18px;
-
-                    }
-
-                    &:last-child {
-                        margin-right: 0px;
-                    }
-                }
-
-            }
-        }
-    }
 
     .cart-item-list {
         margin-bottom: 150px;
@@ -288,6 +201,96 @@
     }
 
 
+}
+
+.Related-products-container {
+    background-color: #1F915117;
+    padding: 30px 0px 60px 0px;
+    width: 100%;
+
+    .heading-part {
+        margin-bottom: 16px;
+
+        .title {
+            font-size: 22px;
+            line-height: 33px;
+            color: #1A1A1A;
+            font-weight: 600;
+        }
+
+        a {
+            font-size: 16px;
+            line-height: 22px;
+            color: #1F9151;
+            font-weight: 500;
+        }
+    }
+
+    .product-details {
+        min-height: 176px;
+        background-color: #FFFFFF;
+        border-radius: 8px;
+        border: 1.5px solid #E6E6E6;
+        width: 100%;
+
+        .product-name {
+            font-size: 21px;
+            line-height: 32px;
+            color: #4D4D4D;
+            font-weight: 400;
+        }
+
+        .drop-amount {
+            font-size: 24px;
+            line-height: 36px;
+            color: #1A1A1A;
+            font-weight: 500;
+        }
+
+        .final-amount {
+            font-size: 16px;
+            line-height: 24px;
+            color: #ADADAD;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+
+        .rating-info {
+            margin-top: 15px;
+
+            .rating {
+                margin-right: 60px;
+
+                .rating-number {
+                    margin-left: 3px;
+                    font-size: 16px;
+                    line-height: 24px;
+                    color: #1A1A1A;
+                    font-weight: 500;
+                }
+
+
+            }
+
+            .icon-btn {
+                height: 36px;
+                width: 36px;
+                border: 1px solid #E6E6E6;
+                border-radius: 100%;
+                margin-right: 22px;
+
+                svg {
+                    font-size: 18px;
+
+                }
+
+                &:last-child {
+                    margin-right: 0px;
+                }
+            }
+
+        }
+    }
 }
 
 @media only screen and (max-width: 850px) {
