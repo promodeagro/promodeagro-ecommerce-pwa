@@ -20,6 +20,9 @@ const AllAddress = () => {
   const postAddressStatus = useSelector(
     (state) => state.alladdress.postAddress.status
   );
+  const deleteAddressStatus = useSelector(
+    (state) => state.alladdress.deleteAddress.status
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -31,6 +34,7 @@ const AllAddress = () => {
       })
     );
   }, [dispatch]);
+
 
   useEffect(() => {
     if (
@@ -47,6 +51,16 @@ const AllAddress = () => {
     }
   }, [postAddressStatus]);
 
+  useEffect(() => {
+    if (deleteAddressStatus === status.SUCCESS) {
+      let items = loginDetails();
+      dispatch(
+        getAllAddress({
+          userId: items.userId,
+        }))
+    }
+  }, [deleteAddressStatus]);
+
   const handleDelete = (userId, addressId) => {
     dispatch(
       deleteAddress({
@@ -55,10 +69,7 @@ const AllAddress = () => {
       })
     );
 
-    const updatedAddresses = allAddress.filter(
-      (item) => item.addressId !== addressId
-    );
-    setAllAddress(updatedAddresses);
+
   };
 
   const handleEdit = (address) => {

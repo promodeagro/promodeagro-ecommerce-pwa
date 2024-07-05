@@ -29,19 +29,17 @@ const AddNewAddress = () => {
   const [countryCode, setCountryCode] = useState("IN");
   const [country, setCountry] = useState("");
   const [zipCode, setZipCode] = useState("");
+  const [apiLoader, setApiLoader] = useState(false)
 
   const postAddressStatus = useSelector((state) => state.alladdress.postAddress.status);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (postAddressStatus === status.SUCCESS) {
-      const items = loginDetails();
-      dispatch(getAllAddress({
-        userId: items.userId,
-        address: postAddress?.data.address,
-      }));
-      navigate("/myCart/address/");
+    if (postAddressStatus === status.SUCCESS && apiLoader) {
+      setApiLoader(false)
+
+      navigate("/myCart/address");
     }
   }, [postAddressStatus, dispatch, navigate]);
 
@@ -76,6 +74,7 @@ const AddNewAddress = () => {
 
   const handleSubmit = () => {
     const items = loginDetails();
+    setApiLoader(true);
     dispatch(postAddress({
       userId: items.userId,
       address: {
@@ -87,7 +86,7 @@ const AddNewAddress = () => {
         zipCode,
       },
     }));
-    navigate("/myCart/address/");
+
   };
 
   return (

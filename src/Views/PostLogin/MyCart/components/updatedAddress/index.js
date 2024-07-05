@@ -38,6 +38,7 @@ const UpdatedAddress = ({
     zipCode: "",
     addressId: "",
   });
+  const [apiLoader, setApiLoader] = useState(false)
 
   useEffect(() => {
     if (location.state && location.state.address) {
@@ -48,17 +49,12 @@ const UpdatedAddress = ({
   useEffect(() => {
     if (
       updateAddressState.status === status.SUCCESS &&
-      updateAddressState?.data
+      updateAddressState?.data && apiLoader
     ) {
-      const items = loginDetails();
-      getAllAddress({
-        userId: items.userId,
-        address: updateAddressState?.data.address,
-      });
-
+      setApiLoader(false)
       navigate("/myCart/address/");
     }
-  }, [updateAddressState, getAllAddress, navigate]);
+  }, [updateAddressState]);
 
   const handleChange = (event) => {
     setAddressDetails({
@@ -78,6 +74,7 @@ const UpdatedAddress = ({
       zipCode,
       addressId,
     } = addressDetails;
+    setApiLoader(true)
     const items = loginDetails();
     updateAddress({
       userId: items.userId,
