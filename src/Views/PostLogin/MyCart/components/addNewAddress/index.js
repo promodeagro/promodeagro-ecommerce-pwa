@@ -13,10 +13,7 @@ import {
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  postAddress,
-  getAllAddress,
-} from "../../../../../Redux/Address/AddressThunk";
+import { postAddress } from "../../../../../Redux/Address/AddressThunk";
 import status from "../../../../../Redux/Constants";
 import { loginDetails } from "Views/Utills/helperFunctions";
 import { Link } from "react-router-dom";
@@ -26,18 +23,18 @@ const AddNewAddress = () => {
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [contact, setContact] = useState("");
-  const [countryCode, setCountryCode] = useState("IN");
-  const [country, setCountry] = useState("");
   const [zipCode, setZipCode] = useState("");
-  const [apiLoader, setApiLoader] = useState(false)
+  const [apiLoader, setApiLoader] = useState(false);
 
-  const postAddressStatus = useSelector((state) => state.alladdress.postAddress.status);
+  const postAddressStatus = useSelector(
+    (state) => state.alladdress.postAddress.status
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (postAddressStatus === status.SUCCESS && apiLoader) {
-      setApiLoader(false)
+      setApiLoader(false);
 
       navigate("/myCart/address");
     }
@@ -58,12 +55,6 @@ const AddNewAddress = () => {
       case "contact":
         setContact(value);
         break;
-      case "countryCode":
-        setCountryCode(value);
-        break;
-      case "country":
-        setCountry(value);
-        break;
       case "zipCode":
         setZipCode(value);
         break;
@@ -75,18 +66,18 @@ const AddNewAddress = () => {
   const handleSubmit = () => {
     const items = loginDetails();
     setApiLoader(true);
-    dispatch(postAddress({
-      userId: items.userId,
-      address: {
-        name,
-        email,
-        address,
-        contact,
-        country,
-        zipCode,
-      },
-    }));
-
+    dispatch(
+      postAddress({
+        userId: items.userId,
+        address: {
+          name,
+          email,
+          address,
+          contact,
+          zipCode,
+        },
+      })
+    );
   };
 
   return (
@@ -150,10 +141,8 @@ const AddNewAddress = () => {
                     <InputAdornment position="start">
                       <Select
                         className="country-select-box"
-                        value={countryCode}
-                        onChange={handleChange}
+                        value={"IN"}
                         displayEmpty
-                        inputProps={{ name: "countryCode" }}
                       >
                         <MenuItem value="IN">IN</MenuItem>
                         <MenuItem value="USA">USA</MenuItem>
@@ -168,12 +157,7 @@ const AddNewAddress = () => {
               </Grid>
               <Grid item xs={12} lg={6} md={6} sm={6}>
                 <label className="d-block form-field-title">Country</label>
-                <Select
-                  className="common-select-box"
-                  value={country}
-                  onChange={handleChange}
-                  inputProps={{ name: "country" }}
-                >
+                <Select className="common-select-box">
                   <MenuItem value="Ten">Ten</MenuItem>
                   <MenuItem value="Twenty">Twenty</MenuItem>
                   <MenuItem value="Thirty">Thirty</MenuItem>

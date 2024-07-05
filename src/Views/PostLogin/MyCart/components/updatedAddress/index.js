@@ -21,11 +21,7 @@ import status from "../../../../../Redux/Constants";
 import { loginDetails } from "Views/Utills/helperFunctions";
 import { Link } from "react-router-dom";
 
-const UpdatedAddress = ({
-  updateAddress,
-  getAllAddress,
-  updateAddressState,
-}) => {
+const UpdatedAddress = ({ updateAddress, updateAddressState }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [addressDetails, setAddressDetails] = useState({
@@ -33,12 +29,10 @@ const UpdatedAddress = ({
     email: "",
     address: "",
     contact: "",
-    countryCode: "",
-    country: "",
     zipCode: "",
     addressId: "",
   });
-  const [apiLoader, setApiLoader] = useState(false)
+  const [apiLoader, setApiLoader] = useState(false);
 
   useEffect(() => {
     if (location.state && location.state.address) {
@@ -49,9 +43,10 @@ const UpdatedAddress = ({
   useEffect(() => {
     if (
       updateAddressState.status === status.SUCCESS &&
-      updateAddressState?.data && apiLoader
+      updateAddressState?.data &&
+      apiLoader
     ) {
-      setApiLoader(false)
+      setApiLoader(false);
       navigate("/myCart/address/");
     }
   }, [updateAddressState]);
@@ -64,17 +59,9 @@ const UpdatedAddress = ({
   };
 
   const handleSubmit = () => {
-    const {
-      name,
-      email,
-      address,
-      contact,
-      countryCode,
-      country,
-      zipCode,
-      addressId,
-    } = addressDetails;
-    setApiLoader(true)
+    const { name, email, address, contact, zipCode, addressId } =
+      addressDetails;
+    setApiLoader(true);
     const items = loginDetails();
     updateAddress({
       userId: items.userId,
@@ -84,14 +71,12 @@ const UpdatedAddress = ({
         email,
         address,
         contact,
-        country,
         zipCode,
       },
     });
   };
 
-  const { name, email, address, contact, countryCode, country, zipCode } =
-    addressDetails;
+  const { name, email, address, contact, zipCode } = addressDetails;
 
   return (
     <Container>
@@ -154,14 +139,9 @@ const UpdatedAddress = ({
                     <InputAdornment position="start">
                       <Select
                         className="country-select-box"
-                        value={countryCode}
-                        onChange={handleChange}
+                        value={"IN"}
                         displayEmpty
-                        inputProps={{ name: "countryCode" }}
                       >
-                        <MenuItem value="">
-                          <em>IN</em>
-                        </MenuItem>
                         <MenuItem value="IN">IN</MenuItem>
                         <MenuItem value="USA">USA</MenuItem>
                         <MenuItem value="NZ">NZ</MenuItem>
@@ -175,12 +155,7 @@ const UpdatedAddress = ({
               </Grid>
               <Grid item xs={12} lg={6} md={6} sm={6}>
                 <label className="d-block form-field-title">Country</label>
-                <Select
-                  className="common-select-box"
-                  value={country}
-                  onChange={handleChange}
-                  inputProps={{ name: "country" }}
-                >
+                <Select className="common-select-box">
                   <MenuItem value="Ten">Ten</MenuItem>
                   <MenuItem value="Twenty">Twenty</MenuItem>
                   <MenuItem value="Thirty">Thirty</MenuItem>
