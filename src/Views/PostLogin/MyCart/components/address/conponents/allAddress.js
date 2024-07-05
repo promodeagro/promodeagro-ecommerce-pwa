@@ -94,23 +94,23 @@ const AllAddress = () => {
               return (
                 <Grid key={index} item xs={12} lg={4} md={6} sm={6}>
                   <Box
-                    className="address-card-container active"
+                    className="address-card-container"
                     data-aos="zoom-in-down"
                   >
-                    <Box className="active-check">
+                    {/* <Box className="active-check">
                       <CheckIcon />
-                    </Box>
+                    </Box> */}
                     <Box className="d-flex align-items-center">
                       <IconButton
                         aria-label="edit"
-                        className="address-btn active"
+                        className="address-btn"
                         onClick={() => handleEdit(item)}
                       >
                         <BorderColorIcon />
                       </IconButton>
                       <IconButton
                         aria-label="delete"
-                        className="address-btn active"
+                        className="address-btn"
                         onClick={() =>
                           handleDelete(item.userId, item.addressId)
                         }
