@@ -13,6 +13,7 @@ class Category extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      hideFilter: true,
       products: [],
       productsData: [],
       cartList: [],
@@ -118,22 +119,41 @@ class Category extends Component {
 
     this.setState({ productsData });
   };
-
+  toggleFilter = () => {
+    this.setState((prevState) => ({
+      hideFilter: !prevState.hideFilter,
+    }));
+  };
   render() {
-    const { productsData, cartList } = this.state;
+    const { productsData, cartList, hideFilter } = this.state;
     return (
       <Box className="main-container">
         <Container>
           <Grid container spacing={2} alignItems={"flex-start"}>
             <Grid item xs={5} sm={4} md={3} lg={3}>
-              <SideBar onFilterChange={this.handleFilterChange} />
+              <SideBar
+                onFilterChange={this.handleFilterChange}
+                toggleFilter={this.toggleFilter}
+                hideFilter={hideFilter}
+              />
             </Grid>
-            <Grid item xs={7} sm={8} md={9} lg={9}>
+
+            <Grid
+              item
+              xs={hideFilter ? 12 : 7}
+              sm={hideFilter ? 12 : 8}
+              md={hideFilter ? 12 : 9}
+              lg={hideFilter ? 12 : 9}
+            >
               {this.props.cartItems.status === status.IN_PROGRESS.status ||
               this.props.allProductsData.status === status.IN_PROGRESS ? (
                 Loader.commonLoader()
               ) : (
-                <List data={productsData} cartItemsData={cartList} />
+                <List
+                  data={productsData}
+                  cartItemsData={cartList}
+                  hideFilter={hideFilter}
+                />
               )}
             </Grid>
           </Grid>

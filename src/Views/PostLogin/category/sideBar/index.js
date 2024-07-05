@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import StarIcon from "@mui/icons-material/Star";
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 40,
   height: 20,
@@ -104,142 +104,147 @@ class SideBar extends Component {
     } = this.state;
     return (
       <Box className="sidebar">
-{/* <FilterAltIcon/> */}
+        {/* <FilterAltIcon/> */}
         <Box className="hide-filter">
-          <p>Hide Filter</p> <AntSwitch />
+          <p>Hide Filter</p>{" "}
+          <AntSwitch
+            checked={this.props.hideFilter}
+            onChange={() => this.props.toggleFilter()}
+          />
         </Box>
-        <Box className="filters-boxs">
-          <h2>Filters</h2>
-          <Box className="filter">
-            <h3>Price</h3>
-            <Box className="min-max-price">
-              <TextField
-                value={minPrice}
-                onChange={(e) =>
-                  this.handlePriceChange("minPrice", e.target.value)
-                }
-                placeholder="Min"
-              />
-              <TextField
-                value={maxPrice}
-                onChange={(e) =>
-                  this.handlePriceChange("maxPrice", e.target.value)
-                }
-                placeholder="Max"
-              />
+        {!this.props.hideFilter && (
+          <Box className="filters-boxs">
+            <h2>Filters</h2>
+            <Box className="filter">
+              <h3>Price</h3>
+              <Box className="min-max-price">
+                <TextField
+                  value={minPrice}
+                  onChange={(e) =>
+                    this.handlePriceChange("minPrice", e.target.value)
+                  }
+                  placeholder="Min"
+                />
+                <TextField
+                  value={maxPrice}
+                  onChange={(e) =>
+                    this.handlePriceChange("maxPrice", e.target.value)
+                  }
+                  placeholder="Max"
+                />
+              </Box>
             </Box>
-          </Box>
-          <Box className="filter">
-            <h3>Rating</h3>
-            <ul className="checkbox">
-              <li>
-                <Checkbox
-                  checked={selectedRatings.includes(5)}
-                  onChange={() =>
-                    this.handleCheckboxChange("selectedRatings", 5)
-                  }
-                />
-                <Box className="star">
-                  <StarIcon />
-                  <StarIcon />
-                  <StarIcon />
-                  <StarIcon />
-                  <StarIcon />
-                </Box>{" "}
-                5.0
-              </li>
-              <li>
-                <Checkbox
-                  checked={selectedRatings.includes(4)}
-                  onChange={() =>
-                    this.handleCheckboxChange("selectedRatings", 4)
-                  }
-                />
-                <Box className="star">
-                  <StarIcon />
-                  <StarIcon />
-                  <StarIcon />
-                  <StarIcon />
-                  <StarIcon className="gray" />
-                </Box>{" "}
-                4.0 & up
-              </li>
-              <li>
-                <Checkbox
-                  checked={selectedRatings.includes(3)}
-                  onChange={() =>
-                    this.handleCheckboxChange("selectedRatings", 3)
-                  }
-                />
-                <Box className="star">
-                  <StarIcon />
-                  <StarIcon />
-                  <StarIcon />
-                  <StarIcon className="gray" />
-                  <StarIcon className="gray" />
-                </Box>{" "}
-                3.0 & up
-              </li>
-              <li>
-                <Checkbox
-                  checked={selectedRatings.includes(2)}
-                  onChange={() =>
-                    this.handleCheckboxChange("selectedRatings", 2)
-                  }
-                />
-                <Box className="star">
-                  <StarIcon />
-                  <StarIcon />
-                  <StarIcon className="gray" />
-                  <StarIcon className="gray" />
-                  <StarIcon className="gray" />
-                </Box>{" "}
-                2.0 & up
-              </li>
-            </ul>
-          </Box>
-          <Box className="filter">
-            <h3>Discount</h3>
-            <ul className="checkbox">
-              <li>
-                <Checkbox
-                  checked={selectedDiscounts.includes("upto5")}
-                  onChange={() =>
-                    this.handleCheckboxChange("selectedDiscounts", "upto5")
-                  }
-                />
-                Upto 5%
-              </li>
-              <li>
-                <Checkbox
-                  checked={selectedDiscounts.includes("10to15")}
-                  onChange={() =>
-                    this.handleCheckboxChange("selectedDiscounts", "10to15")
-                  }
-                />
-                10% - 15%
-              </li>
-              <li>
-                <Checkbox
-                  checked={selectedDiscounts.includes("15to25")}
-                  onChange={() =>
-                    this.handleCheckboxChange("selectedDiscounts", "15to25")
-                  }
-                />
-                15% - 25%
-              </li>
-              <li>
-                <Checkbox
-                  checked={selectedDiscounts.includes("more25")}
-                  onChange={() =>
-                    this.handleCheckboxChange("selectedDiscounts", "more25")
-                  }
-                />
-                More than 25%
-              </li>
-            </ul>
-          </Box>
-          {/* <Box className="filter">
+            <Box className="filter">
+              <h3>Rating</h3>
+              <ul className="checkbox">
+                <li>
+                  <Checkbox
+                    checked={selectedRatings.includes(5)}
+                    onChange={() =>
+                      this.handleCheckboxChange("selectedRatings", 5)
+                    }
+                  />
+                  <Box className="star">
+                    <StarIcon />
+                    <StarIcon />
+                    <StarIcon />
+                    <StarIcon />
+                    <StarIcon />
+                  </Box>{" "}
+                  5.0
+                </li>
+                <li>
+                  <Checkbox
+                    checked={selectedRatings.includes(4)}
+                    onChange={() =>
+                      this.handleCheckboxChange("selectedRatings", 4)
+                    }
+                  />
+                  <Box className="star">
+                    <StarIcon />
+                    <StarIcon />
+                    <StarIcon />
+                    <StarIcon />
+                    <StarIcon className="gray" />
+                  </Box>{" "}
+                  4.0 & up
+                </li>
+                <li>
+                  <Checkbox
+                    checked={selectedRatings.includes(3)}
+                    onChange={() =>
+                      this.handleCheckboxChange("selectedRatings", 3)
+                    }
+                  />
+                  <Box className="star">
+                    <StarIcon />
+                    <StarIcon />
+                    <StarIcon />
+                    <StarIcon className="gray" />
+                    <StarIcon className="gray" />
+                  </Box>{" "}
+                  3.0 & up
+                </li>
+                <li>
+                  <Checkbox
+                    checked={selectedRatings.includes(2)}
+                    onChange={() =>
+                      this.handleCheckboxChange("selectedRatings", 2)
+                    }
+                  />
+                  <Box className="star">
+                    <StarIcon />
+                    <StarIcon />
+                    <StarIcon className="gray" />
+                    <StarIcon className="gray" />
+                    <StarIcon className="gray" />
+                  </Box>{" "}
+                  2.0 & up
+                </li>
+              </ul>
+            </Box>
+            <Box className="filter">
+              <h3>Discount</h3>
+              <ul className="checkbox">
+                <li>
+                  <Checkbox
+                    checked={selectedDiscounts.includes("upto5")}
+                    onChange={() =>
+                      this.handleCheckboxChange("selectedDiscounts", "upto5")
+                    }
+                  />
+                  Upto 5%
+                </li>
+                <li>
+                  <Checkbox
+                    checked={selectedDiscounts.includes("10to15")}
+                    onChange={() =>
+                      this.handleCheckboxChange("selectedDiscounts", "10to15")
+                    }
+                  />
+                  10% - 15%
+                </li>
+                <li>
+                  <Checkbox
+                    checked={selectedDiscounts.includes("15to25")}
+                    onChange={() =>
+                      this.handleCheckboxChange("selectedDiscounts", "15to25")
+                    }
+                  />
+                  15% - 25%
+                </li>
+                <li>
+                  <Checkbox
+                    checked={selectedDiscounts.includes("more25")}
+                    onChange={() =>
+                      this.handleCheckboxChange("selectedDiscounts", "more25")
+                    }
+                  />
+                  More than 25%
+                </li>
+              </ul>
+            </Box>
+            {/* <Box className="filter">
             <h3>Country of Origin</h3>
             <RadioGroup
               aria-labelledby="country-origin-radio-group-label"
@@ -343,7 +348,8 @@ class SideBar extends Component {
               </li>
             </ul>
           </Box> */}
-        </Box>
+          </Box>
+        )}
       </Box>
     );
   }

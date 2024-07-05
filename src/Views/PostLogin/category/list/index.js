@@ -6,7 +6,14 @@ import {
   deleteItemToCart,
 } from "../../../../Redux/Cart/CartThunk";
 import { connect } from "react-redux";
-import { Box, FormControl, NativeSelect, Button, Grid,CircularProgress } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  NativeSelect,
+  Button,
+  Grid,
+  CircularProgress,
+} from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
 import priceIcon from "../../../../assets/img/price-icon.png";
@@ -152,7 +159,7 @@ class List extends Component {
             </Grid>
           </Grid>
         </Box>
-        <Box className="products">
+        <Box className="products ">
           {sortedData?.length > 0 ? (
             <>
               {sortedData?.length &&
@@ -162,7 +169,14 @@ class List extends Component {
                     (x) => x.ProductId === item.id
                   );
                   return (
-                    <Box className="product-box" key={item.id}>
+                    <Box
+                      className={
+                        this.props.hideFilter
+                          ? "product-box hide-filter-box"
+                          : "product-box"
+                      }
+                      key={item.id}
+                    >
                       {item.savingsPercentage && (
                         <Box className="sale">
                           Sale {item.savingsPercentage}%
@@ -256,7 +270,6 @@ class List extends Component {
                             ) : (
                               "Add to cart"
                             )}
-                          
                           </Button>
                         </Box>
                       )}
