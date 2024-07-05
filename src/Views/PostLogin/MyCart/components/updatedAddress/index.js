@@ -11,73 +11,77 @@ import {
   Button,
 } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { connect } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
-  postAddress,
+  updateAddress,
   getAllAddress,
 } from "../../../../../Redux/Address/AddressThunk";
 import status from "../../../../../Redux/Constants";
 import { loginDetails } from "Views/Utills/helperFunctions";
 import { Link } from "react-router-dom";
 
-const AddNewAddress = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
-  const [contact, setContact] = useState("");
-  const [countryCode, setCountryCode] = useState("IN");
-  const [country, setCountry] = useState("");
-  const [zipCode, setZipCode] = useState("");
-
-  const postAddressStatus = useSelector((state) => state.alladdress.postAddress.status);
-  const dispatch = useDispatch();
+const UpdatedAddress = ({
+  updateAddress,
+  getAllAddress,
+  updateAddressState,
+}) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [addressDetails, setAddressDetails] = useState({
+    name: "",
+    email: "",
+    address: "",
+    contact: "",
+    countryCode: "",
+    country: "",
+    zipCode: "",
+    addressId: "",
+  });
 
   useEffect(() => {
-    if (postAddressStatus === status.SUCCESS) {
+    if (location.state && location.state.address) {
+      setAddressDetails(location.state.address);
+    }
+  }, [location.state]);
+
+  useEffect(() => {
+    if (
+      updateAddressState.status === status.SUCCESS &&
+      updateAddressState?.data
+    ) {
       const items = loginDetails();
-      dispatch(getAllAddress({
+      getAllAddress({
         userId: items.userId,
-        address: postAddress?.data.address,
-      }));
+        address: updateAddressState?.data.address,
+      });
+
       navigate("/myCart/address/");
     }
-  }, [postAddressStatus, dispatch, navigate]);
+  }, [updateAddressState, getAllAddress, navigate]);
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
-    switch (name) {
-      case "name":
-        setName(value);
-        break;
-      case "email":
-        setEmail(value);
-        break;
-      case "address":
-        setAddress(value);
-        break;
-      case "contact":
-        setContact(value);
-        break;
-      case "countryCode":
-        setCountryCode(value);
-        break;
-      case "country":
-        setCountry(value);
-        break;
-      case "zipCode":
-        setZipCode(value);
-        break;
-      default:
-        break;
-    }
+    setAddressDetails({
+      ...addressDetails,
+      [event.target.name]: event.target.value,
+    });
   };
 
   const handleSubmit = () => {
+    const {
+      name,
+      email,
+      address,
+      contact,
+      countryCode,
+      country,
+      zipCode,
+      addressId,
+    } = addressDetails;
     const items = loginDetails();
-    dispatch(postAddress({
+    updateAddress({
       userId: items.userId,
+      addressId: addressId,
       address: {
         name,
         email,
@@ -86,9 +90,11 @@ const AddNewAddress = () => {
         country,
         zipCode,
       },
-    }));
-    navigate("/myCart/address/");
+    });
   };
+
+  const { name, email, address, contact, countryCode, country, zipCode } =
+    addressDetails;
 
   return (
     <Container>
@@ -99,7 +105,7 @@ const AddNewAddress = () => {
         data-aos-duration="400"
       >
         <Box className="address-details">
-          <h2>Add new address</h2>
+          <h2>Update address</h2>
           <Box className="form-info">
             <Grid container spacing={2}>
               <Grid item xs={12} lg={6} md={6} sm={6}>
@@ -156,6 +162,9 @@ const AddNewAddress = () => {
                         displayEmpty
                         inputProps={{ name: "countryCode" }}
                       >
+                        <MenuItem value="">
+                          <em>IN</em>
+                        </MenuItem>
                         <MenuItem value="IN">IN</MenuItem>
                         <MenuItem value="USA">USA</MenuItem>
                         <MenuItem value="NZ">NZ</MenuItem>
@@ -232,4 +241,11 @@ const AddNewAddress = () => {
   );
 };
 
-export default AddNewAddress;
+const mapStateToProps = (state) => {
+  const { updateAddress } = state.alladdress;
+  return { updateAddressState: updateAddress };
+};
+
+const mapDispatchToProps = { updateAddress, getAllAddress };
+
+export default connect(mapStateToProps, mapDispatchToProps)(UpdatedAddress);

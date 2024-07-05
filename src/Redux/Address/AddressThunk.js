@@ -12,3 +12,32 @@ export const getAllAddress = createAsyncThunk("alladdress", async (params) => {
   }
 });
 
+export const postAddress = createAsyncThunk("postaddress", async (params) => {
+  try {
+    let url = config.ADD_ADDRESS;
+    const response = await postLoginService.post(url, params);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+});
+
+export const deleteAddress = createAsyncThunk("deletetaddress", async (params) => {
+  try {
+    let url = config.DELETE_ADDRESS;
+    const response = await postLoginService.delete(url, { data: params });
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+});
+
+export const updateAddress = createAsyncThunk("updateaddress", async (params) => {
+  try {
+    let url = config.UPDATE_ADDRESS;
+    const response = await postLoginService.put(url, params);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+});

@@ -14,8 +14,10 @@ const Config = {
     FETCH_CART_ITEMS: `${BASE_URL}/cart/getItems`,
     UPDATE_ITEM: `${BASE_URL}/cart/updateItem`,
     DELETE_ITEM: `${BASE_URL}/cart/deleteItem`,
-    GET_ALL_ADDRESS: `${BASE_URL}/getAllAddress/`,
-    ADD_ADDRESS: `${BASE_URL}/addAddress/`,
+    GET_ALL_ADDRESS: `${BASE_URL}/getAllAddress`,
+    ADD_ADDRESS: `${BASE_URL}/addAddress`,
+    DELETE_ADDRESS: `${BASE_URL}/deleteAddress`,
+    UPDATE_ADDRESS: `${BASE_URL}/updateAddress`,
 };
 
 export default Config;

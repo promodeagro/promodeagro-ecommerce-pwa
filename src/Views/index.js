@@ -16,6 +16,9 @@ const Address = lazy(() =>
 const AddNewAddress = lazy(() =>
   import("./../Views/PostLogin/MyCart/components/addNewAddress")
 );
+const UpdatedAddress = lazy(() =>
+  import("./../Views/PostLogin/MyCart/components/updatedAddress")
+);
 const OrderPlaced = lazy(() =>
   import("./../Views/PostLogin/MyCart/components/orderPlaced")
 );
@@ -56,6 +59,11 @@ const Views = () => {
             exact
             path={`/myCart/address/add-new-address`}
             element={<AddNewAddress />}
+          />
+          <Route
+            exact
+            path={`/myCart/address/updated-address`}
+            element={<UpdatedAddress />}
           />
           <Route
             exact
