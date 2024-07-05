@@ -59,47 +59,49 @@ class MyOrder extends Component {
               Showing orders for the last 6 months <strong>10 </strong>Orders
             </span>
             <Box className="order-status-collapsed" data-aos="zoom-in-right">
-              <Grid container spacing={1} alignItems={"center"}>
-                <Grid item xs={12} lg={3} md={6} sm={6}>
-                  <Box className="date-time-container order-progress">
-                    <AccessTimeIcon />
-                    <Box className="d-block">
-                      <span className="d-block">Today,</span>
-                      <span className="d-block">2:00 PM - 5:00 PM</span>
+              <Box className="inner-order">
+                <Grid container spacing={1} alignItems={"center"}>
+                  <Grid item xs={3} lg={3} md={3} sm={3}>
+                    <Box className="date-time-container order-progress">
+                      <AccessTimeIcon />
+                      <Box className="d-block">
+                        <span className="d-block">Today,</span>
+                        <span className="d-block">2:00 PM - 5:00 PM</span>
+                      </Box>
                     </Box>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} lg={5} md={6} sm={6}>
-                  <Box className="order-status-bar">
-                    <Stepper activeStep={1} alternativeLabel>
-                      {steps.map((label, index) => (
-                        <Step key={label}>
-                          <StepLabel StepIconComponent={CustomStepIcon}>
-                            {label}
-                          </StepLabel>
-                        </Step>
-                      ))}
-                    </Stepper>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} lg={1} md={6} sm={6}></Grid>
-                <Grid item xs={12} lg={2} md={6} sm={6}>
-                  <Box className="order-id-container order-progress">
-                    <span className="d-block title">Order ID :</span>
-                    <Box className="d-flex align-items-center">
-                      <span className="d-block number">200715DXFMW0UD</span>
-                      <ContentCopyIcon />
+                  </Grid>
+                  <Grid item xs={5} lg={5} md={5} sm={5}>
+                    <Box className="order-status-bar">
+                      <Stepper activeStep={1} alternativeLabel>
+                        {steps.map((label, index) => (
+                          <Step key={label}>
+                            <StepLabel StepIconComponent={CustomStepIcon}>
+                              {label}
+                            </StepLabel>
+                          </Step>
+                        ))}
+                      </Stepper>
                     </Box>
-                  </Box>
+                  </Grid>
+                  <Grid item xs={1} lg={1} md={1} sm={1}></Grid>
+                  <Grid item xs={2} lg={2} md={2} sm={2}>
+                    <Box className="order-id-container order-progress">
+                      <span className="d-block title">Order ID :</span>
+                      <Box className="d-flex align-items-center">
+                        <span className="d-block number">200715DXFMW0UD</span>
+                        <ContentCopyIcon />
+                      </Box>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={1} lg={1} md={1} sm={1} display={"flex"} justifyContent={"center"}>
+                    <Box className="collapsed-arrow">
+                      <IconButton aria-label="arrow">
+                        <KeyboardArrowDownIcon />
+                      </IconButton>
+                    </Box>
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} lg={1} md={12} sm={12}>
-                  <Box className="collapsed-arrow">
-                    <IconButton aria-label="arrow">
-                      <KeyboardArrowDownIcon />
-                    </IconButton>
-                  </Box>
-                </Grid>
-              </Grid>
+              </Box>
             </Box>
             <Box className="order-details-container" data-aos="zoom-in-right">
               <span className="d-block order-place-time">
@@ -179,103 +181,102 @@ class MyOrder extends Component {
               </Box>
             </Box>
             <Box className="order-status-collapsed" data-aos="zoom-in-right">
-              <Grid container spacing={1} alignItems={"center"}>
-                <Grid item xs={3}>
-                  <Box className="date-time-container order-delivered">
-                    <AccessTimeIcon />
-                    <Box className="d-block">
-                      <span className="d-block">Today,</span>
-                      <span className="d-block">2:00 PM - 5:00 PM</span>
+              <Box className="inner-order">
+                <Grid container spacing={1} alignItems={"center"}>
+                  <Grid item xs={3} lg={3} md={3} sm={3}>
+                    <Box className="date-time-container order-delivered">
+                      <AccessTimeIcon />
+                      <Box className="d-block">
+                        <span className="d-block">Today,</span>
+                        <span className="d-block">2:00 PM - 5:00 PM</span>
+                      </Box>
                     </Box>
-                  </Box>
-                </Grid>
-                <Grid item xs={5}>
-                  <Box className="order-status-bar">
-                    <Stepper activeStep={1} alternativeLabel>
-                      {steps.map((label, index) => (
-                        <Step key={label}>
-                          <StepLabel StepIconComponent={CustomStepIcon}>
-                            {label}
-                          </StepLabel>
-                        </Step>
-                      ))}
-                    </Stepper>
-                  </Box>
-                </Grid>
-                <Grid item xs={1}>
-                  <Box className="order-status-container delivered">
-                    <span className="d-block">Delivered</span>
-                  </Box>
-                </Grid>
-                <Grid item xs={2}>
-                  <Box className="order-id-container order-delivered">
-                    <span className="d-block title">Order ID :</span>
-                    <Box className="d-flex align-items-center">
-                      <span className="d-block number">200715DXFMW0UD</span>
-                      <ContentCopyIcon />
+                  </Grid>
+                  <Grid item xs={5} lg={5} md={5} sm={5}>
+                    <Box className="order-status-bar">
+                      <Stepper activeStep={1} alternativeLabel>
+                        {steps.map((label, index) => (
+                          <Step key={label}>
+                            <StepLabel StepIconComponent={CustomStepIcon}>
+                              {label}
+                            </StepLabel>
+                          </Step>
+                        ))}
+                      </Stepper>
                     </Box>
-                  </Box>
+                  </Grid>
+                  <Grid item xs={1} lg={1} md={1} sm={1}>
+                    <Box className="order-status-container delivered">
+                      <span className="d-block">Delivered</span>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={2} lg={2} md={2} sm={2}>
+                    <Box className="order-id-container order-delivered">
+                      <span className="d-block title">Order ID :</span>
+                      <Box className="d-flex align-items-center">
+                        <span className="d-block number">200715DXFMW0UD</span>
+                        <ContentCopyIcon />
+                      </Box>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={1} lg={1} md={1} sm={1} display={"flex"} justifyContent={"center"}>
+                    <Box className="collapsed-arrow">
+                      <IconButton aria-label="arrow">
+                        <KeyboardArrowDownIcon />
+                      </IconButton>
+                    </Box>
+                  </Grid>
                 </Grid>
-                <Grid item xs={1}>
-                  <Box className="collapsed-arrow">
-                    <IconButton aria-label="arrow">
-                      <KeyboardArrowDownIcon />
-                    </IconButton>
-                  </Box>
-                </Grid>
-              </Grid>
+              </Box>
             </Box>
             <Box className="order-status-collapsed" data-aos="zoom-in-right">
-              <Grid
-                container
-                spacing={1}
-                alignItems={"center"}
-                overflow={"auto"}
-              >
-                <Grid item xs={3} lg={3} md={3} sm={3}>
-                  <Box className="date-time-container order-delivered">
-                    <AccessTimeIcon />
-                    <Box className="d-block">
-                      <span className="d-block">Today,</span>
-                      <span className="d-block">2:00 PM - 5:00 PM</span>
+              <Box className="inner-order">
+                <Grid container spacing={1} alignItems={"center"}>
+                  <Grid item xs={3} lg={3} md={3} sm={3}>
+                    <Box className="date-time-container order-delivered">
+                      <AccessTimeIcon />
+                      <Box className="d-block">
+                        <span className="d-block">Today,</span>
+                        <span className="d-block">2:00 PM - 5:00 PM</span>
+                      </Box>
                     </Box>
-                  </Box>
-                </Grid>
-                <Grid item xs={5} lg={5} md={5} sm={3}>
-                  <Box className="order-status-bar">
-                    <Stepper activeStep={1} alternativeLabel>
-                      {steps.map((label, index) => (
-                        <Step key={label}>
-                          <StepLabel StepIconComponent={CustomStepIcon}>
-                            {label}
-                          </StepLabel>
-                        </Step>
-                      ))}
-                    </Stepper>
-                  </Box>
-                </Grid>
-                <Grid item xs={1} lg={1} md={1} sm={1}>
-                  <Box className="order-status-container cancelled">
-                    <span className="d-block">Cancelled</span>
-                  </Box>
-                </Grid>
-                <Grid item xs={2} lg={2} md={2} sm={2}>
-                  <Box className="order-id-container order-delivered">
-                    <span className="d-block title ">Order ID :</span>
-                    <Box className="d-flex align-items-center">
-                      <span className="d-block number">200715DXFMW0UD</span>
-                      <ContentCopyIcon />
+                  </Grid>
+                  <Grid item xs={5} lg={5} md={5} sm={5}>
+                    <Box className="order-status-bar">
+                      <Stepper activeStep={1} alternativeLabel>
+                        {steps.map((label, index) => (
+                          <Step key={label}>
+                            <StepLabel StepIconComponent={CustomStepIcon}>
+                              {label}
+                            </StepLabel>
+                          </Step>
+                        ))}
+                      </Stepper>
                     </Box>
-                  </Box>
+                  </Grid>
+                  <Grid item xs={1} lg={1} md={1} sm={1}>
+                    <Box className="order-status-container cancelled">
+                      <span className="d-block">Cancelled</span>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={2} lg={2} md={2} sm={2}>
+                    <Box className="order-id-container order-delivered">
+                      <span className="d-block title ">Order ID :</span>
+                      <Box className="d-flex align-items-center">
+                        <span className="d-block number">200715DXFMW0UD</span>
+                        <ContentCopyIcon />
+                      </Box>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={1} lg={1} md={1} sm={1} display={"flex"} justifyContent={"center"}>
+                    <Box className="collapsed-arrow">
+                      <IconButton aria-label="arrow">
+                        <KeyboardArrowDownIcon />
+                      </IconButton>
+                    </Box>
+                  </Grid>
                 </Grid>
-                <Grid item xs={1}>
-                  <Box className="collapsed-arrow">
-                    <IconButton aria-label="arrow">
-                      <KeyboardArrowDownIcon />
-                    </IconButton>
-                  </Box>
-                </Grid>
-              </Grid>
+              </Box>
             </Box>
           </Box>
         </Box>

@@ -36,10 +36,17 @@
             padding: 6px;
             min-height: 104px;
             border: 1px solid #BFBFBF;
-            display: flex;
-            align-items: center;
             border-radius: 4px;
             margin-top: 28px;
+            width: 100%;
+            overflow: hidden;
+            overflow-x: auto;
+
+            .inner-order {
+                max-width: 1125px;
+                display: block;
+                width: 1125px;
+            }
 
             .date-time-container {
                 padding: 24px 27px;
@@ -77,7 +84,7 @@
 
                 .css-1hv8oq8-MuiStepLabel-label.MuiStepLabel-alternativeLabel {
                     margin-top: 0px;
-                    font-size: 12px;
+                    font-size: 11px;
                     line-height: 20px;
                     color: #2A3A31;
                     font-weight: 400;
