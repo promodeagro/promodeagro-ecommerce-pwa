@@ -14,8 +14,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { loginDetails } from "Views/Utills/helperFunctions";
 import { useNavigate } from "react-router-dom";
 
-const AllAddress = () => {
+const AllAddress = (props) => {
   const [allAddress, setAllAddress] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState({})
   const allAddressState = useSelector((state) => state.alladdress.allAddress);
   const postAddressStatus = useSelector(
     (state) => state.alladdress.postAddress.status
@@ -42,6 +43,7 @@ const AllAddress = () => {
       allAddressState.data.addresses
     ) {
       setAllAddress(allAddressState.data.addresses);
+      setSelectedAddress(allAddressState.data.addresses[0])
     }
   }, [allAddressState]);
 
@@ -78,6 +80,10 @@ const AllAddress = () => {
     });
   };
 
+  const handleSelectedAddress = (selcet) => {
+    setSelectedAddress(selcet)
+  }
+
   return (
     <Box className="address-select-container">
       <Box className="address-details">
@@ -92,14 +98,18 @@ const AllAddress = () => {
           {allAddress?.length > 0 &&
             allAddress.map((item, index) => {
               return (
-                <Grid key={index} item xs={12} lg={4} md={6} sm={6}>
+                <Grid key={index} item xs={12} lg={4} md={6} sm={6} onClick={() => handleSelectedAddress(item)}>
                   <Box
-                    className="address-card-container"
-                    data-aos="zoom-in-down"
+                    className={`address-card-container ${item.addressId == selectedAddress.addressId ? "active" : ""}`}
                   >
-                    {/* <Box className="active-check">
-                      <CheckIcon />
-                    </Box> */}
+                    {
+                      item.addressId == selectedAddress.addressId ?
+                        <Box className="active-check">
+                          <CheckIcon />
+                        </Box>
+                        : <></>
+                    }
+
                     <Box className="d-flex align-items-center">
                       <IconButton
                         aria-label="edit"
@@ -153,6 +163,9 @@ const AllAddress = () => {
             variant="contained"
             fullWidth
             className="common-btn proceed-btn"
+            onClick={() => {
+              props.handleTabs(1, selectedAddress)
+            }}
           >
             Proceed Next
           </Button>
