@@ -30,6 +30,8 @@ class List extends Component {
       addedProducts: [], // Track added products
       quantities: {}, // Track quantities for each product
       sortOrder: null, // Track sort order
+      dataId: "",
+      isUpdateIncrease: false,
     };
   }
 
@@ -91,6 +93,14 @@ class List extends Component {
 
   handleQuantityChange(id, increment, productQuantity) {
     const items = loginDetails();
+    if (increment < 0) {
+      this.setState({ isUpdateIncrease: false });
+    } else {
+      this.setState({ isUpdateIncrease: true });
+    }
+    this.setState({
+      dataId: id,
+    });
     let cloneQuantities = _.cloneDeep(this.state.quantities);
 
     if (!productQuantity) {
@@ -120,7 +130,8 @@ class List extends Component {
 
   render() {
     const { data, cartItemsData } = this.props;
-    const { addedProducts, quantities, sortOrder } = this.state;
+    const { addedProducts, quantities, sortOrder, dataId, isUpdateIncrease } =
+      this.state;
 
     // Sort data based on sortOrder
     const sortedData = sortOrder
@@ -224,7 +235,16 @@ class List extends Component {
                                 }
                               }}
                             >
-                              -
+                              {this.props.deleteItems.status ===
+                                status.IN_PROGRESS ||
+                              (this.props.updateItems.status ===
+                                status.IN_PROGRESS &&
+                                item.id === dataId &&
+                                !isUpdateIncrease) ? (
+                                <CircularProgress className="common-loader plus-icon" />
+                              ) : (
+                                "-"
+                              )}
                             </Box>
                           ) : (
                             <></>
@@ -250,7 +270,14 @@ class List extends Component {
                               }
                             }}
                           >
-                            +
+                            {this.props.updateItems.status ===
+                              status.IN_PROGRESS &&
+                            item.id === dataId &&
+                            isUpdateIncrease ? (
+                              <CircularProgress className="common-loader plus-icon" />
+                            ) : (
+                              "+"
+                            )}
                           </Box>
                         </Box>
                       ) : (

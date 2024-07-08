@@ -33,6 +33,8 @@ class FeaturedProducts extends Component {
       productsData: [],
       cartList: [],
       dataId: "",
+      isUpdateIncrease: null,
+
     };
   }
 
@@ -83,6 +85,8 @@ class FeaturedProducts extends Component {
       });
       this.setState({
         dataId: "",
+        isUpdateIncrease:null
+
       });
     }
 
@@ -96,6 +100,8 @@ class FeaturedProducts extends Component {
       });
       this.setState({
         dataId: "",
+        isUpdateIncrease:null
+
       });
     }
 
@@ -127,6 +133,14 @@ class FeaturedProducts extends Component {
 
   handleQuantityChange(id, increment, productQuantity) {
     const items = loginDetails();
+    if (increment < 0 && productQuantity != 0) {
+      this.setState({ isUpdateIncrease: false });
+    } else if (productQuantity != 0) {
+      this.setState({ isUpdateIncrease: true });
+    }
+    this.setState({
+      dataId: id,
+    });
     this.setState({
       dataId: id,
     });
@@ -147,7 +161,7 @@ class FeaturedProducts extends Component {
 
   render() {
     const { data } = this.props;
-    const { productsData, cartList } = this.state;
+    const { productsData, cartList , dataId, isUpdateIncrease} = this.state;
     return (
       <Box className="featured-products-container">
         <Container>
@@ -198,7 +212,16 @@ class FeaturedProducts extends Component {
                               }
                             }}
                           >
-                            -
+                           {this.props.deleteItems.status ===
+                              status.IN_PROGRESS ||
+                            (this.props.updateItems.status ===
+                              status.IN_PROGRESS &&
+                              item.id === dataId &&
+                              !isUpdateIncrease) ? (
+                              <CircularProgress className="common-loader plus-icon" />
+                            ) : (
+                              "-"
+                            )}
                           </Box>
                         ) : (
                           <></>
@@ -220,7 +243,14 @@ class FeaturedProducts extends Component {
                             }
                           }}
                         >
-                          +
+                         {this.props.updateItems.status ===
+                            status.IN_PROGRESS &&
+                          item.id === dataId &&
+                          isUpdateIncrease ? (
+                            <CircularProgress className="common-loader plus-icon" />
+                          ) : (
+                            "+"
+                          )}
                         </Box>
                       </Box>
                     ) : (

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Box, Container, Button, Grid, IconButton } from "@mui/material";
+import { Box, Container, Button, Grid, IconButton,CircularProgress } from "@mui/material";
 import {
   fetchCartItems,
   deleteItemToCart,
@@ -22,6 +22,7 @@ class MyCart extends Component {
     super(props);
     this.state = {
       cartList: [],
+      dataId: "",
     };
   }
 
@@ -67,6 +68,9 @@ class MyCart extends Component {
 
   handleQuantityChange(id, increment, productQuantity) {
     const items = loginDetails();
+    this.setState({
+      dataId: id,
+    });
     productQuantity = productQuantity + increment;
     if (productQuantity != 0) {
       this.props.updateItemToCart({
@@ -83,6 +87,8 @@ class MyCart extends Component {
   }
 
   render() {
+    const { dataId } = this.state;
+
     return (
       <>
         {this.props.cartItems.status === status.IN_PROGRESS ? (
@@ -211,7 +217,12 @@ class MyCart extends Component {
                                   );
                                 }}
                               >
-                                +
+                                {this.props.updateItems.status ===
+                                  status.IN_PROGRESS && item.id === dataId ? (
+                                  <CircularProgress className="common-loader plus-icon" />
+                                ) : (
+                                  "+"
+                                )}
                               </Box>
                             </Box>
                             <Box className="d-flex align-items-ceneter btn-group">
