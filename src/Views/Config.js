@@ -18,6 +18,7 @@ const Config = {
     ADD_ADDRESS: `${BASE_URL}/addAddress`,
     DELETE_ADDRESS: `${BASE_URL}/deleteAddress`,
     UPDATE_ADDRESS: `${BASE_URL}/updateAddress`,
+    PLACE_ORDER: `${BASE_URL}/order`,
 };
 
 export default Config;
