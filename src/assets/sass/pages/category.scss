@@ -283,6 +283,8 @@
       }
 
       .icon {
+        cursor: pointer;
+        background-color: #fff;
         position: absolute;
         right: 10px;
         top: 10px;
@@ -418,6 +420,10 @@
           color: #1f9151;
           text-transform: capitalize;
           height: 36px;
+          &.Mui-disabled {
+            color: rgba(0, 0, 0, 0.26);
+            border: 1px solid rgba(0, 0, 0, 0.12);
+          }
         }
       }
 

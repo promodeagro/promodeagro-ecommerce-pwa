@@ -397,12 +397,27 @@
   }
 }
 
+@media (max-width: 1150px) {
+  .header {
+    .header-categories-container {
+      .categories{
+        ul {
+          li {
+            padding-right: 20px;
+          }
+        }
+      }
+    }
+  }
+ 
+}
+
 @media (max-width: 900px) {
   .header {
     .header-top-container {
       .header-top-right {
         .support-box {
-          display: none;
+          font-size: 0px;
         }
         .deliver-box {
           display: none;
@@ -424,6 +439,12 @@
   .header {
     .header-bottom-container {
       .categories-container {
+        .categories-toggle {
+          padding: 10px 10px;
+          max-width: 160px;
+          font-size: 13px;
+          line-height: 20px;
+        }
         .categories-box {
           flex-wrap: wrap;
           width: 230px;

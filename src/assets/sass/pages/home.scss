@@ -227,6 +227,8 @@
       }
 
       .icon {
+        cursor: pointer;
+        background-color: #fff;
         position: absolute;
         right: 10px;
         top: 10px;
@@ -393,15 +395,15 @@
 
     .symbol {
       width: 33.33%;
-      border: 1px solid #1F9151;
-      background-color: #1F9151;
+      border: 1px solid #1f9151;
+      background-color: #1f9151;
       height: 36px;
       cursor: pointer;
       font-size: 24px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #FFFFFF;
+      color: #ffffff;
       border-radius: 4px 0px 0px 4px;
 
       &:last-child {
@@ -412,17 +414,16 @@
     .Number {
       width: 33.33%;
       height: 36px;
-      border: 1px solid #1F9151;
-      background-color: #FFFFFF;
+      border: 1px solid #1f9151;
+      background-color: #ffffff;
       font-size: 16px;
       line-height: 24px;
-      color: #1F9151;
+      color: #1f9151;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 500;
     }
-
   }
 }
 
@@ -437,7 +438,6 @@
     width: 100%;
     display: flex;
     justify-content: center;
-
   }
 
   .services {
@@ -516,7 +516,6 @@
 
     .image {
       display: inline-flex;
-
     }
   }
 }
@@ -821,6 +820,8 @@
     }
 
     .icon {
+      cursor: pointer;
+      background-color: #fff;
       position: absolute;
       right: 10px;
       top: 10px;
@@ -952,6 +953,10 @@
         color: #1f9151;
         text-transform: capitalize;
         height: 36px;
+        &.Mui-disabled {
+          color: rgba(0, 0, 0, 0.26);
+          border: 1px solid rgba(0, 0, 0, 0.12);
+        }
       }
     }
   }
@@ -965,7 +970,6 @@
 
     .text {
       width: 100% !important;
-
     }
 
     .slick-dots {
@@ -983,20 +987,17 @@
     .slick-slider {
       margin-top: 45px;
     }
-
   }
 }
-
 
 @media only screen and (max-width: 900px) {
   .offers-banners-container {
     .banners {
-      >div {
-        >div {
-          >div {
+      > div {
+        > div {
+          > div {
             justify-content: start !important;
           }
-
         }
       }
     }
@@ -1012,19 +1013,16 @@
 
   .featured-products-container {
     .products {
-
       .product-box {
         width: 100%;
       }
     }
   }
-
 }
 
 @media only screen and (max-width: 531px) {
   .featured-products-container {
     .products {
-
       .product-box {
         width: 100% !important;
       }
@@ -1033,13 +1031,12 @@
 }
 
 @media only screen and (max-width: 737px) {
-
   .featured-products-container {
     .products {
       .product-box {
         width: 48%;
+        margin-bottom: 30px;
       }
     }
   }
-
 }

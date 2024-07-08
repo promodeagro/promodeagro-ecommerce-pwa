@@ -88,7 +88,7 @@ p {
 .d-flex {
   display: flex;
 }
-.flex-wrap{
+.flex-wrap {
   flex-wrap: wrap;
 }
 .d-inline-flex {
@@ -218,9 +218,16 @@ button {
   transform: translate(-50%, -50%);
   outline: none;
 }
-.common-loader{
+.common-loader {
   height: 100vh;
-svg{
-  color: #1f9151;
-}
+  svg {
+    color: #1f9151;
+  }
+  &.plus-icon {
+    height: 16px !important;
+    width: 16px !important;
+    svg {
+      color: #FFFFFF;
+    }
+  }
 }
