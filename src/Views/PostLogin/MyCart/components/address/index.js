@@ -34,7 +34,10 @@ import upiImg2 from "../../../../../assets/img/g-pay.png";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import AllAddress from "./conponents/allAddress";
-
+import { connect } from "react-redux"
+import status from "../../../../../Redux/Constants";
+import { fetchCartItems } from "../../../../../Redux/Cart/CartThunk";
+import { loginDetails } from "Views/Utills/helperFunctions";
 const steps = ["Delivery Address", "Delivery Options", "Payment Option"];
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -46,8 +49,73 @@ class Address extends Component {
       activeStep: 0,
       value: 0,
       timneValue: 0,
+      cartList: [],
+      totalPrice: "",
+      address: "",
+      addressId: "",
     };
   }
+
+  componentDidMount() {
+    const items = loginDetails();
+
+    this.props.fetchCartItems({
+      userId: items.userId,
+    });
+  }
+
+
+
+
+  componentDidUpdate(prevProps, prevState) {
+
+    if (
+      prevProps.cartItems.status !== this.props.cartItems.status &&
+      this.props.cartItems.status === status.SUCCESS &&
+      this.props.cartItems.data
+    ) {
+      let price = 0;
+      for (let i = 0; i < this.props.cartItems.data.items.length; i++) {
+        let item = this.props.cartItems.data.items[i]
+
+        if (item?.Subtotal) {
+          price += item.Subtotal
+
+        }
+      }
+      this.setState({
+        totalPrice: price,
+        cartList: this.props.cartItems.data.items,
+      });
+    }
+    if (
+      prevProps.allAddress?.status !== this.props.allAddress?.status &&
+      this.props.allAddress?.status === status.SUCCESS &&
+      this.props.allAddress.data
+    ) {
+
+      debugger
+
+      this.setState(
+        {
+          addressId: "",
+          address: ""
+        }
+      )
+    }
+
+
+
+
+  }
+
+
+
+
+
+
+
+
   handleOpen = () => {
     this.setState({ open: true });
   };
@@ -60,6 +128,14 @@ class Address extends Component {
   timingSlotHandleChange = (event, newTimeValue) => {
     this.setState({ timneValue: newTimeValue });
   };
+
+  handleTabs = (value, selectedAddress) => {
+    debugger
+    this.setState({
+      activeStep: value
+    })
+  }
+
   render() {
     const { activeStep, value, timneValue } = this.state;
     return (
@@ -75,7 +151,7 @@ class Address extends Component {
             </Stepper>
           </Box>
           {activeStep === 0 ? (
-            <AllAddress />
+            <AllAddress handleTabs={this.handleTabs} />
           ) : activeStep === 1 ? (
             <Box className="select-delivery-option-container">
               <Grid container spacing={2} data-aos="zoom-in-down">
@@ -411,4 +487,18 @@ class Address extends Component {
   }
 }
 
-export default Address;
+
+
+function mapStateToProps(state) {
+  const { cartItems } = state.cartitem;
+  const { allAddress } = state.alladdress;
+  const { loginData } = state.login;
+  return { cartItems, loginData, allAddress };
+}
+
+const mapDispatchToProps = {
+  fetchCartItems
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Address);
+
