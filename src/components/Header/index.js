@@ -32,6 +32,7 @@ class Header extends Component {
     const handler = (e) => this.setState({ matches: e.matches });
     window.matchMedia("(max-width: 900px)").addEventListener("change", handler);
   }
+
   componentDidUpdate(prevProps, prevState) {
     if (
       prevProps.cartItems.status !== this.props.cartItems.status &&
@@ -51,6 +52,9 @@ class Header extends Component {
 
   render() {
     const { CategoriesToggle } = this.state;
+    const { allAddress } = this.props;
+    const address = allAddress ? allAddress.address : "";
+    console.log(address);
     return (
       <div className="header">
         <Box className="header-top-container">
@@ -68,11 +72,15 @@ class Header extends Component {
                   <Box className="support-box">
                     <img src={supportIcon} alt="" /> Customer Support 24/7
                   </Box>
-                  <Box className="deliver-box">
-                    Deliver to <img src={deliverIcon} alt="" />{" "}
-                    <span>500005,Himayat Sagar Road </span>
-                  </Box>
-                  <Box className="language-list-box">
+
+                  {address && (
+                    <Box className="deliver-box">
+                      Deliver to <img src={deliverIcon} alt="Deliver Icon" />
+                      <span>{address}</span>
+                    </Box>
+                  )}
+
+                  {/* <Box className="language-list-box">
                     <FormControl fullWidth>
                       <NativeSelect
                         defaultValue={10}
@@ -86,7 +94,7 @@ class Header extends Component {
                         <option value={30}>German</option>
                       </NativeSelect>
                     </FormControl>
-                  </Box>
+                  </Box> */}
                 </Box>
               </Grid>
             </Grid>
@@ -253,7 +261,7 @@ class Header extends Component {
                           </InputAdornment>
                         ),
                       }}
-                      defaultValue="Search Your favorite veggies..."
+                      placeholder="Search Your favorite veggies..."
                     />
                   </Box>
                 </Grid>
@@ -302,8 +310,8 @@ class Header extends Component {
 function mapStateToProps(state) {
   const { cartData } = state.home;
   const { cartItems } = state.cartitem;
-
-  return { cartData, cartItems };
+  const { allAddress } = state.alladdress;
+  return { cartData, cartItems, allAddress };
 }
 
 const mapDispatchToProps = {};

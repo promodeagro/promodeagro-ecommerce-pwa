@@ -140,7 +140,7 @@ class Signin extends Component {
                     </Box>
                   </Box>
                 </Box>
-                <Button
+                {/* <Button
                   variant="outlined"
                   className="google-login-box"
                   fullWidth
@@ -151,7 +151,7 @@ class Signin extends Component {
                   <Divider />
                   <span> OR</span>
                   <Divider />
-                </Box>
+                </Box> */}
                 <Box className="number-input">
                   <label className="d-block">
                     Number <span className="validate-icon">*</span>
