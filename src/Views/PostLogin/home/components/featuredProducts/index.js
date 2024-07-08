@@ -38,9 +38,12 @@ class FeaturedProducts extends Component {
 
   componentDidMount() {
     const items = loginDetails();
-    this.props.fetchCartItems({
-      userId: items.userId,
-    });
+    if (items?.userId) {
+      this.props.fetchCartItems({
+        userId: items.userId,
+      });
+    }
+
     this.props.allProducts();
   }
 
@@ -233,7 +236,7 @@ class FeaturedProducts extends Component {
                           }
                         >
                           {this.props.additems.status == status.IN_PROGRESS &&
-                          item.id == this.state.dataId ? (
+                            item.id == this.state.dataId ? (
                             <CircularProgress className="common-loader" />
                           ) : (
                             "Add to cart"
