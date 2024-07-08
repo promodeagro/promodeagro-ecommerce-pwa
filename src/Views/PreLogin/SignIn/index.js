@@ -61,7 +61,8 @@ class Signin extends Component {
     if (
       prevProps.loginData.status !== this.props.loginData.status &&
       this.props.loginData.status === status.SUCCESS &&
-      this.props.loginData.data && this.props.loginData.data.token
+      this.props.loginData.data &&
+      this.props.loginData.data.token
     ) {
       localStorage.setItem("login", JSON.stringify(this.props.loginData.data));
       this.setState({
@@ -69,13 +70,12 @@ class Signin extends Component {
         password: "",
         isSubmit: false,
       });
-      ErrorMessages.success("Logged In Successfully")
+      ErrorMessages.success("Logged In Successfully");
     } else if (this.props.loginData.data && !this.props.loginData.data.token) {
       this.setState({
-
         isSubmit: false,
       });
-      ErrorMessages.error(this.props.loginData.data.response?.data?.message)
+      ErrorMessages.error(this.props.loginData.data.response?.data?.message);
     }
   }
 
@@ -106,7 +106,6 @@ class Signin extends Component {
 
   handleSignIn = () => {
     const { mobileNumber, password } = this.state;
-
 
     const errorData = this.validateForm();
     this.setState({
@@ -211,12 +210,19 @@ class Signin extends Component {
                   onClick={() => this.handleSignIn()}
                   disabled={this.props.loginData.status === status.IN_PROGRESS}
                   endIcon={
-                    this.props.loginData.status === status.IN_PROGRESS ? <CircularProgress /> : <></>}
+                    this.props.loginData.status === status.IN_PROGRESS ? (
+                      <CircularProgress />
+                    ) : (
+                      <></>
+                    )
+                  }
                 >
                   Login
                 </Button>
 
-                <p> New User? <Link to={"/signup"}>Sign up</Link></p>
+                <Box marginTop={"15px"}>
+                  New User? <Link to={"/signup"}>Sign up</Link>
+                </Box>
                 {/* <Button
                                     variant="contained"
                                     fullWidth

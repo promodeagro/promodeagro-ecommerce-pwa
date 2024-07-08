@@ -1,46 +1,47 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { signUp } from '../../../Redux/Signup/SignupThunk';
-import { ErrorMessages, ValidationEngine } from '../../Utills/helperFunctions';
-import status from '../../../Redux/Constants';
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { signUp } from "../../../Redux/Signup/SignupThunk";
+import { ErrorMessages, ValidationEngine } from "../../Utills/helperFunctions";
+import status from "../../../Redux/Constants";
 import {
   Box,
   Container,
   Button,
   TextField,
   InputAdornment,
-  FormHelperText
-} from '@mui/material';
-import addSymbol from '../../../assets/img/add-symbol.svg';
+  FormHelperText,
+} from "@mui/material";
+import addSymbol from "../../../assets/img/add-symbol.svg";
+import { Link } from "react-router-dom";
 
 const validationSchema = {
   mobileNumber: [
     {
-      message: 'Please enter Mobile number',
+      message: "Please enter Mobile number",
       type: ValidationEngine.type.MANDATORY,
     },
     {
-      message: 'Please valid Mobile Number',
+      message: "Please valid Mobile Number",
       type: ValidationEngine.type.REGEX,
       regex: ValidationEngine.MOBILE_NUMBER_REGEX,
     },
   ],
   password: [
     {
-      message: 'Please enter Password',
+      message: "Please enter Password",
       type: ValidationEngine.type.MANDATORY,
     },
   ],
   cnfPassword: [
     {
-      message: 'Please enter Password',
+      message: "Please enter Password",
       type: ValidationEngine.type.MANDATORY,
     },
   ],
   name: [
     {
-      message: 'Please enter Name',
+      message: "Please enter Name",
       type: ValidationEngine.type.MANDATORY,
     },
   ],
@@ -48,10 +49,10 @@ const validationSchema = {
 
 const SignUp = ({ signUp, signupData }) => {
   const [formData, setFormData] = useState({
-    name: '',
-    password: '',
-    cnfPassword: '',
-    mobileNumber: '',
+    name: "",
+    password: "",
+    cnfPassword: "",
+    mobileNumber: "",
     isSubmit: false,
   });
 
@@ -60,18 +61,19 @@ const SignUp = ({ signUp, signupData }) => {
   useEffect(() => {
     if (
       signupData.status === status.SUCCESS &&
-      signupData.data && formData.isSubmit
+      signupData.data &&
+      formData.isSubmit
     ) {
       setFormData({
         ...formData,
-        mobileNumber: '',
-        password: '',
+        mobileNumber: "",
+        password: "",
         isSubmit: false,
-        cnfPassword: '',
-        name: '',
+        cnfPassword: "",
+        name: "",
       });
-      navigate('/signin');
-      ErrorMessages.success('Signup Successfully');
+      navigate("/signin");
+      ErrorMessages.success("Signup Successfully");
     }
   }, [signupData.status]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -91,7 +93,7 @@ const SignUp = ({ signUp, signupData }) => {
     ) {
       error.isValid = false;
       error.cnfPassword.isValid = false;
-      error.cnfPassword.message = 'Confirm password does not match';
+      error.cnfPassword.message = "Confirm password does not match";
     }
     return error;
   };
@@ -117,7 +119,7 @@ const SignUp = ({ signUp, signupData }) => {
 
   const handleValueChange = (event) => {
     const { name, value, type, checked } = event.target;
-    const val = type === 'checkbox' ? checked : value;
+    const val = type === "checkbox" ? checked : value;
     setFormData({
       ...formData,
       [name]: val,
@@ -189,7 +191,6 @@ const SignUp = ({ signUp, signupData }) => {
                     {errorData?.mobileNumber?.message}
                   </FormHelperText>
                 )}
-
               </Box>
               <Box className="number-input">
                 <label className="d-block">
@@ -232,7 +233,6 @@ const SignUp = ({ signUp, signupData }) => {
                     {errorData?.cnfPassword?.message}
                   </FormHelperText>
                 )}
-
               </Box>
               <Button
                 variant="contained"
@@ -242,6 +242,17 @@ const SignUp = ({ signUp, signupData }) => {
               >
                 Sign Up
               </Button>
+              <Box marginTop={"15px"}>
+                <Link to={"/signin"}>
+                  <Button
+                    variant="outlined"
+                    fullWidth
+                    className="outline-common-btn"
+                  >
+                    Back to Login
+                  </Button>
+                </Link>
+              </Box>
             </Box>
           </Box>
         </Box>
@@ -257,7 +268,4 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = { signUp };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SignUp);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

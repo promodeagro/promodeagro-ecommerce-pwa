@@ -4,10 +4,13 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import FormControl from "@mui/material/FormControl";
 import NativeSelect from "@mui/material/NativeSelect";
+import {
+  KeyboardArrowDown as KeyboardArrowDownIcon,
+  KeyboardArrowUp as KeyboardArrowUpIcon,
+  HomeOutlined as HomeOutlinedIcon,
+} from "@mui/icons-material";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Button from "@mui/material/Button";
 import Logo from "../../assets/img/logo.png";
 import supportIcon from "../../assets/img/support-icon.png";
@@ -27,13 +30,12 @@ class Header extends Component {
       CategoriesToggle: false,
       matches: window.matchMedia("(max-width: 900px)").matches,
       cartList: [],
-
     };
   }
   componentDidMount() {
-
-    const handler = (e) => this.setState({ matches: e.matches });
-    window.matchMedia("(max-width: 900px)").addEventListener("change", handler);
+    window
+      .matchMedia("(max-width: 900px)")
+      .addEventListener("change", (e) => this.setState({ matches: e.matches }));
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -54,10 +56,68 @@ class Header extends Component {
   };
 
   render() {
-    const { CategoriesToggle } = this.state;
+    const { CategoriesToggle, matches } = this.state;
     const { allAddress } = this.props;
     const address = allAddress ? allAddress.address : "";
-    let login = loginDetails()
+    let login = loginDetails();
+
+    const path = window.location.pathname;
+
+    const renderCategories = () => (
+      <Box className="categories-box">
+        <Box className="categories">
+          <h2>Vegetables</h2>
+          <ul>
+            <li>
+              <a href="#">Cut & peeled Veggies</a>
+            </li>
+            <li>
+              <a href="#">Leafy Vegetables</a>
+            </li>
+            <li>
+              <a href="#">Fresh Vegetables</a>
+            </li>
+            <li>
+              <a href="#">Herbs and Seasoning</a>
+            </li>
+          </ul>
+        </Box>
+        <Box className="sub-categories">
+          <h3>Fruits</h3>
+          <ul>
+            <li>
+              <a href="#">Exotic Fruits</a>
+            </li>
+            <li>
+              <a href="#">Seasonal Fruits</a>
+            </li>
+            <li>
+              <a href="#">Juices & Mixes</a>
+            </li>
+          </ul>
+        </Box>
+      </Box>
+    );
+
+    const renderBreadcrumb = () => (
+      <Box className="breadcrumb">
+        <ul>
+          <li>
+            <Link to="/">
+              <HomeOutlinedIcon /> Home
+            </Link>
+          </li>
+          <li>/</li>
+          <li>
+            <Link to="/category">Vegetables</Link>
+          </li>
+          <li>/</li>
+          <li className="active">
+            <Link to="/category">Leafy Vegetables</Link>
+          </li>
+        </ul>
+      </Box>
+    );
 
     return (
       <div className="header">
@@ -106,34 +166,19 @@ class Header extends Component {
         </Box>
         <Box className="header-categories-container">
           <Container>
-            <Grid container spacing={2}>
-              {this.state.matches ? (
-                ""
-              ) : (
-                <Grid item xs={12} md={8}>
-                  <Box className="categories">
-                    <ul>
-                      <li>
-                        <Link to="/category">Quick Links</Link>
-                      </li>
-                      <li>
-                        <Link to="/category">Exotic Fruits</Link>
-                      </li>
-                      <li>
-                        <Link to="/category">Leafy Vegetables</Link>
-                      </li>
-                      <li>
-                        <Link to="/category">Fresh fruits</Link>
-                      </li>
-                      <li>
-                        <Link to="/category">Cuts & Sprouts</Link>
-                      </li>
-                    </ul>
-                  </Box>
-                </Grid>
-              )}
-              <Grid item xs={12} md={4}>
-                <Box className="categories menu" justifyContent={"flex-end"}>
+            <Grid container spacing={2} alignItems={"center"}>
+              <Grid
+                item
+                xs={12}
+                md={4}
+                order={["/", "/signin", "/signup"].includes(path) ? 0 : 1}
+              >
+                <Box
+                  className="categories menu"
+                  justifyContent={
+                    ["/", "/signin", "/signup"].includes(path) ? "" : "flex-end"
+                  }
+                >
                   <ul>
                     <li>
                       <Link to={"/"}>Home</Link>
@@ -147,170 +192,140 @@ class Header extends Component {
                   </ul>
                 </Box>
               </Grid>
-            </Grid>
-          </Container>
-        </Box>
-        <Box className="header-bottom-container">
-          <Container>
-            <Grid container spacing={2} alignItems={"center"}>
-              <Grid item xs={9} md={3} lg={3}>
-                <Box className="categories-container">
-                  <Box
-                    className="categories-toggle"
-                    onClick={this.handleClickCategoriesToggle}
-                  >
-                    Shop by Categories
-                    <span>
-                      {CategoriesToggle ? (
-                        <KeyboardArrowUpIcon />
-                      ) : (
-                        <KeyboardArrowDownIcon />
-                      )}
-                    </span>
-                  </Box>
-                  {CategoriesToggle ? (
-                    <Box className="categories-box">
-                      <Box className="categories">
-                        <h2>Vegetables</h2>
-                        <ul>
-                          <li>
-                            <a href="#">Cut & peeled Veggies </a>
-                            <Box className="sub-categories">
-                              <h3>Fruits</h3>
-                              <ul>
-                                <li>
-                                  <a href="#">Exotic Fruits</a>
-                                </li>
-                                <li>
-                                  <a href="#">Seasonal Fruits</a>
-                                </li>
-                                <li>
-                                  <a href="#">Juices & Mixes</a>
-                                </li>
-                              </ul>
-                            </Box>
-                          </li>
-                          <li>
-                            <a href="#">Leafy Vegetables </a>
-                            <Box className="sub-categories">
-                              <h3>Fruits </h3>
-                              <ul>
-                                <li>
-                                  <a href="#">Exotic Fruits</a>
-                                </li>
-                                <li>
-                                  <a href="#">Seasonal Fruits</a>
-                                </li>
-                                <li>
-                                  <a href="#">Juices & Mixes</a>
-                                </li>
-                              </ul>
-                            </Box>
-                          </li>
-                          <li>
-                            <a href="#">Fresh Vegetables </a>
-                            <Box className="sub-categories">
-                              <h3>Fruits </h3>
-                              <ul>
-                                <li>
-                                  <a href="#">Exotic Fruits</a>
-                                </li>
-                                <li>
-                                  <a href="#">Seasonal Fruits</a>
-                                </li>
-                                <li>
-                                  <a href="#">Juices & Mixes</a>
-                                </li>
-                              </ul>
-                            </Box>
-                          </li>
-                          <li>
-                            <a href="#">Herbs and Seasoning </a>
-                            <Box className="sub-categories">
-                              <h3>Fruits </h3>
-                              <ul>
-                                <li>
-                                  <a href="#">Exotic Fruits</a>
-                                </li>
-                                <li>
-                                  <a href="#">Seasonal Fruits</a>
-                                </li>
-                                <li>
-                                  <a href="#">Juices & Mixes</a>
-                                </li>
-                              </ul>
-                            </Box>
-                          </li>
-                        </ul>
-                      </Box>
+              {!matches && (
+                <Grid item xs={12} md={8}>
+                  {["/", "/signin", "/signup"].includes(path) ? (
+                    <Box className="categories" justifyContent={"flex-end"}>
+                      <ul>
+                        <li>
+                          <Link to="/category">Quick Links</Link>
+                        </li>
+                        <li>
+                          <Link to="/category">Exotic Fruits</Link>
+                        </li>
+                        <li>
+                          <Link to="/category">Leafy Vegetables</Link>
+                        </li>
+                        <li>
+                          <Link to="/category">Fresh fruits</Link>
+                        </li>
+                        <li>
+                          <Link to="/category">Cuts & Sprouts</Link>
+                        </li>
+                      </ul>
                     </Box>
                   ) : (
-                    ""
+                    ![
+                      "/myCart",
+                      "/myCart/address",
+                      "/myCart/address/add-new-address",
+                      "/myCart/address/updated-address",
+                      "/myCart/address/order-placed",
+                      "/my-order",
+                    ].includes(path) && renderBreadcrumb()
                   )}
-                </Box>
-              </Grid>
-              {this.state.matches ? (
-                ""
-              ) : (
-                <Grid item xs={5} md={6} lg={6}>
-                  <Box className="search-box">
-                    <TextField
-                      id="outlined-search"
-                      className="search"
-                      variant="outlined"
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <img src={searchIcon} alt="" />
-                          </InputAdornment>
-                        ),
-                      }}
-                      placeholder="Search Your favorite veggies...  "
-                    />
-                  </Box>
                 </Grid>
               )}
-
-              {login?.userId ?
-                <Grid item xs={3} md={3} lg={3}>
-                  <Box
-                    display={"inline-flex"}
-                    justifyContent={"flex-end"}
-                    width={"100%"}
-                  >
-                    <Button
-                      variant="outlined"
-                      className="notification"
-                      startIcon={<img src={notificationIcon} alt="" />}
-                    >
-                      <p></p>
-                    </Button>
-                    <Link to={"/myCart"}>
-                      <Button
-                        variant="outlined"
-                        className="card"
-                        startIcon={<img src={cardIcon} alt="" />}
-                      >
-                        {this.props?.cartData?.length ? (
-                          <p>{this.props.cartData.length}</p>
-                        ) : (
-                          <></>
-                        )}
-                        {this.state.cartList?.length ? (
-                          <p>{this.state.cartList.length}</p>
-                        ) : (
-                          <></>
-                        )}
-                      </Button>
-                    </Link>
-                  </Box>
-                </Grid>
-
-                : <></>}
-
             </Grid>
           </Container>
         </Box>
+        {![
+          "/myCart/address",
+          "/myCart/address/add-new-address",
+          "/myCart/address/updated-address",
+          "/myCart/address/order-placed",
+          "/my-order",
+        ].includes(path) && (
+          <Box className="header-bottom-container">
+            <Container>
+              <Grid container spacing={2} alignItems={"center"}>
+                <Grid item xs={9} md={3} lg={3}>
+                  <Box className="categories-container">
+                    <Box
+                      className="categories-toggle"
+                      onClick={this.handleClickCategoriesToggle}
+                    >
+                      Shop by Categories
+                      <span>
+                        {CategoriesToggle ? (
+                          <KeyboardArrowUpIcon />
+                        ) : (
+                          <KeyboardArrowDownIcon />
+                        )}
+                      </span>
+                    </Box>
+                    {CategoriesToggle && renderCategories()}
+                    {CategoriesToggle && (
+                      <Box
+                        className="categories-bg"
+                        onClick={this.handleClickCategoriesToggle}
+                      ></Box>
+                    )}
+                  </Box>
+                </Grid>
+                {this.state.matches ? (
+                  ""
+                ) : (
+                  <Grid item xs={5} md={6} lg={6}>
+                    <Box className="search-box">
+                      <TextField
+                        id="outlined-search"
+                        className="search"
+                        variant="outlined"
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <img src={searchIcon} alt="" />
+                            </InputAdornment>
+                          ),
+                        }}
+                        placeholder="Search Your favorite veggies...  "
+                      />
+                    </Box>
+                  </Grid>
+                )}
+
+                {login?.userId ? (
+                  <Grid item xs={3} md={3} lg={3}>
+                    <Box
+                      display={"inline-flex"}
+                      justifyContent={"flex-end"}
+                      width={"100%"}
+                    >
+                      <Button
+                        variant="outlined"
+                        className="notification"
+                        startIcon={<img src={notificationIcon} alt="" />}
+                      >
+                        <p></p>
+                      </Button>
+                      <Link to={"/myCart"}>
+                        <Button
+                          variant="outlined"
+                          className="card"
+                          startIcon={<img src={cardIcon} alt="" />}
+                        >
+                          {this.props?.cartData?.length ? (
+                            <p>{this.props.cartData.length}</p>
+                          ) : (
+                            <></>
+                          )}
+                          {this.state.cartList?.length ? (
+                            <p>{this.state.cartList.length}</p>
+                          ) : (
+                            <></>
+                          )}
+                        </Button>
+                      </Link>
+                    </Box>
+                  </Grid>
+                ) : (
+                  <></>
+                )}
+              </Grid>
+            </Container>
+          </Box>
+        )}
       </div>
     );
   }

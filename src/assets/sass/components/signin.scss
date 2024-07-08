@@ -1,199 +1,192 @@
 .signin-container {
-    .signin-form-container {
-        .signin-form-details {
-            width: 40%;
-            margin-top: 100px;
-            margin-bottom: 320px;
+  .signin-form-container {
+    .signin-form-details {
+      width: 40%;
+      margin-top: 60px;
+      margin-bottom: 120px;
 
-            .title {
-                color: #2A3A31;
-                margin-bottom: 50px;
-                display: block;
-                text-align: center;
-            }
+      .title {
+        color: #2a3a31;
+        margin-bottom: 50px;
+        display: block;
+        text-align: center;
+      }
 
+      .google-login-box {
+        height: 40px;
+        border: 1px solid #e2e4e9;
+        border-radius: 4px;
+        margin-top: 24px;
+      }
 
-            .google-login-box {
-                height: 40px;
-                border: 1px solid #E2E4E9;
-                border-radius: 4px;
-                margin-top: 24px;
-            }
+      .more-option {
+        margin-top: 24px;
 
-            .more-option {
-                margin-top: 24px;
-
-                span {
-                    margin: 0px 10px;
-                    font-size: 11px;
-                    line-height: 12px;
-                    font-weight: 500;
-                    color: #868C98;
-                }
-
-                hr {
-                    width: 45%;
-                }
-            }
-
-            .number-input {
-                margin-top: 24px;
-                .css-md26zr-MuiInputBase-root-MuiOutlinedInput-root {
-                    height: 40px;
-                }
-
-                label {
-                    font-size: 14px;
-                    line-height: 20px;
-                    font-weight: 500;
-                    color: #0A0D14;
-                    margin-bottom: 4px;
-
-                    .validate-icon {
-                        color: #D91515;
-                        font-size: 18px;
-                    }
-                }
-
-                .number-textfield {
-                    .css-8j6b76-MuiInputBase-root-MuiOutlinedInput-root {
-                        height: 40px;
-                        border-radius: 4px;
-                    }
-
-                    .css-1pnmrwp-MuiTypography-root {
-                        color: #868C98;
-                        font-size: 14px;
-                        line-height: 20px;
-                    }
-                }
-            }
-
-            .term-condition-container {
-                margin-top: 14px;
-                margin-bottom: 24px;
-
-                .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root {
-                    padding: 0px;
-                    margin-right: 10px;
-
-                    &.Mui-checked {
-                        color: #037F0C;
-                    }
-                }
-
-                .agree-text {
-                    font-weight: 500;
-                    line-height: 20px;
-                    font-size: 14px;
-                    color: #525866;
-                }
-
-                a {
-                    color: #0A0D14;
-                    text-decoration: underline !important;
-                    padding-bottom: 5px;
-                }
-            }
-            .sign-up-btn{
-                margin-top: 16px;
-            }
-        }
-    }
-
-
-}
-
-.common-modal {
-    &.otp-modal-container {
-        width: 400px;
-        height: auto;
-        padding: 48px 24px;
-        border-radius: 12px;
-
-        .title {
-            color: #0A0D14;
-            margin-bottom: 4px;
-        }
-
-        .code-send-number {
-            color: #525866;
-            font-size: 16px;
-            line-height: 24px;
-            font-weight: 400;
-
-            strong {
-                color: #0A0D14;
-                font-weight: 500;
-            }
+        span {
+          margin: 0px 10px;
+          font-size: 11px;
+          line-height: 12px;
+          font-weight: 500;
+          color: #868c98;
         }
 
         hr {
-            margin: 24px 0px;
+          width: 45%;
+        }
+      }
+
+      .number-input {
+        margin-top: 24px;
+        .css-md26zr-MuiInputBase-root-MuiOutlinedInput-root {
+          height: 40px;
         }
 
-        .otp-input-container {
-            margin-bottom: 24px;
+        label {
+          font-size: 14px;
+          line-height: 20px;
+          font-weight: 500;
+          color: #0a0d14;
+          margin-bottom: 4px;
 
-            .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
-                width: 80px;
-                height: 64px;
-
-                .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
-                    padding: 0px;
-                    font-size: 24px;
-                    line-height: 32px;
-                    font-weight: 500;
-                    color: #0A0D14;
-                }
-
-                .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
-                    border: 1px solid #E2E4E9;
-                    border-radius: 10px;
-                }
-            }
+          .validate-icon {
+            color: #d91515;
+            font-size: 18px;
+          }
         }
 
-        .resend-code-container {
-            margin-top: 24px;
+        .number-textfield {
+          .css-8j6b76-MuiInputBase-root-MuiOutlinedInput-root {
+            height: 40px;
+            border-radius: 4px;
+          }
+
+          .css-1pnmrwp-MuiTypography-root {
+            color: #868c98;
             font-size: 14px;
             line-height: 20px;
-
-            .code-issue {
-                color: #525866;
-                font-weight: 400;
-                margin-bottom: 4px;
-            }
-
-            a {
-                color: #0A0D14;
-                text-decoration: underline !important;
-                font-weight: 500;
-            }
+          }
         }
+      }
+
+      .term-condition-container {
+        margin-top: 14px;
+        margin-bottom: 24px;
+
+        .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root {
+          padding: 0px;
+          margin-right: 10px;
+
+          &.Mui-checked {
+            color: #037f0c;
+          }
+        }
+
+        .agree-text {
+          font-weight: 500;
+          line-height: 20px;
+          font-size: 14px;
+          color: #525866;
+        }
+
+        a {
+          color: #0a0d14;
+          text-decoration: underline !important;
+          padding-bottom: 5px;
+        }
+      }
+      .sign-up-btn {
+        margin-top: 16px;
+      }
     }
+  }
 }
 
+.common-modal {
+  &.otp-modal-container {
+    width: 400px;
+    height: auto;
+    padding: 48px 24px;
+    border-radius: 12px;
+
+    .title {
+      color: #0a0d14;
+      margin-bottom: 4px;
+    }
+
+    .code-send-number {
+      color: #525866;
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: 400;
+
+      strong {
+        color: #0a0d14;
+        font-weight: 500;
+      }
+    }
+
+    hr {
+      margin: 24px 0px;
+    }
+
+    .otp-input-container {
+      margin-bottom: 24px;
+
+      .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
+        width: 80px;
+        height: 64px;
+
+        .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+          padding: 0px;
+          font-size: 24px;
+          line-height: 32px;
+          font-weight: 500;
+          color: #0a0d14;
+        }
+
+        .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+          border: 1px solid #e2e4e9;
+          border-radius: 10px;
+        }
+      }
+    }
+
+    .resend-code-container {
+      margin-top: 24px;
+      font-size: 14px;
+      line-height: 20px;
+
+      .code-issue {
+        color: #525866;
+        font-weight: 400;
+        margin-bottom: 4px;
+      }
+
+      a {
+        color: #0a0d14;
+        text-decoration: underline !important;
+        font-weight: 500;
+      }
+    }
+  }
+}
 
 @media only screen and (max-width: 600px) {
-    .signin-container {
-        .signin-form-container {
-            .signin-form-details {
-                width: 100% !important;
-                display: block;
-
-              
-            }
-        }
+  .signin-container {
+    .signin-form-container {
+      .signin-form-details {
+        width: 100% !important;
+        display: block;
+      }
     }
+  }
 }
-@media only screen and (max-width: 1150px ) {
-    .signin-container {
-        .signin-form-container {
-            .signin-form-details {
-                width: 50%;
-
-            }
-        }
+@media only screen and (max-width: 1150px) {
+  .signin-container {
+    .signin-form-container {
+      .signin-form-details {
+        width: 50%;
+      }
     }
+  }
 }
