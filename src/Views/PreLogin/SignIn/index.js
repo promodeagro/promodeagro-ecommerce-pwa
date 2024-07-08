@@ -209,12 +209,14 @@ class Signin extends Component {
                   fullWidth
                   className="common-btn"
                   onClick={() => this.handleSignIn()}
-                  disabled={ this.props.loginData.status === status.IN_PROGRESS}
+                  disabled={this.props.loginData.status === status.IN_PROGRESS}
                   endIcon={
                     this.props.loginData.status === status.IN_PROGRESS ? <CircularProgress /> : <></>}
                 >
                   Login
                 </Button>
+
+                <p> New User? <Link to={"/signup"}>Sign up</Link></p>
                 {/* <Button
                                     variant="contained"
                                     fullWidth

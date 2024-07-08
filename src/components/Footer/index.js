@@ -5,14 +5,18 @@ import Grid from "@mui/material/Grid";
 import instagramIcon from "../../assets/img/instagram-icon.svg";
 import whatsappIcon from "../../assets/img/whatsapp-icon.svg";
 import linkedinIcon from "../../assets/img/linkedin-icon.svg";
-
+import { loginDetails } from "Views/Utills/helperFunctions";
 class Footer extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+
   }
 
+
+
   render() {
+    const login = loginDetails()
     return (
       <div className="footer">
         <Container>
@@ -28,28 +32,31 @@ class Footer extends Component {
             </Grid>
             <Grid item xs={12} sm={12} md={8}>
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={6} md={3}>
-                  <Box className="footer-links">
-                    <h3>My Account</h3>
-                    <ul>
-                      <li>
-                        <a href="#">My Account</a>
-                      </li>
-                      <li>
-                        <a href="#">Order History</a>
-                      </li>
-                      <li>
-                        <a href="#">Shoping Cart</a>
-                      </li>
-                      <li>
-                        <a href="#">Wishlist</a>
-                      </li>
-                      <li>
-                        <a href="#">Settings</a>
-                      </li>
-                    </ul>
-                  </Box>
-                </Grid>
+                {login?.userId ?
+                  <Grid item xs={12} sm={6} md={3}>
+                    <Box className="footer-links">
+                      <h3>My Account</h3>
+                      <ul>
+                        <li>
+                          <a href="#">My Account</a>
+                        </li>
+                        <li>
+                          <a href="#">Order History</a>
+                        </li>
+                        <li>
+                          <a href="#">Shoping Cart</a>
+                        </li>
+                        <li>
+                          <a href="#">Wishlist</a>
+                        </li>
+                        <li>
+                          <a href="#">Settings</a>
+                        </li>
+                      </ul>
+                    </Box>
+                  </Grid>
+                  : <></>}
+
                 <Grid item xs={12} sm={6} md={3}>
                   <Box className="footer-links">
                     <h3>Helps</h3>

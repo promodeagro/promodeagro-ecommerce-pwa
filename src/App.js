@@ -20,15 +20,13 @@ function App(props) {
   return (
     <Router>
       <div className="app">
-        {window.location.pathname !== "/signup" &&
-          window.location.pathname !== "/signin" &&
-           <Header />}
+
+        <Header />
         <MainContent />
 
-        {window.location.pathname !== "/signup" &&
-          window.location.pathname !== "/signin" &&
-          <Footer />}
-       
+
+        <Footer />
+
         <ToastContainer
           position="top-right"
           autoClose={5000}
