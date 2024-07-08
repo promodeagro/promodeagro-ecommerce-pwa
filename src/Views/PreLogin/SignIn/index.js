@@ -21,6 +21,7 @@ import { MuiOtpInput } from "mui-one-time-password-input";
 import { connect } from "react-redux";
 import status from "../../../Redux/Constants";
 import CircularProgress from "@mui/material/CircularProgress";
+import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -42,6 +43,13 @@ const validationSchema = {
       type: ValidationEngine.type.MANDATORY,
     },
   ],
+  isPolicyAccepted:
+    [
+      {
+        message: "Please accept privacy policy",
+        type: ValidationEngine.type.MANDATORY,
+      },
+    ],
 };
 
 class Signin extends Component {
@@ -53,6 +61,7 @@ class Signin extends Component {
       mobileNumber: "",
       password: "",
       isSubmit: false,
+      isPolicyAccepted: false
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -71,6 +80,7 @@ class Signin extends Component {
         isSubmit: false,
       });
       ErrorMessages.success("Logged In Successfully");
+      this.props.navigate("/")
     } else if (this.props.loginData.data && !this.props.loginData.data.token) {
       this.setState({
         isSubmit: false,
@@ -80,10 +90,11 @@ class Signin extends Component {
   }
 
   validateForm = () => {
-    const { mobileNumber, password } = this.state;
+    const { mobileNumber, password, isPolicyAccepted } = this.state;
     const error = ValidationEngine.validate(validationSchema, {
       mobileNumber,
       password,
+      isPolicyAccepted
     });
     return error;
   };
@@ -197,11 +208,20 @@ class Signin extends Component {
                   )}
                 </Box>
                 <Box className="term-condition-container d-flex align-items-center">
-                  <Checkbox {...label} defaultChecked size="small" />
+                  <Checkbox {...label}
+                    checked={this.state.isPolicyAccepted} size="small"
+                    onChange={this.handleValueChange}
+                    name="isPolicyAccepted"
+                  />
                   <span className="agree-text">
                     I agree to the <Link to="">Terms & Conditions</Link> and{" "}
                     <Link to="">Privacy Policy.</Link>
                   </span>
+                  {isSubmit && (
+                    <FormHelperText error>
+                      {errorData?.isPolicyAccepted?.message}
+                    </FormHelperText>
+                  )}
                 </Box>
                 <Button
                   variant="contained"
@@ -292,4 +312,9 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = { signIn };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Signin);
+
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(navigateRouter(Signin));
