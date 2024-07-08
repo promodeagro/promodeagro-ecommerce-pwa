@@ -5,7 +5,7 @@ import AllProductReducer from "./AllProducts/AllProductSlice";
 import CartItemReducer from "./Cart/CartSlice";
 import SignupReducer from "./Signup/SignupSlice";
 import AllAddress from "./Address/AddressSlice";
-
+import PlaceOrderReducer from "./Order/PlaceOrderSlice"
 const store = configureStore({
   reducer: {
     home: HomeReducer,
@@ -14,6 +14,8 @@ const store = configureStore({
     cartitem: CartItemReducer,
     signup: SignupReducer,
     alladdress: AllAddress,
+    placeorder:PlaceOrderReducer
+
   },
 });
 

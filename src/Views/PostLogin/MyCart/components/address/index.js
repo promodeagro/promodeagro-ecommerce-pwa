@@ -18,6 +18,7 @@ import {
   Radio,
   TextField,
 } from "@mui/material";
+import { withRouter } from 'react-router-dom';
 import productImg from "../../../../../assets/img/product-img.png";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -34,7 +35,12 @@ import upiImg2 from "../../../../../assets/img/g-pay.png";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import AllAddress from "./conponents/allAddress";
-
+import { connect } from "react-redux"
+import status from "../../../../../Redux/Constants";
+import { fetchCartItems } from "../../../../../Redux/Cart/CartThunk";
+import { placeOrder } from "../../../../../Redux/Order/PlaceOrderThunk";
+import { loginDetails } from "Views/Utills/helperFunctions";
+import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 const steps = ["Delivery Address", "Delivery Options", "Payment Option"];
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -46,8 +52,91 @@ class Address extends Component {
       activeStep: 0,
       value: 0,
       timneValue: 0,
+      cartList: [],
+      totalPrice: "",
+      address: "",
+      addressId: "",
+      totalSavings: ""
     };
   }
+
+  componentDidMount() {
+    const items = loginDetails();
+
+    this.props.fetchCartItems({
+      userId: items.userId,
+    })
+
+  }
+
+
+
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.cartItems.status !== this.props.cartItems.status &&
+      this.props.cartItems.status === status.SUCCESS &&
+      this.props.cartItems.data
+    ) {
+
+      let cartListData = []
+      for (let i = 0; i < this.props.cartItems.data.items.length; i++) {
+        let data = {
+          productId: this.props.cartItems.data.items[i].ProductId,
+          quantity: this.props.cartItems.data.items[i].Quantity,
+        }
+        cartListData.push(data);
+      }
+
+
+
+      this.setState({
+        totalPrice: this.props.cartItems.data.subTotal,
+        totalSavings: this.props.cartItems.data.savings,
+        cartList: cartListData,
+      });
+    }
+
+    if (
+      prevProps.placeOrderData.status !== this.props.placeOrderData.status &&
+      this.props.placeOrderData.status === status.SUCCESS &&
+      this.props.placeOrderData.data
+    ) {
+      // /myCart/address/order-placed
+      this.props.navigate('/myCart/address/order-placed');
+
+    }
+  }
+
+  handlePlaceOrder = () => {
+    let login = loginDetails()
+    const { selectedAddress, totalPrice, cartList } = this.state;
+
+    let data = {
+      addressId: selectedAddress.addressId,
+      // paymentMethod: "",
+      "paymentDetails": {
+        "method": "Credit Card",
+        "transactionId": "txn-12345",
+        "amount": totalPrice,
+        "currency": "USD"
+      },
+      items: cartList,
+      userId: login.userId
+    }
+
+
+
+    this.props.placeOrder(data)
+
+
+  }
+
+
+
+
+
+
   handleOpen = () => {
     this.setState({ open: true });
   };
@@ -60,8 +149,17 @@ class Address extends Component {
   timingSlotHandleChange = (event, newTimeValue) => {
     this.setState({ timneValue: newTimeValue });
   };
+
+  handleTabs = (value, selectedAddress) => {
+    this.setState({
+      activeStep: value,
+      selectedAddress: selectedAddress
+    })
+  }
+
+
   render() {
-    const { activeStep, value, timneValue } = this.state;
+    const { activeStep, value, timneValue, cartList, totalPrice } = this.state;
     return (
       <Box className="address-container">
         <Container>
@@ -75,7 +173,7 @@ class Address extends Component {
             </Stepper>
           </Box>
           {activeStep === 0 ? (
-            <AllAddress />
+            <AllAddress handleTabs={this.handleTabs} />
           ) : activeStep === 1 ? (
             <Box className="select-delivery-option-container">
               <Grid container spacing={2} data-aos="zoom-in-down">
@@ -84,17 +182,21 @@ class Address extends Component {
                     <h3>Select a delivery option</h3>
                     <Box className="delivery-inner-box">
                       <Box className="d-flex align-items-center flex-wrap">
-                        <Box className="product-img-box">
+                        {cartList.length && cartList.map(item => {
+                          return <Box className="product-img-box">
+                            <img src={productImg} alt="" />
+                          </Box>
+
+                        })}
+
+                        {/* <Box className="product-img-box">
                           <img src={productImg} alt="" />
                         </Box>
                         <Box className="product-img-box">
                           <img src={productImg} alt="" />
-                        </Box>
-                        <Box className="product-img-box">
-                          <img src={productImg} alt="" />
-                        </Box>
+                        </Box> */}
                         <Box className="view-all-img-box">
-                          <span className="d-block">View all 3 items </span>
+                          <span className="d-block">View all {cartList.length} items </span>
                         </Box>
                       </Box>
                       <Box
@@ -113,12 +215,30 @@ class Address extends Component {
                         </Box>
                       </Box>
                       <Box className="w-100 justify-content-end d-flex">
+                        {/* <Button
+                          variant="contained"
+                          fullWidth
+                          className="common-btn proceed-payment-btn"
+                          onClick={() => {
+                            this.setState({
+                              activeStep: 2
+                            })
+                          }}
+                        >
+                          Proceed to payment
+                        </Button> */}
+
                         <Button
                           variant="contained"
                           fullWidth
                           className="common-btn proceed-payment-btn"
+                          onClick={() => {
+                            this.setState({
+                              activeStep: 2
+                            })
+                          }}
                         >
-                          Proceed to payment
+                          Place Order
                         </Button>
                       </Box>
                     </Box>
@@ -127,11 +247,15 @@ class Address extends Component {
                 <Grid item xs={12} lg={4} md={12} sm={12}>
                   <Box className="order-summary-container">
                     <h3 className="order-title">Order Summary</h3>
-                    <Box className="product-list d-flex align-items-center justify-content-between">
-                      <span className="d-block product-name">Green chilli</span>
-                      <span className="d-block product-weight">x 200gm</span>
-                    </Box>
-                    <Box className="product-list d-flex align-items-center justify-content-between">
+                    {cartList.length && cartList.map((item) => {
+
+                      return <Box className="product-list d-flex align-items-center justify-content-between">
+                        <span className="d-block product-name">Green chilli</span>
+                        <span className="d-block product-weight">x {item?.Quantity}</span>
+                      </Box>
+                    })}
+
+                    {/* <Box className="product-list d-flex align-items-center justify-content-between">
                       <span className="d-block product-name">Tomato</span>
                       <span className="d-block product-weight">x 2 Pack</span>
                     </Box>
@@ -142,16 +266,16 @@ class Address extends Component {
                     <Box className="product-list d-flex align-items-center justify-content-between">
                       <span className="d-block product-name">Green Apple</span>
                       <span className="d-block product-weight">x 2 Kg</span>
-                    </Box>
+                    </Box> */}
                     <Box className="total-amount d-flex align-items-center justify-content-between">
                       <span className="d-block heading">
                         Total Amount Payable{" "}
                       </span>
-                      <span className="d-block amount">₹ 200.12</span>
+                      <span className="d-block amount">₹ {totalPrice}</span>
                     </Box>
                     <Box className="total-saving d-flex align-items-center justify-content-between">
                       <span className="d-block heading">Total Savings </span>
-                      <span className="d-block amount">₹ 200.12</span>
+                      <span className="d-block amount">₹ {this.state.totalSavings}</span>
                     </Box>
                     <Box className="information d-flex ">
                       <InfoIcon className="info-icon" />
@@ -319,15 +443,16 @@ class Address extends Component {
                   </Box>
                 </Box>
                 <Box className="w-100 d-flex justify-content-end">
-                  <Link to={"/myCart/address/order-placed"}>
-                    <Button
-                      variant="contained"
-                      fullWidth
-                      className="common-btn place-order-btn"
-                    >
-                      Place Order
-                    </Button>
-                  </Link>
+                  {/* <Link to={"/myCart/address/order-placed"}> */}
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    className="common-btn place-order-btn"
+                    onClick={() => this.handlePlaceOrder()}
+                  >
+                    Place Order
+                  </Button>
+                  {/* </Link> */}
                 </Box>
               </Box>
             </Box>
@@ -411,4 +536,25 @@ class Address extends Component {
   }
 }
 
-export default Address;
+
+
+function mapStateToProps(state) {
+  const { cartItems } = state.cartitem;
+  const { allAddress } = state.alladdress;
+  const { loginData } = state.login;
+  const { placeOrderData } = state.placeorder
+  return { cartItems, loginData, allAddress, placeOrderData };
+}
+
+const mapDispatchToProps = {
+  fetchCartItems,
+  placeOrder
+};
+
+
+
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(navigateRouter(Address));

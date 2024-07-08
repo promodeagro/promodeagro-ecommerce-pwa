@@ -140,7 +140,7 @@ class Signin extends Component {
                     </Box>
                   </Box>
                 </Box>
-                <Button
+                {/* <Button
                   variant="outlined"
                   className="google-login-box"
                   fullWidth
@@ -151,7 +151,7 @@ class Signin extends Component {
                   <Divider />
                   <span> OR</span>
                   <Divider />
-                </Box>
+                </Box> */}
                 <Box className="number-input">
                   <label className="d-block">
                     Number <span className="validate-icon">*</span>
@@ -209,12 +209,14 @@ class Signin extends Component {
                   fullWidth
                   className="common-btn"
                   onClick={() => this.handleSignIn()}
-                  disabled={ this.props.loginData.status === status.IN_PROGRESS}
+                  disabled={this.props.loginData.status === status.IN_PROGRESS}
                   endIcon={
                     this.props.loginData.status === status.IN_PROGRESS ? <CircularProgress /> : <></>}
                 >
                   Login
                 </Button>
+
+                <p> New User? <Link to={"/signup"}>Sign up</Link></p>
                 {/* <Button
                                     variant="contained"
                                     fullWidth

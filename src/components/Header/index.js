@@ -18,6 +18,7 @@ import searchIcon from "../../assets/img/search-icon.png";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import status from "../../Redux/Constants";
+import { loginDetails } from "Views/Utills/helperFunctions";
 
 class Header extends Component {
   constructor(props) {
@@ -26,12 +27,15 @@ class Header extends Component {
       CategoriesToggle: false,
       matches: window.matchMedia("(max-width: 900px)").matches,
       cartList: [],
+
     };
   }
   componentDidMount() {
+
     const handler = (e) => this.setState({ matches: e.matches });
     window.matchMedia("(max-width: 900px)").addEventListener("change", handler);
   }
+
   componentDidUpdate(prevProps, prevState) {
     if (
       prevProps.cartItems.status !== this.props.cartItems.status &&
@@ -51,6 +55,10 @@ class Header extends Component {
 
   render() {
     const { CategoriesToggle } = this.state;
+    const { allAddress } = this.props;
+    const address = allAddress ? allAddress.address : "";
+    let login = loginDetails()
+
     return (
       <div className="header">
         <Box className="header-top-container">
@@ -68,11 +76,15 @@ class Header extends Component {
                   <Box className="support-box">
                     <img src={supportIcon} alt="" /> Customer Support 24/7
                   </Box>
-                  <Box className="deliver-box">
-                    Deliver to <img src={deliverIcon} alt="" />{" "}
-                    <span>500005,Himayat Sagar Road </span>
-                  </Box>
-                  <Box className="language-list-box">
+
+                  {address && (
+                    <Box className="deliver-box">
+                      Deliver to <img src={deliverIcon} alt="Deliver Icon" />
+                      <span>{address}</span>
+                    </Box>
+                  )}
+
+                  {/* <Box className="language-list-box">
                     <FormControl fullWidth>
                       <NativeSelect
                         defaultValue={10}
@@ -86,7 +98,7 @@ class Header extends Component {
                         <option value={30}>German</option>
                       </NativeSelect>
                     </FormControl>
-                  </Box>
+                  </Box> */}
                 </Box>
               </Grid>
             </Grid>
@@ -253,44 +265,49 @@ class Header extends Component {
                           </InputAdornment>
                         ),
                       }}
-                      defaultValue="Search Your favorite veggies..."
+                      placeholder="Search Your favorite veggies...  "
                     />
                   </Box>
                 </Grid>
               )}
-              <Grid item xs={3} md={3} lg={3}>
-                <Box
-                  display={"inline-flex"}
-                  justifyContent={"flex-end"}
-                  width={"100%"}
-                >
-                  <Button
-                    variant="outlined"
-                    className="notification"
-                    startIcon={<img src={notificationIcon} alt="" />}
+
+              {login?.userId ?
+                <Grid item xs={3} md={3} lg={3}>
+                  <Box
+                    display={"inline-flex"}
+                    justifyContent={"flex-end"}
+                    width={"100%"}
                   >
-                    <p></p>
-                  </Button>
-                  <Link to={"/myCart"}>
                     <Button
                       variant="outlined"
-                      className="card"
-                      startIcon={<img src={cardIcon} alt="" />}
+                      className="notification"
+                      startIcon={<img src={notificationIcon} alt="" />}
                     >
-                      {this.props?.cartData?.length ? (
-                        <p>{this.props.cartData.length}</p>
-                      ) : (
-                        <></>
-                      )}
-                      {this.state.cartList?.length ? (
-                        <p>{this.state.cartList.length}</p>
-                      ) : (
-                        <></>
-                      )}
+                      <p></p>
                     </Button>
-                  </Link>
-                </Box>
-              </Grid>
+                    <Link to={"/myCart"}>
+                      <Button
+                        variant="outlined"
+                        className="card"
+                        startIcon={<img src={cardIcon} alt="" />}
+                      >
+                        {this.props?.cartData?.length ? (
+                          <p>{this.props.cartData.length}</p>
+                        ) : (
+                          <></>
+                        )}
+                        {this.state.cartList?.length ? (
+                          <p>{this.state.cartList.length}</p>
+                        ) : (
+                          <></>
+                        )}
+                      </Button>
+                    </Link>
+                  </Box>
+                </Grid>
+
+                : <></>}
+
             </Grid>
           </Container>
         </Box>
@@ -302,8 +319,8 @@ class Header extends Component {
 function mapStateToProps(state) {
   const { cartData } = state.home;
   const { cartItems } = state.cartitem;
-
-  return { cartData, cartItems };
+  const { allAddress } = state.alladdress;
+  return { cartData, cartItems, allAddress };
 }
 
 const mapDispatchToProps = {};

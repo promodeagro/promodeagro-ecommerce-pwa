@@ -15,6 +15,7 @@ import productCartImg from "../../../assets/img/product-cart-img.png";
 import { connect } from "react-redux";
 import status from "../../../Redux/Constants";
 import { Loader, loginDetails } from "../../../Views/Utills/helperFunctions";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 import _ from "lodash";
 class MyCart extends Component {
   constructor(props) {
@@ -148,101 +149,106 @@ class MyCart extends Component {
                     </Grid>
                     {this.state.cartList.map((item) => {
                       return (
-                            <Grid
-                              container
-                              spacing={2}
-                              className="product-cart-container"
-                              alignItems={"center"}
-                              data-aos="zoom-in-right"
-                            >
-                              <Grid item xs={12} lg={6} md={6} sm={12}>
-                                <Box className="d-flex align-items-center product-cart-list">
-                                  <img
-                                    src={productCartImg}
-                                    alt="product-cart-img"
-                                  />
-                                  <Box className="d-block">
-                                    <span className="d-block name">
-                                      Green Apple
-                                    </span>
-                                    <Box className="d-flex align-items-center">
-                                      <span className="discount-amount">
-                                        ₹ {item?.Price}
-                                      </span>
-                                      <s className="amount">₹ {item?.Mrp} </s>
-                                    </Box>
-                                  </Box>
+                        <Grid
+                          container
+                          spacing={2}
+                          className="product-cart-container"
+                          alignItems={"center"}
+                          data-aos="zoom-in-right"
+                        >
+                          <Box className="bookmark-btn">
+                            <IconButton aria-label="bookmark">
+                              <BookmarkBorderIcon />
+                            </IconButton>
+                            {/* <IconButton aria-label="selectBookMark">
+                              <BookmarkIcon />
+                            </IconButton> */}
+                          </Box>
+                          <Grid item xs={12} lg={6} md={6} sm={12}>
+                            <Box className="d-flex align-items-center product-cart-list">
+                              <img
+                                src={productCartImg}
+                                alt="product-cart-img"
+                              />
+                              <Box className="d-block">
+                                <span className="d-block name">
+                                  Green Apple
+                                </span>
+                                <Box className="d-flex align-items-center">
+                                  <span className="discount-amount">
+                                    ₹ {item?.Price}
+                                  </span>
+                                  <s className="amount">₹ {item?.Mrp} </s>
                                 </Box>
-                              </Grid>
-                              <Grid item xs={12} lg={3} md={3} sm={12}>
-                          
-                                  <Box className="number-input-container">
-                                    <Box
-                                      className="symbol"
-                                      onClick={() => {
-                                        let d = item.Quantity;
-                                        this.handleQuantityChange(
-                                          item.ProductId,
-                                          -1,
-                                          Number(d)
-                                        );
-                                      }}
-                                    >
-                                      -
-                                    </Box>
-
-                                    <Box className="Number">
-                                      {item?.Quantity}
-                                    </Box>
-                                    <Box
-                                      className="symbol"
-                                      onClick={() => {
-                                        let d = item.Quantity;
-                                        this.handleQuantityChange(
-                                          item.ProductId,
-                                          1,
-                                          Number(d)
-                                        );
-                                      }}
-                                    >
-                                      +
-                                    </Box>
-                                  </Box>
-                                <Box className="d-flex align-items-ceneter btn-group">
-                                  <Button
-                                    onClick={() => {
-                                      console.log("item", item);
-                                      const items = loginDetails();
-                                      this.props.deleteItemToCart({
-                                        userId: items.userId,
-                                        productId: item.ProductId,
-                                      });
-                                    }}
-                                  >
-                                    Delete
-                                  </Button>
-                                  <Button>Save it for later</Button>
-                                </Box>
-                              </Grid>
-                              <Grid
-                                item
-                                xs={12}
-                                lg={3}
-                                md={3}
-                                sm={12}
-                                display={"flex"}
-                                justifyContent={"end"}
+                              </Box>
+                            </Box>
+                          </Grid>
+                          <Grid item xs={12} lg={3} md={3} sm={12}>
+                            <Box className="number-input-container">
+                              <Box
+                                className="symbol"
+                                onClick={() => {
+                                  let d = item.Quantity;
+                                  this.handleQuantityChange(
+                                    item.ProductId,
+                                    -1,
+                                    Number(d)
+                                  );
+                                }}
                               >
-                                <Box className="sub-total ">
-                                  <span className="d-block final-amount">
-                                    ₹ {item?.Subtotal}
-                                  </span>
-                                  <span className="d-block save-amount">
-                                    Saved : <strong>₹ {item.Savings}</strong>
-                                  </span>
-                                </Box>
-                              </Grid>
-                            </Grid>
+                                -
+                              </Box>
+
+                              <Box className="Number">{item?.Quantity}</Box>
+                              <Box
+                                className="symbol"
+                                onClick={() => {
+                                  let d = item.Quantity;
+                                  this.handleQuantityChange(
+                                    item.ProductId,
+                                    1,
+                                    Number(d)
+                                  );
+                                }}
+                              >
+                                +
+                              </Box>
+                            </Box>
+                            <Box className="d-flex align-items-ceneter btn-group">
+                              <Button
+                                onClick={() => {
+                                  console.log("item", item);
+                                  const items = loginDetails();
+                                  this.props.deleteItemToCart({
+                                    userId: items.userId,
+                                    productId: item.ProductId,
+                                  });
+                                }}
+                              >
+                                Delete
+                              </Button>
+                              {/* <Button>Save it for later</Button> */}
+                            </Box>
+                          </Grid>
+                          <Grid
+                            item
+                            xs={12}
+                            lg={3}
+                            md={3}
+                            sm={12}
+                            display={"flex"}
+                            justifyContent={"end"}
+                          >
+                            <Box className="sub-total ">
+                              <span className="d-block final-amount">
+                                ₹ {item?.Subtotal}
+                              </span>
+                              <span className="d-block save-amount">
+                                Saved : <strong>₹ {item.Savings}</strong>
+                              </span>
+                            </Box>
+                          </Grid>
+                        </Grid>
                       );
                     })}
 

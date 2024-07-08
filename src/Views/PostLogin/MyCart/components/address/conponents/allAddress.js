@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Box, Grid, IconButton, Button } from "@mui/material";
+import {
+  Box,
+  Grid,
+  IconButton,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  FormControlLabel,
+  Checkbox,
+} from "@mui/material";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CheckIcon from "@mui/icons-material/Check";
@@ -14,8 +25,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { loginDetails } from "Views/Utills/helperFunctions";
 import { useNavigate } from "react-router-dom";
 
-const AllAddress = () => {
+const AllAddress = (props) => {
+  const [open, setOpen] = useState(false);
   const [allAddress, setAllAddress] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState({});
   const allAddressState = useSelector((state) => state.alladdress.allAddress);
   const postAddressStatus = useSelector(
     (state) => state.alladdress.postAddress.status
@@ -35,13 +48,13 @@ const AllAddress = () => {
     );
   }, [dispatch]);
 
-
   useEffect(() => {
     if (
       allAddressState.status === status.SUCCESS &&
       allAddressState.data.addresses
     ) {
       setAllAddress(allAddressState.data.addresses);
+      setSelectedAddress(allAddressState.data.addresses[0]);
     }
   }, [allAddressState]);
 
@@ -57,7 +70,8 @@ const AllAddress = () => {
       dispatch(
         getAllAddress({
           userId: items.userId,
-        }))
+        })
+      );
     }
   }, [deleteAddressStatus]);
 
@@ -68,14 +82,24 @@ const AllAddress = () => {
         addressId: addressId,
       })
     );
-
-
   };
 
   const handleEdit = (address) => {
     navigate("/myCart/address/updated-address", {
       state: { address },
     });
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleSelectedAddress = (selcet) => {
+    setSelectedAddress(selcet);
   };
 
   return (
@@ -94,29 +118,74 @@ const AllAddress = () => {
               return (
                 <Grid key={index} item xs={12} lg={4} md={6} sm={6}>
                   <Box
-                    className="address-card-container"
-                    data-aos="zoom-in-down"
+                    className={`address-card-container ${
+                      item.addressId == selectedAddress.addressId
+                        ? "active"
+                        : ""
+                    }`}
+                    onClick={() => handleSelectedAddress(item)}
                   >
-                    {/* <Box className="active-check">
-                      <CheckIcon />
-                    </Box> */}
+                    {item.addressId == selectedAddress.addressId ? (
+                      <Box className="active-check">
+                        <CheckIcon />
+                      </Box>
+                    ) : (
+                      <></>
+                    )}
+
                     <Box className="d-flex align-items-center">
                       <IconButton
                         aria-label="edit"
-                        className="address-btn"
+                        className={
+                          item.addressId == selectedAddress.addressId
+                            ? "address-btn active"
+                            : "address-btn"
+                        }
                         onClick={() => handleEdit(item)}
                       >
                         <BorderColorIcon />
                       </IconButton>
                       <IconButton
                         aria-label="delete"
-                        className="address-btn"
-                        onClick={() =>
-                          handleDelete(item.userId, item.addressId)
+                        className={
+                          item.addressId == selectedAddress.addressId
+                            ? "address-btn active"
+                            : "address-btn"
                         }
+                        onClick={() => {
+                          handleClickOpen();
+                        }}
                       >
                         <DeleteIcon />
                       </IconButton>
+                      <Dialog
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                      >
+                        <DialogContent>
+                          <DialogContentText id="alert-dialog-description">
+                            Are you sure you want to delete this address?
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button variant="outlined" onClick={handleClose}>
+                            Cancel
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            color="error"
+                            onClick={() => {
+                              handleDelete(item.userId, item.addressId);
+                              handleClose();
+                            }}
+                            autoFocus
+                          >
+                            Delete
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
                     </Box>
                     <h3 className="person-name">{item.name}</h3>
                     <address>{item.address}</address>
@@ -131,6 +200,15 @@ const AllAddress = () => {
                         <span className="d-block details">{item.email}</span>
                       </Box>
                     </Box>
+                    {item.addressId == selectedAddress.addressId ? (
+                      <FormControlLabel
+                        checked
+                        control={<Checkbox />}
+                        label="Make This Default Address"
+                      />
+                    ) : (
+                      <></>
+                    )}
                   </Box>
                 </Grid>
               );
@@ -153,6 +231,9 @@ const AllAddress = () => {
             variant="contained"
             fullWidth
             className="common-btn proceed-btn"
+            onClick={() => {
+              props.handleTabs(1, selectedAddress);
+            }}
           >
             Proceed Next
           </Button>

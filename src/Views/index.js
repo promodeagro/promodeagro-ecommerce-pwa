@@ -30,7 +30,7 @@ const Views = () => {
 
   return (
     <>
-      <Suspense >
+      <Suspense>
         <Routes>
           {/* Redirect to Home if user is logged in and tries to access signin or signup */}
           {isLoggedIn && (
@@ -40,12 +40,11 @@ const Views = () => {
             </>
           )}
 
-{!isLoggedIn && (
+          {!isLoggedIn && (
             <>
-              <Route path={`/`} element={<Navigate to="/signin" replace />} />
+              <Route path={`/category`} element={<Navigate to="/signin" replace />} />
             </>
           )}
-
 
           {/* Routes for authenticated and unauthenticated users */}
           <Route exact path={`/`} element={<Home />} />
