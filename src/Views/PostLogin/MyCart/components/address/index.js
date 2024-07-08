@@ -130,9 +130,9 @@ class Address extends Component {
   };
 
   handleTabs = (value, selectedAddress) => {
-    debugger
     this.setState({
-      activeStep: value
+      activeStep: value,
+      selectedAddress:selectedAddress
     })
   }
 
