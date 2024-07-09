@@ -331,7 +331,7 @@ class List extends Component {
                               item.id == this.state.dataId ? (
                               <CircularProgress className="common-loader" />
                             ) : (
-                              "Add to cartsdfsd"
+                              "Add to cart"
                             )}
                           </Button>
                         </Box>

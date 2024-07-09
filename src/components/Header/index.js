@@ -88,7 +88,7 @@ class Header extends Component {
 
     this.props.setShopByCategory(data)
     this.setState({
-      CategoriesToggle: !this.state.CategoriesToggle,
+      CategoriesToggle: false,
     });
 
   }
@@ -247,16 +247,16 @@ class Header extends Component {
                         <li>
                           <Link to="/category">Quick Links</Link>
                         </li>
-                        <li>
+                        <li onClick={() => this.handleFruitsandVeg(["Fruits", "Exotic Fruits"])}>
                           <Link to="/category">Exotic Fruits</Link>
                         </li>
-                        <li>
+                        <li onClick={() => this.handleFruitsandVeg(["Vegetable", "Leafy Vegetables"])}>
                           <Link to="/category">Leafy Vegetables</Link>
                         </li>
-                        <li>
+                        <li onClick={() => this.handleFruitsandVeg(["Fruits", "Fresh fruits"])}>
                           <Link to="/category">Fresh fruits</Link>
                         </li>
-                        <li>
+                        <li onClick={() => this.handleFruitsandVeg(["Vegetable", "Cuts & Sprouts"])}>
                           <Link to="/category">Cuts & Sprouts</Link>
                         </li>
                       </ul>
