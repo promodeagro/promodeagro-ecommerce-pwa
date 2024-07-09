@@ -4,7 +4,7 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import FormControl from "@mui/material/FormControl";
 import NativeSelect from "@mui/material/NativeSelect";
-import { setShopByCategory } from "../../Redux/AllProducts/AllProductSlice"
+import { setShopByCategory } from "../../Redux/AllProducts/AllProductSlice";
 import {
   KeyboardArrowDown as KeyboardArrowDownIcon,
   KeyboardArrowUp as KeyboardArrowUpIcon,
@@ -23,7 +23,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import status from "../../Redux/Constants";
 import { loginDetails } from "Views/Utills/helperFunctions";
-import { getAllAddress } from "../../Redux/Address/AddressThunk"
+import { getAllAddress } from "../../Redux/Address/AddressThunk";
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -31,11 +31,11 @@ class Header extends Component {
       CategoriesToggle: false,
       matches: window.matchMedia("(max-width: 900px)").matches,
       cartList: [],
-      currentAddress: ""
+      currentAddress: "",
+      searchToggle: false,
     };
   }
   componentDidMount() {
-
     window
       .matchMedia("(max-width: 900px)")
       .addEventListener("change", (e) => this.setState({ matches: e.matches }));
@@ -43,24 +43,20 @@ class Header extends Component {
     if (items?.userId) {
       this.props.getAllAddress({
         userId: items.userId,
-      })
+      });
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
-
-
     if (
       prevProps.allAddress.status !== this.props.allAddress.status &&
       this.props.allAddress.status === status.SUCCESS &&
       this.props.allAddress.data
     ) {
-
       this.setState({
-        currentAddress: this.props.allAddress.data.addresses[0].address
+        currentAddress: this.props.allAddress.data.addresses[0].address,
       });
     }
-
 
     if (
       prevProps.cartItems.status !== this.props.cartItems.status &&
@@ -71,11 +67,15 @@ class Header extends Component {
         cartList: this.props.cartItems.data.items,
       });
     }
-    if ((this.props.selectedAddressData?.address && this.state.currentAddress !== this.props.selectedAddressData?.address)) {
-
+    if (
+      this.props.selectedAddressData?.address &&
+      this.state.currentAddress !== this.props.selectedAddressData?.address
+    ) {
       this.setState({
-        currentAddress: this.props.selectedAddressData?.address ? this.props.selectedAddressData.address : this.props.allAddress.data?.addresses[0]?.address
-      })
+        currentAddress: this.props.selectedAddressData?.address
+          ? this.props.selectedAddressData.address
+          : this.props.allAddress.data?.addresses[0]?.address,
+      });
     }
   }
   handleClickCategoriesToggle = () => {
@@ -85,30 +85,49 @@ class Header extends Component {
   };
 
   handleFruitsandVeg = (data) => {
-
-    this.props.setShopByCategory(data)
+    this.props.setShopByCategory(data);
     this.setState({
       CategoriesToggle: false,
     });
+  };
 
-  }
-
+  searchToggle = () => {
+    this.setState({
+      searchToggle: !this.state.searchToggle,
+    });
+  };
 
   renderCategories = () => (
     <Box className="categories-box">
       <Box className="categories">
         <h2>Vegetables</h2>
         <ul>
-          <li onClick={() => this.handleFruitsandVeg(["VEGETABLES", "Cut & peeled Veggies"])}>
+          <li
+            onClick={() =>
+              this.handleFruitsandVeg(["VEGETABLES", "Cut & peeled Veggies"])
+            }
+          >
             <Link to={"/category"}>Cut & peeled Veggies</Link>
           </li>
-          <li onClick={() => this.handleFruitsandVeg(["VEGETABLES", "Leafy Vegetables"])}>
+          <li
+            onClick={() =>
+              this.handleFruitsandVeg(["VEGETABLES", "Leafy Vegetables"])
+            }
+          >
             <Link to={"/category"}>Leafy Vegetables</Link>
           </li>
-          <li onClick={() => this.handleFruitsandVeg(["VEGETABLES", "Fresh Vegetables"])}>
+          <li
+            onClick={() =>
+              this.handleFruitsandVeg(["VEGETABLES", "Fresh Vegetables"])
+            }
+          >
             <Link to={"/category"}>Fresh Vegetables</Link>
           </li>
-          <li onClick={() => this.handleFruitsandVeg(["VEGETABLES", "Herbs and Seasoning"])}>
+          <li
+            onClick={() =>
+              this.handleFruitsandVeg(["VEGETABLES", "Herbs and Seasoning"])
+            }
+          >
             <Link to={"/category"}>Herbs and Seasoning</Link>
           </li>
         </ul>
@@ -116,13 +135,23 @@ class Header extends Component {
       <Box className="sub-categories">
         <h3>Fruits</h3>
         <ul>
-          <li onClick={() => this.handleFruitsandVeg(["FRUITS", "Exotic Fruits"])}>
+          <li
+            onClick={() => this.handleFruitsandVeg(["FRUITS", "Exotic Fruits"])}
+          >
             <Link to={"/category"}>Exotic Fruits</Link>
           </li>
-          <li onClick={() => this.handleFruitsandVeg(["FRUITS", "Seasonal Fruits"])}>
+          <li
+            onClick={() =>
+              this.handleFruitsandVeg(["FRUITS", "Seasonal Fruits"])
+            }
+          >
             <Link to={"/category"}>Seasonal Fruits</Link>
           </li>
-          <li onClick={() => this.handleFruitsandVeg(["FRUITS", "Juices & Mixes"])}>
+          <li
+            onClick={() =>
+              this.handleFruitsandVeg(["FRUITS", "Juices & Mixes"])
+            }
+          >
             <Link to={"/category"}>Juices & Mixes</Link>
           </li>
         </ul>
@@ -138,7 +167,7 @@ class Header extends Component {
             <HomeOutlinedIcon /> Home
           </Link>
         </li>
-        {this.props.shopCategoryData.length ?
+        {this.props.shopCategoryData.length ? (
           <>
             <li>/</li>
             <li>
@@ -149,20 +178,20 @@ class Header extends Component {
               <Link to="/category">{this.props.shopCategoryData[1]}</Link>
             </li>
           </>
-          : <></>}
-
+        ) : (
+          <></>
+        )}
       </ul>
     </Box>
   );
 
   render() {
-    const { CategoriesToggle, matches } = this.state;
+    const { CategoriesToggle, matches, searchToggle } = this.state;
     const { allAddress } = this.props;
     const address = allAddress ? allAddress.address : "";
     let login = loginDetails();
 
     const path = window.location.pathname;
-
 
     return (
       <div className="header">
@@ -181,16 +210,14 @@ class Header extends Component {
                   <Box className="support-box">
                     <img src={supportIcon} alt="" /> Customer Support 24/7
                   </Box>
-
-                  {this.state.currentAddress ?
+                  {this.state.currentAddress ? (
                     <Box className="deliver-box">
                       Deliver to <img src={deliverIcon} alt="Deliver Icon" />
                       <span>{this.state.currentAddress}</span>
                     </Box>
-                    : <></>}
-
-
-
+                  ) : (
+                    <></>
+                  )}
                   {/* <Box className="language-list-box">
                     <FormControl fullWidth>
                       <NativeSelect
@@ -247,16 +274,38 @@ class Header extends Component {
                         <li>
                           <Link to="/category">Quick Links</Link>
                         </li>
-                        <li onClick={() => this.handleFruitsandVeg(["FRUITS", "Exotic Fruits"])}>
+                        <li
+                          onClick={() =>
+                            this.handleFruitsandVeg(["FRUITS", "Exotic Fruits"])
+                          }
+                        >
                           <Link to="/category">Exotic Fruits</Link>
                         </li>
-                        <li onClick={() => this.handleFruitsandVeg(["VEGETABLES", "Leafy Vegetables"])}>
+                        <li
+                          onClick={() =>
+                            this.handleFruitsandVeg([
+                              "VEGETABLES",
+                              "Leafy Vegetables",
+                            ])
+                          }
+                        >
                           <Link to="/category">Leafy Vegetables</Link>
                         </li>
-                        <li onClick={() => this.handleFruitsandVeg(["FRUITS", "Fresh fruits"])}>
+                        <li
+                          onClick={() =>
+                            this.handleFruitsandVeg(["FRUITS", "Fresh fruits"])
+                          }
+                        >
                           <Link to="/category">Fresh fruits</Link>
                         </li>
-                        <li onClick={() => this.handleFruitsandVeg(["VEGETABLES", "Cuts & Sprouts"])}>
+                        <li
+                          onClick={() =>
+                            this.handleFruitsandVeg([
+                              "VEGETABLES",
+                              "Cuts & Sprouts",
+                            ])
+                          }
+                        >
                           <Link to="/category">Cuts & Sprouts</Link>
                         </li>
                       </ul>
@@ -283,62 +332,73 @@ class Header extends Component {
           "/myCart/address/order-placed",
           "/my-order",
         ].includes(path) && (
-            <Box className="header-bottom-container">
-              <Container>
-                <Grid container spacing={2} alignItems={"center"}>
-                  <Grid item xs={9} md={3} lg={3}>
-                    <Box className="categories-container">
+          <Box className="header-bottom-container">
+            <Container>
+              <Grid container spacing={2} alignItems={"center"}>
+                <Grid item xs={7} sm={8} md={3} lg={3}>
+                  <Box className="categories-container">
+                    <Box
+                      className="categories-toggle"
+                      onClick={this.handleClickCategoriesToggle}
+                    >
+                      Shop by Categories
+                      <span>
+                        {CategoriesToggle ? (
+                          <KeyboardArrowUpIcon />
+                        ) : (
+                          <KeyboardArrowDownIcon />
+                        )}
+                      </span>
+                    </Box>
+                    {CategoriesToggle && this.renderCategories()}
+                    {CategoriesToggle && (
                       <Box
-                        className="categories-toggle"
+                        className="categories-bg"
                         onClick={this.handleClickCategoriesToggle}
-                      >
-                        Shop by Categories
-                        <span>
-                          {CategoriesToggle ? (
-                            <KeyboardArrowUpIcon />
-                          ) : (
-                            <KeyboardArrowDownIcon />
-                          )}
-                        </span>
-                      </Box>
-                      {CategoriesToggle && this.renderCategories()}
-                      {CategoriesToggle && (
-                        <Box
-                          className="categories-bg"
-                          onClick={this.handleClickCategoriesToggle}
-                        ></Box>
-                      )}
+                      ></Box>
+                    )}
+                  </Box>
+                </Grid>
+                {this.state.matches ? (
+                  ""
+                ) : (
+                  <Grid item xs={2} md={6} lg={6}>
+                    <Box className="search-box">
+                      <TextField
+                        id="outlined-search"
+                        className="search"
+                        variant="outlined"
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <img src={searchIcon} alt="" />
+                            </InputAdornment>
+                          ),
+                        }}
+                        placeholder="Search Your favorite veggies...  "
+                      />
                     </Box>
                   </Grid>
-                  {this.state.matches ? (
-                    ""
-                  ) : (
-                    <Grid item xs={5} md={6} lg={6}>
-                      <Box className="search-box">
-                        <TextField
-                          id="outlined-search"
-                          className="search"
-                          variant="outlined"
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                <img src={searchIcon} alt="" />
-                              </InputAdornment>
-                            ),
-                          }}
-                          placeholder="Search Your favorite veggies...  "
-                        />
-                      </Box>
-                    </Grid>
-                  )}
+                )}
 
-                  {login?.userId ? (
-                    <Grid item xs={3} md={3} lg={3}>
-                      <Box
-                        display={"inline-flex"}
-                        justifyContent={"flex-end"}
-                        width={"100%"}
-                      >
+                <Grid item xs={5} sm={4} md={3} lg={3}>
+                  <Box
+                    display={"inline-flex"}
+                    justifyContent={"flex-end"}
+                    width={"100%"}
+                  >
+                    {this.state.matches ? (
+                      <Button
+                        variant="outlined"
+                        className="search-icon"
+                        startIcon={<img src={searchIcon} alt="" />}
+                        onClick={this.searchToggle}
+                      ></Button>
+                    ) : (
+                      ""
+                    )}
+                    {login?.userId ? (
+                      <>
                         <Button
                           variant="outlined"
                           className="notification"
@@ -346,6 +406,7 @@ class Header extends Component {
                         >
                           <p></p>
                         </Button>
+
                         <Link to={"/myCart"}>
                           <Button
                             variant="outlined"
@@ -364,15 +425,35 @@ class Header extends Component {
                             )}
                           </Button>
                         </Link>
-                      </Box>
-                    </Grid>
-                  ) : (
-                    <></>
-                  )}
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </Box>
                 </Grid>
-              </Container>
-            </Box>
-          )}
+              </Grid>
+            </Container>
+          </Box>
+        )}
+        {this.state.matches ? (
+          <Box className={searchToggle ? "search-box active" : "search-box"}>
+            <TextField
+              id="outlined-search"
+              className="search"
+              variant="outlined"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <img src={searchIcon} alt="" />
+                  </InputAdornment>
+                ),
+              }}
+              placeholder="Search Your favorite veggies...  "
+            />
+          </Box>
+        ) : (
+          ""
+        )}
       </div>
     );
   }
@@ -383,14 +464,18 @@ function mapStateToProps(state) {
   const { cartItems } = state.cartitem;
   const { shopCategoryData } = state.allproducts;
   const { allAddress, selectedAddressData } = state.alladdress;
-  return { cartData, cartItems, allAddress, selectedAddressData, shopCategoryData };
+  return {
+    cartData,
+    cartItems,
+    allAddress,
+    selectedAddressData,
+    shopCategoryData,
+  };
 }
 
 const mapDispatchToProps = {
   getAllAddress,
-  setShopByCategory
+  setShopByCategory,
 };
-
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
