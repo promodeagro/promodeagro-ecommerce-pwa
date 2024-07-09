@@ -181,13 +181,13 @@ class MyCart extends Component {
                           <Box className="d-flex align-items-center product-cart-list">
                             <Box className="product-cart-img">
                               <img
-                                src={productCartImg}
+                                src={item?.productImage}
                                 alt="product-cart-img"
                               />
                             </Box>
                             <Box className="d-block">
                               <span className="d-block name">
-                                Green Apple
+                                {item?.productName}
                               </span>
                               <Box className="d-flex align-items-center">
                                 <span className="discount-amount">
