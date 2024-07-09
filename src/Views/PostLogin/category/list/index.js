@@ -14,6 +14,7 @@ import {
   Grid,
   CircularProgress,
 } from "@mui/material";
+import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import StarIcon from "@mui/icons-material/Star";
 import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
 import priceIcon from "../../../../assets/img/price-icon.png";
@@ -84,11 +85,17 @@ class List extends Component {
 
   handleAddToCart(id) {
     const items = loginDetails();
-    this.props.addItemToCart({
-      userId: items.userId,
-      productId: id,
-      quantity: "1",
-    });
+
+    if (items?.userId) {
+      this.props.addItemToCart({
+        userId: items.userId,
+        productId: id,
+        quantity: "1",
+      });
+    } else {
+      this.props.navigate("/signin")
+    }
+
   }
 
   handleQuantityChange(id, increment, productQuantity) {
@@ -220,6 +227,36 @@ class List extends Component {
                       {addedProducts.includes(item.id) || itemId ? (
                         <Box className="number-input-container">
                           {itemId && itemId.Quantity !== 0 ? (
+                            // <Box
+                            //   className="symbol"
+                            //   onClick={() => {
+                            //     debugger
+                            //     if (itemId?.ProductId) {
+                            //       let d = itemId.Quantity;
+                            //       this.handleQuantityChange(
+                            //         itemId.ProductId,
+                            //         -1,
+                            //         Number(d)
+                            //       );
+                            //     } else {
+                            //       this.handleQuantityChange(item.id, -1);
+                            //     }
+                            //   }}
+                            // >
+                            //   {this.props.deleteItems.status ===
+                            //     status.IN_PROGRESS ||
+                            //     (this.props.updateItems.status ===
+                            //       status.IN_PROGRESS &&
+                            //       item.id === dataId &&
+                            //       !isUpdateIncrease) ? (
+                            //     <>
+                            //       <CircularProgress className="common-loader plus-icon" />
+                            //     </>
+                            //   ) : (
+                            //     "-"
+                            //   )}
+                            // </Box>
+
                             <Box
                               className="symbol"
                               onClick={() => {
@@ -235,17 +272,15 @@ class List extends Component {
                                 }
                               }}
                             >
-                              {this.props.deleteItems.status ===
-                                status.IN_PROGRESS ||
-                              (this.props.updateItems.status ===
-                                status.IN_PROGRESS &&
-                                item.id === dataId &&
-                                !isUpdateIncrease) ? (
-                                <CircularProgress className="common-loader plus-icon" />
+                              {(this.props.deleteItems.status === status.IN_PROGRESS && item.id === dataId && !isUpdateIncrease) ||
+                                (this.props.updateItems.status === status.IN_PROGRESS && item.id === dataId && !isUpdateIncrease) ? (
+                                <CircularProgress className="common-loader plus-icon" size={24} />
                               ) : (
                                 "-"
                               )}
                             </Box>
+
+
                           ) : (
                             <></>
                           )}
@@ -272,8 +307,8 @@ class List extends Component {
                           >
                             {this.props.updateItems.status ===
                               status.IN_PROGRESS &&
-                            item.id === dataId &&
-                            isUpdateIncrease ? (
+                              item.id === dataId &&
+                              isUpdateIncrease ? (
                               <CircularProgress className="common-loader plus-icon" />
                             ) : (
                               "+"
@@ -288,11 +323,12 @@ class List extends Component {
                               this.handleAddToCart(item.id);
                             }}
                             disabled={
-                              this.props.additems.status == status.IN_PROGRESS
+                              this.props.additems.status == status.IN_PROGRESS &&
+                              item.id == this.state.dataId
                             }
                           >
-                            {this.props.additems.status ==
-                            status.IN_PROGRESS ? (
+                            {this.props.additems.status == status.IN_PROGRESS &&
+                              item.id == this.state.dataId ? (
                               <CircularProgress className="common-loader" />
                             ) : (
                               "Add to cart"
@@ -325,4 +361,9 @@ const mapDispatchToProps = {
   deleteItemToCart,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(List);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(navigateRouter(List));
+
+

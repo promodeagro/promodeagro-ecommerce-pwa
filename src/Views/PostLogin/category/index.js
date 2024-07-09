@@ -31,10 +31,12 @@ class Category extends Component {
 
   componentDidMount() {
     let items = loginDetails();
+    if (items?.userId) {
+      this.props.fetchCartItems({
+        userId: items.userId,
+      });
+    }
 
-    this.props.fetchCartItems({
-      userId: items.userId,
-    });
     this.props.allProducts();
   }
 
@@ -145,7 +147,7 @@ class Category extends Component {
               lg={hideFilter ? 12 : 9}
             >
               {this.props.cartItems.status === status.IN_PROGRESS.status ||
-              this.props.allProductsData.status === status.IN_PROGRESS ? (
+                this.props.allProductsData.status === status.IN_PROGRESS ? (
                 Loader.commonLoader()
               ) : (
                 <List

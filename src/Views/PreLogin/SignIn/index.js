@@ -198,6 +198,7 @@ class Signin extends Component {
                     fullWidth
                     name="password"
                     value={password}
+                    type="password"
                     onChange={this.handleValueChange}
                     error={!errorData.password.isValid && isSubmit}
                   />

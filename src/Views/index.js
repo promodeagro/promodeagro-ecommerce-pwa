@@ -13,7 +13,7 @@ const SignUp = lazy(() => import("./../Views/PreLogin/signUp"));
 const Address = lazy(() =>
   import("./../Views/PostLogin/MyCart/components/address")
 );
-const PaymentOption=lazy(() =>
+const PaymentOption = lazy(() =>
   import("./../Views/PostLogin/MyCart/components/address")
 );
 const OrderDetails = lazy(() =>
@@ -46,11 +46,11 @@ const Views = () => {
             </>
           )}
 
-          {!isLoggedIn && (
-            <>
-              <Route path={`/category`} element={<Navigate to="/signin" replace />} />
-            </>
-          )}
+
+
+       
+
+
 
           {/* Routes for authenticated and unauthenticated users */}
           <Route exact path={`/`} element={<Home />} />
