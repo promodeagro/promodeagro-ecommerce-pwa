@@ -24,7 +24,7 @@ const AddressSlice = createSlice({
 
 
     setSelectedAdd: (state, action) => {
-      debugger
+      
       state.selectedAddressData = action.payload;
     },
 

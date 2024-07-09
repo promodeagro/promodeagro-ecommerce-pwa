@@ -150,7 +150,7 @@ class List extends Component {
         <Box className="heading">
           <Grid container spacing={2} alignItems={"center"}>
             <Grid item xs={12} sm={12} md={6} lg={6}>
-              <h2>Leafy Vegetable</h2>
+              <h2>{this.props.shopCategoryData.length ?this.props.shopCategoryData[1]:<></>} </h2>
             </Grid>
             <Grid item xs={12} sm={12} md={6} lg={6}>
               <Box className="d-flex w-100 justify-content-end flex-wrap">
@@ -331,7 +331,7 @@ class List extends Component {
                               item.id == this.state.dataId ? (
                               <CircularProgress className="common-loader" />
                             ) : (
-                              "Add to cart"
+                              "Add to cartsdfsd"
                             )}
                           </Button>
                         </Box>
@@ -351,7 +351,8 @@ class List extends Component {
 
 function mapStateToProps(state) {
   const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
-  return { additems, cartItems, updateItems, deleteItems };
+  const { shopCategoryData } = state.allproducts;
+  return { additems, cartItems, updateItems, deleteItems, shopCategoryData };
 }
 
 const mapDispatchToProps = {

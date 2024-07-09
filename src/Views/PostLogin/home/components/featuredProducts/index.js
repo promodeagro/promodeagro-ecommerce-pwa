@@ -7,6 +7,7 @@ import {
   Button,
   CircularProgress,
 } from "@mui/material";
+import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import {
   addItemToCart,
   fetchCartItems,
@@ -19,6 +20,7 @@ import priceIcon from "../../../../../assets/img/price-icon.png";
 import noImage from "../../../../../assets/img/no-image.png";
 import { addDataInCart } from "../../../../../Redux/Home/HomeSlice";
 import { allProducts } from "../../../../../Redux/AllProducts/AllProductthunk";
+import { setShopByCategory } from "../../../../../Redux/AllProducts/AllProductSlice";
 import { connect } from "react-redux";
 import _ from "lodash";
 import { Link } from "react-router-dom";
@@ -119,17 +121,22 @@ class FeaturedProducts extends Component {
     }
   }
 
-  handleAddToCart = (id) => {
+
+
+  handleAddToCart(id) {
     const items = loginDetails();
-    this.props.addItemToCart({
-      userId: items.userId,
-      productId: id,
-      quantity: "1",
-    });
-    this.setState({
-      dataId: id,
-    });
-  };
+
+    if (items?.userId) {
+      this.props.addItemToCart({
+        userId: items.userId,
+        productId: id,
+        quantity: "1",
+      });
+    } else {
+      this.props.navigate("/signin")
+    }
+
+  }
 
   handleQuantityChange(id, increment, productQuantity) {
     const items = loginDetails();
@@ -267,7 +274,7 @@ class FeaturedProducts extends Component {
                             item.id == this.state.dataId ? (
                             <CircularProgress className="common-loader" />
                           ) : (
-                            "Add to cart"
+                            "Add to cart "
                           )}
                         </Button>
                       </Box>
@@ -276,7 +283,7 @@ class FeaturedProducts extends Component {
                 );
               })}
           </Box>
-          <Box className="load-more-btn">
+          <Box className="load-more-btn" onClick={() => this.props.setShopByCategory([])}>
             <Link to="/category">Load More</Link>
           </Box>
         </Container>
@@ -287,7 +294,7 @@ class FeaturedProducts extends Component {
 
 function mapStateToProps(state) {
   const { homeData } = state.home;
-  const { allProductsData } = state.allproducts;
+  const { allProductsData, shopCategoryData } = state.allproducts;
   const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
   return {
     allProductsData,
@@ -296,6 +303,7 @@ function mapStateToProps(state) {
     cartItems,
     updateItems,
     deleteItems,
+    shopCategoryData
   };
 }
 
@@ -305,6 +313,12 @@ const mapDispatchToProps = {
   fetchCartItems,
   updateItemToCart,
   deleteItemToCart,
+  setShopByCategory
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FeaturedProducts);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(navigateRouter(FeaturedProducts));
+

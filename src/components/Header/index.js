@@ -4,6 +4,7 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import FormControl from "@mui/material/FormControl";
 import NativeSelect from "@mui/material/NativeSelect";
+import { setShopByCategory } from "../../Redux/AllProducts/AllProductSlice"
 import {
   KeyboardArrowDown as KeyboardArrowDownIcon,
   KeyboardArrowUp as KeyboardArrowUpIcon,
@@ -70,9 +71,10 @@ class Header extends Component {
         cartList: this.props.cartItems.data.items,
       });
     }
-    if (this.props.selectedAddressData?.address && this.state.currentAddress !== this.props.selectedAddressData?.address) {
+    if ((this.props.selectedAddressData?.address && this.state.currentAddress !== this.props.selectedAddressData?.address)) {
+
       this.setState({
-        currentAddress: this.props.selectedAddressData.address
+        currentAddress: this.props.selectedAddressData?.address ? this.props.selectedAddressData.address : this.props.allAddress.data?.addresses[0]?.address
       })
     }
   }
@@ -82,6 +84,77 @@ class Header extends Component {
     });
   };
 
+  handleFruitsandVeg = (data) => {
+
+    this.props.setShopByCategory(data)
+    this.setState({
+      CategoriesToggle: !this.state.CategoriesToggle,
+    });
+
+  }
+
+
+  renderCategories = () => (
+    <Box className="categories-box">
+      <Box className="categories">
+        <h2>Vegetables</h2>
+        <ul>
+          <li onClick={() => this.handleFruitsandVeg(["Vegetable", "Cut & peeled Veggies"])}>
+            <Link to={"/category"}>Cut & peeled Veggies</Link>
+          </li>
+          <li onClick={() => this.handleFruitsandVeg(["Vegetable", "Leafy Vegetables"])}>
+            <Link to={"/category"}>Leafy Vegetables</Link>
+          </li>
+          <li onClick={() => this.handleFruitsandVeg(["Vegetable", "Fresh Vegetables"])}>
+            <Link to={"/category"}>Fresh Vegetables</Link>
+          </li>
+          <li onClick={() => this.handleFruitsandVeg(["Vegetable", "Herbs and Seasoning"])}>
+            <Link to={"/category"}>Herbs and Seasoning</Link>
+          </li>
+        </ul>
+      </Box>
+      <Box className="sub-categories">
+        <h3>Fruits</h3>
+        <ul>
+          <li onClick={() => this.handleFruitsandVeg(["Fruits", "Exotic Fruits"])}>
+            <Link to={"/category"}>Exotic Fruits</Link>
+          </li>
+          <li onClick={() => this.handleFruitsandVeg(["Fruits", "Seasonal Fruits"])}>
+            <Link to={"/category"}>Seasonal Fruits</Link>
+          </li>
+          <li onClick={() => this.handleFruitsandVeg(["Fruits", "Juices & Mixes"])}>
+            <Link to={"/category"}>Juices & Mixes</Link>
+          </li>
+        </ul>
+      </Box>
+    </Box>
+  );
+
+  renderBreadcrumb = () => (
+    <Box className="breadcrumb">
+      <ul>
+        <li>
+          <Link to="/">
+            <HomeOutlinedIcon /> Home
+          </Link>
+        </li>
+        {this.props.shopCategoryData.length ?
+          <>
+            <li>/</li>
+            <li>
+              <Link to="/category">{this.props.shopCategoryData[0]}</Link>
+            </li>
+            <li>/</li>
+            <li className="active">
+              <Link to="/category">{this.props.shopCategoryData[1]}</Link>
+            </li>
+          </>
+          : <></>}
+
+      </ul>
+    </Box>
+  );
+
   render() {
     const { CategoriesToggle, matches } = this.state;
     const { allAddress } = this.props;
@@ -89,61 +162,7 @@ class Header extends Component {
     let login = loginDetails();
 
     const path = window.location.pathname;
-    const renderCategories = () => (
-      <Box className="categories-box">
-        <Box className="categories">
-          <h2>Vegetables</h2>
-          <ul>
-            <li>
-              <a href="#">Cut & peeled Veggies</a>
-            </li>
-            <li>
-              <a href="#">Leafy Vegetables</a>
-            </li>
-            <li>
-              <a href="#">Fresh Vegetables</a>
-            </li>
-            <li>
-              <a href="#">Herbs and Seasoning</a>
-            </li>
-          </ul>
-        </Box>
-        <Box className="sub-categories">
-          <h3>Fruits</h3>
-          <ul>
-            <li>
-              <a href="#">Exotic Fruits</a>
-            </li>
-            <li>
-              <a href="#">Seasonal Fruits</a>
-            </li>
-            <li>
-              <a href="#">Juices & Mixes</a>
-            </li>
-          </ul>
-        </Box>
-      </Box>
-    );
 
-    const renderBreadcrumb = () => (
-      <Box className="breadcrumb">
-        <ul>
-          <li>
-            <Link to="/">
-              <HomeOutlinedIcon /> Home
-            </Link>
-          </li>
-          <li>/</li>
-          <li>
-            <Link to="/category">Vegetables</Link>
-          </li>
-          <li>/</li>
-          <li className="active">
-            <Link to="/category">Leafy Vegetables</Link>
-          </li>
-        </ul>
-      </Box>
-    );
 
     return (
       <div className="header">
@@ -250,7 +269,7 @@ class Header extends Component {
                       "/myCart/address/updated-address",
                       "/myCart/address/order-placed",
                       "/my-order",
-                    ].includes(path) && renderBreadcrumb()
+                    ].includes(path) && this.renderBreadcrumb()
                   )}
                 </Grid>
               )}
@@ -282,7 +301,7 @@ class Header extends Component {
                           )}
                         </span>
                       </Box>
-                      {CategoriesToggle && renderCategories()}
+                      {CategoriesToggle && this.renderCategories()}
                       {CategoriesToggle && (
                         <Box
                           className="categories-bg"
@@ -362,13 +381,16 @@ class Header extends Component {
 function mapStateToProps(state) {
   const { cartData } = state.home;
   const { cartItems } = state.cartitem;
-
+  const { shopCategoryData } = state.allproducts;
   const { allAddress, selectedAddressData } = state.alladdress;
-  return { cartData, cartItems, allAddress, selectedAddressData };
+  return { cartData, cartItems, allAddress, selectedAddressData, shopCategoryData };
 }
 
 const mapDispatchToProps = {
-  getAllAddress
+  getAllAddress,
+  setShopByCategory
 };
+
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

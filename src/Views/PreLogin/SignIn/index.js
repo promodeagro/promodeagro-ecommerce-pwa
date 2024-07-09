@@ -17,6 +17,13 @@ import addSymbol from "../../../assets/img/add-symbol.svg";
 import googleIcon from "../../../assets/img/google.svg";
 import { Link } from "react-router-dom";
 import otpSentIcon from "../../../assets/img/otp-sent.png";
+import {
+  setSelectedAdd
+} from "../../../Redux/Address/AddressSlice";
+import {
+  getAllAddress
+} from "../../../Redux/Address/AddressThunk";
+
 import { MuiOtpInput } from "mui-one-time-password-input";
 import { connect } from "react-redux";
 import status from "../../../Redux/Constants";
@@ -80,13 +87,28 @@ class Signin extends Component {
         isSubmit: false,
       });
       ErrorMessages.success("Logged In Successfully");
-      this.props.navigate("/")
+      this.props.getAllAddress({
+        userId: this.props.loginData.data.userId,
+      })
+
     } else if (this.props.loginData.data && !this.props.loginData.data.token) {
       this.setState({
         isSubmit: false,
       });
       ErrorMessages.error(this.props.loginData.data.response?.data?.message);
     }
+
+
+
+    if (
+      prevProps.allAddress.status !== this.props.allAddress.status &&
+      this.props.allAddress.status === status.SUCCESS &&
+      this.props.allAddress.data
+    ) {
+      this.props.setSelectedAdd(this.props.allAddress.data.addresses[0])
+      this.props.navigate("/")
+    }
+
   }
 
   validateForm = () => {
@@ -308,10 +330,11 @@ class Signin extends Component {
 
 function mapStateToProps(state) {
   const { loginData } = state.login;
-  return { loginData };
+  const { allAddress, selectedAddressData } = state.alladdress;
+  return { loginData, allAddress };
 }
 
-const mapDispatchToProps = { signIn };
+const mapDispatchToProps = { signIn, setSelectedAdd, getAllAddress };
 
 
 

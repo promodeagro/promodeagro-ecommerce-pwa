@@ -7,7 +7,8 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom";
-
+import { connect } from "react-redux"
+import { setShopByCategory } from "../../../../../Redux/AllProducts/AllProductSlice";
 class MainBanner extends Component {
   constructor(props) {
     super(props);
@@ -48,7 +49,7 @@ class MainBanner extends Component {
                         Enjoy free shipping on orders to PBEL City. Sit back and
                         relax while we handle the delivery for you.
                       </Box>
-                      <Box className="button">
+                      <Box className="button" onClick={() => this.props.setShopByCategory([])} >
                         <Link to="/category">
                           Shop now <EastIcon />
                         </Link>
@@ -176,4 +177,20 @@ class MainBanner extends Component {
   }
 }
 
-export default MainBanner;
+
+
+function mapStateToProps(state) {
+  const { homeData } = state.home;
+
+
+  return {
+    homeData
+  };
+}
+
+const mapDispatchToProps = {
+
+  setShopByCategory
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainBanner);
