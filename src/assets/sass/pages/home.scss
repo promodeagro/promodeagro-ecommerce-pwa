@@ -964,22 +964,26 @@
 
 @media only screen and (max-width: 768px) {
   .main-banner-container {
-    .heading {
-      width: 100% !important;
-    }
-
-    .text {
-      width: 100% !important;
+    .banner-contents {
+      .contents {
+        .heading {
+          width: 100%;
+          font-size: 32px;
+          line-height: 40px;
+        }
+        .text {
+          width: 100%;
+        }
+      }
     }
 
     .slick-dots {
-      bottom: -40px;
-      right: 170px;
+      display: none !important;
     }
 
     .slick-prev,
     .slick-next {
-      top: 106%;
+      top: 100%;
     }
   }
 
@@ -1004,22 +1008,6 @@
   }
 }
 
-@media only screen and (max-width: 400px) {
-  .customers-says-container {
-    .customers-container {
-      padding: 0px 35px;
-    }
-  }
-
-  .featured-products-container {
-    .products {
-      .product-box {
-        width: 100%;
-      }
-    }
-  }
-}
-
 @media only screen and (max-width: 531px) {
   .featured-products-container {
     .products {
@@ -1030,12 +1018,67 @@
   }
 }
 
-@media only screen and (max-width: 737px) {
+@media only screen and (max-width: 1150px) {
   .featured-products-container {
     .products {
       .product-box {
-        width: 48%;
+        width: 31.33%;
         margin-bottom: 30px;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .main-banner-container {
+    .banner-contents {
+      .images {
+        .upto-off-img {
+          width: 120px;
+        }
+      }
+    }
+  }
+  .featured-products-container {
+    .heading {
+      font-size: 26px;
+      line-height: 30px;
+    }
+    .products {
+      .product-box {
+        margin-left: 0px;
+        width: 100%;
+      }
+    }
+  }
+  .offers-banners-container {
+    .heading {
+      font-size: 26px;
+      line-height: 30px;
+    }
+  }
+  .top-selling-categories-container {
+    .heading {
+      font-size: 26px;
+      line-height: 30px;
+    }
+    .slick-prev,
+    .slick-next {
+      top: -45px;
+    }
+  }
+  .customers-says-container {
+    .heading {
+      font-size: 26px;
+      line-height: 30px;
+    }
+    .customers-container {
+      padding: 0px 20px;
+      .slick-prev {
+        left: -25px;
+      }
+      .slick-next {
+        right: -25px;
       }
     }
   }

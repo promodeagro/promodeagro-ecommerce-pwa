@@ -245,21 +245,21 @@
         width: 100%;
 
         .product-name {
-            font-size: 21px;
-            line-height: 32px;
+            font-size: 16px;
+            line-height: 20px;
             color: #4D4D4D;
             font-weight: 400;
         }
 
         .drop-amount {
-            font-size: 24px;
-            line-height: 36px;
+            font-size: 20px;
+            line-height: 24px;
             color: #1A1A1A;
             font-weight: 500;
         }
 
         .final-amount {
-            font-size: 16px;
+            font-size: 14px;
             line-height: 24px;
             color: #ADADAD;
             font-weight: 500;
@@ -267,7 +267,7 @@
         }
 
         .rating-info {
-            margin-top: 15px;
+            margin-top: 10px;
 
             .rating {
                 margin-right: 60px;
@@ -307,10 +307,6 @@
 @media only screen and (max-width: 900px) {
     .cart-item-title {
         display: none !important;
-    }
-
-    .number-input-container {
-        width: 45% !important;
     }
 
     .product-cart-container {

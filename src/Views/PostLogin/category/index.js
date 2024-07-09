@@ -130,18 +130,17 @@ class Category extends Component {
       <Box className="main-container">
         <Container>
           <Grid container spacing={2} alignItems={"flex-start"}>
-            <Grid item xs={5} sm={4} md={3} lg={3}>
+            <Grid item xs={12} sm={12} md={3} lg={3}>
               <SideBar
                 onFilterChange={this.handleFilterChange}
                 toggleFilter={this.toggleFilter}
                 hideFilter={hideFilter}
               />
             </Grid>
-
             <Grid
               item
-              xs={hideFilter ? 12 : 7}
-              sm={hideFilter ? 12 : 8}
+              xs={hideFilter ? 12 : 12}
+              sm={hideFilter ? 12 : 12}
               md={hideFilter ? 12 : 9}
               lg={hideFilter ? 12 : 9}
             >

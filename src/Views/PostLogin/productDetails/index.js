@@ -139,12 +139,12 @@ class ProductDetails extends Component {
                   </Box>
                   <Box className="product-cart-buttons">
                     <Grid container spacing={2}>
-                      <Grid item xs={12} sm={6} md={8} lg={8}>
+                      <Grid item xs={12} sm={6} md={6} lg={8}>
                         <Button className="add-cart-btn" variant="contained">
                           Add to Cart <ShoppingCartOutlinedIcon />
                         </Button>
                       </Grid>
-                      <Grid item xs={12} sm={6} md={4} lg={4}>
+                      <Grid item xs={12} sm={6} md={6} lg={4}>
                         <Button className="view-cart-btn" variant="outlined">
                           View Cart Items
                         </Button>
@@ -167,13 +167,13 @@ class ProductDetails extends Component {
                               <CheckCircleOutlinedIcon />
                             </Box>
                             <Grid container spacing={0}>
-                              <Grid item xs={12} sm={12} md={5} lg={5}>
+                              <Grid item xs={5} sm={5} md={5} lg={5}>
                                 <Box className="left-contents">
                                   <strong>2x4 pcs</strong>
                                   <span>Multipack</span>
                                 </Box>
                               </Grid>
-                              <Grid item xs={12} sm={12} md={7} lg={7}>
+                              <Grid item xs={7} sm={7} md={7} lg={7}>
                                 <Box className="right-contents">
                                   <Box className="product-price">
                                     <Box className="price">
@@ -198,13 +198,13 @@ class ProductDetails extends Component {
                         <Grid item xs={12} sm={6} md={12} lg={6}>
                           <Box className="pack-box">
                             <Grid container spacing={0}>
-                              <Grid item xs={12} sm={12} md={5} lg={5}>
+                              <Grid item xs={5} sm={5} md={5} lg={5}>
                                 <Box className="left-contents">
                                   <strong>4 pcs</strong>
                                   <span>Approx. 500-600gm</span>
                                 </Box>
                               </Grid>
-                              <Grid item xs={12} sm={12} md={7} lg={7}>
+                              <Grid item xs={7} sm={7} md={7} lg={7}>
                                 <Box className="right-contents">
                                   <Box className="product-price">
                                     <Box className="price">
@@ -232,13 +232,13 @@ class ProductDetails extends Component {
                               <CheckCircleOutlinedIcon />
                             </Box>
                             <Grid container spacing={0}>
-                              <Grid item xs={12} sm={12} md={5} lg={5}>
+                              <Grid item xs={5} sm={5} md={5} lg={5}>
                                 <Box className="left-contents">
                                   <strong>4 pcs</strong>
                                   <span>Multipack</span>
                                 </Box>
                               </Grid>
-                              <Grid item xs={12} sm={12} md={7} lg={7}>
+                              <Grid item xs={7} sm={7} md={7} lg={7}>
                                 <Box className="right-contents">
                                   <Box className="product-price">
                                     <Box className="price">
@@ -263,13 +263,13 @@ class ProductDetails extends Component {
                         <Grid item xs={12} sm={6} md={12} lg={6}>
                           <Box className="pack-box">
                             <Grid container spacing={0}>
-                              <Grid item xs={12} sm={12} md={5} lg={5}>
+                              <Grid item xs={5} sm={5} md={5} lg={5}>
                                 <Box className="left-contents">
                                   <strong>4 pcs</strong>
                                   <span>Approx. 500-600gm</span>
                                 </Box>
                               </Grid>
-                              <Grid item xs={12} sm={12} md={7} lg={7}>
+                              <Grid item xs={7} sm={7} md={7} lg={7}>
                                 <Box className="right-contents">
                                   <Box className="product-price">
                                     <Box className="price">
@@ -310,7 +310,7 @@ class ProductDetails extends Component {
             className="choose-container"
           >
             <Box className="heading">Why Choose us ?</Box>
-            <Grid container spacing={5} justifyContent={"center"}>
+            <Grid container spacing={3} justifyContent={"center"}>
               <Grid item xs={12} sm={6} md={3} lg={3}>
                 <Box className="choose-box">
                   <Box className="box">
