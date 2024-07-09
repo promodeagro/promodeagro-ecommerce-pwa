@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Box, Container, Button, Grid, IconButton,CircularProgress } from "@mui/material";
+import {
+  Box,
+  Container,
+  Button,
+  Grid,
+  IconButton,
+  CircularProgress,
+} from "@mui/material";
 import {
   fetchCartItems,
   deleteItemToCart,
@@ -15,8 +22,8 @@ import productCartImg from "../../../assets/img/product-cart-img.png";
 import { connect } from "react-redux";
 import status from "../../../Redux/Constants";
 import { Loader, loginDetails } from "../../../Views/Utills/helperFunctions";
-import BookmarkIcon from "@mui/icons-material/Bookmark";
 import _ from "lodash";
+import RelatedViewedItems from "./components/relatedViewedItems";
 class MyCart extends Component {
   constructor(props) {
     super(props);
@@ -105,7 +112,7 @@ class MyCart extends Component {
                 </Box>
                 <Box className="right-part">
                   <Box className="sub-total d-flex align-items-center flex-wrap">
-                    <strong className="title">Subtotal</strong>
+                    <strong className="title">Subtotal </strong>
                     <span className="item-count">(3 Items) :</span>
                     <strong className="number">₹ 200.12</strong>
                   </Box>
@@ -113,7 +120,7 @@ class MyCart extends Component {
                     <strong className="title">Savings : </strong>
                     <strong className="number">₹ 120.12</strong>
                   </Box>
-                  <Link to={"/myCart/address"}>
+                  <Link to={"/myCart/address"} className="checkout-btn">
                     <Button
                       variant="contained"
                       fullWidth
@@ -130,7 +137,7 @@ class MyCart extends Component {
                   <>
                     <Grid
                       container
-                      spacing={2}
+                      spacing={0}
                       alignItems={"center"}
                       className="cart-item-title"
                       data-aos="zoom-in-right"
@@ -157,25 +164,24 @@ class MyCart extends Component {
                       return (
                         <Grid
                           container
-                          spacing={2}
+                          spacing={0}
                           className="product-cart-container"
                           alignItems={"center"}
                           data-aos="zoom-in-right"
                         >
-                          <Box className="bookmark-btn">
+                          {/* <Box className="bookmark-btn">
                             <IconButton aria-label="bookmark">
                               <BookmarkBorderIcon />
                             </IconButton>
-                            {/* <IconButton aria-label="selectBookMark">
-                              <BookmarkIcon />
-                            </IconButton> */}
-                          </Box>
-                          <Grid item xs={12} lg={6} md={6} sm={12}>
+                          </Box> */}
+                          <Grid item xs={12} sm={12} md={6} lg={6}>
                             <Box className="d-flex align-items-center product-cart-list">
-                              <img
-                                src={productCartImg}
-                                alt="product-cart-img"
-                              />
+                              <Box className="product-cart-img">
+                                <img
+                                  src={productCartImg}
+                                  alt="product-cart-img"
+                                />
+                              </Box>
                               <Box className="d-block">
                                 <span className="d-block name">
                                   Green Apple
@@ -189,7 +195,7 @@ class MyCart extends Component {
                               </Box>
                             </Box>
                           </Grid>
-                          <Grid item xs={12} lg={3} md={3} sm={12}>
+                          <Grid item xs={12} sm={6} md={3} lg={3}>
                             <Box className="number-input-container">
                               <Box
                                 className="symbol"
@@ -238,19 +244,13 @@ class MyCart extends Component {
                               >
                                 Delete
                               </Button>
-                              {/* <Button>Save it for later</Button> */}
+                              <Button>Save it for later</Button>
                             </Box>
                           </Grid>
-                          <Grid
-                            item
-                            xs={12}
-                            lg={3}
-                            md={3}
-                            sm={12}
-                            display={"flex"}
-                            justifyContent={"end"}
-                          >
-                            <Box className="sub-total ">
+                          <Grid item xs={12} sm={6} md={3} lg={3}>
+                            <Box
+                              className="sub-total"
+                            >
                               <span className="d-block final-amount">
                                 ₹ {item?.Subtotal}
                               </span>
@@ -262,205 +262,13 @@ class MyCart extends Component {
                         </Grid>
                       );
                     })}
-
-                    {/* <Grid
-                  container
-                  spacing={2}
-                  className="product-cart-container"
-                  alignItems={"center"}
-                  data-aos="zoom-in-right"
-                >
-                  <Grid item xs={6}>
-                    <Box className="d-flex align-items-center product-cart-list">
-                      <img src={productCartImg} alt="product-cart-img" />
-                      <Box className="d-block">
-                        <span className="d-block name">Green Apple</span>
-                        <Box className="d-flex align-items-center">
-                          <span className="discount-amount">₹ 14.99</span>
-                          <s className="amount">₹ 20.99</s>
-                        </Box>
-                      </Box>
-                    </Box>
-                  </Grid>
-                  <Grid item xs={3}>
-                    <Box className="number-input-container">
-                      <Box className="symbol">-</Box>
-                      <Box className="Number">3</Box>
-                      <Box className="symbol">+</Box>
-                    </Box>
-                    <Box className="d-flex align-items-ceneter btn-group">
-                      <Button>Delete</Button>
-                      <Button>Save it for later</Button>
-                    </Box>
-                  </Grid>
-                  <Grid item xs={3} justifyContent={"end"} display={"flex"}>
-                    <Box className="sub-total ">
-                      <span className="d-block final-amount">₹ 200.12</span>
-                      <span className="d-block save-amount">
-                        Saved : <strong>₹ 120.12</strong>
-                      </span>
-                    </Box>
-                  </Grid>
-                </Grid>
-                <Grid
-                  container
-                  spacing={2}
-                  className="product-cart-container"
-                  alignItems={"center"}
-                  data-aos="zoom-in-right"
-                >
-                  <Grid item xs={6}>
-                    <Box className="d-flex align-items-center product-cart-list">
-                      <img src={productCartImg} alt="product-cart-img" />
-                      <Box className="d-block">
-                        <span className="d-block name">Green Apple</span>
-                        <Box className="d-flex align-items-center">
-                          <span className="discount-amount">₹ 14.99</span>
-                          <s className="amount">₹ 20.99</s>
-                        </Box>
-                      </Box>
-                    </Box>
-                  </Grid>
-                  <Grid item xs={3}>
-                    <Box className="number-input-container">
-                      <Box className="symbol">-</Box>
-                      <Box className="Number">3</Box>
-                      <Box className="symbol">+</Box>
-                    </Box>
-                    <Box className="d-flex align-items-ceneter btn-group">
-                      <Button>Delete</Button>
-                      <Button>Save it for later</Button>
-                    </Box>
-                  </Grid>
-                  <Grid item xs={3} justifyContent={"end"} display={"flex"}>
-                    <Box className="sub-total ">
-                      <span className="d-block final-amount">₹ 200.12</span>
-                      <span className="d-block save-amount">
-                        Saved : <strong>₹ 120.12</strong>
-                      </span>
-                    </Box>
-                  </Grid>
-                </Grid> */}
                   </>
                 ) : (
                   <></>
                 )}
               </Box>
             </Container>
-            <Box className="Related-products-container">
-              <Container>
-                <Box className="heading-part d-flex align-items-center justify-content-between">
-                  <span className="d-block title">Related Products</span>
-                  <Link to="">
-                    <span className="d-block">Show All</span>
-                  </Link>
-                </Box>
-                <Grid container spacing={2} data-aos="zoom-in">
-                  <Grid item lg={4} md={6} sm={12} xs={12}>
-                    <Box className="product-details d-flex align-items-center ">
-                      <img src={realtedProdctImg1} alt="" />
-                      <Box className="product-price-info">
-                        <span className="d-block product-name">
-                          Green Apple
-                        </span>
-                        <Box className="amount-info d-flex align-items-center">
-                          <span className="drop-amount">₹ 14.99</span>
-                          <s className="final-amount">₹ 20.99</s>
-                        </Box>
-                        <Box className="rating-info d-flex align-items-center justify-content-between">
-                          <Box className="rating d-flex align-items-center">
-                            <img src={starIcon} alt="star-icon" />
-                            <span className="rating-number">4.5</span>
-                          </Box>
-                          <Box className="d-flex align-items-center justify-content-between">
-                            <IconButton
-                              aria-label="bookmark"
-                              className="icon-btn"
-                            >
-                              <BookmarkBorderIcon />
-                            </IconButton>
-                            <IconButton
-                              aria-label="bookmark"
-                              className="icon-btn"
-                            >
-                              <ShoppingCartIcon />
-                            </IconButton>
-                          </Box>
-                        </Box>
-                      </Box>
-                    </Box>
-                  </Grid>
-                  <Grid item lg={4} md={6} sm={12} xs={12}>
-                    <Box className="product-details d-flex align-items-center ">
-                      <img src={realtedProdctImg1} alt="" />
-                      <Box className="product-price-info">
-                        <span className="d-block product-name">
-                          Green Apple
-                        </span>
-                        <Box className="amount-info d-flex align-items-center">
-                          <span className="drop-amount">₹ 14.99</span>
-                          <s className="final-amount">₹ 20.99</s>
-                        </Box>
-                        <Box className="rating-info d-flex align-items-center justify-content-between">
-                          <Box className="rating d-flex align-items-center">
-                            <img src={starIcon} alt="star-icon" />
-                            <span className="rating-number">4.5</span>
-                          </Box>
-                          <Box className="d-flex align-items-center justify-content-between">
-                            <IconButton
-                              aria-label="bookmark"
-                              className="icon-btn"
-                            >
-                              <BookmarkBorderIcon />
-                            </IconButton>
-                            <IconButton
-                              aria-label="bookmark"
-                              className="icon-btn"
-                            >
-                              <ShoppingCartIcon />
-                            </IconButton>
-                          </Box>
-                        </Box>
-                      </Box>
-                    </Box>
-                  </Grid>
-                  <Grid item lg={4} md={6} sm={12} xs={12}>
-                    <Box className="product-details d-flex align-items-center ">
-                      <img src={realtedProdctImg1} alt="" />
-                      <Box className="product-price-info">
-                        <span className="d-block product-name">
-                          Green Apple
-                        </span>
-                        <Box className="amount-info d-flex align-items-center">
-                          <span className="drop-amount">₹ 14.99</span>
-                          <s className="final-amount">₹ 20.99</s>
-                        </Box>
-                        <Box className="rating-info d-flex align-items-center justify-content-between">
-                          <Box className="rating d-flex align-items-center">
-                            <img src={starIcon} alt="star-icon" />
-                            <span className="rating-number">4.5</span>
-                          </Box>
-                          <Box className="d-flex align-items-center justify-content-between">
-                            <IconButton
-                              aria-label="bookmark"
-                              className="icon-btn"
-                            >
-                              <BookmarkBorderIcon />
-                            </IconButton>
-                            <IconButton
-                              aria-label="bookmark"
-                              className="icon-btn"
-                            >
-                              <ShoppingCartIcon />
-                            </IconButton>
-                          </Box>
-                        </Box>
-                      </Box>
-                    </Box>
-                  </Grid>
-                </Grid>
-              </Container>
-            </Box>
+            <RelatedViewedItems />
           </Box>
         )}
       </>
