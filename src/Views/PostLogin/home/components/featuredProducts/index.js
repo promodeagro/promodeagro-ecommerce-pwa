@@ -125,7 +125,9 @@ class FeaturedProducts extends Component {
 
   handleAddToCart(id) {
     const items = loginDetails();
-
+    this.setState({
+      dataId: id
+    })
     if (items?.userId) {
       this.props.addItemToCart({
         userId: items.userId,
@@ -274,7 +276,7 @@ class FeaturedProducts extends Component {
                             item.id == this.state.dataId ? (
                             <CircularProgress className="common-loader" />
                           ) : (
-                            "Add to cart "
+                            "Add to cart"
                           )}
                         </Button>
                       </Box>
