@@ -22,7 +22,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import status from "../../Redux/Constants";
 import { loginDetails } from "Views/Utills/helperFunctions";
-
+import { getAllAddress } from "../../Redux/Address/AddressThunk"
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -30,15 +30,37 @@ class Header extends Component {
       CategoriesToggle: false,
       matches: window.matchMedia("(max-width: 900px)").matches,
       cartList: [],
+      currentAddress: ""
     };
   }
   componentDidMount() {
+
     window
       .matchMedia("(max-width: 900px)")
       .addEventListener("change", (e) => this.setState({ matches: e.matches }));
+    let items = loginDetails();
+    if (items?.userId) {
+      this.props.getAllAddress({
+        userId: items.userId,
+      })
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
+
+
+    if (
+      prevProps.allAddress.status !== this.props.allAddress.status &&
+      this.props.allAddress.status === status.SUCCESS &&
+      this.props.allAddress.data
+    ) {
+
+      this.setState({
+        currentAddress: this.props.allAddress.data.addresses[0].address
+      });
+    }
+
+
     if (
       prevProps.cartItems.status !== this.props.cartItems.status &&
       this.props.cartItems.status === status.SUCCESS &&
@@ -47,6 +69,11 @@ class Header extends Component {
       this.setState({
         cartList: this.props.cartItems.data.items,
       });
+    }
+    if (this.props.selectedAddressData?.address && this.state.currentAddress !== this.props.selectedAddressData?.address) {
+      this.setState({
+        currentAddress: this.props.selectedAddressData.address
+      })
     }
   }
   handleClickCategoriesToggle = () => {
@@ -62,7 +89,6 @@ class Header extends Component {
     let login = loginDetails();
 
     const path = window.location.pathname;
-
     const renderCategories = () => (
       <Box className="categories-box">
         <Box className="categories">
@@ -137,12 +163,12 @@ class Header extends Component {
                     <img src={supportIcon} alt="" /> Customer Support 24/7
                   </Box>
 
-                  {address && (
-                    <Box className="deliver-box">
-                      Deliver to <img src={deliverIcon} alt="Deliver Icon" />
-                      <span>{address}</span>
-                    </Box>
-                  )}
+
+                  <Box className="deliver-box">
+                    Deliver to <img src={deliverIcon} alt="Deliver Icon" />
+                    <span>{this.state.currentAddress}</span>
+                  </Box>
+
 
                   {/* <Box className="language-list-box">
                     <FormControl fullWidth>
@@ -236,96 +262,96 @@ class Header extends Component {
           "/myCart/address/order-placed",
           "/my-order",
         ].includes(path) && (
-          <Box className="header-bottom-container">
-            <Container>
-              <Grid container spacing={2} alignItems={"center"}>
-                <Grid item xs={9} md={3} lg={3}>
-                  <Box className="categories-container">
-                    <Box
-                      className="categories-toggle"
-                      onClick={this.handleClickCategoriesToggle}
-                    >
-                      Shop by Categories
-                      <span>
-                        {CategoriesToggle ? (
-                          <KeyboardArrowUpIcon />
-                        ) : (
-                          <KeyboardArrowDownIcon />
-                        )}
-                      </span>
-                    </Box>
-                    {CategoriesToggle && renderCategories()}
-                    {CategoriesToggle && (
+            <Box className="header-bottom-container">
+              <Container>
+                <Grid container spacing={2} alignItems={"center"}>
+                  <Grid item xs={9} md={3} lg={3}>
+                    <Box className="categories-container">
                       <Box
-                        className="categories-bg"
+                        className="categories-toggle"
                         onClick={this.handleClickCategoriesToggle}
-                      ></Box>
-                    )}
-                  </Box>
-                </Grid>
-                {this.state.matches ? (
-                  ""
-                ) : (
-                  <Grid item xs={5} md={6} lg={6}>
-                    <Box className="search-box">
-                      <TextField
-                        id="outlined-search"
-                        className="search"
-                        variant="outlined"
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <img src={searchIcon} alt="" />
-                            </InputAdornment>
-                          ),
-                        }}
-                        placeholder="Search Your favorite veggies...  "
-                      />
+                      >
+                        Shop by Categories
+                        <span>
+                          {CategoriesToggle ? (
+                            <KeyboardArrowUpIcon />
+                          ) : (
+                            <KeyboardArrowDownIcon />
+                          )}
+                        </span>
+                      </Box>
+                      {CategoriesToggle && renderCategories()}
+                      {CategoriesToggle && (
+                        <Box
+                          className="categories-bg"
+                          onClick={this.handleClickCategoriesToggle}
+                        ></Box>
+                      )}
                     </Box>
                   </Grid>
-                )}
+                  {this.state.matches ? (
+                    ""
+                  ) : (
+                    <Grid item xs={5} md={6} lg={6}>
+                      <Box className="search-box">
+                        <TextField
+                          id="outlined-search"
+                          className="search"
+                          variant="outlined"
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <img src={searchIcon} alt="" />
+                              </InputAdornment>
+                            ),
+                          }}
+                          placeholder="Search Your favorite veggies...  "
+                        />
+                      </Box>
+                    </Grid>
+                  )}
 
-                {login?.userId ? (
-                  <Grid item xs={3} md={3} lg={3}>
-                    <Box
-                      display={"inline-flex"}
-                      justifyContent={"flex-end"}
-                      width={"100%"}
-                    >
-                      <Button
-                        variant="outlined"
-                        className="notification"
-                        startIcon={<img src={notificationIcon} alt="" />}
+                  {login?.userId ? (
+                    <Grid item xs={3} md={3} lg={3}>
+                      <Box
+                        display={"inline-flex"}
+                        justifyContent={"flex-end"}
+                        width={"100%"}
                       >
-                        <p></p>
-                      </Button>
-                      <Link to={"/myCart"}>
                         <Button
                           variant="outlined"
-                          className="card"
-                          startIcon={<img src={cardIcon} alt="" />}
+                          className="notification"
+                          startIcon={<img src={notificationIcon} alt="" />}
                         >
-                          {this.props?.cartData?.length ? (
-                            <p>{this.props.cartData.length}</p>
-                          ) : (
-                            <></>
-                          )}
-                          {this.state.cartList?.length ? (
-                            <p>{this.state.cartList.length}</p>
-                          ) : (
-                            <></>
-                          )}
+                          <p></p>
                         </Button>
-                      </Link>
-                    </Box>
-                  </Grid>
-                ) : (
-                  <></>
-                )}
-              </Grid>
-            </Container>
-          </Box>
-        )}
+                        <Link to={"/myCart"}>
+                          <Button
+                            variant="outlined"
+                            className="card"
+                            startIcon={<img src={cardIcon} alt="" />}
+                          >
+                            {this.props?.cartData?.length ? (
+                              <p>{this.props.cartData.length}</p>
+                            ) : (
+                              <></>
+                            )}
+                            {this.state.cartList?.length ? (
+                              <p>{this.state.cartList.length}</p>
+                            ) : (
+                              <></>
+                            )}
+                          </Button>
+                        </Link>
+                      </Box>
+                    </Grid>
+                  ) : (
+                    <></>
+                  )}
+                </Grid>
+              </Container>
+            </Box>
+          )}
       </div>
     );
   }
@@ -334,10 +360,13 @@ class Header extends Component {
 function mapStateToProps(state) {
   const { cartData } = state.home;
   const { cartItems } = state.cartitem;
-  const { allAddress } = state.alladdress;
-  return { cartData, cartItems, allAddress };
+
+  const { allAddress, selectedAddressData } = state.alladdress;
+  return { cartData, cartItems, allAddress, selectedAddressData };
 }
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  getAllAddress
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

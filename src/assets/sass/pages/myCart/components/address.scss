@@ -484,7 +484,7 @@
     }
 
     .place-order-btn {
-      width: auto;
+      width: 180px;
       margin-top: 28px;
     }
   }
@@ -516,10 +516,12 @@
     .modal-body {
       .days-slot-tab {
         padding: 24px 32px 15px;
+
         .css-jpln7h-MuiTabs-scroller {
           overflow-x: auto !important;
           padding-bottom: 10px;
         }
+
         .css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
           height: 42px;
           border: 1px solid #cdcdcd;
@@ -556,9 +558,11 @@
         padding: 0px 32px;
         background-color: #edededcc;
         opacity: 80%;
+
         .css-jpln7h-MuiTabs-scroller {
           overflow-x: auto !important;
         }
+
         .css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
           padding: 0px;
           margin-right: 25px;
@@ -648,6 +652,7 @@
       height: calc(100% - 30px);
     }
   }
+
   .address-container {
     .payment-option-container {
       .payment-details {
@@ -665,10 +670,10 @@
           .delivery-slot-select {
             width: 100%;
 
-            > div {
+            >div {
               justify-content: end !important;
 
-              > div {
+              >div {
                 display: none !important;
               }
             }
@@ -681,6 +686,7 @@
         }
       }
     }
+
     .payment-option-container {
       .payment-details {
         width: 100% !important;
@@ -689,6 +695,7 @@
     }
   }
 }
+
 @media only screen and (max-width: 1200px) {
   .address-container {
     .payment-option-container {
