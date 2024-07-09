@@ -17,7 +17,10 @@ import {
   RadioGroup,
   Radio,
   TextField,
+  CircularProgress,
+
 } from "@mui/material";
+import LoadingButton from '@mui/lab/LoadingButton';
 import { withRouter } from 'react-router-dom';
 import productImg from "../../../../../assets/img/product-img.png";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -61,6 +64,15 @@ class Address extends Component {
   }
 
   componentDidMount() {
+    const tab = localStorage.getItem("selectedTab");
+
+    if (tab && this.state.activeStep != tab && window.location.pathname == "/myCart/address/order-details" || window.location.pathname == "/myCart/payment-details") {
+
+      this.setState({
+        activeStep: parseInt(tab)
+      })
+    }
+
     const items = loginDetails();
 
     this.props.fetchCartItems({
@@ -73,6 +85,8 @@ class Address extends Component {
 
 
   componentDidUpdate(prevProps, prevState) {
+
+
     if (
       prevProps.cartItems.status !== this.props.cartItems.status &&
       this.props.cartItems.status === status.SUCCESS &&
@@ -102,6 +116,7 @@ class Address extends Component {
       this.props.placeOrderData.status === status.SUCCESS &&
       this.props.placeOrderData.data
     ) {
+      localStorage.removeItem("selectedTab")
       // /myCart/address/order-placed
       this.props.navigate('/myCart/address/order-placed');
 
@@ -113,7 +128,7 @@ class Address extends Component {
     const { selectedAddress, totalPrice, cartList } = this.state;
 
     let data = {
-      addressId: selectedAddress.addressId,
+      addressId: this.props.selectedAddressData?.addressId,
       // paymentMethod: "",
       "paymentDetails": {
         "method": "Credit Card",
@@ -124,9 +139,6 @@ class Address extends Component {
       items: cartList,
       userId: login.userId
     }
-
-
-
     this.props.placeOrder(data)
 
 
@@ -233,6 +245,9 @@ class Address extends Component {
                           fullWidth
                           className="common-btn proceed-payment-btn"
                           onClick={() => {
+                            localStorage.setItem("selectedTab", 2)
+                            this.props.navigate("/myCart/payment-details")
+
                             this.setState({
                               activeStep: 2
                             })
@@ -449,9 +464,22 @@ class Address extends Component {
                     fullWidth
                     className="common-btn place-order-btn"
                     onClick={() => this.handlePlaceOrder()}
+                    disabled={this.props.placeOrderData.status === status.IN_PROGRESS}
+
                   >
-                    Place Order
+
+                    {this.props.placeOrderData.status === status.IN_PROGRESS
+                      ? (
+                        <>
+                          <CircularProgress className="common-loader" />
+
+                        </>
+                      ) : (
+                        "Place Order"
+                      )}
+
                   </Button>
+
                   {/* </Link> */}
                 </Box>
               </Box>
@@ -540,10 +568,11 @@ class Address extends Component {
 
 function mapStateToProps(state) {
   const { cartItems } = state.cartitem;
-  const { allAddress } = state.alladdress;
+  const { allAddress, selectedAddressData } = state.alladdress;
   const { loginData } = state.login;
   const { placeOrderData } = state.placeorder
-  return { cartItems, loginData, allAddress, placeOrderData };
+
+  return { cartItems, loginData, allAddress, placeOrderData, selectedAddressData };
 }
 
 const mapDispatchToProps = {

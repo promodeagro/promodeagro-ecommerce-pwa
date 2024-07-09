@@ -17,8 +17,18 @@ const AddressSlice = createSlice({
     updateAddress: {
       status: null,
     }
+    ,
+    selectedAddressData: null
   },
-  reducers: {},
+  reducers: {
+
+
+    setSelectedAdd: (state, action) => {
+      debugger
+      state.selectedAddressData = action.payload;
+    },
+
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAllAddress.pending.toString(), (state, action) => {
@@ -124,4 +134,5 @@ const AddressSlice = createSlice({
   },
 });
 
+export const { setSelectedAdd } = AddressSlice.actions;
 export default AddressSlice.reducer;

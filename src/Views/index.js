@@ -13,6 +13,12 @@ const SignUp = lazy(() => import("./../Views/PreLogin/signUp"));
 const Address = lazy(() =>
   import("./../Views/PostLogin/MyCart/components/address")
 );
+const PaymentOption=lazy(() =>
+  import("./../Views/PostLogin/MyCart/components/address")
+);
+const OrderDetails = lazy(() =>
+  import("./../Views/PostLogin/MyCart/components/address")
+);
 const AddNewAddress = lazy(() =>
   import("./../Views/PostLogin/MyCart/components/addNewAddress")
 );
@@ -54,6 +60,8 @@ const Views = () => {
           <Route exact path={`/signin`} element={<SignIn />} />
           <Route exact path={`/signup`} element={<SignUp />} />
           <Route exact path={`/myCart/address`} element={<Address />} />
+          <Route path={`/myCart/address/order-details`} element={<OrderDetails />} />
+          <Route path={`/myCart/payment-details`} element={<PaymentOption />} />
           <Route
             exact
             path={`/myCart/address/add-new-address`}
