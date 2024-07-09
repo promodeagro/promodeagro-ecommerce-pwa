@@ -163,11 +163,13 @@ class Header extends Component {
                     <img src={supportIcon} alt="" /> Customer Support 24/7
                   </Box>
 
+                  {this.state.currentAddress ?
+                    <Box className="deliver-box">
+                      Deliver to <img src={deliverIcon} alt="Deliver Icon" />
+                      <span>{this.state.currentAddress}</span>
+                    </Box>
+                    : <></>}
 
-                  <Box className="deliver-box">
-                    Deliver to <img src={deliverIcon} alt="Deliver Icon" />
-                    <span>{this.state.currentAddress}</span>
-                  </Box>
 
 
                   {/* <Box className="language-list-box">
