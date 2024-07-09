@@ -99,16 +99,16 @@ class Header extends Component {
       <Box className="categories">
         <h2>Vegetables</h2>
         <ul>
-          <li onClick={() => this.handleFruitsandVeg(["Vegetable", "Cut & peeled Veggies"])}>
+          <li onClick={() => this.handleFruitsandVeg(["VEGETABLES", "Cut & peeled Veggies"])}>
             <Link to={"/category"}>Cut & peeled Veggies</Link>
           </li>
-          <li onClick={() => this.handleFruitsandVeg(["Vegetable", "Leafy Vegetables"])}>
+          <li onClick={() => this.handleFruitsandVeg(["VEGETABLES", "Leafy Vegetables"])}>
             <Link to={"/category"}>Leafy Vegetables</Link>
           </li>
-          <li onClick={() => this.handleFruitsandVeg(["Vegetable", "Fresh Vegetables"])}>
+          <li onClick={() => this.handleFruitsandVeg(["VEGETABLES", "Fresh Vegetables"])}>
             <Link to={"/category"}>Fresh Vegetables</Link>
           </li>
-          <li onClick={() => this.handleFruitsandVeg(["Vegetable", "Herbs and Seasoning"])}>
+          <li onClick={() => this.handleFruitsandVeg(["VEGETABLES", "Herbs and Seasoning"])}>
             <Link to={"/category"}>Herbs and Seasoning</Link>
           </li>
         </ul>
@@ -116,13 +116,13 @@ class Header extends Component {
       <Box className="sub-categories">
         <h3>Fruits</h3>
         <ul>
-          <li onClick={() => this.handleFruitsandVeg(["Fruits", "Exotic Fruits"])}>
+          <li onClick={() => this.handleFruitsandVeg(["FRUITS", "Exotic Fruits"])}>
             <Link to={"/category"}>Exotic Fruits</Link>
           </li>
-          <li onClick={() => this.handleFruitsandVeg(["Fruits", "Seasonal Fruits"])}>
+          <li onClick={() => this.handleFruitsandVeg(["FRUITS", "Seasonal Fruits"])}>
             <Link to={"/category"}>Seasonal Fruits</Link>
           </li>
-          <li onClick={() => this.handleFruitsandVeg(["Fruits", "Juices & Mixes"])}>
+          <li onClick={() => this.handleFruitsandVeg(["FRUITS", "Juices & Mixes"])}>
             <Link to={"/category"}>Juices & Mixes</Link>
           </li>
         </ul>
@@ -247,16 +247,16 @@ class Header extends Component {
                         <li>
                           <Link to="/category">Quick Links</Link>
                         </li>
-                        <li onClick={() => this.handleFruitsandVeg(["Fruits", "Exotic Fruits"])}>
+                        <li onClick={() => this.handleFruitsandVeg(["FRUITS", "Exotic Fruits"])}>
                           <Link to="/category">Exotic Fruits</Link>
                         </li>
-                        <li onClick={() => this.handleFruitsandVeg(["Vegetable", "Leafy Vegetables"])}>
+                        <li onClick={() => this.handleFruitsandVeg(["VEGETABLES", "Leafy Vegetables"])}>
                           <Link to="/category">Leafy Vegetables</Link>
                         </li>
-                        <li onClick={() => this.handleFruitsandVeg(["Fruits", "Fresh fruits"])}>
+                        <li onClick={() => this.handleFruitsandVeg(["FRUITS", "Fresh fruits"])}>
                           <Link to="/category">Fresh fruits</Link>
                         </li>
-                        <li onClick={() => this.handleFruitsandVeg(["Vegetable", "Cuts & Sprouts"])}>
+                        <li onClick={() => this.handleFruitsandVeg(["VEGETABLES", "Cuts & Sprouts"])}>
                           <Link to="/category">Cuts & Sprouts</Link>
                         </li>
                       </ul>
