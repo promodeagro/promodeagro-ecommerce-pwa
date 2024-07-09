@@ -1,5 +1,5 @@
 .address-container {
-  margin: 54px 0px 135px 0px;
+  margin: 50px 0px 90px 0px;
   display: flex;
   justify-content: center;
 
@@ -8,60 +8,56 @@
     display: flex;
     justify-content: center;
     margin-bottom: 70px;
-
-    .css-10mg1vw-MuiStepper-root {
-      width: 55%;
-      display: flex;
-      justify-content: center;
-    }
-
-    .css-zpcwqm-MuiStepConnector-root {
-      .css-z7uhs0-MuiStepConnector-line {
+    .MuiStepConnector-root {
+      margin-top: 3px;
+      .MuiStepConnector-line {
+        width: 16px;
+        height: 16px;
         border: none;
-        position: absolute;
-        left: 140px;
-        top: -10px;
-
-        &::before {
-          display: "flex";
-          justify-content: center;
-          content: url("../../../../img/right-arrow.png");
-        }
+        background-position: 0 0;
+        background-repeat: no-repeat;
+        background-image: url("../../../../img/right-arrow.png");
       }
     }
+    .step {
+      padding-left: 30px;
+      padding-right: 30px;
 
-    .css-ascpo7-MuiStepLabel-root {
-      position: relative;
-
-      .MuiStepLabel-iconContainer {
-        .Mui-active {
-          color: rgba(0, 0, 0, 0.38);
+      .step-label {
+        flex-direction: inherit;
+        .MuiStepLabel-iconContainer {
+          margin-right: 10px;
+          .Mui-active {
+            color: #ffffff;
+            border-radius: 50%;
+            border: 1px dashed #1f9151;
+            .css-117w1su-MuiStepIcon-text {
+              fill: #1f9151;
+            }
+          }
+          .Mui-completed {
+            color: #1f9151;
+          }
         }
-
-        .Mui-completed {
-          border-radius: 100%;
-          color: #1f9151;
-        }
-      }
-
-      .MuiStepLabel-labelContainer {
-        position: absolute;
-        top: -12px;
-        left: 80px;
-
-        .Mui-disabled,
-        .Mui-active {
-          font-size: 16px;
-          line-height: 22px;
-          font-weight: 400;
-          color: #b8b8b8;
-        }
-
-        .Mui-completed {
-          font-size: 16px;
-          line-height: 22px;
-          font-weight: 400;
-          color: #1f9151;
+        .MuiStepLabel-labelContainer {
+          margin-top: 0;
+          white-space: nowrap;
+          position: relative;
+          .Mui-active {
+            color: #1f9151;
+          }
+          .Mui-completed {
+            color: #1f9151;
+          }
+          .outline-common-btn {
+            position: absolute;
+            left: 0;
+            bottom: -25px;
+            height: 22px;
+            font-size: 10px;
+            padding-left: 5px;
+            padding-right: 5px;
+          }
         }
       }
     }
@@ -642,6 +638,23 @@
         }
       }
     }
+    .address-stepper-container {
+      .css-m5vj9m-MuiStepper-root {
+        flex-wrap: wrap;
+        flex-direction: column;
+      }
+      .MuiStepConnector-root {
+        margin-left: -145px;
+        transform: rotate(90deg);
+      }
+      .step {
+        width: 100%;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        padding-left: 0px;
+        padding-right: 0px;
+      }
+    }
   }
 }
 
@@ -670,10 +683,10 @@
           .delivery-slot-select {
             width: 100%;
 
-            >div {
+            > div {
               justify-content: end !important;
 
-              >div {
+              > div {
                 display: none !important;
               }
             }
@@ -693,6 +706,7 @@
         margin-left: 0px !important;
       }
     }
+    
   }
 }
 

@@ -162,6 +162,10 @@ button {
       border: 1px solid #1f9151;
       box-shadow: none;
     }
+    &.MuiButton-colorError {
+      color: #d32f2f;
+      border-color: #d32f2f;
+    }
 
     svg {
       font-size: 28px !important;

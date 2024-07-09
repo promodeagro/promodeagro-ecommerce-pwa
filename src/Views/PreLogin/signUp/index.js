@@ -160,13 +160,12 @@ const SignUp = ({ signUp, signupData }) => {
                   name="name"
                   error={!errorData.name.isValid && isSubmit}
                 />
-                {isSubmit && (
-                  <FormHelperText error>
-                    {errorData?.name?.message}
-                  </FormHelperText>
-                )}
-                <p>{isSubmit && errorData.name.message}</p>
               </Box>
+              {isSubmit && (
+                <FormHelperText error>
+                  {errorData?.name?.message}
+                </FormHelperText>
+              )}
               <Box className="number-input">
                 <label className="d-block">
                   Mobile Number <span className="validate-icon">*</span>
@@ -186,12 +185,12 @@ const SignUp = ({ signUp, signupData }) => {
                     ),
                   }}
                 />
-                {isSubmit && (
-                  <FormHelperText error>
-                    {errorData?.mobileNumber?.message}
-                  </FormHelperText>
-                )}
               </Box>
+              {isSubmit && (
+                <FormHelperText error>
+                  {errorData?.mobileNumber?.message}
+                </FormHelperText>
+              )}
               <Box className="number-input">
                 <label className="d-block">
                   Password <span className="validate-icon">*</span>
@@ -207,12 +206,12 @@ const SignUp = ({ signUp, signupData }) => {
                   error={!errorData.password.isValid && isSubmit}
                   onChange={handleValueChange}
                 />
-                {isSubmit && (
-                  <FormHelperText error>
-                    {errorData?.password?.message}
-                  </FormHelperText>
-                )}
               </Box>
+              {isSubmit && (
+                <FormHelperText error>
+                  {errorData?.password?.message}
+                </FormHelperText>
+              )}
               <Box className="number-input">
                 <label className="d-block">
                   Confirm Password <span className="validate-icon">*</span>
@@ -228,12 +227,12 @@ const SignUp = ({ signUp, signupData }) => {
                   error={!errorData.cnfPassword.isValid && isSubmit}
                   type="password"
                 />
-                {isSubmit && (
-                  <FormHelperText error>
-                    {errorData?.cnfPassword?.message}
-                  </FormHelperText>
-                )}
               </Box>
+              {isSubmit && (
+                <FormHelperText error>
+                  {errorData?.cnfPassword?.message}
+                </FormHelperText>
+              )}
               <Button
                 variant="contained"
                 fullWidth

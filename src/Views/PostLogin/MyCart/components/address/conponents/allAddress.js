@@ -16,14 +16,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CheckIcon from "@mui/icons-material/Check";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux"
+import { connect } from "react-redux";
 import {
   getAllAddress,
   deleteAddress,
 } from "../../../../../../Redux/Address/AddressThunk";
-import {
-  setSelectedAdd
-} from "../../../../../../Redux/Address/AddressSlice";
+import { setSelectedAdd } from "../../../../../../Redux/Address/AddressSlice";
 import status from "../../../../../../Redux/Constants";
 import { useSelector, useDispatch } from "react-redux";
 import { loginDetails } from "Views/Utills/helperFunctions";
@@ -46,29 +44,27 @@ const AllAddress = (props) => {
 
   useEffect(() => {
     let items = loginDetails();
-    setAllAddresApiLoader(true)
+    setAllAddresApiLoader(true);
     dispatch(
       getAllAddress({
         userId: items.userId,
       })
-    )
+    );
   }, []);
 
   useEffect(() => {
     if (
       allAddressState.status === status.SUCCESS &&
-      allAddressState.data.addresses && allAddressApiLoader
+      allAddressState.data.addresses &&
+      allAddressApiLoader
     ) {
-      setAllAddresApiLoader(false)
+      setAllAddresApiLoader(false);
       setAllAddress(allAddressState.data.addresses);
 
       if (!props.selectedAddressData?.address) {
-        dispatch(
-          setSelectedAdd(allAddressState.data.addresses[0])
-        );
+        dispatch(setSelectedAdd(allAddressState.data.addresses[0]));
         setSelectedAddress(allAddressState.data.addresses[0]);
       }
-
     }
   }, [allAddressState]);
 
@@ -78,16 +74,11 @@ const AllAddress = (props) => {
     }
   }, [postAddressStatus]);
 
-
-
   useEffect(() => {
     if (props.selectedAddressData) {
-      
       setSelectedAddress(props.selectedAddressData);
     }
-  }, [props.selectedAddressData])
-
-
+  }, [props.selectedAddressData]);
 
   useEffect(() => {
     if (deleteAddressStatus === status.SUCCESS) {
@@ -124,9 +115,7 @@ const AllAddress = (props) => {
   };
 
   const handleSelectedAddress = (selcet) => {
-    dispatch(
-      setSelectedAdd(selcet)
-    );
+    dispatch(setSelectedAdd(selcet));
     setSelectedAddress(selcet);
   };
 
@@ -146,10 +135,11 @@ const AllAddress = (props) => {
               return (
                 <Grid key={index} item xs={12} lg={4} md={6} sm={6}>
                   <Box
-                    className={`address-card-container ${item.addressId == selectedAddress.addressId
-                      ? "active"
-                      : ""
-                      }`}
+                    className={`address-card-container ${
+                      item.addressId == selectedAddress.addressId
+                        ? "active"
+                        : ""
+                    }`}
                     onClick={() => handleSelectedAddress(item)}
                   >
                     {item.addressId == selectedAddress.addressId ? (
@@ -196,12 +186,17 @@ const AllAddress = (props) => {
                             Are you sure you want to delete this address?
                           </DialogContentText>
                         </DialogContent>
-                        <DialogActions>
-                          <Button variant="outlined" onClick={handleClose}>
+                        <DialogActions style={{ justifyContent: "center", paddingBottom: "24px" }}>
+                          <Button
+                            variant="outlined"
+                            className="outline-common-btn"
+                            onClick={handleClose}
+                          >
                             Cancel
                           </Button>
                           <Button
                             variant="outlined"
+                            className="outline-common-btn"
                             color="error"
                             onClick={() => {
                               handleDelete(item.userId, item.addressId);
@@ -260,8 +255,8 @@ const AllAddress = (props) => {
             className="common-btn proceed-btn"
             onClick={() => {
               props.handleTabs(1, selectedAddress);
-              localStorage.setItem("selectedTab", 1)
-              navigate("/myCart/address/order-details")
+              localStorage.setItem("selectedTab", 1);
+              navigate("/myCart/address/order-details");
               // here route change of page 1
             }}
           >
@@ -282,7 +277,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  getAllAddress
+  getAllAddress,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllAddress);
