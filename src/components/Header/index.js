@@ -48,15 +48,7 @@ class Header extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (
-      prevProps.allAddress.status !== this.props.allAddress.status &&
-      this.props.allAddress.status === status.SUCCESS &&
-      this.props.allAddress.data
-    ) {
-      this.setState({
-        currentAddress: this.props.allAddress.data.addresses[0].address,
-      });
-    }
+  
 
     if (
       prevProps.cartItems.status !== this.props.cartItems.status &&
