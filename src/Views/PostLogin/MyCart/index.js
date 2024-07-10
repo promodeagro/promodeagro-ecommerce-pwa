@@ -50,6 +50,8 @@ class MyCart extends Component {
     ) {
       this.setState({
         cartList: this.props.cartItems.data.items,
+
+
       });
     }
 
@@ -116,12 +118,12 @@ class MyCart extends Component {
               <Box className="right-part">
                 <Box className="sub-total d-flex align-items-center flex-wrap">
                   <strong className="title">Subtotal </strong>
-                  <span className="item-count">(3 Items) :</span>
-                  <strong className="number">₹ 200.12</strong>
+                  <span className="item-count">({this.state?.cartList?.length} Items) :</span>
+                  <strong className="number">₹ {this.props?.cartItems?.data?.subTotal}</strong>
                 </Box>
                 <Box className="saving-amount">
                   <strong className="title">Savings : </strong>
-                  <strong className="number">₹ 120.12</strong>
+                  <strong className="number">₹ {this.props?.cartItems?.data?.savings}</strong>
                 </Box>
                 <Link to={"/myCart/address"} className="checkout-btn">
                   <Button
