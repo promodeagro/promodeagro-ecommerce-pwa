@@ -31,6 +31,8 @@ const AllAddress = (props) => {
   const [open, setOpen] = useState(false);
   const [allAddress, setAllAddress] = useState([]);
   const [allAddressApiLoader, setAllAddresApiLoader] = useState(false);
+  const [deleteAddressApiLoader, setDeleteAddressApiLoader] = useState(false);
+  const [updateAddressApiLoader, setUpdateAddressApiLoader] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState({});
   const allAddressState = useSelector((state) => state.alladdress.allAddress);
   const postAddressStatus = useSelector(
@@ -60,11 +62,11 @@ const AllAddress = (props) => {
     ) {
       setAllAddresApiLoader(false);
       setAllAddress(allAddressState.data.addresses);
-
-      if (!props.selectedAddressData?.address) {
+      // debugger;
+      // if (!props.selectedAddressData?.address) {
         dispatch(setSelectedAdd(allAddressState.data.addresses[0]));
         setSelectedAddress(allAddressState.data.addresses[0]);
-      }
+      // }
     }
   }, [allAddressState]);
 
@@ -81,8 +83,10 @@ const AllAddress = (props) => {
   }, [props.selectedAddressData]);
 
   useEffect(() => {
-    if (deleteAddressStatus === status.SUCCESS) {
+    if (deleteAddressStatus === status.SUCCESS && deleteAddressApiLoader) {
       let items = loginDetails();
+      setAllAddresApiLoader(true);
+      setDeleteAddressApiLoader(false);
       dispatch(
         getAllAddress({
           userId: items.userId,
@@ -92,6 +96,7 @@ const AllAddress = (props) => {
   }, [deleteAddressStatus]);
 
   const handleDelete = (userId, addressId) => {
+    setDeleteAddressApiLoader(true);
     dispatch(
       deleteAddress({
         userId: userId,

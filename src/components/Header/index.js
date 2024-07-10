@@ -60,7 +60,7 @@ class Header extends Component {
       });
     }
     if (
-      this.props.selectedAddressData?.address &&
+      // this.props.selectedAddressData?.address &&
       this.state.currentAddress !== this.props.selectedAddressData?.address
     ) {
       this.setState({
