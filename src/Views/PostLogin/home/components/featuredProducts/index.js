@@ -36,19 +36,16 @@ class FeaturedProducts extends Component {
       cartList: [],
       dataId: "",
       isUpdateIncrease: null,
-
     };
   }
 
   componentDidMount() {
     // const items = loginDetails();
     // if (items?.userId) {
-
     //   this.props.fetchCartItems({
     //     userId: items.userId,
     //   });
     // }
-
     // this.props.allProducts();
   }
 
@@ -88,8 +85,7 @@ class FeaturedProducts extends Component {
       });
       this.setState({
         dataId: "",
-        isUpdateIncrease: null
-
+        isUpdateIncrease: null,
       });
     }
 
@@ -103,21 +99,16 @@ class FeaturedProducts extends Component {
       });
       this.setState({
         dataId: "",
-        isUpdateIncrease: null
-
+        isUpdateIncrease: null,
       });
     }
-
-
   }
-
-
 
   handleAddToCart(id) {
     const items = loginDetails();
     this.setState({
-      dataId: id
-    })
+      dataId: id,
+    });
     if (items?.userId) {
       this.props.addItemToCart({
         userId: items.userId,
@@ -125,9 +116,8 @@ class FeaturedProducts extends Component {
         quantity: "1",
       });
     } else {
-      this.props.navigate("/signin")
+      this.props.navigate("/signin");
     }
-
   }
 
   handleQuantityChange(id, increment, productQuantity) {
@@ -196,8 +186,6 @@ class FeaturedProducts extends Component {
                     {itemId ? (
                       <Box className="number-input-container">
                         {itemId && itemId.Quantity !== 0 ? (
-
-
                           <Box
                             className="symbol"
                             onClick={() => {
@@ -213,9 +201,18 @@ class FeaturedProducts extends Component {
                               }
                             }}
                           >
-                            {(this.props.deleteItems.status === status.IN_PROGRESS && item.id === dataId && !isUpdateIncrease) ||
-                              (this.props.updateItems.status === status.IN_PROGRESS && item.id === dataId && !isUpdateIncrease) ? (
-                              <CircularProgress className="common-loader plus-icon" size={24} />
+                            {(this.props.deleteItems.status ===
+                              status.IN_PROGRESS &&
+                              item.id === dataId &&
+                              !isUpdateIncrease) ||
+                            (this.props.updateItems.status ===
+                              status.IN_PROGRESS &&
+                              item.id === dataId &&
+                              !isUpdateIncrease) ? (
+                              <CircularProgress
+                                className="common-loader plus-icon"
+                                size={24}
+                              />
                             ) : (
                               "-"
                             )}
@@ -242,8 +239,8 @@ class FeaturedProducts extends Component {
                         >
                           {this.props.updateItems.status ===
                             status.IN_PROGRESS &&
-                            item.id === dataId &&
-                            isUpdateIncrease ? (
+                          item.id === dataId &&
+                          isUpdateIncrease ? (
                             <CircularProgress className="common-loader plus-icon" />
                           ) : (
                             "+"
@@ -258,16 +255,19 @@ class FeaturedProducts extends Component {
                             this.handleAddToCart(item.id);
                           }}
                           disabled={
+                            this.props.additems.status === status.IN_PROGRESS &&
+                            item.id === this.state.dataId
+                          }
+                          endIcon={
                             this.props.additems.status == status.IN_PROGRESS &&
-                            item.id == this.state.dataId
+                            item.id == this.state.dataId ? (
+                              <CircularProgress className="common-loader" />
+                            ) : (
+                              <></>
+                            )
                           }
                         >
-                          {this.props.additems.status == status.IN_PROGRESS &&
-                            item.id == this.state.dataId ? (
-                            <CircularProgress className="common-loader" />
-                          ) : (
-                            "Add to cart"
-                          )}
+                          Add to cart
                         </Button>
                       </Box>
                     )}
@@ -275,7 +275,10 @@ class FeaturedProducts extends Component {
                 );
               })}
           </Box>
-          <Box className="load-more-btn" onClick={() => this.props.setShopByCategory([])}>
+          <Box
+            className="load-more-btn"
+            onClick={() => this.props.setShopByCategory([])}
+          >
             <Link to="/category">Load More</Link>
           </Box>
         </Container>
@@ -295,7 +298,7 @@ function mapStateToProps(state) {
     cartItems,
     updateItems,
     deleteItems,
-    shopCategoryData
+    shopCategoryData,
   };
 }
 
@@ -305,12 +308,10 @@ const mapDispatchToProps = {
   fetchCartItems,
   updateItemToCart,
   deleteItemToCart,
-  setShopByCategory
+  setShopByCategory,
 };
-
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(navigateRouter(FeaturedProducts));
-

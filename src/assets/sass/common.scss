@@ -13,10 +13,10 @@ body,
   height: 100%;
 }
 
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
 }
 
 a,
@@ -229,6 +229,20 @@ button {
   outline: none;
 }
 
+
+.common-loader {
+  height: 100vh;
+  svg {
+    color: #1f9151;
+  }
+  &.plus-icon {
+    height: 16px !important;
+    width: 16px !important;
+    svg {
+      color: #FFFFFF;
+    }
+  }
+}
 button {
   .common-loader {
     color: #1f9151 !important;

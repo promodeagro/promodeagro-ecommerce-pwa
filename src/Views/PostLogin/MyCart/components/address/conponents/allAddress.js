@@ -65,7 +65,8 @@ const AllAddress = (props) => {
       allAddressState.data.addresses &&
       allAddressApiLoader
     ) {
-      setAllAddresApiLoader(false);
+      
+      setAllAddresApiLoader(true);
       setAllAddress(allAddressState.data.addresses);
       // if (!props.selectedAddressData?.address) {
       dispatch(setSelectedAdd(allAddressState.data.addresses[0]));

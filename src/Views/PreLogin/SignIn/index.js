@@ -248,7 +248,7 @@ class Signin extends Component {
                   disabled={this.props.loginData.status === status.IN_PROGRESS}
                   endIcon={
                     this.props.loginData.status === status.IN_PROGRESS ? (
-                      <CircularProgress />
+                      <CircularProgress className="common-loader" />
                     ) : (
                       <></>
                     )

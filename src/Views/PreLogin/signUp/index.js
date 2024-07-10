@@ -11,6 +11,7 @@ import {
   TextField,
   InputAdornment,
   FormHelperText,
+  CircularProgress,
 } from "@mui/material";
 import addSymbol from "../../../assets/img/add-symbol.svg";
 import { Link } from "react-router-dom";
@@ -238,6 +239,14 @@ const SignUp = ({ signUp, signupData }) => {
                 fullWidth
                 className="common-btn sign-up-btn"
                 onClick={handleSignUp}
+                disabled={signupData.status === status.IN_PROGRESS}
+                endIcon={
+                  signupData.status === status.IN_PROGRESS ? (
+                    <CircularProgress className="common-loader" />
+                  ) : (
+                    <></>
+                  )
+                }
               >
                 Sign Up
               </Button>
