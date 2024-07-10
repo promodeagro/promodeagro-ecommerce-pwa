@@ -30,7 +30,7 @@ class MyCart extends Component {
     this.state = {
       cartList: [],
       dataId: "",
-      isUpdateIncrease: null
+      isUpdateIncrease: null,
     };
   }
 
@@ -50,8 +50,6 @@ class MyCart extends Component {
     ) {
       this.setState({
         cartList: this.props.cartItems.data.items,
-
-
       });
     }
 
@@ -102,7 +100,6 @@ class MyCart extends Component {
   }
 
   render() {
-
     const { dataId, isUpdateIncrease } = this.state;
     return (
       <>
@@ -118,12 +115,18 @@ class MyCart extends Component {
               <Box className="right-part">
                 <Box className="sub-total d-flex align-items-center flex-wrap">
                   <strong className="title">Subtotal </strong>
-                  <span className="item-count">({this.state?.cartList?.length} Items) :</span>
-                  <strong className="number">₹ {this.props?.cartItems?.data?.subTotal}</strong>
+                  <span className="item-count">
+                    ({this.state?.cartList?.length} Items) :
+                  </span>
+                  <strong className="number">
+                    ₹ {this.props?.cartItems?.data?.subTotal}
+                  </strong>
                 </Box>
                 <Box className="saving-amount">
                   <strong className="title">Savings : </strong>
-                  <strong className="number">₹ {this.props?.cartItems?.data?.savings}</strong>
+                  <strong className="number">
+                    ₹ {this.props?.cartItems?.data?.savings}
+                  </strong>
                 </Box>
                 <Link to={"/myCart/address"} className="checkout-btn">
                   <Button
@@ -137,151 +140,162 @@ class MyCart extends Component {
                 </Link>
               </Box>
             </Box>
-            <Box className="cart-item-list">
-              {this.state.cartList.length > 0 ? (
-                <>
-                  <Grid
-                    container
-                    spacing={0}
-                    alignItems={"center"}
-                    className="cart-item-title"
-                    data-aos="zoom-in-right"
-                  >
-                    <Grid item xs={6} md={6} lg={6} sm={6}>
-                      Items : 3
-                    </Grid>
-                    <Grid item xs={3} md={3} lg={3} sm={3}>
-                      Quantity
-                    </Grid>
+            {this.props.cartItems.status === status.IN_PROGRESS ? (
+              Loader.commonLoader()
+            ) : (
+              <Box className="cart-item-list">
+                {this.state.cartList.length > 0 ? (
+                  <>
                     <Grid
-                      item
-                      xs={3}
-                      md={3}
-                      lg={3}
-                      sm={3}
-                      justifyContent={"end"}
-                      display={"flex"}
+                      container
+                      spacing={0}
+                      alignItems={"center"}
+                      className="cart-item-title"
+                      data-aos="zoom-in-right"
                     >
-                      Sub total
-                    </Grid>
-                  </Grid>
-                  {this.state.cartList.map((item) => {
-                    return (
+                      <Grid item xs={6} md={6} lg={6} sm={6}>
+                        Items : {this.state.cartList.length}
+                      </Grid>
+                      <Grid item xs={3} md={3} lg={3} sm={3}>
+                        Quantity
+                      </Grid>
                       <Grid
-                        container
-                        spacing={0}
-                        className="product-cart-container"
-                        alignItems={"center"}
-                        data-aos="zoom-in-right"
+                        item
+                        xs={3}
+                        md={3}
+                        lg={3}
+                        sm={3}
+                        justifyContent={"end"}
+                        display={"flex"}
                       >
-                        {/* <Box className="bookmark-btn">
+                        Sub total
+                      </Grid>
+                    </Grid>
+                    {this.state.cartList.map((item) => {
+                      return (
+                        <Grid
+                          container
+                          spacing={0}
+                          className="product-cart-container"
+                          alignItems={"center"}
+                          data-aos="zoom-in-right"
+                        >
+                          {/* <Box className="bookmark-btn">
                             <IconButton aria-label="bookmark">
                               <BookmarkBorderIcon />
                             </IconButton>
                           </Box> */}
-                        <Grid item xs={12} sm={12} md={6} lg={6}>
-                          <Box className="d-flex align-items-center product-cart-list">
-                            <Box className="product-cart-img">
-                              <img
-                                src={item?.productImage}
-                                alt="product-cart-img"
-                              />
-                            </Box>
-                            <Box className="d-block">
-                              <span className="d-block name">
-                                {item?.productName}
-                              </span>
-                              <Box className="d-flex align-items-center">
-                                <span className="discount-amount">
-                                  ₹ {item?.Price}
+                          <Grid item xs={12} sm={12} md={6} lg={6}>
+                            <Box className="d-flex align-items-center product-cart-list">
+                              <Box className="product-cart-img">
+                                <img
+                                  src={item?.productImage}
+                                  alt="product-cart-img"
+                                />
+                              </Box>
+                              <Box className="d-block">
+                                <span className="d-block name">
+                                  {item?.productName}
                                 </span>
-                                <s className="amount">₹ {item?.Mrp} </s>
+                                <Box className="d-flex align-items-center">
+                                  <span className="discount-amount">
+                                    ₹ {item?.Price}
+                                  </span>
+                                  <s className="amount">₹ {item?.Mrp} </s>
+                                </Box>
                               </Box>
                             </Box>
-                          </Box>
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={3} lg={3}>
-                          <Box className="number-input-container">
+                          </Grid>
+                          <Grid item xs={12} sm={6} md={3} lg={3}>
+                            <Box className="number-input-container">
+                              <Box
+                                className="symbol"
+                                onClick={() => {
+                                  let d = item.Quantity;
+                                  this.handleQuantityChange(
+                                    item.ProductId,
+                                    -1,
+                                    Number(d)
+                                  );
+                                }}
+                              >
+                                {(this.props.deleteItems.status ===
+                                  status.IN_PROGRESS &&
+                                  item.ProductId === dataId &&
+                                  !isUpdateIncrease) ||
+                                (this.props.updateItems.status ===
+                                  status.IN_PROGRESS &&
+                                  item.ProductId === dataId &&
+                                  !isUpdateIncrease) ? (
+                                  <CircularProgress
+                                    className="common-loader plus-icon"
+                                    size={24}
+                                  />
+                                ) : (
+                                  "-"
+                                )}
+                              </Box>
 
-
-
-
-                            <Box
-                              className="symbol"
-                              onClick={() => {
-                                let d = item.Quantity;
-                                this.handleQuantityChange(
-                                  item.ProductId,
-                                  -1,
-                                  Number(d)
-                                );
-                              }}
-                            >
-                              {(this.props.deleteItems.status === status.IN_PROGRESS && item.ProductId === dataId && !isUpdateIncrease) ||
-                                (this.props.updateItems.status === status.IN_PROGRESS && item.ProductId === dataId && !isUpdateIncrease) ? (
-                                <CircularProgress className="common-loader plus-icon" size={24} />
-                              ) : (
-                                "-"
-                              )}
+                              <Box className="Number">{item?.Quantity}</Box>
+                              <Box
+                                className="symbol"
+                                onClick={() => {
+                                  let d = item.Quantity;
+                                  this.handleQuantityChange(
+                                    item.ProductId,
+                                    1,
+                                    Number(d)
+                                  );
+                                }}
+                              >
+                                {this.props.updateItems.status ===
+                                  status.IN_PROGRESS &&
+                                item.ProductId === dataId &&
+                                isUpdateIncrease ? (
+                                  <CircularProgress
+                                    className="common-loader plus-icon"
+                                    size={24}
+                                  />
+                                ) : (
+                                  "+"
+                                )}
+                              </Box>
                             </Box>
-
-
-                            <Box className="Number">{item?.Quantity}</Box>
-                            <Box
-                              className="symbol"
-                              onClick={() => {
-                                let d = item.Quantity;
-                                this.handleQuantityChange(
-                                  item.ProductId,
-                                  1,
-                                  Number(d)
-                                );
-                              }}
-                            >
-                              {this.props.updateItems.status === status.IN_PROGRESS && item.ProductId === dataId && isUpdateIncrease ? (
-                                <CircularProgress className="common-loader plus-icon" size={24} />
-                              ) : (
-                                "+"
-                              )}
+                            <Box className="d-flex align-items-ceneter btn-group">
+                              <Button
+                                onClick={() => {
+                                  console.log("item", item);
+                                  const items = loginDetails();
+                                  this.props.deleteItemToCart({
+                                    userId: items.userId,
+                                    productId: item.ProductId,
+                                  });
+                                }}
+                              >
+                                Delete
+                              </Button>
+                              <Button>Save it for later</Button>
                             </Box>
-
-                          </Box>
-                          <Box className="d-flex align-items-ceneter btn-group">
-                            <Button
-                              onClick={() => {
-                                console.log("item", item);
-                                const items = loginDetails();
-                                this.props.deleteItemToCart({
-                                  userId: items.userId,
-                                  productId: item.ProductId,
-                                });
-                              }}
-                            >
-                              Delete
-                            </Button>
-                            <Button>Save it for later</Button>
-                          </Box>
+                          </Grid>
+                          <Grid item xs={12} sm={6} md={3} lg={3}>
+                            <Box className="sub-total">
+                              <span className="d-block final-amount">
+                                ₹ {item?.Subtotal}
+                              </span>
+                              <span className="d-block save-amount">
+                                Saved : <strong>₹ {item.Savings}</strong>
+                              </span>
+                            </Box>
+                          </Grid>
                         </Grid>
-                        <Grid item xs={12} sm={6} md={3} lg={3}>
-                          <Box
-                            className="sub-total"
-                          >
-                            <span className="d-block final-amount">
-                              ₹ {item?.Subtotal}
-                            </span>
-                            <span className="d-block save-amount">
-                              Saved : <strong>₹ {item.Savings}</strong>
-                            </span>
-                          </Box>
-                        </Grid>
-                      </Grid>
-                    );
-                  })}
-                </>
-              ) : (
-                <></>
-              )}
-            </Box>
+                      );
+                    })}
+                  </>
+                ) : (
+                  <></>
+                )}
+              </Box>
+            )}
           </Container>
           <RelatedViewedItems />
         </Box>

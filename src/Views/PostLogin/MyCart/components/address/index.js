@@ -287,15 +287,16 @@ class Address extends Component {
                             this.props.placeOrderData.status ===
                             status.IN_PROGRESS
                           }
-                        >
-                          {this.props.placeOrderData.status ===
-                          status.IN_PROGRESS ? (
-                            <>
+                          endIcon={
+                            this.props.placeOrderData.status ===
+                            status.IN_PROGRESS ? (
                               <CircularProgress className="common-loader" />
-                            </>
-                          ) : (
-                            "Place Order"
-                          )}
+                            ) : (
+                              <></>
+                            )
+                          }
+                        >
+                          Place Order
                         </Button>
                       </Box>
                     </Box>

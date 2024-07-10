@@ -25,11 +25,9 @@ import {
 import { setSelectedAdd } from "../../../../../../Redux/Address/AddressSlice";
 import status from "../../../../../../Redux/Constants";
 import { useSelector, useDispatch } from "react-redux";
-import { loginDetails } from "Views/Utills/helperFunctions";
+import { Loader, loginDetails } from "Views/Utills/helperFunctions";
 import { useNavigate } from "react-router-dom";
-import {
-  ErrorMessages,
-} from "../../../../../Utills/helperFunctions";
+import { ErrorMessages } from "../../../../../Utills/helperFunctions";
 
 const AllAddress = (props) => {
   const [open, setOpen] = useState(false);
@@ -65,7 +63,6 @@ const AllAddress = (props) => {
       allAddressState.data.addresses &&
       allAddressApiLoader
     ) {
-      
       setAllAddresApiLoader(true);
       setAllAddress(allAddressState.data.addresses);
       // if (!props.selectedAddressData?.address) {
@@ -144,82 +141,93 @@ const AllAddress = (props) => {
           </p>
         </Box>
         <Grid container spacing={4} alignItems={"center"}>
-          {allAddress?.length > 0 &&
-            allAddress.map((item, index) => {
-              return (
-                <Grid key={index} item xs={12} lg={4} md={6} sm={6}>
-                  <Box
-                    className={`address-card-container ${
-                      item.addressId == selectedAddress.addressId
-                        ? "active"
-                        : ""
-                    }`}
-                    onClick={() => handleSelectedAddress(item)}
-                  >
-                    {item.addressId == selectedAddress.addressId ? (
-                      <Box className="active-check">
-                        <CheckIcon />
-                      </Box>
-                    ) : (
-                      <></>
-                    )}
+          {/* {(Loader.commonLoader())} */}
+          {allAddressState.status === status.IN_PROGRESS ? (
+            Loader.commonLoader()
+          ) : (
+            <>
+              {allAddress?.length > 0 &&
+                allAddress.map((item, index) => {
+                  return (
+                    <Grid key={index} item xs={12} lg={4} md={6} sm={6}>
+                      <Box
+                        className={`address-card-container ${
+                          item.addressId == selectedAddress.addressId
+                            ? "active"
+                            : ""
+                        }`}
+                        onClick={() => handleSelectedAddress(item)}
+                      >
+                        {item.addressId == selectedAddress.addressId ? (
+                          <Box className="active-check">
+                            <CheckIcon />
+                          </Box>
+                        ) : (
+                          <></>
+                        )}
 
-                    <Box className="d-flex align-items-center">
-                      <IconButton
-                        aria-label="edit"
-                        className={
-                          item.addressId == selectedAddress.addressId
-                            ? "address-btn active"
-                            : "address-btn"
-                        }
-                        onClick={() => handleEdit(item)}
-                      >
-                        <BorderColorIcon />
-                      </IconButton>
-                      <IconButton
-                        aria-label="delete"
-                        className={
-                          item.addressId == selectedAddress.addressId
-                            ? "address-btn active"
-                            : "address-btn"
-                        }
-                        onClick={() => {
-                          handleClickOpen(item);
-                        }}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </Box>
-                    <h3 className="person-name">{item.name}</h3>
-                    <address>
-                      {item.address} {item.zipCode}
-                    </address>
-                    <Box className="d-block contact-number">
-                      <span className="d-block contact-heading">Contact</span>
-                      <Box className="d-flex align-items-center">
-                        <span className="d-block title">Phone</span>
-                        <span className="d-block details">
-                          {item.phoneNumber}
-                        </span>
+                        <Box className="d-flex align-items-center">
+                          <IconButton
+                            aria-label="edit"
+                            className={
+                              item.addressId == selectedAddress.addressId
+                                ? "address-btn active"
+                                : "address-btn"
+                            }
+                            onClick={() => handleEdit(item)}
+                          >
+                            <BorderColorIcon />
+                          </IconButton>
+                          <IconButton
+                            aria-label="delete"
+                            className={
+                              item.addressId == selectedAddress.addressId
+                                ? "address-btn active"
+                                : "address-btn"
+                            }
+                            onClick={() => {
+                              handleClickOpen(item);
+                            }}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </Box>
+                        <h3 className="person-name">{item.name}</h3>
+                        <address>
+                          {item.address} {item.zipCode}
+                        </address>
+                        <Box className="d-block contact-number">
+                          <span className="d-block contact-heading">
+                            Contact
+                          </span>
+                          <Box className="d-flex align-items-center">
+                            <span className="d-block title">Phone</span>
+                            <span className="d-block details">
+                              {item.phoneNumber}
+                            </span>
+                          </Box>
+                          <Box className="d-flex align-items-center">
+                            <span className="d-block title">Email</span>
+                            <span className="d-block details">
+                              {item.email}
+                            </span>
+                          </Box>
+                        </Box>
+                        {item.addressId == selectedAddress.addressId ? (
+                          <FormControlLabel
+                            checked
+                            control={<Checkbox />}
+                            label="Make This Default Address"
+                          />
+                        ) : (
+                          <></>
+                        )}
                       </Box>
-                      <Box className="d-flex align-items-center">
-                        <span className="d-block title">Email</span>
-                        <span className="d-block details">{item.email}</span>
-                      </Box>
-                    </Box>
-                    {item.addressId == selectedAddress.addressId ? (
-                      <FormControlLabel
-                        checked
-                        control={<Checkbox />}
-                        label="Make This Default Address"
-                      />
-                    ) : (
-                      <></>
-                    )}
-                  </Box>
-                </Grid>
-              );
-            })}
+                    </Grid>
+                  );
+                })}
+            </>
+          )}
           <Grid item xs={12} lg={4} md={12} sm={12}>
             <Link to={"/myCart/address/add-new-address"}>
               <Button
