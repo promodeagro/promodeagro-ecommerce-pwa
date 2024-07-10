@@ -13,7 +13,7 @@ import { connect } from "react-redux";
 import { Loader, loginDetails } from "Views/Utills/helperFunctions";
 import { getAllAddress } from "../../../Redux/Address/AddressThunk";
 import { setSelectedAdd } from "../../../Redux/Address/AddressSlice";
-import { productCategories } from "../../../sRedux/AllProducts/AllProductSlice";
+import { productCategories } from "../../../Redux/AllProducts/AllProductSlice";
 class Home extends Component {
   constructor(props) {
     super(props);
