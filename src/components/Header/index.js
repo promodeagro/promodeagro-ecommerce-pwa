@@ -144,7 +144,9 @@ class Header extends Component {
         {this.props.shopCategoryData.length ? (
           <>
             <li>/</li>
-            <li>
+            <li onClick={() => {
+              this.props.setShopByCategory([this.props.shopCategoryData[0]]);
+            }}>
               <Link to="/category">{this.props.shopCategoryData[0]}</Link>
             </li>
             <li>/</li>
