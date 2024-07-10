@@ -28,7 +28,7 @@ class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      CategoriesToggle: false,
+      categoriesToggle: false,
       matches: window.matchMedia("(max-width: 900px)").matches,
       cartList: [],
       currentAddress: "",
@@ -48,7 +48,7 @@ class Header extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-  
+
 
     if (
       prevProps.cartItems.status !== this.props.cartItems.status &&
@@ -72,14 +72,14 @@ class Header extends Component {
   }
   handleClickCategoriesToggle = () => {
     this.setState({
-      CategoriesToggle: !this.state.CategoriesToggle,
+      categoriesToggle: !this.state.categoriesToggle,
     });
   };
 
   handleFruitsandVeg = (data) => {
     this.props.setShopByCategory(data);
     this.setState({
-      CategoriesToggle: false,
+      categoriesToggle: false,
     });
   };
 
@@ -94,58 +94,40 @@ class Header extends Component {
       <Box className="categories">
         <h2>Vegetables</h2>
         <ul>
-          <li
-            onClick={() =>
-              this.handleFruitsandVeg(["VEGETABLES", "Cut & peeled Veggies"])
-            }
-          >
-            <Link to={"/category"}>Cut & peeled Veggies</Link>
-          </li>
-          <li
-            onClick={() =>
-              this.handleFruitsandVeg(["VEGETABLES", "Leafy Vegetables"])
-            }
-          >
-            <Link to={"/category"}>Leafy Vegetables</Link>
-          </li>
-          <li
-            onClick={() =>
-              this.handleFruitsandVeg(["VEGETABLES", "Fresh Vegetables"])
-            }
-          >
-            <Link to={"/category"}>Fresh Vegetables</Link>
-          </li>
-          <li
-            onClick={() =>
-              this.handleFruitsandVeg(["VEGETABLES", "Herbs & Seasoning"])
-            }
-          >
-            <Link to={"/category"}>Herbs and Seasoning</Link>
-          </li>
+          {this.props.productCategoryData.length && this.props.productCategoryData[1]?.length &&
+            this.props.productCategoryData[1]?.map((item) => {
+              return <li
+                onClick={() =>
+                  this.handleFruitsandVeg(["VEGETABLES", `${item.subCategory}`])
+                }
+              >
+                <Link to={"/category"}>{item.subCategory}</Link>
+              </li>
+            })
+          }
+        </ul>
+        <ul>
+
+
         </ul>
       </Box>
       <Box className="sub-categories">
         <h3>Fruits</h3>
         <ul>
-          <li
-            onClick={() => this.handleFruitsandVeg(["FRUITS", "Exotic Fruits"])}
-          >
-            <Link to={"/category"}>Exotic Fruits</Link>
-          </li>
-          <li
-            onClick={() =>
-              this.handleFruitsandVeg(["FRUITS", "Seasonal Fruits"])
-            }
-          >
-            <Link to={"/category"}>Seasonal Fruits</Link>
-          </li>
-          <li
-            onClick={() =>
-              this.handleFruitsandVeg(["FRUITS", "Juices & Mixes"])
-            }
-          >
-            <Link to={"/category"}>Juices & Mixes</Link>
-          </li>
+          {this.props.productCategoryData.length && this.props.productCategoryData[0]?.length &&
+            this.props.productCategoryData[0]?.map((item) => {
+              return <li
+                onClick={() =>
+                  this.handleFruitsandVeg(["FRUITS", `${item.subCategory}`])
+                }
+              >
+                <Link to={"/category"}>{item.subCategory}</Link>
+              </li>
+            })
+          }
+
+
+
         </ul>
       </Box>
     </Box>
@@ -178,7 +160,7 @@ class Header extends Component {
   );
 
   render() {
-    const { CategoriesToggle, matches, searchToggle } = this.state;
+    const { categoriesToggle, matches, searchToggle } = this.state;
     const { allAddress } = this.props;
     const address = allAddress ? allAddress.address : "";
     let login = loginDetails();
@@ -335,15 +317,15 @@ class Header extends Component {
                       >
                         Shop by Categories
                         <span>
-                          {CategoriesToggle ? (
+                          {categoriesToggle ? (
                             <KeyboardArrowUpIcon />
                           ) : (
                             <KeyboardArrowDownIcon />
                           )}
                         </span>
                       </Box>
-                      {CategoriesToggle && this.renderCategories()}
-                      {CategoriesToggle && (
+                      {categoriesToggle && this.renderCategories()}
+                      {categoriesToggle && (
                         <Box
                           className="categories-bg"
                           onClick={this.handleClickCategoriesToggle}
@@ -454,7 +436,7 @@ class Header extends Component {
 function mapStateToProps(state) {
   const { cartData } = state.home;
   const { cartItems } = state.cartitem;
-  const { shopCategoryData } = state.allproducts;
+  const { shopCategoryData, productCategoryData } = state.allproducts;
   const { allAddress, selectedAddressData } = state.alladdress;
   return {
     cartData,
@@ -462,6 +444,7 @@ function mapStateToProps(state) {
     allAddress,
     selectedAddressData,
     shopCategoryData,
+    productCategoryData
   };
 }
 

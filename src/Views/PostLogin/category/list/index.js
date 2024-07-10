@@ -105,224 +105,110 @@ class List extends Component {
     let returnData = sortedData.length > 0 && sortedData.map((item) => {
       let itemId = cartItemsData?.find((x) => x.ProductId === item.id);
 
-      if (this.props.shopCategoryData.length) {
-        if (item.category === this.props.shopCategoryData[0] && item.subCategory === this.props.shopCategoryData[1]) {
-          return (
-            <Box
-              className={this.props.hideFilter ? "product-box hide-filter-box" : "product-box"}
-              key={item.id}
-            >
-              {item.savingsPercentage && (
-                <Box className="sale">
-                  Sale {item.savingsPercentage}%
-                </Box>
-              )}
+      return <Box
+        className={this.props.hideFilter ? "product-box hide-filter-box" : "product-box"}
+        key={item.id}
+      >
+        {item.savingsPercentage && (
+          <Box className="sale">
+            Sale {item.savingsPercentage}%
+          </Box>
+        )}
 
-              <Box className="icon">
-                <TurnedInNotOutlinedIcon />
-              </Box>
-              <Box className="image">
-                <Link to="/product-details">
-                  <img src={item.image ? item.image : noImage} alt="" />
-                </Link>
-              </Box>
-              <Box className="name">
-                <Link to="/product-details">{item.name}</Link>
-              </Box>
-              <Box className="price-ratting">
-                <Box className="price">
-                  <img src={priceIcon} alt="" /> {item.price}
-                  <span>{item.mrp}</span>
-                </Box>
-                {item.ratings && (
-                  <Box className="ratting">
-                    <StarIcon /> {item.ratings}
-                  </Box>
-                )}
-              </Box>
-              <Box className="select">{item.unit}</Box>
-              {addedProducts.includes(item.id) || itemId ? (
-                <Box className="number-input-container">
-                  {itemId && itemId.Quantity !== 0 ? (
-                    <Box
-                      className="symbol"
-                      onClick={() => {
-                        if (itemId?.ProductId) {
-                          let d = itemId.Quantity;
-                          this.handleQuantityChange(itemId.ProductId, -1, Number(d));
-                        } else {
-                          this.handleQuantityChange(item.id, -1);
-                        }
-                      }}
-                    >
-                      {(this.props.deleteItems.status === status.IN_PROGRESS && item.id === dataId && !isUpdateIncrease) ||
-                        (this.props.updateItems.status === status.IN_PROGRESS && item.id === dataId && !isUpdateIncrease) ? (
-                        <CircularProgress className="common-loader plus-icon" size={24} />
-                      ) : (
-                        "-"
-                      )}
-                    </Box>
-                  ) : (
-                    <></>
-                  )}
-
-                  <Box className="Number">
-                    {quantities[item.id] ? quantities[item.id] : itemId?.Quantity || 0}
-                  </Box>
-                  <Box
-                    className="symbol"
-                    onClick={() => {
-                      if (itemId?.ProductId) {
-                        let d = itemId.Quantity;
-                        this.handleQuantityChange(itemId.ProductId, 1, Number(d));
-                      } else {
-                        this.handleQuantityChange(item.id, 1);
-                      }
-                    }}
-                  >
-                    {this.props.updateItems.status === status.IN_PROGRESS &&
-                      item.id === dataId &&
-                      isUpdateIncrease ? (
-                      <CircularProgress className="common-loader plus-icon" />
-                    ) : (
-                      "+"
-                    )}
-                  </Box>
-                </Box>
-              ) : (
-                <Box className="add-cart">
-                  <Button
-                    variant="outlined"
-                    onClick={() => {
-
-                      this.handleAddToCart(item.id);
-                    }}
-                    disabled={
-                      this.props.additems.status === status.IN_PROGRESS &&
-                      item.id === this.state.dataId
-                    }
-                  >
-                    {this.props.additems.status === status.IN_PROGRESS &&
-                      item.id === this.state.dataId ? (
-                      <CircularProgress className="common-loader" />
-                    ) : (
-                      "Add to cart "
-                    )}
-                  </Button>
-                </Box>
-              )}
+        <Box className="icon">
+          <TurnedInNotOutlinedIcon />
+        </Box>
+        <Box className="image">
+          <Link to="/product-details">
+            <img src={item.image ? item.image : noImage} alt="" />
+          </Link>
+        </Box>
+        <Box className="name">
+          <Link to="/product-details">{item.name}</Link>
+        </Box>
+        <Box className="price-ratting">
+          <Box className="price">
+            <img src={priceIcon} alt="" /> {item.price}
+            <span>{item.mrp}</span>
+          </Box>
+          {item.ratings && (
+            <Box className="ratting">
+              <StarIcon /> {item.ratings}
             </Box>
-          );
-        } else {
-          return null;
-        }
-      } else {
-        return (
-          <Box
-            className={this.props.hideFilter ? "product-box hide-filter-box" : "product-box"}
-            key={item.id}
-          >
-            {item.savingsPercentage && (
-              <Box className="sale">
-                Sale {item.savingsPercentage}%
-              </Box>
-            )}
-
-            <Box className="icon">
-              <TurnedInNotOutlinedIcon />
-            </Box>
-            <Box className="image">
-              <Link to="/product-details">
-                <img src={item.image ? item.image : noImage} alt="" />
-              </Link>
-            </Box>
-            <Box className="name">
-              <Link to="/product-details">{item.name}</Link>
-            </Box>
-            <Box className="price-ratting">
-              <Box className="price">
-                <img src={priceIcon} alt="" /> {item.price}
-                <span>{item.mrp}</span>
-              </Box>
-              {item.ratings && (
-                <Box className="ratting">
-                  <StarIcon /> {item.ratings}
-                </Box>
-              )}
-            </Box>
-            <Box className="select">{item.unit}</Box>
-            {addedProducts.includes(item.id) || itemId ? (
-              <Box className="number-input-container">
-                {itemId && itemId.Quantity !== 0 ? (
-                  <Box
-                    className="symbol"
-                    onClick={() => {
-                      if (itemId?.ProductId) {
-                        let d = itemId.Quantity;
-                        this.handleQuantityChange(itemId.ProductId, -1, Number(d));
-                      } else {
-                        this.handleQuantityChange(item.id, -1);
-                      }
-                    }}
-                  >
-                    {(this.props.deleteItems.status === status.IN_PROGRESS && item.id === dataId && !isUpdateIncrease) ||
-                      (this.props.updateItems.status === status.IN_PROGRESS && item.id === dataId && !isUpdateIncrease) ? (
-                      <CircularProgress className="common-loader plus-icon" size={24} />
-                    ) : (
-                      "-"
-                    )}
-                  </Box>
+          )}
+        </Box>
+        <Box className="select">{item.unit}</Box>
+        {addedProducts.includes(item.id) || itemId ? (
+          <Box className="number-input-container">
+            {itemId && itemId.Quantity !== 0 ? (
+              <Box
+                className="symbol"
+                onClick={() => {
+                  if (itemId?.ProductId) {
+                    let d = itemId.Quantity;
+                    this.handleQuantityChange(itemId.ProductId, -1, Number(d));
+                  } else {
+                    this.handleQuantityChange(item.id, -1);
+                  }
+                }}
+              >
+                {(this.props.deleteItems.status === status.IN_PROGRESS && item.id === dataId && !isUpdateIncrease) ||
+                  (this.props.updateItems.status === status.IN_PROGRESS && item.id === dataId && !isUpdateIncrease) ? (
+                  <CircularProgress className="common-loader plus-icon" size={24} />
                 ) : (
-                  <></>
+                  "-"
                 )}
-
-                <Box className="Number">
-                  {quantities[item.id] ? quantities[item.id] : itemId?.Quantity || 0}
-                </Box>
-                <Box
-                  className="symbol"
-                  onClick={() => {
-                    if (itemId?.ProductId) {
-                      let d = itemId.Quantity;
-                      this.handleQuantityChange(itemId.ProductId, 1, Number(d));
-                    } else {
-                      this.handleQuantityChange(item.id, 1);
-                    }
-                  }}
-                >
-                  {this.props.updateItems.status === status.IN_PROGRESS &&
-                    item.id === dataId &&
-                    isUpdateIncrease ? (
-                    <CircularProgress className="common-loader plus-icon" />
-                  ) : (
-                    "+"
-                  )}
-                </Box>
               </Box>
             ) : (
-              <Box className="add-cart">
-                <Button
-                  variant="outlined"
-                  onClick={() => {
-                    this.handleAddToCart(item.id);
-                  }}
-                  disabled={
-                    this.props.additems.status === status.IN_PROGRESS &&
-                    item.id === this.state.dataId
-                  }
-                >
-                  {this.props.additems.status === status.IN_PROGRESS &&
-                    item.id === this.state.dataId ? (
-                    <CircularProgress className="common-loader" />
-                  ) : (
-                    "Add to cart"
-                  )}
-                </Button>
-              </Box>
+              <></>
             )}
+
+            <Box className="Number">
+              {quantities[item.id] ? quantities[item.id] : itemId?.Quantity || 0}
+            </Box>
+            <Box
+              className="symbol"
+              onClick={() => {
+                if (itemId?.ProductId) {
+                  let d = itemId.Quantity;
+                  this.handleQuantityChange(itemId.ProductId, 1, Number(d));
+                } else {
+                  this.handleQuantityChange(item.id, 1);
+                }
+              }}
+            >
+              {this.props.updateItems.status === status.IN_PROGRESS &&
+                item.id === dataId &&
+                isUpdateIncrease ? (
+                <CircularProgress className="common-loader plus-icon" />
+              ) : (
+                "+"
+              )}
+            </Box>
           </Box>
-        );
-      }
+        ) : (
+          <Box className="add-cart">
+            <Button
+              variant="outlined"
+              onClick={() => {
+
+                this.handleAddToCart(item.id);
+              }}
+              disabled={
+                this.props.additems.status === status.IN_PROGRESS &&
+                item.id === this.state.dataId
+              }
+            >
+              {this.props.additems.status === status.IN_PROGRESS &&
+                item.id === this.state.dataId ? (
+                <CircularProgress className="common-loader" />
+              ) : (
+                "Add to cart "
+              )}
+            </Button>
+          </Box>
+        )}
+      </Box>
     });
 
     if (returnData.length > 0) {

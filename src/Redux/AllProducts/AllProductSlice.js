@@ -12,13 +12,17 @@ const AllProductsSlice = createSlice({
             status: null,
         },
 
-        shopCategoryData: []
-
+        shopCategoryData: [],
+        productCategoryData: []
 
     },
     reducers: {
 
 
+        productCategories: (state, action) => {
+            
+            state.productCategoryData = action.payload;
+        },
 
         setShopByCategory: (state, action) => {
             state.shopCategoryData = action.payload;
@@ -56,5 +60,5 @@ const AllProductsSlice = createSlice({
     },
 });
 
-export const { setShopByCategory } = AllProductsSlice.actions;
+export const { setShopByCategory, productCategories } = AllProductsSlice.actions;
 export default AllProductsSlice.reducer;

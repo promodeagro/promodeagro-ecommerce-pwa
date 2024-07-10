@@ -5,6 +5,8 @@ import SideBar from "./sideBar";
 import List from "./list";
 import RecentlyViewedItems from "./recentlyViewedItems";
 import { allProducts } from "../../../Redux/AllProducts/AllProductthunk";
+import { productCategories } from "../../../Redux/AllProducts/AllProductSlice";
+
 import { fetchCartItems } from "../../../Redux/Cart/CartThunk";
 import status from "../../../Redux/Constants";
 import { Loader, loginDetails } from "Views/Utills/helperFunctions";
@@ -25,6 +27,7 @@ class Category extends Component {
         selectedCountry: "",
         selectedProductTypes: [],
         selectedPackSizes: [],
+        currentCategory: ""
       },
     };
   }
@@ -50,6 +53,20 @@ class Category extends Component {
         products: this.props.allProductsData.data,
         productsData: this.props.allProductsData.data,
       });
+      let fruits = [];
+      let vegetables = [];
+
+      this.props.allProductsData.data.forEach(product => {
+        if (product.category === "FRUITS") {
+          fruits.push(product);
+        } else if (product.category === "VEGETABLES") {
+          vegetables.push(product);
+        }
+      });
+
+
+
+      this.props.productCategories([fruits, vegetables])
     }
 
     if (
@@ -61,6 +78,61 @@ class Category extends Component {
         cartList: this.props.cartItems.data.items,
       });
     }
+    if (this.props.shopCategoryData?.length > 0 && this.props.allProductsData?.data?.length && this.state.currentCategory != this.props.shopCategoryData?.[1]) {
+
+      let fruits = [];
+      let vegetables = [];
+      let selectedItem = []
+      this.setState({
+        currentCategory: this.props.shopCategoryData?.[1]
+      })
+      this.props.allProductsData.data.forEach(product => {
+        if (product.category === "FRUITS") {
+          fruits.push(product);
+        } else if (product.category === "VEGETABLES") {
+          vegetables.push(product);
+        }
+      });
+
+      if (this.props.shopCategoryData[0] == "VEGETABLES") {
+        if (this.props.shopCategoryData?.[1]) {
+          vegetables?.forEach(product => {
+            if (this.props.shopCategoryData?.[1] == product.subCategory) {
+              selectedItem.push(product)
+            }
+          })
+
+        } else {
+          selectedItem = vegetables
+          // this.setState({
+          //   productsData:vegetables
+          //  })
+        }
+
+
+      } else if (this.props.shopCategoryData[0] == "FRUITS") {
+        if (this.props.shopCategoryData?.[1]) {
+          fruits?.forEach(product => {
+            if (this.props.shopCategoryData?.[1] == product.subCategory) {
+              selectedItem.push(product)
+            }
+          })
+        } else {
+          selectedItem = fruits
+          //  this.setState({
+          //   productsData:fruits
+          //  })
+        }
+      }
+      if (selectedItem.length > 0) {
+        this.setState({
+          productsData: selectedItem
+        })
+      }
+
+
+    }
+
   }
 
   handleFilterChange = (filters) => {
@@ -68,8 +140,8 @@ class Category extends Component {
   };
 
   applyFilters = () => {
-    const { products, filters } = this.state;
-    let productsData = products;
+    const { products, filters, productsData } = this.state;
+
 
     if (filters.minPrice || filters.maxPrice) {
       productsData = productsData.filter((product) => {
@@ -127,7 +199,7 @@ class Category extends Component {
     }));
   };
   render() {
-    const { productsData, cartList, hideFilter } = this.state;
+    const { productsData, cartList, hideFilter, products } = this.state;
     return (
       <Box className="main-container">
         <Container>
@@ -151,7 +223,7 @@ class Category extends Component {
                 Loader.commonLoader()
               ) : (
                 <List
-                  data={productsData}
+                  data={productsData ? productsData : []}
                   cartItemsData={cartList}
                   hideFilter={hideFilter}
                 />
@@ -166,11 +238,11 @@ class Category extends Component {
 }
 
 function mapStateToProps(state) {
-  const { allProductsData } = state.allproducts;
+  const { allProductsData, shopCategoryData } = state.allproducts;
   const { cartItems } = state.cartitem;
-  return { allProductsData, cartItems };
+  return { allProductsData, cartItems, shopCategoryData };
 }
 
-const mapDispatchToProps = { allProducts, fetchCartItems };
+const mapDispatchToProps = { allProducts, fetchCartItems, productCategories };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Category);

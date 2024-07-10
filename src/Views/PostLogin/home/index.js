@@ -13,6 +13,7 @@ import { connect } from "react-redux";
 import { Loader, loginDetails } from "Views/Utills/helperFunctions";
 import { getAllAddress } from "../../../Redux/Address/AddressThunk";
 import { setSelectedAdd } from "../../../Redux/Address/AddressSlice";
+import { productCategories } from "../../../sRedux/AllProducts/AllProductSlice";
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -43,6 +44,19 @@ class Home extends Component {
       this.setState({
         data: this.props.homeData?.data,
       });
+
+      let fruits = [];
+      let vegetables = [];
+
+      this.props.homeData?.data.forEach(product => {
+        if (product.category === "FRUITS") {
+          fruits.push(product);
+        } else if (product.category === "VEGETABLES") {
+          vegetables.push(product);
+        }
+      });
+      this.props.productCategories([fruits, vegetables])
+
     }
 
     if (
@@ -95,6 +109,6 @@ function mapStateToProps(state) {
   return { homeData, cartItems, allAddress, selectedAddressData };
 }
 
-const mapDispatchToProps = { fetchHome, fetchCartItems, setSelectedAdd, getAllAddress };
+const mapDispatchToProps = { fetchHome, fetchCartItems, setSelectedAdd, getAllAddress, productCategories };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
