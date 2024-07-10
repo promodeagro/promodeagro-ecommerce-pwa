@@ -39,12 +39,12 @@ class Header extends Component {
     window
       .matchMedia("(max-width: 900px)")
       .addEventListener("change", (e) => this.setState({ matches: e.matches }));
-    let items = loginDetails();
-    if (items?.userId) {
-      this.props.getAllAddress({
-        userId: items.userId,
-      });
-    }
+    // let items = loginDetails();
+    // if (items?.userId) {
+    //   this.props.getAllAddress({
+    //     userId: items.userId,
+    //   });
+    // }
   }
 
   componentDidUpdate(prevProps, prevState) {

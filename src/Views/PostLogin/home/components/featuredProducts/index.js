@@ -41,14 +41,15 @@ class FeaturedProducts extends Component {
   }
 
   componentDidMount() {
-    const items = loginDetails();
-    if (items?.userId) {
-      this.props.fetchCartItems({
-        userId: items.userId,
-      });
-    }
+    // const items = loginDetails();
+    // if (items?.userId) {
 
-    this.props.allProducts();
+    //   this.props.fetchCartItems({
+    //     userId: items.userId,
+    //   });
+    // }
+
+    // this.props.allProducts();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -107,18 +108,7 @@ class FeaturedProducts extends Component {
       });
     }
 
-    if (
-      prevProps.cartItems.status !== this.props.cartItems.status &&
-      this.props.cartItems.status === status.SUCCESS &&
-      this.props.cartItems.data
-    ) {
-      this.setState({
-        cartList: this.props.cartItems.data.items,
-      });
-      this.setState({
-        dataId: "",
-      });
-    }
+
   }
 
 
@@ -169,15 +159,15 @@ class FeaturedProducts extends Component {
   }
 
   render() {
-    const { data } = this.props;
-    const { productsData, cartList, dataId, isUpdateIncrease } = this.state;
+    const { data, cartList } = this.props;
+    const { productsData, dataId, isUpdateIncrease } = this.state;
     return (
       <Box className="featured-products-container">
         <Container>
           <Box className="heading">Featured Products</Box>
           <Box className="products">
-            {productsData?.length &&
-              productsData.slice(0, 5).map((item, index) => {
+            {data?.length &&
+              data.slice(0, 5).map((item, index) => {
                 let itemId = cartList?.find((x) => x.ProductId === item.id);
                 return (
                   <Box className="product-box" key={index}>

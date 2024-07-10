@@ -82,9 +82,10 @@ class Signin extends Component {
         isSubmit: false,
       });
       ErrorMessages.success("Logged In Successfully");
-      this.props.getAllAddress({
-        userId: this.props.loginData.data.userId,
-      });
+      this.props.navigate("/");
+      // this.props.getAllAddress({
+      //   userId: this.props.loginData.data.userId,
+      // })
     } else if (this.props.loginData.data && !this.props.loginData.data.token) {
       this.setState({
         isSubmit: false,
@@ -92,14 +93,14 @@ class Signin extends Component {
       ErrorMessages.error(this.props.loginData.data.response?.data?.message);
     }
 
-    if (
-      prevProps.allAddress.status !== this.props.allAddress.status &&
-      this.props.allAddress.status === status.SUCCESS &&
-      this.props.allAddress.data
-    ) {
-      this.props.setSelectedAdd(this.props.allAddress.data.addresses[0]);
-      this.props.navigate("/");
-    }
+    // if (
+    //   prevProps.allAddress.status !== this.props.allAddress.status &&
+    //   this.props.allAddress.status === status.SUCCESS &&
+    //   this.props.allAddress.data
+    // ) {
+    //   this.props.setSelectedAdd(this.props.allAddress.data.addresses[0]);
+
+    // }
   }
 
   validateForm = () => {
