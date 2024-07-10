@@ -48,14 +48,14 @@ const Views = () => {
 
 
 
-       
+
 
 
 
           {/* Routes for authenticated and unauthenticated users */}
           <Route exact path={`/`} element={<Home />} />
           <Route exact path={`/category`} element={<Category />} />
-          <Route exact path={`/product-details`} element={<ProductDetails />} />
+          <Route exact path={`/product-details/:id`} element={<ProductDetails />} />
           <Route exact path={`/myCart`} element={<MyCart />} />
           <Route exact path={`/signin`} element={<SignIn />} />
           <Route exact path={`/signup`} element={<SignUp />} />

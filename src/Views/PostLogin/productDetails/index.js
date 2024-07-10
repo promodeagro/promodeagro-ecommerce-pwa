@@ -8,6 +8,7 @@ import {
   TextField,
   InputAdornment,
 } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 import RecentlyViewedItems from "./recentlyViewedItems";
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import TwitterIcon from "@mui/icons-material/Twitter";
@@ -28,7 +29,12 @@ import returnIcon from "../../../assets/img/return-icon.png";
 import organicIcon from "../../../assets/img/organic-icon.png";
 import searchIcon from "../../../assets/img/search-icon.png";
 import reviewImg from "../../../assets/img/review-img.png";
-
+import { connect } from "react-redux"
+import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
+import status from "../../../Redux/Constants";
+import { allProducts } from "../../../Redux/AllProducts/AllProductthunk";
+import { addItemToCart, fetchCartItems, updateItemToCart, deleteItemToCart } from "../../../Redux/Cart/CartThunk";
+import { loginDetails } from "Views/Utills/helperFunctions";
 const labels = {
   0.5: "0.5 out of 5",
   1: "1 out of 5",
@@ -45,10 +51,131 @@ const labels = {
 class ProductDetails extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      id: this.props.params.id,
+      productItem: {},
+      itemQuantity: null,
+      isUpdateIncrease: null
+    };
+  }
+  componentDidMount() {
+    console.log(this.props.params.id)
+    if (this.props?.prodducDetailsData) {
+
+      this.setState({
+        productItem: this.props?.prodducDetailsData,
+        itemQuantity: parseInt(this.props?.prodducDetailsData?.Quantity)
+      })
+    }
+
+
+
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const items = loginDetails();
+
+    if (
+      prevProps.cartItems.status !== this.props.cartItems.status &&
+      this.props.cartItems.status === status.SUCCESS &&
+      this.props.cartItems.data
+    ) {
+
+
+
+      let data = this.props.cartItems.data.items.find(x => x.ProductId === this.state.id)
+
+      this.setState({
+        itemQuantity: data?.Quantity
+      })
+
+
+    }
+
+    if (
+      prevProps.additems.status !== this.props.additems.status &&
+      this.props.additems.status === status.SUCCESS &&
+      this.props.additems.data
+    ) {
+      this.props.fetchCartItems({
+        userId: items.userId,
+      });
+
+    }
+
+    if (
+      prevProps.updateItems.status !== this.props.updateItems.status &&
+      this.props.updateItems.status === status.SUCCESS &&
+      this.props.updateItems.data
+    ) {
+      this.props.fetchCartItems({
+        userId: items.userId,
+      });
+
+    }
+
+    if (
+      prevProps.deleteItems.status !== this.props.deleteItems.status &&
+      this.props.deleteItems.status === status.SUCCESS &&
+      this.props.deleteItems.data
+    ) {
+      this.setState({
+        itemQuantity: 0
+      })
+
+    }
+
+
+  }
+
+
+
+  handleAddToCart(id) {
+    const items = loginDetails();
+
+    if (items?.userId && id) {
+      this.props.addItemToCart({
+        userId: items.userId,
+        productId: id,
+        quantity: "1",
+      });
+    } else if (!items?.userId) {
+      this.props.navigate("/signin")
+    }
+
+  }
+
+  handleQuantityChange(id, increment, productQuantity) {
+    const items = loginDetails();
+
+    if (increment < 0 && productQuantity != 0) {
+      this.setState({ isUpdateIncrease: false });
+    } else if (productQuantity != 0) {
+      this.setState({ isUpdateIncrease: true });
+    }
+
+    productQuantity = productQuantity + increment;
+    if (productQuantity != 0) {
+      this.props.updateItemToCart({
+        userId: items.userId,
+        productId: id,
+        quantity: productQuantity.toString(),
+      });
+    } else {
+      this.props.deleteItemToCart({
+        userId: items.userId,
+        productId: id,
+      });
+    }
+  }
+
+
+
+
+
   render() {
+    const { productItem, itemQuantity, isUpdateIncrease } = this.state
+
     const value = 4.5;
     return (
       <Box className="main-container">
@@ -86,9 +213,9 @@ class ProductDetails extends Component {
                     <Box className="icon">
                       <TurnedInNotOutlinedIcon />
                     </Box>
-                    <img src={productBigImage} alt="" />
+                    <img src={productItem?.image} alt="" />
                   </Box>
-                  <Box className="thumbnail-images">
+                  {/* <Box className="thumbnail-images">
                     <ul>
                       <li className="active">
                         <a href="#">
@@ -111,38 +238,92 @@ class ProductDetails extends Component {
                         </a>
                       </li>
                     </ul>
-                  </Box>
+                  </Box> */}
                 </Box>
               </Grid>
               <Grid item xs={12} sm={12} md={7} lg={7}>
                 <Box className="product-info">
-                  <Box className="product-name">Green Apple</Box>
+                  <Box className="product-name">{productItem?.name}</Box>
                   <Box className="product-review">
                     <StarIcon />
                     <StarIcon />
                     <StarIcon />
                     <StarIcon />
                     <StarIcon className="gray" />
-                    <span>4 Review</span>
+                    <span>{productItem?.ratingss}Review</span>
                   </Box>
                   <Box className="product-price">
                     <Box className="mrp">
-                      MRP <img src={mdiRupee} alt="" /> <span>320.99</span>
+                      MRP <img src={mdiRupee} alt="" /> <span>{productItem?.mrp}</span>
                     </Box>
                     <Box className="price">
-                      <img src={rupeeIcon} alt="" /> 200.12{" "}
-                      <span>230 / Kg</span>
+                      <img src={rupeeIcon} alt="" /> {productItem?.price}
+                      {/* <span>230 / Kg</span> */}
                     </Box>
                   </Box>
                   <Box className="product-save">
-                    You save <span>20% OFF</span>
+                    You save <span>{productItem?.savingsPercentage} %</span>
                   </Box>
                   <Box className="product-cart-buttons">
                     <Grid container spacing={2}>
                       <Grid item xs={12} sm={6} md={6} lg={8}>
-                        <Button className="add-cart-btn" variant="contained">
-                          Add to Cart <ShoppingCartOutlinedIcon />
-                        </Button>
+
+                        {parseInt(itemQuantity) != 0 ?
+                          <Box className="number-input-container">
+                            <Box
+                              className="symbol"
+                              onClick={() => {
+                                this.handleQuantityChange(this.props.params.id, -1, Number(itemQuantity))
+                              }}
+                            >
+                              {(this.props.deleteItems.status === status.IN_PROGRESS && !isUpdateIncrease) ||
+                                (this.props.updateItems.status === status.IN_PROGRESS && !isUpdateIncrease) ? (
+                                <CircularProgress className="common-loader plus-icon" size={24} />
+                              ) : (
+                                "-"
+                              )}
+                            </Box>
+
+                            <Box className="Number">{itemQuantity}</Box>
+                            <Box
+                              className="symbol"
+                              onClick={() => {
+                                this.handleQuantityChange(this.props.params.id, 1, Number(itemQuantity))
+                              }}
+                            >
+                              {this.props.updateItems.status ===
+                                status.IN_PROGRESS &&
+
+                                this.state.isUpdateIncrease ? (
+                                <CircularProgress className="common-loader plus-icon" />
+                              ) : (
+                                "+"
+                              )}
+                            </Box>
+                          </Box>
+                          :
+
+                          <Button className="add-cart-btn" variant="contained"
+                            disabled={
+                              this.props.additems.status === status.IN_PROGRESS
+
+                            }
+                            onClick={() => this.handleAddToCart(productItem?.id)}
+                            endIcon={
+                              this.props.additems.status === status.IN_PROGRESS ? (
+                                <CircularProgress className="common-loader " />
+                              ) : (
+                                <></>
+                              )
+                            }
+
+                          >
+                            Add to Cart <ShoppingCartOutlinedIcon />
+                          </Button>
+
+                        }
+
+
                       </Grid>
                       <Grid item xs={12} sm={6} md={6} lg={4}>
                         <Button className="view-cart-btn" variant="outlined">
@@ -151,7 +332,7 @@ class ProductDetails extends Component {
                       </Grid>
                     </Grid>
                   </Box>
-                  <Box className="pack-size">
+                  {/* <Box className="pack-size">
                     <h3>Pack Size</h3>
                     <Box
                       display={"flex"}
@@ -298,7 +479,7 @@ class ProductDetails extends Component {
                         <p>+2</p> More Combos
                       </Button>
                     </Box>
-                  </Box>
+                  </Box> */}
                 </Box>
               </Grid>
             </Grid>
@@ -511,4 +692,34 @@ class ProductDetails extends Component {
   }
 }
 
-export default ProductDetails;
+
+function mapStateToProps(state) {
+  const { homeData } = state.home;
+  const { allProductsData, shopCategoryData, prodducDetailsData } = state.allproducts;
+  const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
+  return {
+    allProductsData,
+    homeData,
+    additems,
+    prodducDetailsData,
+    cartItems,
+    updateItems,
+    deleteItems,
+    shopCategoryData
+  };
+}
+
+const mapDispatchToProps = {
+  allProducts,
+  addItemToCart,
+  fetchCartItems,
+  updateItemToCart,
+  deleteItemToCart,
+  // setShopByCategory
+};
+
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(navigateRouter(ProductDetails));

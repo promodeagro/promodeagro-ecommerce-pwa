@@ -20,7 +20,7 @@ import priceIcon from "../../../../../assets/img/price-icon.png";
 import noImage from "../../../../../assets/img/no-image.png";
 import { addDataInCart } from "../../../../../Redux/Home/HomeSlice";
 import { allProducts } from "../../../../../Redux/AllProducts/AllProductthunk";
-import { setShopByCategory } from "../../../../../Redux/AllProducts/AllProductSlice";
+import { setShopByCategory, productDetailsData } from "../../../../../Redux/AllProducts/AllProductSlice";
 import { connect } from "react-redux";
 import _ from "lodash";
 import { Link } from "react-router-dom";
@@ -36,16 +36,19 @@ class FeaturedProducts extends Component {
       cartList: [],
       dataId: "",
       isUpdateIncrease: null,
+
     };
   }
 
   componentDidMount() {
     // const items = loginDetails();
     // if (items?.userId) {
+
     //   this.props.fetchCartItems({
     //     userId: items.userId,
     //   });
     // }
+
     // this.props.allProducts();
   }
 
@@ -85,7 +88,8 @@ class FeaturedProducts extends Component {
       });
       this.setState({
         dataId: "",
-        isUpdateIncrease: null,
+        isUpdateIncrease: null
+
       });
     }
 
@@ -99,16 +103,21 @@ class FeaturedProducts extends Component {
       });
       this.setState({
         dataId: "",
-        isUpdateIncrease: null,
+        isUpdateIncrease: null
+
       });
     }
+
+
   }
+
+
 
   handleAddToCart(id) {
     const items = loginDetails();
     this.setState({
-      dataId: id,
-    });
+      dataId: id
+    })
     if (items?.userId) {
       this.props.addItemToCart({
         userId: items.userId,
@@ -116,8 +125,9 @@ class FeaturedProducts extends Component {
         quantity: "1",
       });
     } else {
-      this.props.navigate("/signin");
+      this.props.navigate("/signin")
     }
+
   }
 
   handleQuantityChange(id, increment, productQuantity) {
@@ -148,6 +158,8 @@ class FeaturedProducts extends Component {
     }
   }
 
+
+
   render() {
     const { data, cartList } = this.props;
     const { productsData, dataId, isUpdateIncrease } = this.state;
@@ -165,27 +177,36 @@ class FeaturedProducts extends Component {
                     <Box className="icon">
                       <TurnedInNotOutlinedIcon />
                     </Box>
-                    <Box className="image">
-                      <Link to="/product-details">
-                        <img src={item?.image ? item?.image : noImage} alt="" />
-                      </Link>
+                    <Box className="image" onClick={() => {
+                      let data = _.cloneDeep(item)
+                      data.Quantity = itemId?.Quantity
+                      this.props.productDetailsData(data);
+                      this.props.navigate(`/product-details/${item.id}`)
+                    }
+
+                    }>
+                      {/* <Link to={`/product-details/${item.id}`}> */}
+                      <img src={item?.image ? item?.image : noImage} alt="" />
+                      {/* </Link> */}
                     </Box>
                     <Box className="name">
-                      <Link to="/product-details">{item?.category}</Link>
+                      <Link to={`/product-details/${item.id}`}>{item?.category}</Link>
                     </Box>
                     <Box className="price-ratting">
                       <Box className="price">
                         <img src={priceIcon} alt="" /> {item?.price}
-                        <span>20.99</span>
+                        <span>{item?.mrp}</span>
                       </Box>
                       <Box className="ratting">
-                        <StarIcon /> 4.5
+                        <StarIcon /> {item?.ratings}
                       </Box>
                     </Box>
                     <Box className="select">{item.unit}</Box>
                     {itemId ? (
                       <Box className="number-input-container">
                         {itemId && itemId.Quantity !== 0 ? (
+
+
                           <Box
                             className="symbol"
                             onClick={() => {
@@ -201,18 +222,9 @@ class FeaturedProducts extends Component {
                               }
                             }}
                           >
-                            {(this.props.deleteItems.status ===
-                              status.IN_PROGRESS &&
-                              item.id === dataId &&
-                              !isUpdateIncrease) ||
-                            (this.props.updateItems.status ===
-                              status.IN_PROGRESS &&
-                              item.id === dataId &&
-                              !isUpdateIncrease) ? (
-                              <CircularProgress
-                                className="common-loader plus-icon"
-                                size={24}
-                              />
+                            {(this.props.deleteItems.status === status.IN_PROGRESS && item.id === dataId && !isUpdateIncrease) ||
+                              (this.props.updateItems.status === status.IN_PROGRESS && item.id === dataId && !isUpdateIncrease) ? (
+                              <CircularProgress className="common-loader plus-icon" size={24} />
                             ) : (
                               "-"
                             )}
@@ -239,8 +251,8 @@ class FeaturedProducts extends Component {
                         >
                           {this.props.updateItems.status ===
                             status.IN_PROGRESS &&
-                          item.id === dataId &&
-                          isUpdateIncrease ? (
+                            item.id === dataId &&
+                            isUpdateIncrease ? (
                             <CircularProgress className="common-loader plus-icon" />
                           ) : (
                             "+"
@@ -260,7 +272,7 @@ class FeaturedProducts extends Component {
                           }
                           endIcon={
                             this.props.additems.status == status.IN_PROGRESS &&
-                            item.id == this.state.dataId ? (
+                              item.id == this.state.dataId ? (
                               <CircularProgress className="common-loader" />
                             ) : (
                               <></>
@@ -275,10 +287,7 @@ class FeaturedProducts extends Component {
                 );
               })}
           </Box>
-          <Box
-            className="load-more-btn"
-            onClick={() => this.props.setShopByCategory([])}
-          >
+          <Box className="load-more-btn" onClick={() => this.props.setShopByCategory([])}>
             <Link to="/category">Load More</Link>
           </Box>
         </Container>
@@ -298,7 +307,7 @@ function mapStateToProps(state) {
     cartItems,
     updateItems,
     deleteItems,
-    shopCategoryData,
+    shopCategoryData
   };
 }
 
@@ -309,9 +318,12 @@ const mapDispatchToProps = {
   updateItemToCart,
   deleteItemToCart,
   setShopByCategory,
+  productDetailsData
 };
+
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(navigateRouter(FeaturedProducts));
+
