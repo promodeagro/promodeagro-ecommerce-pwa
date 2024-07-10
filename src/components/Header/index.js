@@ -289,6 +289,7 @@ class Header extends Component {
                   ) : (
                     ![
                       "/myCart",
+                      "/myCart/address/order-details",
                       "/myCart/address",
                       "/myCart/address/add-new-address",
                       "/myCart/address/updated-address",
@@ -303,6 +304,7 @@ class Header extends Component {
         </Box>
         {![
           "/myCart/address",
+          "/myCart/address/order-details",
           "/myCart/address/add-new-address",
           "/myCart/address/updated-address",
           "/myCart/address/order-placed",
