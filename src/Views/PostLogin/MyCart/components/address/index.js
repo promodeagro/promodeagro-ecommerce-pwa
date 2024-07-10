@@ -230,7 +230,7 @@ class Address extends Component {
                         </Box> */}
                         <Box className="view-all-img-box">
                           <span className="d-block">
-                            View all {cartList.length} items{" "}
+                            View all {cartList.length} items
                           </span>
                         </Box>
                       </Box>
