@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllAddress, postAddress, deleteAddress, updateAddress } from "./AddressThunk";
+import {
+  getAllAddress,
+  postAddress,
+  deleteAddress,
+  updateAddress,
+} from "./AddressThunk";
 import status from "../Constants";
 
 const AddressSlice = createSlice({
@@ -16,18 +21,13 @@ const AddressSlice = createSlice({
     },
     updateAddress: {
       status: null,
-    }
-    ,
-    selectedAddressData: null
+    },
+    selectedAddressData: null,
   },
   reducers: {
-
-
     setSelectedAdd: (state, action) => {
-      
       state.selectedAddressData = action.payload;
     },
-
   },
   extraReducers: (builder) => {
     builder

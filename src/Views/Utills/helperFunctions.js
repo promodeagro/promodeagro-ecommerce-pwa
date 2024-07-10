@@ -6,6 +6,7 @@ export const ValidationEngine = {
   EMAIL_REGEX: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
   PASSWORD_REGEX: /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
   MOBILE_NUMBER_REGEX: /^\d{10}$/,
+  ZIP_CODE_REGEX: /^\d{6}$/,
   NUMBER_ONLY_REGEX: /^[0-9]+$/,
   DECIMAL_ALLOW_REGEX: /^\d*\.?\d*$/,
   ONLY_TWO_DECIMAL_ALLOW_REGEX: /^(?:\d*\.\d{1,2}|\d+)$/,

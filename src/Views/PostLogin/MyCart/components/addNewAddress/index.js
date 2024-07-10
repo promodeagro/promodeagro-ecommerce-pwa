@@ -9,22 +9,85 @@ import {
   Select,
   MenuItem,
   Button,
+  FormHelperText,
+  Autocomplete,
+  CircularProgress,
 } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { postAddress } from "../../../../../Redux/Address/AddressThunk";
+import {
+  postAddress,
+  getAllAddress,
+} from "../../../../../Redux/Address/AddressThunk";
 import status from "../../../../../Redux/Constants";
 import { loginDetails } from "Views/Utills/helperFunctions";
 import { Link } from "react-router-dom";
+import {
+  ErrorMessages,
+  ValidationEngine,
+} from "../../../../Utills/helperFunctions";
+import { connect } from "react-redux";
 
-const AddNewAddress = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
-  const [contact, setContact] = useState("");
-  const [zipCode, setZipCode] = useState("");
+const validationSchema = {
+  name: [
+    {
+      message: "Please enter name",
+      type: ValidationEngine.type.MANDATORY,
+    },
+  ],
+  email: [
+    {
+      message: "Please enter email",
+      type: ValidationEngine.type.MANDATORY,
+    },
+    {
+      message: "Please enter valid email",
+      type: ValidationEngine.type.REGEX,
+      regex: ValidationEngine.EMAIL_REGEX,
+    },
+  ],
+  address: [
+    {
+      message: "Please enter address",
+      type: ValidationEngine.type.MANDATORY,
+    },
+  ],
+  phoneNumber: [
+    {
+      message: "Please enter phone number",
+      type: ValidationEngine.type.MANDATORY,
+    },
+    {
+      message: "Please valid phone number",
+      type: ValidationEngine.type.REGEX,
+      regex: ValidationEngine.MOBILE_NUMBER_REGEX,
+    },
+  ],
+  zipCode: [
+    {
+      message: "Please enter zip code",
+      type: ValidationEngine.type.MANDATORY,
+    },
+    {
+      message: "Please valid zip code",
+      type: ValidationEngine.type.REGEX,
+      regex: ValidationEngine.ZIP_CODE_REGEX,
+    },
+  ],
+};
+
+const AddNewAddress = (props) => {
   const [apiLoader, setApiLoader] = useState(false);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    address: "",
+    phoneNumber: "",
+    zipCode: "",
+    isSubmit: false,
+  });
 
   const postAddressStatus = useSelector(
     (state) => state.alladdress.postAddress.status
@@ -33,52 +96,77 @@ const AddNewAddress = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (postAddressStatus === status.SUCCESS && apiLoader) {
+    if (
+      postAddressStatus === status.SUCCESS &&
+      apiLoader &&
+      formData.isSubmit
+    ) {
       setApiLoader(false);
-
+      setFormData({
+        ...formData,
+        isSubmit: false,
+        name: "",
+        email: "",
+        address: "",
+        phoneNumber: "",
+        zipCode: "",
+      });
       navigate("/myCart/address");
+      ErrorMessages.success("Add Address Successfully");
     }
   }, [postAddressStatus, dispatch, navigate]);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    switch (name) {
-      case "name":
-        setName(value);
-        break;
-      case "email":
-        setEmail(value);
-        break;
-      case "address":
-        setAddress(value);
-        break;
-      case "contact":
-        setContact(value);
-        break;
-      case "zipCode":
-        setZipCode(value);
-        break;
-      default:
-        break;
-    }
+  const validateForm = () => {
+    const { name, email, address, phoneNumber, zipCode } = formData;
+    const error = ValidationEngine.validate(validationSchema, {
+      name,
+      email,
+      address,
+      phoneNumber,
+      zipCode,
+    });
+    return error;
   };
 
   const handleSubmit = () => {
     const items = loginDetails();
     setApiLoader(true);
-    dispatch(
-      postAddress({
-        userId: items.userId,
-        address: {
-          name,
-          email,
-          address,
-          contact,
-          zipCode,
-        },
-      })
-    );
+    const { name, email, address, phoneNumber, zipCode } = formData;
+
+    const errorData = validateForm();
+
+    setFormData({
+      ...formData,
+      isSubmit: true,
+    });
+
+    if (errorData.isValid) {
+      dispatch(
+        postAddress({
+          userId: items.userId,
+          address: {
+            name,
+            email,
+            address,
+            phoneNumber,
+            zipCode,
+          },
+        })
+      );
+    }
   };
+
+  const handleValueChange = (event) => {
+    const { name, value, type, checked } = event.target;
+    const val = type === "checkbox" ? checked : value;
+    setFormData({
+      ...formData,
+      [name]: val,
+    });
+  };
+
+  const { name, email, address, phoneNumber, zipCode, isSubmit } = formData;
+  const errorData = validateForm();
 
   return (
     <Container>
@@ -101,8 +189,14 @@ const AddNewAddress = () => {
                   className="form-text-field"
                   placeholder="John Doe"
                   value={name}
-                  onChange={handleChange}
+                  onChange={handleValueChange}
+                  error={!errorData.name.isValid && isSubmit}
                 />
+                {isSubmit && (
+                  <FormHelperText error>
+                    {errorData?.name?.message}
+                  </FormHelperText>
+                )}
               </Grid>
               <Grid item xs={12} lg={6} md={6} sm={6}>
                 <label className="d-block form-field-title">Email</label>
@@ -113,8 +207,14 @@ const AddNewAddress = () => {
                   className="form-text-field"
                   placeholder="JohnDoe@gmail.com"
                   value={email}
-                  onChange={handleChange}
+                  onChange={handleValueChange}
+                  error={!errorData.email.isValid && isSubmit}
                 />
+                {isSubmit && (
+                  <FormHelperText error>
+                    {errorData?.email?.message}
+                  </FormHelperText>
+                )}
               </Grid>
               <Grid item xs={12}>
                 <label className="d-block form-field-title">Address</label>
@@ -127,41 +227,32 @@ const AddNewAddress = () => {
                   multiline
                   rows={4}
                   value={address}
-                  onChange={handleChange}
+                  onChange={handleValueChange}
+                  error={!errorData.address.isValid && isSubmit}
                 />
+                {isSubmit && (
+                  <FormHelperText error>
+                    {errorData?.address?.message}
+                  </FormHelperText>
+                )}
               </Grid>
               <Grid item xs={12} lg={6} md={6} sm={6}>
                 <label className="d-block form-field-title">Contact</label>
                 <OutlinedInput
-                  name="contact"
+                  name="phoneNumber"
                   className="form-text-field"
                   type="number"
                   fullWidth
-                  startAdornment={
-                    <InputAdornment position="start">
-                      <Select
-                        className="country-select-box"
-                        value={"IN"}
-                        displayEmpty
-                      >
-                        <MenuItem value="IN">IN</MenuItem>
-                        <MenuItem value="USA">USA</MenuItem>
-                        <MenuItem value="NZ">NZ</MenuItem>
-                      </Select>
-                    </InputAdornment>
-                  }
-                  placeholder="+91 0000 0000000"
-                  value={contact}
-                  onChange={handleChange}
+                  placeholder="0000 0000 00"
+                  value={phoneNumber}
+                  onChange={handleValueChange}
+                  error={!errorData.phoneNumber.isValid && isSubmit}
                 />
-              </Grid>
-              <Grid item xs={12} lg={6} md={6} sm={6}>
-                <label className="d-block form-field-title">Country</label>
-                <Select className="common-select-box">
-                  <MenuItem value="Ten">Ten</MenuItem>
-                  <MenuItem value="Twenty">Twenty</MenuItem>
-                  <MenuItem value="Thirty">Thirty</MenuItem>
-                </Select>
+                {isSubmit && (
+                  <FormHelperText error>
+                    {errorData?.phoneNumber?.message}
+                  </FormHelperText>
+                )}
               </Grid>
               <Grid item xs={12} lg={6} md={6} sm={6}>
                 <label className="d-block form-field-title">Zip code</label>
@@ -173,18 +264,14 @@ const AddNewAddress = () => {
                   placeholder="000000"
                   type="number"
                   value={zipCode}
-                  onChange={handleChange}
+                  onChange={handleValueChange}
+                  error={!errorData.zipCode.isValid && isSubmit}
                 />
-              </Grid>
-              <Grid item xs={12} lg={6} md={6} sm={6}>
-                <Button
-                  variant="contained"
-                  fullWidth
-                  className="common-btn location-btn"
-                  endIcon={<LocationOnIcon />}
-                >
-                  Current Location
-                </Button>
+                {isSubmit && (
+                  <FormHelperText error>
+                    {errorData?.zipCode?.message}
+                  </FormHelperText>
+                )}
               </Grid>
               <Grid item xs={6} lg={6} md={6} sm={6} marginTop={"25px"}>
                 <Link to={"/myCart/address"}>
@@ -203,7 +290,16 @@ const AddNewAddress = () => {
                   fullWidth
                   className="common-btn"
                   onClick={handleSubmit}
+                  disabled={props.postAddress.status == status.IN_PROGRESS}
+                  endIcon={
+                    props.postAddress.status === status.IN_PROGRESS ? (
+                      <CircularProgress className="common-loader" />
+                    ) : (
+                      <></>
+                    )
+                  }
                 >
+                  
                   Save
                 </Button>
               </Grid>
@@ -215,4 +311,13 @@ const AddNewAddress = () => {
   );
 };
 
-export default AddNewAddress;
+function mapStateToProps(state) {
+  const { postAddress } = state.alladdress;
+  return { postAddress };
+}
+
+const mapDispatchToProps = {
+  getAllAddress,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddNewAddress);

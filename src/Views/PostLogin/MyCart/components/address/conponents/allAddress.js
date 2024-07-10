@@ -10,6 +10,7 @@ import {
   DialogActions,
   FormControlLabel,
   Checkbox,
+  CircularProgress,
 } from "@mui/material";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -26,15 +27,19 @@ import status from "../../../../../../Redux/Constants";
 import { useSelector, useDispatch } from "react-redux";
 import { loginDetails } from "Views/Utills/helperFunctions";
 import { useNavigate } from "react-router-dom";
+import {
+  ErrorMessages,
+} from "../../../../../Utills/helperFunctions";
 
 const AllAddress = (props) => {
   const [open, setOpen] = useState(false);
   const [allAddress, setAllAddress] = useState([]);
   const [allAddressApiLoader, setAllAddresApiLoader] = useState(false);
   const [deleteAddressApiLoader, setDeleteAddressApiLoader] = useState(false);
-  const [updateAddressApiLoader, setUpdateAddressApiLoader] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState({});
   const allAddressState = useSelector((state) => state.alladdress.allAddress);
+  const [addressId, setAddressId] = useState("");
+
   const postAddressStatus = useSelector(
     (state) => state.alladdress.postAddress.status
   );
@@ -62,10 +67,9 @@ const AllAddress = (props) => {
     ) {
       setAllAddresApiLoader(false);
       setAllAddress(allAddressState.data.addresses);
-      // debugger;
       // if (!props.selectedAddressData?.address) {
-        dispatch(setSelectedAdd(allAddressState.data.addresses[0]));
-        setSelectedAddress(allAddressState.data.addresses[0]);
+      dispatch(setSelectedAdd(allAddressState.data.addresses[0]));
+      setSelectedAddress(allAddressState.data.addresses[0]);
       // }
     }
   }, [allAddressState]);
@@ -92,6 +96,8 @@ const AllAddress = (props) => {
           userId: items.userId,
         })
       );
+      ErrorMessages.success("Address Delete Successfully");
+      setOpen(false);
     }
   }, [deleteAddressStatus]);
 
@@ -111,11 +117,13 @@ const AllAddress = (props) => {
     });
   };
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (item) => {
+    setAddressId(item.addressId);
     setOpen(true);
   };
 
   const handleClose = () => {
+    setAddressId("");
     setOpen(false);
   };
 
@@ -175,52 +183,23 @@ const AllAddress = (props) => {
                             : "address-btn"
                         }
                         onClick={() => {
-                          handleClickOpen();
+                          handleClickOpen(item);
                         }}
                       >
                         <DeleteIcon />
                       </IconButton>
-                      <Dialog
-                        open={open}
-                        onClose={handleClose}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                      >
-                        <DialogContent>
-                          <DialogContentText id="alert-dialog-description">
-                            Are you sure you want to delete this address?
-                          </DialogContentText>
-                        </DialogContent>
-                        <DialogActions style={{ justifyContent: "center", paddingBottom: "24px" }}>
-                          <Button
-                            variant="outlined"
-                            className="outline-common-btn"
-                            onClick={handleClose}
-                          >
-                            Cancel
-                          </Button>
-                          <Button
-                            variant="outlined"
-                            className="outline-common-btn"
-                            color="error"
-                            onClick={() => {
-                              handleDelete(item.userId, item.addressId);
-                              handleClose();
-                            }}
-                            autoFocus
-                          >
-                            Delete
-                          </Button>
-                        </DialogActions>
-                      </Dialog>
                     </Box>
                     <h3 className="person-name">{item.name}</h3>
-                    <address>{item.address}</address>
+                    <address>
+                      {item.address} {item.zipCode}
+                    </address>
                     <Box className="d-block contact-number">
                       <span className="d-block contact-heading">Contact</span>
                       <Box className="d-flex align-items-center">
                         <span className="d-block title">Phone</span>
-                        <span className="d-block details">{item.contact}</span>
+                        <span className="d-block details">
+                          {item.phoneNumber}
+                        </span>
                       </Box>
                       <Box className="d-flex align-items-center">
                         <span className="d-block title">Email</span>
@@ -269,6 +248,48 @@ const AllAddress = (props) => {
           </Button>
         </Box>
       </Box>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this address?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions
+          style={{ justifyContent: "center", paddingBottom: "24px" }}
+        >
+          <Button
+            variant="outlined"
+            className="outline-common-btn"
+            onClick={handleClose}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="outlined"
+            className="outline-common-btn"
+            color="error"
+            onClick={() => {
+              let items = loginDetails();
+              handleDelete(items.userId, addressId);
+            }}
+            disabled={props.deleteAddress.status == status.IN_PROGRESS}
+            endIcon={
+              props.deleteAddress.status === status.IN_PROGRESS ? (
+                <CircularProgress className="common-loader delete" />
+              ) : (
+                <></>
+              )
+            }
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
@@ -277,8 +298,14 @@ function mapStateToProps(state) {
   const { cartData } = state.home;
   const { cartItems } = state.cartitem;
 
-  const { allAddress, selectedAddressData } = state.alladdress;
-  return { cartData, cartItems, allAddress, selectedAddressData };
+  const { allAddress, selectedAddressData, deleteAddress } = state.alladdress;
+  return {
+    cartData,
+    cartItems,
+    allAddress,
+    deleteAddress,
+    selectedAddressData,
+  };
 }
 
 const mapDispatchToProps = {
