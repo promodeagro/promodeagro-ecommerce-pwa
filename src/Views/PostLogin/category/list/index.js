@@ -5,6 +5,7 @@ import {
   updateItemToCart,
   deleteItemToCart,
 } from "../../../../Redux/Cart/CartThunk";
+import { productDetailsData } from "../../../../Redux/AllProducts/AllProductSlice";
 import { connect } from "react-redux";
 import {
   Box,
@@ -128,13 +129,32 @@ class List extends Component {
             <Box className="icon">
               <TurnedInNotOutlinedIcon />
             </Box>
-            <Box className="image">
-              <Link to="/product-details">
-                <img src={item.image ? item.image : noImage} alt="" />
-              </Link>
+            <Box className="image"
+              onClick={() => {
+                let data = _.cloneDeep(item)
+
+                data.Quantity = itemId?.Quantity ? itemId?.Quantity : 0
+                this.props.productDetailsData(data);
+                this.props.navigate(`/product-details/${item.id}`)
+              }
+              }
+
+            >
+              {/* <Link to={`/product-details/${item.id}`}> */}
+              <img src={item.image ? item.image : noImage} alt="" />
+              {/* </Link> */}
             </Box>
-            <Box className="name">
-              <Link to="/product-details">{item.name}</Link>
+            <Box className="name"
+
+              onClick={() => {
+                let data = _.cloneDeep(item)
+
+                data.Quantity = itemId?.Quantity ? itemId?.Quantity : 0
+                this.props.productDetailsData(data);
+                this.props.navigate(`/product-details/${item.id}`)
+              }
+              }>
+              <Link>{item.name}</Link>
             </Box>
             <Box className="price-ratting">
               <Box className="price">
@@ -169,9 +189,9 @@ class List extends Component {
                     {(this.props.deleteItems.status === status.IN_PROGRESS &&
                       item.id === dataId &&
                       !isUpdateIncrease) ||
-                    (this.props.updateItems.status === status.IN_PROGRESS &&
-                      item.id === dataId &&
-                      !isUpdateIncrease) ? (
+                      (this.props.updateItems.status === status.IN_PROGRESS &&
+                        item.id === dataId &&
+                        !isUpdateIncrease) ? (
                       <CircularProgress
                         className="common-loader plus-icon"
                         size={24}
@@ -201,8 +221,8 @@ class List extends Component {
                   }}
                 >
                   {this.props.updateItems.status === status.IN_PROGRESS &&
-                  item.id === dataId &&
-                  isUpdateIncrease ? (
+                    item.id === dataId &&
+                    isUpdateIncrease ? (
                     <CircularProgress className="common-loader plus-icon" />
                   ) : (
                     "+"
@@ -222,7 +242,7 @@ class List extends Component {
                   }
                   endIcon={
                     this.props.additems.status == status.IN_PROGRESS &&
-                    item.id == this.state.dataId ? (
+                      item.id == this.state.dataId ? (
                       <CircularProgress className="common-loader" />
                     ) : (
                       <></>
@@ -353,6 +373,7 @@ const mapDispatchToProps = {
   fetchCartItems,
   updateItemToCart,
   deleteItemToCart,
+  productDetailsData
 };
 
 export default connect(

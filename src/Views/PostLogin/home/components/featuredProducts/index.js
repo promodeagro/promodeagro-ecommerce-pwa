@@ -189,7 +189,12 @@ class FeaturedProducts extends Component {
                       <img src={item?.image ? item?.image : noImage} alt="" />
                       {/* </Link> */}
                     </Box>
-                    <Box className="name">
+                    <Box onClick={() => {
+                      let data = _.cloneDeep(item)
+                      data.Quantity = itemId?.Quantity
+                      this.props.productDetailsData(data);
+                      this.props.navigate(`/product-details/${item.id}`)
+                    }}>
                       <Link to={`/product-details/${item.id}`}>{item?.category}</Link>
                     </Box>
                     <Box className="price-ratting">
