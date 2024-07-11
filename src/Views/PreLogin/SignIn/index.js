@@ -9,6 +9,7 @@ import {
   Divider,
   Modal,
   FormHelperText,
+  Grid,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { ErrorMessages, ValidationEngine } from "../../Utills/helperFunctions";
@@ -73,18 +74,17 @@ class Signin extends Component {
       prevProps.loginData.status !== this.props.loginData.status &&
       this.props.loginData.status === status.SUCCESS &&
       this.props.loginData.data
-
     ) {
-
-
-
       if (this.props.loginData.data.token) {
         this.setState({
           mobileNumber: "",
           password: "",
           isSubmit: false,
         });
-        localStorage.setItem("login", JSON.stringify(this.props.loginData.data));
+        localStorage.setItem(
+          "login",
+          JSON.stringify(this.props.loginData.data)
+        );
         ErrorMessages.success("Logged In Successfully");
         this.props.navigate("/");
       } else {
@@ -95,8 +95,6 @@ class Signin extends Component {
       //   userId: this.props.loginData.data.userId,
       // })
     }
-
-
   }
 
   validateForm = () => {
@@ -252,13 +250,19 @@ class Signin extends Component {
                 >
                   Login
                 </Button>
+                <Grid container spacing={2} alignItems={"flex-start"}>
+                  <Grid item xs={6} sm={16} md={6} lg={6}>
+                    <Box marginTop={"15px"}>
+                      New User? <Link to={"/signup"}>Sign up</Link>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={6} sm={6} md={6} lg={6}>
+                    <Box marginTop={"15px"} textAlign={"end"}>
+                      <Link to={"/forgot-password"}>Forgot Password</Link>
+                    </Box>
+                  </Grid>
+                </Grid>
 
-                <Box marginTop={"15px"}>
-                  New User? <Link to={"/signup"}>Sign up</Link>
-                </Box>
-                <Box marginTop={"15px"} onClick={() => this.props.navigate("/forgot-password")}>
-                  Forgot Password
-                </Box>
                 {/* <Button
                                     variant="contained"
                                     fullWidth
