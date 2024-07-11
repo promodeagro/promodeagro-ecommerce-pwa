@@ -28,7 +28,7 @@ class Category extends Component {
         selectedCountry: "",
         selectedProductTypes: [],
         selectedPackSizes: [],
-        currentCategory: ""
+        currentCategory: "",
       },
     };
   }
@@ -57,7 +57,7 @@ class Category extends Component {
       let fruits = [];
       let vegetables = [];
 
-      this.props.allProductsData.data.forEach(product => {
+      this.props.allProductsData.data.forEach((product) => {
         if (product.category === "FRUITS") {
           fruits.push(product);
         } else if (product.category === "VEGETABLES") {
@@ -65,9 +65,7 @@ class Category extends Component {
         }
       });
 
-
-
-      this.props.productCategories([fruits, vegetables])
+      this.props.productCategories([fruits, vegetables]);
     }
 
     if (
@@ -79,15 +77,18 @@ class Category extends Component {
         cartList: this.props.cartItems.data.items,
       });
     }
-    if (this.props.shopCategoryData?.length > 0 && this.props.allProductsData?.data?.length && this.state.currentCategory != this.props.shopCategoryData?.[1]) {
-
+    if (
+      this.props.shopCategoryData?.length > 0 &&
+      this.props.allProductsData?.data?.length &&
+      this.state.currentCategory != this.props.shopCategoryData?.[1]
+    ) {
       let fruits = [];
       let vegetables = [];
-      let selectedItem = []
+      let selectedItem = [];
       this.setState({
-        currentCategory: this.props.shopCategoryData?.[1]
-      })
-      this.props.allProductsData.data.forEach(product => {
+        currentCategory: this.props.shopCategoryData?.[1],
+      });
+      this.props.allProductsData.data.forEach((product) => {
         if (product.category === "FRUITS") {
           fruits.push(product);
         } else if (product.category === "VEGETABLES") {
@@ -97,29 +98,26 @@ class Category extends Component {
 
       if (this.props.shopCategoryData[0] == "VEGETABLES") {
         if (this.props.shopCategoryData?.[1]) {
-          vegetables?.forEach(product => {
+          vegetables?.forEach((product) => {
             if (this.props.shopCategoryData?.[1] == product.subCategory) {
-              selectedItem.push(product)
+              selectedItem.push(product);
             }
-          })
-
+          });
         } else {
-          selectedItem = vegetables
+          selectedItem = vegetables;
           // this.setState({
           //   productsData:vegetables
           //  })
         }
-
-
       } else if (this.props.shopCategoryData[0] == "FRUITS") {
         if (this.props.shopCategoryData?.[1]) {
-          fruits?.forEach(product => {
+          fruits?.forEach((product) => {
             if (this.props.shopCategoryData?.[1] == product.subCategory) {
-              selectedItem.push(product)
+              selectedItem.push(product);
             }
-          })
+          });
         } else {
-          selectedItem = fruits
+          selectedItem = fruits;
           //  this.setState({
           //   productsData:fruits
           //  })
@@ -127,13 +125,10 @@ class Category extends Component {
       }
       if (selectedItem.length > 0) {
         this.setState({
-          productsData: selectedItem
-        })
+          productsData: selectedItem,
+        });
       }
-
-
     }
-
   }
 
   handleFilterChange = (filters) => {
@@ -141,8 +136,8 @@ class Category extends Component {
   };
 
   applyFilters = () => {
-    const { products, filters, productsData } = this.state;
-
+    const { products, filters } = this.state;
+    let productsData = [...products];
 
     if (filters.minPrice || filters.maxPrice) {
       productsData = productsData.filter((product) => {
@@ -194,6 +189,7 @@ class Category extends Component {
 
     this.setState({ productsData });
   };
+
   toggleFilter = () => {
     this.setState((prevState) => ({
       hideFilter: !prevState.hideFilter,
@@ -220,7 +216,7 @@ class Category extends Component {
               lg={hideFilter ? 12 : 9}
             >
               {this.props.cartItems.status === status.IN_PROGRESS.status ||
-                this.props.allProductsData.status === status.IN_PROGRESS ? (
+              this.props.allProductsData.status === status.IN_PROGRESS ? (
                 Loader.commonLoader()
               ) : (
                 <List
