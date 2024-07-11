@@ -112,6 +112,13 @@
             padding-right: 0px;
           }
 
+          &.quick {
+            a {
+              font-style: italic;
+              text-decoration: underline;
+            }
+          }
+
           a {
             color: #2a3a31;
             font-size: 14px;

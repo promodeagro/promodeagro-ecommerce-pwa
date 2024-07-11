@@ -251,7 +251,7 @@ class Header extends Component {
                   {["/", "/signin", "/signup"].includes(path) ? (
                     <Box className="categories" justifyContent={"flex-end"}>
                       <ul>
-                        <li>
+                        <li className="quick">
                           <Link to="/category">Quick Links</Link>
                         </li>
                         <li
