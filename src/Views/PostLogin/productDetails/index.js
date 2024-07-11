@@ -340,7 +340,16 @@ class ProductDetails extends Component {
 
                       </Grid>
                       <Grid item xs={12} sm={6} md={6} lg={4}>
-                        <Button className="view-cart-btn" variant="outlined">
+                        <Button className="view-cart-btn" variant="outlined"
+                          onClick={() => {
+                            const items = loginDetails()
+                            if (items?.userId) {
+                              this.props.navigate("/myCart")
+                            } else {
+                              this.props.navigate("/signin")
+                            }
+                          }}
+                        >
                           View Cart Items
                         </Button>
                       </Grid>
