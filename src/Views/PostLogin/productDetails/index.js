@@ -9,7 +9,8 @@ import {
   InputAdornment,
 } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
-import RecentlyViewedItems from "./recentlyViewedItems";
+// import RecentlyViewedItems from "./recentlyViewedItems";
+import RecentlyViewedItems from "components/RecentlyViewedItems";
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import InstagramIcon from "@mui/icons-material/Instagram";
@@ -71,7 +72,7 @@ class ProductDetails extends Component {
         let recentViewList = JSON.parse(data);
         const isItemInList = recentViewList.some(item => item.id === this.props?.prodducDetailsData.id);
         if (!isItemInList) {
-          recentViewList.push(this.props?.prodducDetailsData);
+          recentViewList.unshift(this.props?.prodducDetailsData);
           this.setState({
             recentList: recentViewList
           })
@@ -192,7 +193,7 @@ class ProductDetails extends Component {
 
     const value = 4.5;
     return (
-      <Box className="main-container">
+      <Box className="main-container"   >
         <Container>
           <Box className="share-icons-container">
             <span>Share on</span>

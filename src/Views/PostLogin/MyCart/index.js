@@ -23,7 +23,8 @@ import { connect } from "react-redux";
 import status from "../../../Redux/Constants";
 import { Loader, loginDetails } from "../../../Views/Utills/helperFunctions";
 import _ from "lodash";
-import RelatedViewedItems from "./components/relatedViewedItems";
+import RecentlyViewedItems from "components/RecentlyViewedItems";
+// import RelatedViewedItems from "./components/relatedViewedItems";
 class MyCart extends Component {
   constructor(props) {
     super(props);
@@ -223,10 +224,10 @@ class MyCart extends Component {
                                   status.IN_PROGRESS &&
                                   item.ProductId === dataId &&
                                   !isUpdateIncrease) ||
-                                (this.props.updateItems.status ===
-                                  status.IN_PROGRESS &&
-                                  item.ProductId === dataId &&
-                                  !isUpdateIncrease) ? (
+                                  (this.props.updateItems.status ===
+                                    status.IN_PROGRESS &&
+                                    item.ProductId === dataId &&
+                                    !isUpdateIncrease) ? (
                                   <CircularProgress
                                     className="common-loader plus-icon"
                                     size={24}
@@ -250,8 +251,8 @@ class MyCart extends Component {
                               >
                                 {this.props.updateItems.status ===
                                   status.IN_PROGRESS &&
-                                item.ProductId === dataId &&
-                                isUpdateIncrease ? (
+                                  item.ProductId === dataId &&
+                                  isUpdateIncrease ? (
                                   <CircularProgress
                                     className="common-loader plus-icon"
                                     size={24}
@@ -297,7 +298,7 @@ class MyCart extends Component {
               </Box>
             )}
           </Container>
-          <RelatedViewedItems />
+          <RecentlyViewedItems />
         </Box>
       </>
     );

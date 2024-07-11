@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import { Box, Container, Grid } from "@mui/material";
 import SideBar from "./sideBar";
 import List from "./list";
-import RecentlyViewedItems from "./recentlyViewedItems";
+// import RecentlyViewedItems from "./recentlyViewedItems";
+import RecentlyViewedItems from "components/RecentlyViewedItems";
 import { allProducts } from "../../../Redux/AllProducts/AllProductthunk";
 import { productCategories } from "../../../Redux/AllProducts/AllProductSlice";
 
