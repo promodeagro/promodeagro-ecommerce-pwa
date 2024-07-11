@@ -157,14 +157,16 @@ class FeaturedProducts extends Component {
       });
     }
   }
-
+  handleContextMenu = (event) => {
+    event.preventDefault(); 
+  };
 
 
   render() {
     const { data, cartList } = this.props;
     const { productsData, dataId, isUpdateIncrease } = this.state;
     return (
-      <Box className="featured-products-container">
+      <Box className="featured-products-container" onContextMenu={this.handleContextMenu}>
         <Container>
           <Box className="heading">Featured Products</Box>
           <Box className="products">

@@ -100,6 +100,10 @@ class List extends Component {
     }
   }
 
+  handleContextMenu = (event) => {
+    event.preventDefault();
+
+  };
   handleCategories(
     sortedData,
     dataId,
@@ -121,6 +125,7 @@ class List extends Component {
                 : "product-box"
             }
             key={item.id}
+            onContextMenu={this.handleContextMenu}
           >
             {item.savingsPercentage && (
               <Box className="sale">Sale {item.savingsPercentage}%</Box>
