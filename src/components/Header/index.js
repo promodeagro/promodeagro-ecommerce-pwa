@@ -292,12 +292,12 @@ class Header extends Component {
                     </Box>
                   ) : (
                     ![
-                      "/myCart",
-                      "/myCart/address/order-details",
-                      "/myCart/address",
-                      "/myCart/address/add-new-address",
-                      "/myCart/address/updated-address",
-                      "/myCart/address/order-placed",
+                      "/mycart",
+                      "/mycart/address/order-details",
+                      "/mycart/address",
+                      "/mycart/address/add-new-address",
+                      "/mycart/address/updated-address",
+                      "/mycart/address/order-placed",
                       "/my-order",
                     ].includes(path) && this.renderBreadcrumb()
                   )}
@@ -307,12 +307,12 @@ class Header extends Component {
           </Container>
         </Box>
         {![
-          "/myCart",
-          "/myCart/address",
-          "/myCart/address/order-details",
-          "/myCart/address/add-new-address",
-          "/myCart/address/updated-address",
-          "/myCart/address/order-placed",
+          "/mycart",
+          "/mycart/address",
+          "/mycart/address/order-details",
+          "/mycart/address/add-new-address",
+          "/mycart/address/updated-address",
+          "/mycart/address/order-placed",
           "/my-order",
         ].includes(path) && (
           <Box className="header-bottom-container">
@@ -390,7 +390,7 @@ class Header extends Component {
                           <p></p>
                         </Button>
 
-                        <Link to={"/myCart"}>
+                        <Link to={"/mycart"}>
                           <Button
                             variant="outlined"
                             className="card"

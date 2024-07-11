@@ -46,35 +46,66 @@ const Views = () => {
             </>
           )}
 
-
-
-
-
-
+          {!isLoggedIn && (
+            <>
+              <Route path={`/mycart`} element={<Navigate to="/" replace />} />
+              <Route
+                path={`/mycart/address`}
+                element={<Navigate to="/" replace />}
+              />
+              <Route
+                path={`/mycart/address/order-details`}
+                element={<Navigate to="/" replace />}
+              />
+              <Route
+                path={`/mycart/payment-details`}
+                element={<Navigate to="/" replace />}
+              />
+              <Route
+                path={`/mycart/address/add-new-address`}
+                element={<Navigate to="/" replace />}
+              />
+              <Route
+                path={`/mycart/address/updated-address`}
+                element={<Navigate to="/" replace />}
+              />
+              <Route
+                path={`/mycart/address/order-placed `}
+                element={<Navigate to="/" replace />}
+              />
+            </>
+          )}
 
           {/* Routes for authenticated and unauthenticated users */}
           <Route exact path={`/`} element={<Home />} />
           <Route exact path={`/category`} element={<Category />} />
-          <Route exact path={`/product-details/:id`} element={<ProductDetails />} />
-          <Route exact path={`/myCart`} element={<MyCart />} />
-          <Route exact path={`/signin`} element={<SignIn />} />
-          <Route exact path={`/signup`} element={<SignUp />} />
-          <Route exact path={`/myCart/address`} element={<Address />} />
-          <Route path={`/myCart/address/order-details`} element={<OrderDetails />} />
-          <Route path={`/myCart/payment-details`} element={<PaymentOption />} />
           <Route
             exact
-            path={`/myCart/address/add-new-address`}
+            path={`/product-details/:id`}
+            element={<ProductDetails />}
+          />
+          <Route exact path={`/mycart`} element={<MyCart />} />
+          <Route exact path={`/signin`} element={<SignIn />} />
+          <Route exact path={`/signup`} element={<SignUp />} />
+          <Route exact path={`/mycart/address`} element={<Address />} />
+          <Route
+            path={`/mycart/address/order-details`}
+            element={<OrderDetails />}
+          />
+          <Route path={`/mycart/payment-details`} element={<PaymentOption />} />
+          <Route
+            exact
+            path={`/mycart/address/add-new-address`}
             element={<AddNewAddress />}
           />
           <Route
             exact
-            path={`/myCart/address/updated-address`}
+            path={`/mycart/address/updated-address`}
             element={<UpdatedAddress />}
           />
           <Route
             exact
-            path={`/myCart/address/order-placed`}
+            path={`/mycart/address/order-placed`}
             element={<OrderPlaced />}
           />
           <Route exact path={`/my-order`} element={<MyOrder />} />

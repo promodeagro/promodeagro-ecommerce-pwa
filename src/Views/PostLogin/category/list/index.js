@@ -265,7 +265,7 @@ class List extends Component {
     if (returnData.length > 0) {
       return returnData;
     } else {
-      return <p className="data-not-found-text">There is no data</p>;
+      return <p className="no-data">There is no data</p>;
     }
   }
 

@@ -1,5 +1,6 @@
 .mycart-container {
   .sub-total-container {
+    margin-top: 50px;
     padding: 20px;
     background: #1f91510d;
     border-radius: 8px;
@@ -231,6 +232,8 @@
       }
     }
   }
+
+  
 }
 
 @media only screen and (max-width: 900px) {

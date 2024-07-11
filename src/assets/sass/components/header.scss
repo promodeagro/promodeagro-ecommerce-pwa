@@ -14,6 +14,9 @@
     .logo {
       display: flex;
       width: 180px;
+      img {
+        display: block;
+      }
     }
 
     .header-top-right {

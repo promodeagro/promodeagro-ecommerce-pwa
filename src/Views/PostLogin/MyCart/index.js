@@ -106,47 +106,45 @@ class MyCart extends Component {
       <>
         <Box className="mycart-container">
           <Container>
-            <Box className="sub-total-container d-flex justify-content-between">
-              {this.state.cartList.length > 0 ?
-                <>
-                  <Box className="left-part">
-                    <h1 className="d-block">My Cart</h1>
-                    <p className="d-block sub-heading">
-                      This is your cart based on your item you want to buy..
-                    </p>
+            {this.state.cartList.length > 0 ? (
+              <Box className="sub-total-container d-flex justify-content-between">
+                <Box className="left-part">
+                  <h1 className="d-block">My Cart</h1>
+                  <p className="d-block sub-heading">
+                    This is your cart based on your item you want to buy..
+                  </p>
+                </Box>
+                <Box className="right-part">
+                  <Box className="sub-total d-flex align-items-center flex-wrap">
+                    <strong className="title">Subtotal </strong>
+                    <span className="item-count">
+                      ({this.state?.cartList?.length} Items) :
+                    </span>
+                    <strong className="number">
+                      ₹ {this.props?.cartItems?.data?.subTotal}
+                    </strong>
                   </Box>
-                  <Box className="right-part">
-                    <Box className="sub-total d-flex align-items-center flex-wrap">
-                      <strong className="title">Subtotal </strong>
-                      <span className="item-count">
-                        ({this.state?.cartList?.length} Items) :
-                      </span>
-                      <strong className="number">
-                        ₹ {this.props?.cartItems?.data?.subTotal}
-                      </strong>
-                    </Box>
-                    <Box className="saving-amount">
-                      <strong className="title">Savings : </strong>
-                      <strong className="number">
-                        ₹ {this.props?.cartItems?.data?.savings}
-                      </strong>
-                    </Box>
-                    <Link to={"/myCart/address"} className="checkout-btn">
-                      <Button
-                        variant="contained"
-                        fullWidth
-                        className="common-btn"
-                        endIcon={<NavigateNextIcon />}
-                      >
-                        Checkout
-                      </Button>
-                    </Link>
+                  <Box className="saving-amount">
+                    <strong className="title">Savings : </strong>
+                    <strong className="number">
+                      ₹ {this.props?.cartItems?.data?.savings}
+                    </strong>
                   </Box>
-                </>
-
-                : <></>}
-
-            </Box>
+                  <Link to={"/myCart/address"} className="checkout-btn">
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      className="common-btn"
+                      endIcon={<NavigateNextIcon />}
+                    >
+                      Checkout
+                    </Button>
+                  </Link>
+                </Box>
+              </Box>
+            ) : (
+              <></>
+            )}
             {this.props.cartItems.status === status.IN_PROGRESS ? (
               Loader.commonLoader()
             ) : (
@@ -230,10 +228,10 @@ class MyCart extends Component {
                                   status.IN_PROGRESS &&
                                   item.ProductId === dataId &&
                                   !isUpdateIncrease) ||
-                                  (this.props.updateItems.status ===
-                                    status.IN_PROGRESS &&
-                                    item.ProductId === dataId &&
-                                    !isUpdateIncrease) ? (
+                                (this.props.updateItems.status ===
+                                  status.IN_PROGRESS &&
+                                  item.ProductId === dataId &&
+                                  !isUpdateIncrease) ? (
                                   <CircularProgress
                                     className="common-loader plus-icon"
                                     size={24}
@@ -257,8 +255,8 @@ class MyCart extends Component {
                               >
                                 {this.props.updateItems.status ===
                                   status.IN_PROGRESS &&
-                                  item.ProductId === dataId &&
-                                  isUpdateIncrease ? (
+                                item.ProductId === dataId &&
+                                isUpdateIncrease ? (
                                   <CircularProgress
                                     className="common-loader plus-icon"
                                     size={24}
@@ -299,7 +297,7 @@ class MyCart extends Component {
                     })}
                   </>
                 ) : (
-                  <Box> There is no data </Box>
+                  <Box className="no-data"> There is no data </Box>
                 )}
               </Box>
             )}

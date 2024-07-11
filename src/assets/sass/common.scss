@@ -243,6 +243,7 @@ button {
     }
   }
 }
+
 button {
   .common-loader {
     color: #1f9151 !important;
@@ -256,4 +257,17 @@ button {
       }
     }
   }
+}
+
+.no-data {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+  color: #1a1a1a;
 }
