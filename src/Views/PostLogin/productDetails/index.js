@@ -72,11 +72,8 @@ class ProductDetails extends Component {
         let recentViewList = JSON.parse(data);
         const isItemInList = recentViewList.some(item => item.id === this.props?.prodducDetailsData.id);
         if (!isItemInList) {
-          recentViewList.unshift(this.props?.prodducDetailsData);
-          this.setState({
-            recentList: recentViewList
-          })
-          localStorage.setItem("recentviewitems", JSON.stringify(recentViewList));
+          recentViewList.unshift(this.props?.prodducDetailsData)
+          localStorage.setItem("recentviewitems", JSON.stringify(recentViewList.slice(0, 3)));
         }
       } else {
         localStorage.setItem("recentviewitems", JSON.stringify([this.props?.prodducDetailsData]));
