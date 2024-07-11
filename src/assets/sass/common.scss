@@ -13,10 +13,10 @@ body,
   height: 100%;
 }
 
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 a,
@@ -225,7 +225,6 @@ button {
   outline: none;
 }
 
-
 .common-loader {
   height: 20vh;
   svg {
@@ -235,7 +234,7 @@ button {
     height: 16px !important;
     width: 16px !important;
     svg {
-      color: #FFFFFF;
+      color: #ffffff;
     }
   }
 }
@@ -266,4 +265,13 @@ button {
   line-height: 20px;
   font-weight: 500;
   color: #1a1a1a;
+}
+
+.MuiTooltip-tooltip {
+  &.css-1k51tf5-MuiTooltip-tooltip {
+    background-color: #1f9151;
+    .css-kudwh-MuiTooltip-arrow {
+      color: #1f9151;
+    }
+  }
 }

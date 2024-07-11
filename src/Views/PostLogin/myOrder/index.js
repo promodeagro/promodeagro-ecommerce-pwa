@@ -12,6 +12,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Tooltip,
 } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import checkedIcon from "../../../assets/img/checked.png";
@@ -58,6 +59,7 @@ class MyOrder extends Component {
       ],
       expandedOrder: null,
       openOrderDialog: false,
+      copiedOrderId: null,
     };
   }
 
@@ -74,7 +76,10 @@ class MyOrder extends Component {
   handleCopyOrderId = (orderId) => {
     navigator.clipboard.writeText(orderId).then(
       () => {
-        console.log(`Order ID ${orderId} copied to clipboard!`);
+        this.setState({ copiedOrderId: orderId });
+        setTimeout(() => {
+          this.setState({ copiedOrderId: null });
+        }, 2000);
       },
       (err) => {
         console.error("Could not copy text: ", err);
@@ -85,7 +90,7 @@ class MyOrder extends Component {
   handleClickOpen = () => {
     this.setState({ openOrderDialog: true });
   };
-  
+
   handleClickClose = () => {
     this.setState({ openOrderDialog: false });
   };
@@ -98,7 +103,8 @@ class MyOrder extends Component {
       "On the way ",
       "Delivered ",
     ];
-    const { orderLists, expandedOrder, openOrderDialog } = this.state;
+    const { orderLists, expandedOrder, openOrderDialog, copiedOrderId } =
+      this.state;
     return (
       <Container>
         <Box className="my-order-container">
@@ -113,7 +119,7 @@ class MyOrder extends Component {
               Showing orders for the last 6 months <strong>10 </strong>Orders
             </span>
             {orderLists.map((orderList) => (
-              <Box key={orderList}>
+              <Box key={orderList.orderId}>
                 <Box
                   className="order-status-collapsed"
                   data-aos="zoom-in-right"
@@ -166,11 +172,21 @@ class MyOrder extends Component {
                             <span className="d-block number">
                               {orderList.orderId}
                             </span>
-                            <ContentCopyIcon
-                              onClick={() =>
-                                this.handleCopyOrderId(orderList.orderId)
+                            <Tooltip
+                              title={
+                                copiedOrderId === orderList.orderId
+                                  ? "Copied!"
+                                  : "Copy Order ID"
                               }
-                            />
+                              arrow
+                              open={copiedOrderId === orderList.orderId}
+                            >
+                              <ContentCopyIcon
+                                onClick={() =>
+                                  this.handleCopyOrderId(orderList.orderId)
+                                }
+                              />
+                            </Tooltip>
                           </Box>
                         </Box>
                       </Grid>
