@@ -179,7 +179,8 @@ class FeaturedProducts extends Component {
                     </Box>
                     <Box className="image" onClick={() => {
                       let data = _.cloneDeep(item)
-                      data.Quantity = itemId?.Quantity
+
+                      data.Quantity = itemId?.Quantity ? itemId?.Quantity : 0
                       this.props.productDetailsData(data);
                       this.props.navigate(`/product-details/${item.id}`)
                     }
@@ -191,7 +192,7 @@ class FeaturedProducts extends Component {
                     </Box>
                     <Box onClick={() => {
                       let data = _.cloneDeep(item)
-                      data.Quantity = itemId?.Quantity
+                      data.Quantity = itemId?.Quantity ? itemId?.Quantity : 0
                       this.props.productDetailsData(data);
                       this.props.navigate(`/product-details/${item.id}`)
                     }}>
