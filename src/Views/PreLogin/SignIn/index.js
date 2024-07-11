@@ -73,13 +73,12 @@ class Signin extends Component {
       prevProps.loginData.status !== this.props.loginData.status &&
       this.props.loginData.status === status.SUCCESS &&
       this.props.loginData.data
-    
+
     ) {
 
-     
-   
-      if(this.props.loginData.data.token)
-      {
+
+
+      if (this.props.loginData.data.token) {
         this.setState({
           mobileNumber: "",
           password: "",
@@ -88,15 +87,15 @@ class Signin extends Component {
         localStorage.setItem("login", JSON.stringify(this.props.loginData.data));
         ErrorMessages.success("Logged In Successfully");
         this.props.navigate("/");
-      }else {
+      } else {
         ErrorMessages.error(this.props.loginData.data.response?.data?.message);
       }
-      
+
       // this.props.getAllAddress({
       //   userId: this.props.loginData.data.userId,
       // })
     }
-   
+
 
   }
 
@@ -256,6 +255,9 @@ class Signin extends Component {
 
                 <Box marginTop={"15px"}>
                   New User? <Link to={"/signup"}>Sign up</Link>
+                </Box>
+                <Box marginTop={"15px"} onClick={() => this.props.navigate("/forgot-password")}>
+                  Forgot Password
                 </Box>
                 {/* <Button
                                     variant="contained"

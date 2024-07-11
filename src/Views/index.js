@@ -10,6 +10,7 @@ const ProductDetails = lazy(() =>
 const MyCart = lazy(() => import("./../Views/PostLogin/MyCart"));
 const SignIn = lazy(() => import("./../Views/PreLogin/SignIn"));
 const SignUp = lazy(() => import("./../Views/PreLogin/signUp"));
+const Forgot = lazy(() => import("./../Views/PreLogin/ForgotPassword"));
 const Address = lazy(() =>
   import("./../Views/PostLogin/MyCart/components/address")
 );
@@ -76,7 +77,9 @@ const Views = () => {
             </>
           )}
 
-          {/* Routes for authenticated and unauthenticated users */}
+
+
+          <Route exact path={`/forgot-password`} element={<Forgot />} />
           <Route exact path={`/`} element={<Home />} />
           <Route exact path={`/category`} element={<Category />} />
           <Route
