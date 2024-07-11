@@ -307,6 +307,7 @@ class Header extends Component {
           </Container>
         </Box>
         {![
+          "/myCart",
           "/myCart/address",
           "/myCart/address/order-details",
           "/myCart/address/add-new-address",

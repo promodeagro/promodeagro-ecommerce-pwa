@@ -48,6 +48,13 @@
         margin-right: 0;
       }
 
+      .image {
+        cursor: pointer;
+        img {
+          max-height: 100px;
+        }
+      }
+
       .name {
         display: flex;
         width: 100%;
