@@ -55,17 +55,31 @@ class ProductDetails extends Component {
       id: this.props.params.id,
       productItem: {},
       itemQuantity: null,
-      isUpdateIncrease: null
+      isUpdateIncrease: null,
+      recentList: []
     };
   }
   componentDidMount() {
-    console.log(this.props.params.id)
     if (this.props?.prodducDetailsData) {
 
       this.setState({
         productItem: this.props?.prodducDetailsData,
         itemQuantity: parseInt(this.props?.prodducDetailsData?.Quantity)
       })
+      let data = localStorage.getItem("recentviewitems");
+      if (data) {
+        let recentViewList = JSON.parse(data);
+        const isItemInList = recentViewList.some(item => item.id === this.props?.prodducDetailsData.id);
+        if (!isItemInList) {
+          recentViewList.push(this.props?.prodducDetailsData);
+          this.setState({
+            recentList: recentViewList
+          })
+          localStorage.setItem("recentviewitems", JSON.stringify(recentViewList));
+        }
+      } else {
+        localStorage.setItem("recentviewitems", JSON.stringify([this.props?.prodducDetailsData]));
+      }
     }
 
 
@@ -686,7 +700,10 @@ class ProductDetails extends Component {
             </Grid>
           </Box>
         </Container>
+
         <RecentlyViewedItems />
+
+
       </Box>
     );
   }
