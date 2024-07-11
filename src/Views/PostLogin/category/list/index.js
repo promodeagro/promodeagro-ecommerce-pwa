@@ -159,7 +159,7 @@ class List extends Component {
                 this.props.navigate(`/product-details/${item.id}`)
               }
               }>
-              <Link>{item.name}</Link>
+              <Link to={`/product-details/${item.id}`}>{item.name}</Link>
             </Box>
             <Box className="price-ratting">
               <Box className="price">

@@ -175,7 +175,7 @@ class FeaturedProducts extends Component {
                 let itemId = cartList?.find((x) => x.ProductId === item.id);
                 return (
                   <Box className="product-box" key={index}>
-                    <Box className="sale">Sale 50%</Box>
+                    <Box className="sale">Sale {item.savingsPercentage}%</Box>
                     <Box className="icon">
                       <TurnedInNotOutlinedIcon />
                     </Box>
@@ -192,7 +192,7 @@ class FeaturedProducts extends Component {
                       <img src={item?.image ? item?.image : noImage} alt="" />
                       {/* </Link> */}
                     </Box>
-                    <Box onClick={() => {
+                    <Box className="name" onClick={() => {
                       let data = _.cloneDeep(item)
                       data.Quantity = itemId?.Quantity ? itemId?.Quantity : 0
                       this.props.productDetailsData(data);
