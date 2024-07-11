@@ -8,7 +8,6 @@ import {
   IconButton,
   Grid,
   FormControlLabel,
-  Checkbox,
   Button,
   Modal,
   Tabs,
@@ -16,27 +15,15 @@ import {
   Divider,
   RadioGroup,
   Radio,
-  TextField,
   CircularProgress,
-  Typography,
 } from "@mui/material";
-import LoadingButton from "@mui/lab/LoadingButton";
-import { withRouter } from "react-router-dom";
-import productImg from "../../../../../assets/img/product-img.png";
+import _ from "lodash";
+import { productDetailsData } from "../../../../../Redux/AllProducts/AllProductSlice";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import InfoIcon from "@mui/icons-material/Info";
 import CloseIcon from "@mui/icons-material/Close";
 import { Link } from "react-router-dom";
-import cardTypeImg1 from "../../../../../assets/img/visa-logo.png";
-import cardTypeImg2 from "../../../../../assets/img/stripe.png";
-import cardTypeImg3 from "../../../../../assets/img/mastercard.png";
-import cashOnDeliveryImg from "../../../../../assets/img/cash.png";
-import paypalImg from "../../../../../assets/img/pay-pal.png";
-import upiImg1 from "../../../../../assets/img/amazon-pay.png";
-import upiImg2 from "../../../../../assets/img/g-pay.png";
-import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import AllAddress from "./conponents/allAddress";
 import { connect } from "react-redux";
 import status from "../../../../../Redux/Constants";
@@ -94,8 +81,15 @@ class Address extends Component {
       let cartListData = [];
       for (let i = 0; i < this.props.cartItems.data.items.length; i++) {
         let data = {
-          productId: this.props.cartItems.data.items[i].ProductId,
-          quantity: this.props.cartItems.data.items[i].Quantity,
+          mrp: this.props.cartItems.data.items[i].Mrp,
+          price: this.props.cartItems.data.items[i].Price,
+          id: this.props.cartItems.data.items[i].ProductId,
+          Quantity: this.props.cartItems.data.items[i].Quantity,
+          savingsPercentage: this.props.cartItems.data.items[i].Savings,
+          subtotal: this.props.cartItems.data.items[i].Subtotal,
+          userId: this.props.cartItems.data.items[i].UserId,
+          image: this.props.cartItems.data.items[i].productImage,
+          name: this.props.cartItems.data.items[i].productName,
         };
         cartListData.push(data);
       }
@@ -214,24 +208,34 @@ class Address extends Component {
                     <Box className="delivery-inner-box">
                       <Box className="d-flex align-items-center flex-wrap">
                         {cartList.length &&
-                          cartList.map((item) => {
+                          cartList.slice(0, 4).map((item) => {
+                            let itemId = cartList?.find(
+                              (x) => x.ProductId === item.id
+                            );
                             return (
-                              <Box className="product-img-box">
-                                <img src={productImg} alt="" />
+                              <Box
+                                className="product-img-box"
+                                onClick={() => {
+                                  let cartList = _.cloneDeep(item);
+                                  cartList.Quantity = itemId?.Quantity
+                                    ? itemId?.Quantity
+                                    : 0;
+                                  this.props.productDetailsData(cartList);
+                                  this.props.navigate(
+                                    `/product-details/${item.id}`
+                                  );
+                                }}
+                              >
+                                <img src={item.image} alt="" />
                               </Box>
                             );
                           })}
-
-                        {/* <Box className="product-img-box">
-                          <img src={productImg} alt="" />
-                        </Box>
-                        <Box className="product-img-box">
-                          <img src={productImg} alt="" />
-                        </Box> */}
                         <Box className="view-all-img-box">
-                          <span className="d-block">
-                            View all {cartList.length} items
-                          </span>
+                          <Link to={"/myCart"}>
+                            <span className="d-block">
+                              View all {cartList.length} items
+                            </span>
+                          </Link>
                         </Box>
                       </Box>
                       <Box
@@ -305,32 +309,21 @@ class Address extends Component {
                 <Grid item xs={12} lg={4} md={12} sm={12}>
                   <Box className="order-summary-container">
                     <h3 className="order-title">Order Summary</h3>
-                    {cartList.length &&
-                      cartList.map((item) => {
-                        return (
-                          <Box className="product-list d-flex align-items-center justify-content-between">
-                            <span className="d-block product-name">
-                              Green chilli
-                            </span>
-                            <span className="d-block product-weight">
-                              x {item?.Quantity}
-                            </span>
-                          </Box>
-                        );
-                      })}
-
-                    {/* <Box className="product-list d-flex align-items-center justify-content-between">
-                      <span className="d-block product-name">Tomato</span>
-                      <span className="d-block product-weight">x 2 Pack</span>
+                    <Box className="order-summary">
+                      {cartList.length &&
+                        cartList.map((item) => {
+                          return (
+                            <Box className="product-list d-flex align-items-center justify-content-between">
+                              <span className="d-block product-name">
+                                {item.name}
+                              </span>
+                              <span className="d-block product-weight">
+                                x {item?.Quantity}
+                              </span>
+                            </Box>
+                          );
+                        })}
                     </Box>
-                    <Box className="product-list d-flex align-items-center justify-content-between">
-                      <span className="d-block product-name">Capsicum</span>
-                      <span className="d-block product-weight">x 2 Piece</span>
-                    </Box>
-                    <Box className="product-list d-flex align-items-center justify-content-between">
-                      <span className="d-block product-name">Green Apple</span>
-                      <span className="d-block product-weight">x 2 Kg</span>
-                    </Box> */}
                     <Box className="total-amount d-flex align-items-center justify-content-between">
                       <span className="d-block heading">
                         Total Amount Payable{" "}
@@ -618,7 +611,6 @@ function mapStateToProps(state) {
   const { allAddress, selectedAddressData } = state.alladdress;
   const { loginData } = state.login;
   const { placeOrderData } = state.placeorder;
-
   return {
     cartItems,
     loginData,
@@ -631,6 +623,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
   fetchCartItems,
   placeOrder,
+  productDetailsData,
 };
 
 export default connect(
