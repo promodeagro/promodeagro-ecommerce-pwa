@@ -30,11 +30,16 @@ import returnIcon from "../../../assets/img/return-icon.png";
 import organicIcon from "../../../assets/img/organic-icon.png";
 import searchIcon from "../../../assets/img/search-icon.png";
 import reviewImg from "../../../assets/img/review-img.png";
-import { connect } from "react-redux"
+import { connect } from "react-redux";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import status from "../../../Redux/Constants";
 import { allProducts } from "../../../Redux/AllProducts/AllProductthunk";
-import { addItemToCart, fetchCartItems, updateItemToCart, deleteItemToCart } from "../../../Redux/Cart/CartThunk";
+import {
+  addItemToCart,
+  fetchCartItems,
+  updateItemToCart,
+  deleteItemToCart,
+} from "../../../Redux/Cart/CartThunk";
 import { loginDetails } from "Views/Utills/helperFunctions";
 const labels = {
   0.5: "0.5 out of 5",
@@ -57,31 +62,35 @@ class ProductDetails extends Component {
       productItem: {},
       itemQuantity: null,
       isUpdateIncrease: null,
-      recentList: []
+      recentList: [],
     };
   }
   componentDidMount() {
     if (this.props?.prodducDetailsData) {
-
       this.setState({
         productItem: this.props?.prodducDetailsData,
-        itemQuantity: parseInt(this.props?.prodducDetailsData?.Quantity)
-      })
+        itemQuantity: parseInt(this.props?.prodducDetailsData?.Quantity),
+      });
       let data = localStorage.getItem("recentviewitems");
       if (data) {
         let recentViewList = JSON.parse(data);
-        const isItemInList = recentViewList.some(item => item.id === this.props?.prodducDetailsData.id);
+        const isItemInList = recentViewList.some(
+          (item) => item.id === this.props?.prodducDetailsData.id
+        );
         if (!isItemInList) {
-          recentViewList.unshift(this.props?.prodducDetailsData)
-          localStorage.setItem("recentviewitems", JSON.stringify(recentViewList.slice(0, 3)));
+          recentViewList.unshift(this.props?.prodducDetailsData);
+          localStorage.setItem(
+            "recentviewitems",
+            JSON.stringify(recentViewList.slice(0, 3))
+          );
         }
       } else {
-        localStorage.setItem("recentviewitems", JSON.stringify([this.props?.prodducDetailsData]));
+        localStorage.setItem(
+          "recentviewitems",
+          JSON.stringify([this.props?.prodducDetailsData])
+        );
       }
     }
-
-
-
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -92,16 +101,13 @@ class ProductDetails extends Component {
       this.props.cartItems.status === status.SUCCESS &&
       this.props.cartItems.data
     ) {
-
-
-
-      let data = this.props.cartItems.data.items.find(x => x.ProductId === this.state.id)
+      let data = this.props.cartItems.data.items.find(
+        (x) => x.ProductId === this.state.id
+      );
 
       this.setState({
-        itemQuantity: data?.Quantity
-      })
-
-
+        itemQuantity: data?.Quantity,
+      });
     }
 
     if (
@@ -112,7 +118,6 @@ class ProductDetails extends Component {
       this.props.fetchCartItems({
         userId: items.userId,
       });
-
     }
 
     if (
@@ -123,7 +128,6 @@ class ProductDetails extends Component {
       this.props.fetchCartItems({
         userId: items.userId,
       });
-
     }
 
     if (
@@ -132,15 +136,10 @@ class ProductDetails extends Component {
       this.props.deleteItems.data
     ) {
       this.setState({
-        itemQuantity: 0
-      })
-
+        itemQuantity: 0,
+      });
     }
-
-
   }
-
-
 
   handleAddToCart(id) {
     const items = loginDetails();
@@ -152,9 +151,8 @@ class ProductDetails extends Component {
         quantity: "1",
       });
     } else if (!items?.userId) {
-      this.props.navigate("/signin")
+      this.props.navigate("/signin");
     }
-
   }
 
   handleQuantityChange(id, increment, productQuantity) {
@@ -181,16 +179,12 @@ class ProductDetails extends Component {
     }
   }
 
-
-
-
-
   render() {
-    const { productItem, itemQuantity, isUpdateIncrease } = this.state
+    const { productItem, itemQuantity, isUpdateIncrease } = this.state;
 
     const value = 4.5;
     return (
-      <Box className="main-container"   >
+      <Box className="main-container">
         <Container>
           <Box className="share-icons-container">
             <span>Share on</span>
@@ -266,7 +260,8 @@ class ProductDetails extends Component {
                   </Box>
                   <Box className="product-price">
                     <Box className="mrp">
-                      MRP <img src={mdiRupee} alt="" /> <span>{productItem?.mrp}</span>
+                      MRP <img src={mdiRupee} alt="" />{" "}
+                      <span>{productItem?.mrp}</span>
                     </Box>
                     <Box className="price">
                       <img src={rupeeIcon} alt="" /> {productItem?.price}
@@ -279,18 +274,28 @@ class ProductDetails extends Component {
                   <Box className="product-cart-buttons">
                     <Grid container spacing={2}>
                       <Grid item xs={12} sm={6} md={6} lg={8}>
-
-                        {parseInt(itemQuantity) != 0 ?
+                        {parseInt(itemQuantity) != 0 ? (
                           <Box className="number-input-container">
                             <Box
                               className="symbol"
                               onClick={() => {
-                                this.handleQuantityChange(this.props.params.id, -1, Number(itemQuantity))
+                                this.handleQuantityChange(
+                                  this.props.params.id,
+                                  -1,
+                                  Number(itemQuantity)
+                                );
                               }}
                             >
-                              {(this.props.deleteItems.status === status.IN_PROGRESS && !isUpdateIncrease) ||
-                                (this.props.updateItems.status === status.IN_PROGRESS && !isUpdateIncrease) ? (
-                                <CircularProgress className="common-loader plus-icon" size={24} />
+                              {(this.props.deleteItems.status ===
+                                status.IN_PROGRESS &&
+                                !isUpdateIncrease) ||
+                              (this.props.updateItems.status ===
+                                status.IN_PROGRESS &&
+                                !isUpdateIncrease) ? (
+                                <CircularProgress
+                                  className="common-loader plus-icon"
+                                  size={24}
+                                />
                               ) : (
                                 "-"
                               )}
@@ -300,51 +305,58 @@ class ProductDetails extends Component {
                             <Box
                               className="symbol"
                               onClick={() => {
-                                this.handleQuantityChange(this.props.params.id, 1, Number(itemQuantity))
+                                this.handleQuantityChange(
+                                  this.props.params.id,
+                                  1,
+                                  Number(itemQuantity)
+                                );
                               }}
                             >
                               {this.props.updateItems.status ===
                                 status.IN_PROGRESS &&
-
-                                this.state.isUpdateIncrease ? (
+                              this.state.isUpdateIncrease ? (
                                 <CircularProgress className="common-loader plus-icon" />
                               ) : (
                                 "+"
                               )}
                             </Box>
                           </Box>
-                          :
-
-                          <Button className="add-cart-btn" variant="contained"
+                        ) : (
+                          <Button
+                            className="add-cart-btn"
+                            variant="contained"
                             disabled={
                               this.props.additems.status === status.IN_PROGRESS
-
                             }
-                            onClick={() => this.handleAddToCart(productItem?.id)}
+                            onClick={() =>
+                              this.handleAddToCart(productItem?.id)
+                            }
                             endIcon={
-                              this.props.additems.status === status.IN_PROGRESS ? (
+                              this.props.additems.status ===
+                              status.IN_PROGRESS ? (
                                 <CircularProgress className="common-loader " />
                               ) : (
                                 <></>
                               )
                             }
-
                           >
-                            Add to Cart <ShoppingCartOutlinedIcon />
+                            Add to Cart{" "}
+                            <ShoppingCartOutlinedIcon
+                              style={{ marginLeft: "10px" }}
+                            />
                           </Button>
-
-                        }
-
-
+                        )}
                       </Grid>
                       <Grid item xs={12} sm={6} md={6} lg={4}>
-                        <Button className="view-cart-btn" variant="outlined"
+                        <Button
+                          className="view-cart-btn"
+                          variant="outlined"
                           onClick={() => {
-                            const items = loginDetails()
+                            const items = loginDetails();
                             if (items?.userId) {
-                              this.props.navigate("/myCart")
+                              this.props.navigate("/myCart");
                             } else {
-                              this.props.navigate("/signin")
+                              this.props.navigate("/signin");
                             }
                           }}
                         >
@@ -709,17 +721,15 @@ class ProductDetails extends Component {
         </Container>
 
         <RecentlyViewedItems />
-
-
       </Box>
     );
   }
 }
 
-
 function mapStateToProps(state) {
   const { homeData } = state.home;
-  const { allProductsData, shopCategoryData, prodducDetailsData } = state.allproducts;
+  const { allProductsData, shopCategoryData, prodducDetailsData } =
+    state.allproducts;
   const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
   return {
     allProductsData,
@@ -729,7 +739,7 @@ function mapStateToProps(state) {
     cartItems,
     updateItems,
     deleteItems,
-    shopCategoryData
+    shopCategoryData,
   };
 }
 
@@ -741,7 +751,6 @@ const mapDispatchToProps = {
   deleteItemToCart,
   // setShopByCategory
 };
-
 
 export default connect(
   mapStateToProps,

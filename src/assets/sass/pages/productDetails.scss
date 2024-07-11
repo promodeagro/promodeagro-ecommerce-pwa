@@ -287,14 +287,10 @@
         border-radius: 5px;
         text-transform: capitalize;
         background-color: #1f9151;
+        border: 1px solid #1f9151;
         &.Mui-disabled {
           background-color: #ffffff;
           color: rgba(0, 0, 0, 0.6) !important;
-          border: 1px solid rgba(0, 0, 0, 0.12) !important;
-        }
-
-        svg {
-          margin-left: 10px;
         }
       }
 
