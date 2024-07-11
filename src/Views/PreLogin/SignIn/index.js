@@ -72,26 +72,31 @@ class Signin extends Component {
     if (
       prevProps.loginData.status !== this.props.loginData.status &&
       this.props.loginData.status === status.SUCCESS &&
-      this.props.loginData.data &&
-      this.props.loginData.data.token
+      this.props.loginData.data
+    
     ) {
 
-      localStorage.setItem("login", JSON.stringify(this.props.loginData.data));
-      this.setState({
-        mobileNumber: "",
-        password: "",
-        isSubmit: false,
-      });
-      ErrorMessages.success("Logged In Successfully");
-      this.props.navigate("/");
+     
+   
+      if(this.props.loginData.data.token)
+      {
+        this.setState({
+          mobileNumber: "",
+          password: "",
+          isSubmit: false,
+        });
+        localStorage.setItem("login", JSON.stringify(this.props.loginData.data));
+        ErrorMessages.success("Logged In Successfully");
+        this.props.navigate("/");
+      }else {
+        ErrorMessages.error(this.props.loginData.data.response?.data?.message);
+      }
+      
       // this.props.getAllAddress({
       //   userId: this.props.loginData.data.userId,
       // })
     }
-    else if (this.props.loginData.data && !this.props.loginData.data.token) {
-
-      ErrorMessages.error(this.props.loginData.data.response?.data?.message);
-    }
+   
 
   }
 
