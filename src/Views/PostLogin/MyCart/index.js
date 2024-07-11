@@ -37,9 +37,12 @@ class MyCart extends Component {
 
   componentDidMount() {
     const items = loginDetails();
-    this.props.fetchCartItems({
-      userId: items.userId,
-    });
+    if (items?.userId) {
+      this.props.fetchCartItems({
+        userId: items.userId,
+      });
+    }
+
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -228,10 +231,10 @@ class MyCart extends Component {
                                   status.IN_PROGRESS &&
                                   item.ProductId === dataId &&
                                   !isUpdateIncrease) ||
-                                (this.props.updateItems.status ===
-                                  status.IN_PROGRESS &&
-                                  item.ProductId === dataId &&
-                                  !isUpdateIncrease) ? (
+                                  (this.props.updateItems.status ===
+                                    status.IN_PROGRESS &&
+                                    item.ProductId === dataId &&
+                                    !isUpdateIncrease) ? (
                                   <CircularProgress
                                     className="common-loader plus-icon"
                                     size={24}
@@ -255,8 +258,8 @@ class MyCart extends Component {
                               >
                                 {this.props.updateItems.status ===
                                   status.IN_PROGRESS &&
-                                item.ProductId === dataId &&
-                                isUpdateIncrease ? (
+                                  item.ProductId === dataId &&
+                                  isUpdateIncrease ? (
                                   <CircularProgress
                                     className="common-loader plus-icon"
                                     size={24}

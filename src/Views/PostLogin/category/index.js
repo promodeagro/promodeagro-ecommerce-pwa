@@ -37,7 +37,7 @@ class Category extends Component {
     let items = loginDetails();
     if (items?.userId) {
       this.props.fetchCartItems({
-        userId: items.userId,
+        userId: items?.userId,
       });
     }
 

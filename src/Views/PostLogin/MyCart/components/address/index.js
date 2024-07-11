@@ -66,10 +66,12 @@ class Address extends Component {
     }
 
     const items = loginDetails();
+    if (items?.userId) {
+      this.props.fetchCartItems({
+        userId: items?.userId,
+      });
+    }
 
-    this.props.fetchCartItems({
-      userId: items.userId,
-    });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -293,7 +295,7 @@ class Address extends Component {
                           }
                           endIcon={
                             this.props.placeOrderData.status ===
-                            status.IN_PROGRESS ? (
+                              status.IN_PROGRESS ? (
                               <CircularProgress className="common-loader" />
                             ) : (
                               <></>

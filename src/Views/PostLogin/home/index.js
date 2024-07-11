@@ -28,10 +28,10 @@ class Home extends Component {
     if (items?.userId) {
 
       this.props.fetchCartItems({
-        userId: items.userId,
+        userId: items?.userId,
       });
       this.props.getAllAddress({
-        userId: items.userId,
+        userId: items?.userId,
       })
     }
   }
