@@ -110,7 +110,7 @@ const AllAddress = (props) => {
   };
 
   const handleEdit = (address) => {
-    navigate("/myCart/address/updated-address", {
+    navigate("/mycart/address/updated-address", {
       state: { address },
     });
   };
@@ -229,7 +229,7 @@ const AllAddress = (props) => {
             </>
           )}
           <Grid item xs={12} lg={4} md={12} sm={12}>
-            <Link to={"/myCart/address/add-new-address"}>
+            <Link to={"/mycart/address/add-new-address"}>
               <Button
                 variant="outlined"
                 fullWidth
@@ -249,7 +249,7 @@ const AllAddress = (props) => {
             onClick={() => {
               props.handleTabs(1, selectedAddress);
               localStorage.setItem("selectedTab", 1);
-              navigate("/myCart/address/order-details");
+              navigate("/mycart/address/order-details");
               // here route change of page 1
             }}
           >

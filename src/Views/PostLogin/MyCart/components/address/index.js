@@ -57,8 +57,8 @@ class Address extends Component {
     if (
       (tab &&
         this.state.activeStep != tab &&
-        window.location.pathname == "/myCart/address/order-details") ||
-      window.location.pathname == "/myCart/payment-details"
+        window.location.pathname == "/mycart/address/order-details") ||
+      window.location.pathname == "/mycart/payment-details"
     ) {
       this.setState({
         activeStep: parseInt(tab),
@@ -109,8 +109,8 @@ class Address extends Component {
       this.props.placeOrderData.data
     ) {
       localStorage.removeItem("selectedTab");
-      // /myCart/address/order-placed
-      this.props.navigate("/myCart/address/order-placed");
+      // /mycart/address/order-placed
+      this.props.navigate("/mycart/address/order-placed");
     }
   }
 
@@ -177,7 +177,7 @@ class Address extends Component {
                       variant="outlined"
                       className="outline-common-btn"
                       onClick={() => {
-                        this.props.navigate("/myCart/address");
+                        this.props.navigate("/mycart/address");
                       }}
                     >
                       Change
@@ -233,7 +233,7 @@ class Address extends Component {
                             );
                           })}
                         <Box className="view-all-img-box">
-                          <Link to={"/myCart"}>
+                          <Link to={"/mycart"}>
                             <span className="d-block">
                               View all {cartList.length} items
                             </span>
@@ -275,7 +275,7 @@ class Address extends Component {
                           className="common-btn proceed-payment-btn"
                           onClick={() => {
                             localStorage.setItem("selectedTab", 2);
-                            this.props.navigate("/myCart/payment-details");
+                            this.props.navigate("/mycart/payment-details");
 
                             this.setState({
                               activeStep: 2,
@@ -506,7 +506,7 @@ class Address extends Component {
             //       </Box>
             //     </Box>
             //     <Box className="w-100 d-flex justify-content-end">
-            //       {/* <Link to={"/myCart/address/order-placed"}> */}
+            //       {/* <Link to={"/mycart/address/order-placed"}> */}
             //       <Button
             //         variant="contained"
             //         fullWidth

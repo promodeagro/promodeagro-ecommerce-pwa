@@ -127,7 +127,7 @@ class Signin extends Component {
               onChange={this.handleChange}
               className="otp-input-container"
             />
-            <Link to={"/myCart"}>
+            <Link to={"/mycart"}>
               <Button
                 variant="contained"
                 fullWidth

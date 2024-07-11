@@ -111,7 +111,7 @@ const AddNewAddress = (props) => {
         phoneNumber: "",
         zipCode: "",
       });
-      navigate("/myCart/address");
+      navigate("/mycart/address");
       ErrorMessages.success("Add Address Successfully");
     }
   }, [postAddressStatus, dispatch, navigate]);
@@ -274,7 +274,7 @@ const AddNewAddress = (props) => {
                 )}
               </Grid>
               <Grid item xs={6} lg={6} md={6} sm={6} marginTop={"25px"}>
-                <Link to={"/myCart/address"}>
+                <Link to={"/mycart/address"}>
                   <Button
                     variant="outlined"
                     fullWidth

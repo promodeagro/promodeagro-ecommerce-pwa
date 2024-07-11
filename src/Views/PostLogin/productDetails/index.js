@@ -354,7 +354,7 @@ class ProductDetails extends Component {
                           onClick={() => {
                             const items = loginDetails();
                             if (items?.userId) {
-                              this.props.navigate("/myCart");
+                              this.props.navigate("/mycart");
                             } else {
                               this.props.navigate("/signin");
                             }

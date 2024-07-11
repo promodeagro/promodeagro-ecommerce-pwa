@@ -112,7 +112,7 @@ const UpdatedAddress = ({ updateAddress, updateAddressState }) => {
         zipCode: "",
       });
       setApiLoader(false);
-      navigate("/myCart/address/");
+      navigate("/mycart/address/");
       ErrorMessages.success("Address Successfully Update");
     }
   }, [updateAddressState]);
@@ -275,7 +275,7 @@ const UpdatedAddress = ({ updateAddress, updateAddressState }) => {
                 )}
               </Grid>
               <Grid item xs={6} lg={6} md={6} sm={6} marginTop={"25px"}>
-                <Link to={"/myCart/address"}>
+                <Link to={"/mycart/address"}>
                   <Button
                     variant="outlined"
                     fullWidth

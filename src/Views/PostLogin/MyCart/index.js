@@ -133,7 +133,7 @@ class MyCart extends Component {
                       ₹ {this.props?.cartItems?.data?.savings}
                     </strong>
                   </Box>
-                  <Link to={"/myCart/address"} className="checkout-btn">
+                  <Link to={"/mycart/address"} className="checkout-btn">
                     <Button
                       variant="contained"
                       fullWidth
