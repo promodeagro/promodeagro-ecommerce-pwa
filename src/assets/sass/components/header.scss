@@ -172,6 +172,18 @@
         }
       }
     }
+    .back-shopping {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      a{
+        display: inline-flex;
+        align-items: center;
+        svg {
+          margin-top: -2px;
+        }
+      }
+    }
   }
 
   .header-bottom-container {

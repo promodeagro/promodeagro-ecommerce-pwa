@@ -13,6 +13,7 @@ import {
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import Button from "@mui/material/Button";
+import ChevronLeftOutlinedIcon from "@mui/icons-material/ChevronLeftOutlined";
 import Logo from "../../assets/img/logo.png";
 import supportIcon from "../../assets/img/support-icon.png";
 import deliverIcon from "../../assets/img/deliver-icon.png";
@@ -172,7 +173,7 @@ class Header extends Component {
     const path = window.location.pathname;
 
     // console.log(path);
-    
+
     return (
       <div className="header">
         <Box className="header-top-container">
@@ -248,6 +249,15 @@ class Header extends Component {
               </Grid>
               {!matches && (
                 <Grid item xs={12} md={8}>
+                  {["/my-order"].includes(path) ? (
+                    <Box className="back-shopping">
+                      <Link to="/">
+                        <ChevronLeftOutlinedIcon /> Back to shopping
+                      </Link>
+                    </Box>
+                  ) : (
+                    <></>
+                  )}
                   {["/", "/signin", "/signup"].includes(path) ? (
                     <Box className="categories" justifyContent={"flex-end"}>
                       <ul>
