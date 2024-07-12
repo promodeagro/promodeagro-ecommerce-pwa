@@ -151,11 +151,10 @@ const AllAddress = (props) => {
                   return (
                     <Grid key={index} item xs={12} lg={4} md={6} sm={6}>
                       <Box
-                        className={`address-card-container ${
-                          item.addressId == selectedAddress.addressId
-                            ? "active"
-                            : ""
-                        }`}
+                        className={`address-card-container ${item.addressId == selectedAddress.addressId
+                          ? "active"
+                          : ""
+                          }`}
                         onClick={() => handleSelectedAddress(item)}
                       >
                         {item.addressId == selectedAddress.addressId ? (
@@ -241,21 +240,24 @@ const AllAddress = (props) => {
             </Link>
           </Grid>
         </Grid>
-        <Box className="d-flex justify-content-end w-100">
-          <Button
-            variant="contained"
-            fullWidth
-            className="common-btn proceed-btn"
-            onClick={() => {
-              props.handleTabs(1, selectedAddress);
-              localStorage.setItem("selectedTab", 1);
-              navigate("/mycart/address/order-details");
-              // here route change of page 1
-            }}
-          >
-            Proceed Next
-          </Button>
-        </Box>
+        {props?.cartListLength > 0 ?
+          <Box className="d-flex justify-content-end w-100">
+            <Button
+              variant="contained"
+              fullWidth
+              className="common-btn proceed-btn"
+              onClick={() => {
+                props.handleTabs(1, selectedAddress);
+                localStorage.setItem("selectedTab", 1);
+                navigate("/mycart/address/order-details");
+                // here route change of page 1
+              }}
+            >
+              Proceed Next
+            </Button>
+          </Box>
+          : <></>}
+
       </Box>
       <Dialog
         open={open}

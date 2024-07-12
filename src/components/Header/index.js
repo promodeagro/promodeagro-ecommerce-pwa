@@ -307,7 +307,7 @@ class Header extends Component {
                       "/mycart/address",
                       "/mycart/address/add-new-address",
                       "/mycart/address/updated-address",
-                      "/mycart/address/order-placed",
+                      "/mycart/address/order-placed/:id",
                       "/my-order",
                     ].includes(path) && this.renderBreadcrumb()
                   )}
@@ -322,7 +322,7 @@ class Header extends Component {
           "/mycart/address/order-details",
           "/mycart/address/add-new-address",
           "/mycart/address/updated-address",
-          "/mycart/address/order-placed",
+          "/mycart/address/order-placed/:id",
           "/my-order",
         ].includes(path) && (
           <Box className="header-bottom-container">

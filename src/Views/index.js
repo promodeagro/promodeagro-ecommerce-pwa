@@ -71,7 +71,7 @@ const Views = () => {
                 element={<Navigate to="/" replace />}
               />
               <Route
-                path={`/mycart/address/order-placed `}
+                path={`/mycart/address/order-placed/:id`}
                 element={<Navigate to="/" replace />}
               />
             </>
@@ -92,6 +92,7 @@ const Views = () => {
           <Route exact path={`/signup`} element={<SignUp />} />
           <Route exact path={`/mycart/address`} element={<Address />} />
           <Route
+          exact
             path={`/mycart/address/order-details`}
             element={<OrderDetails />}
           />
@@ -108,7 +109,7 @@ const Views = () => {
           />
           <Route
             exact
-            path={`/mycart/address/order-placed`}
+            path={`/mycart/address/order-placed/:id`}
             element={<OrderPlaced />}
           />
           <Route exact path={`/my-order`} element={<MyOrder />} />

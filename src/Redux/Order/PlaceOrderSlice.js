@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
     placeOrder,
+    fetchAllorders,
+    fetchOrderById
 } from "./PlaceOrderThunk";
 import status from "../Constants";
 
@@ -10,12 +12,18 @@ const PlaceOrderSlice = createSlice({
         placeOrderData: {
             status: null,
         },
-        
+        allOrdersData: {
+            status: null
+        },
+        orderByIdData: {
+            status: null
+        }
+
 
     },
     reducers: {
-    
-     
+
+
     },
     extraReducers: (builder) => {
         builder
@@ -40,6 +48,56 @@ const PlaceOrderSlice = createSlice({
                 return {
                     ...state,
                     placeOrderData: {
+                        status: status.FAILURE,
+                    },
+                };
+            })
+            .addCase(fetchAllorders.pending.toString(), (state, action) => {
+                return {
+                    ...state,
+                    allOrdersData: {
+                        status: status.IN_PROGRESS,
+                    },
+                };
+            })
+            .addCase(fetchAllorders.fulfilled.toString(), (state, { payload }) => {
+                return {
+                    ...state,
+                    allOrdersData: {
+                        status: status.SUCCESS,
+                        data: payload,
+                    },
+                };
+            })
+            .addCase(fetchAllorders.rejected.toString(), (state, action) => {
+                return {
+                    ...state,
+                    allOrdersData: {
+                        status: status.FAILURE,
+                    },
+                };
+            })
+            .addCase(fetchOrderById.pending.toString(), (state, action) => {
+                return {
+                    ...state,
+                    orderByIdData: {
+                        status: status.IN_PROGRESS,
+                    },
+                };
+            })
+            .addCase(fetchOrderById.fulfilled.toString(), (state, { payload }) => {
+                return {
+                    ...state,
+                    orderByIdData: {
+                        status: status.SUCCESS,
+                        data: payload,
+                    },
+                };
+            })
+            .addCase(fetchOrderById.rejected.toString(), (state, action) => {
+                return {
+                    ...state,
+                    orderByIdData: {
                         status: status.FAILURE,
                     },
                 };
