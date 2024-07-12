@@ -348,216 +348,6 @@
       }
     }
 
-    .search-box {
-      display: inline-flex;
-      width: 100%;
-
-      .search-container {
-        width: 100%;
-        position: relative;
-        z-index: 100;
-
-        .search {
-          width: 100%;
-
-          input {
-            padding-top: 15px;
-            padding-bottom: 12px;
-          }
-        }
-
-        .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root {
-          background-color: #ffffff;
-          &.Mui-focused {
-            .MuiOutlinedInput-notchedOutline {
-              border-color: #1f9151;
-            }
-          }
-        }
-
-        .search-results {
-          display: none;
-          flex-wrap: wrap;
-          width: 100%;
-          position: absolute;
-          top: 55px;
-          left: 0;
-          overflow: hidden;
-          overflow-y: auto;
-          max-height: 350px;
-          padding-left: 15px;
-          padding-right: 15px;
-          border-radius: 3px;
-          background-color: #ffffff;
-          border: 1px solid #d2cfcf;
-          box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.2);
-          .result-product {
-            display: flex;
-            width: 100%;
-            padding-top: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #d2cfcf;
-            &:last-child {
-              border-bottom: none;
-            }
-            .image {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              width: 100%;
-              height: 80px;
-              cursor: pointer;
-
-              img {
-                max-height: 80px;
-              }
-            }
-
-            .name {
-              display: flex;
-              width: 100%;
-
-              a {
-                font-size: 13px;
-                line-height: 18px;
-                color: #535554;
-                font-weight: 400;
-
-                &:hover {
-                  color: #1f9151;
-                }
-              }
-            }
-
-            .price-ratting {
-              display: flex;
-              width: 100%;
-              justify-content: space-between;
-
-              .price {
-                display: inline-flex;
-                font-size: 14px;
-                line-height: 18px;
-                font-weight: 500;
-                color: #1a1a1a;
-                align-items: center;
-
-                img {
-                  max-width: 8px;
-                  height: 12px;
-                  margin-right: 2px;
-                }
-
-                span {
-                  margin-left: 7px;
-                  color: #adadad;
-                  font-weight: 400;
-                  text-decoration: line-through;
-                }
-              }
-
-              .ratting {
-                display: inline-flex;
-                font-size: 14px;
-                line-height: 18px;
-                font-weight: 500;
-                color: #1a1a1a;
-                align-items: center;
-
-                svg {
-                  width: 18px;
-                  margin-right: 3px;
-                  color: #ff8a00;
-                }
-              }
-            }
-
-            .add-cart {
-              display: flex;
-              width: 100%;
-              margin-top: 10px;
-
-              .css-1rwt2y5-MuiButtonBase-root-MuiButton-root {
-                border: 1px solid #1f9151;
-                width: 100%;
-                font-weight: 500;
-                font-size: 14px;
-                line-height: 24px;
-                color: #1f9151;
-                text-transform: capitalize;
-                height: 36px;
-                &.Mui-disabled {
-                  color: rgba(0, 0, 0, 0.26) !important;
-                  border: 1px solid rgba(0, 0, 0, 0.12) !important;
-                }
-              }
-            }
-
-            .number-input-container {
-              display: flex;
-              width: 100%;
-
-              .symbol {
-                width: 33.33%;
-                border: 1px solid #1f9151;
-                background-color: #1f9151;
-                height: 36px;
-                cursor: pointer;
-                font-size: 24px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: #ffffff;
-                border-radius: 4px 0px 0px 4px;
-
-                &:last-child {
-                  border-radius: 0px 4px 4px 0px;
-                }
-              }
-
-              .Number {
-                width: 33.33%;
-                height: 36px;
-                border: 1px solid #1f9151;
-                background-color: #ffffff;
-                font-size: 16px;
-                line-height: 24px;
-                color: #1f9151;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-weight: 500;
-              }
-            }
-            .select {
-              display: flex;
-              width: 100%;
-              font-size: 12px;
-              line-height: 16px;
-              color: #adadad;
-            }
-          }
-          &.active {
-            display: flex;
-          }
-        }
-      }
-
-      .search-results-bg {
-        display: none;
-        position: fixed;
-        left: 0;
-        top: 0;
-        z-index: 10;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.1);
-        &.active {
-          display: block;
-        }
-      }
-    }
-
     .notification {
       padding: 0;
       border: none;
@@ -602,6 +392,215 @@
         color: #ffffff;
         border-radius: 50%;
         background-color: #1f9151;
+      }
+    }
+  }
+  
+  .search-box {
+    display: inline-flex;
+    width: 100%;
+
+    .search-container {
+      width: 100%;
+      position: relative;
+      z-index: 100;
+
+      .search {
+        width: 100%;
+
+        input {
+          padding-top: 15px;
+          padding-bottom: 12px;
+        }
+      }
+
+      .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root {
+        background-color: #ffffff;
+        &.Mui-focused {
+          .MuiOutlinedInput-notchedOutline {
+            border-color: #1f9151;
+          }
+        }
+      }
+    }
+    .search-results {
+      display: none;
+      flex-wrap: wrap;
+      width: 100%;
+      position: absolute;
+      top: 55px;
+      left: 0;
+      overflow: hidden;
+      overflow-y: auto;
+      max-height: 350px;
+      padding-left: 15px;
+      padding-right: 15px;
+      border-radius: 3px;
+      background-color: #ffffff;
+      border: 1px solid #d2cfcf;
+      box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.2);
+      .result-product {
+        display: flex;
+        width: 100%;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #d2cfcf;
+        &:last-child {
+          border-bottom: none;
+        }
+        .image {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          height: 80px;
+          cursor: pointer;
+
+          img {
+            max-height: 80px;
+          }
+        }
+
+        .name {
+          display: flex;
+          width: 100%;
+
+          a {
+            font-size: 13px;
+            line-height: 18px;
+            color: #535554;
+            font-weight: 400;
+
+            &:hover {
+              color: #1f9151;
+            }
+          }
+        }
+
+        .price-ratting {
+          display: flex;
+          width: 100%;
+          justify-content: space-between;
+
+          .price {
+            display: inline-flex;
+            font-size: 14px;
+            line-height: 18px;
+            font-weight: 500;
+            color: #1a1a1a;
+            align-items: center;
+
+            img {
+              max-width: 8px;
+              height: 12px;
+              margin-right: 2px;
+            }
+
+            span {
+              margin-left: 7px;
+              color: #adadad;
+              font-weight: 400;
+              text-decoration: line-through;
+            }
+          }
+
+          .ratting {
+            display: inline-flex;
+            font-size: 14px;
+            line-height: 18px;
+            font-weight: 500;
+            color: #1a1a1a;
+            align-items: center;
+
+            svg {
+              width: 18px;
+              margin-right: 3px;
+              color: #ff8a00;
+            }
+          }
+        }
+
+        .add-cart {
+          display: flex;
+          width: 100%;
+          margin-top: 10px;
+
+          .css-1rwt2y5-MuiButtonBase-root-MuiButton-root {
+            border: 1px solid #1f9151;
+            width: 100%;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 24px;
+            color: #1f9151;
+            text-transform: capitalize;
+            height: 36px;
+            &.Mui-disabled {
+              color: rgba(0, 0, 0, 0.26) !important;
+              border: 1px solid rgba(0, 0, 0, 0.12) !important;
+            }
+          }
+        }
+
+        .number-input-container {
+          display: flex;
+          width: 100%;
+
+          .symbol {
+            width: 33.33%;
+            border: 1px solid #1f9151;
+            background-color: #1f9151;
+            height: 36px;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            border-radius: 4px 0px 0px 4px;
+
+            &:last-child {
+              border-radius: 0px 4px 4px 0px;
+            }
+          }
+
+          .Number {
+            width: 33.33%;
+            height: 36px;
+            border: 1px solid #1f9151;
+            background-color: #ffffff;
+            font-size: 16px;
+            line-height: 24px;
+            color: #1f9151;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+          }
+        }
+        .select {
+          display: flex;
+          width: 100%;
+          font-size: 12px;
+          line-height: 16px;
+          color: #adadad;
+        }
+      }
+      &.active {
+        display: flex;
+      }
+    }
+
+    .search-results-bg {
+      display: none;
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 10;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.1);
+      &.active {
+        display: block;
       }
     }
   }
