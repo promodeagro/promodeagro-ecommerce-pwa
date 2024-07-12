@@ -168,7 +168,6 @@ class MyOrder extends Component {
               {
                 myOrdersList.length > 0 ?
                   myOrdersList.map((item) => {
-                    debugger
                     return <Box key={item?.id}>
                       <Box
                         className="order-status-collapsed"
