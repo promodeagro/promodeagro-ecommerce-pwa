@@ -254,10 +254,25 @@ class MyOrder extends Component {
                               >
 
                                 <IconButton aria-label="arrow">
-                                  {expandedOrderDetails === item ? (
-                                    <KeyboardArrowUpIcon />
+                                  {expandedOrderDetails === item && this.state.expandedOrderId ? (
+                                    <KeyboardArrowUpIcon
+
+                                      onClick={() => {
+                                        this.setState({
+                                          expandedOrderId: ""
+                                        })
+                                      }}
+                                    />
                                   ) : (
-                                    <KeyboardArrowDownIcon/>
+                                    <KeyboardArrowDownIcon
+                                      onClick={() => {
+
+                                        this.setState({
+                                          expandedOrderId: item?.id
+                                        })
+                                      }}
+
+                                    />
                                   )}
                                 </IconButton>
                               </Box>
@@ -265,7 +280,7 @@ class MyOrder extends Component {
                           </Grid>
                         </Box>
                       </Box>
-                      {expandedOrderDetails === item && (
+                      {expandedOrderDetails === item && this.state.expandedOrderId && (
                         <Box
                           className="order-details-container"
                           data-aos="zoom-in-right"
