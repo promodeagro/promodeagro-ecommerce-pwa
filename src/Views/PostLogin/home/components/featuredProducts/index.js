@@ -198,7 +198,7 @@ class FeaturedProducts extends Component {
                       this.props.productDetailsData(data);
                       this.props.navigate(`/product-details/${item.id}`)
                     }}>
-                      <Link to={`/product-details/${item.id}`}>{item?.category}</Link>
+                      <Link to={`/product-details/${item.id}`}>{item?.name}</Link>
                     </Box>
                     <Box className="price-ratting">
                       <Box className="price">
@@ -302,7 +302,7 @@ class FeaturedProducts extends Component {
       </Box>
     );
   }
-}
+} 
 
 function mapStateToProps(state) {
   const { homeData } = state.home;

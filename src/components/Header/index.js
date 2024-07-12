@@ -25,6 +25,8 @@ import { Link } from "react-router-dom";
 import status from "../../Redux/Constants";
 import { loginDetails } from "Views/Utills/helperFunctions";
 import { getAllAddress } from "../../Redux/Address/AddressThunk";
+import { allProducts } from "../../Redux/AllProducts/AllProductthunk";
+import SearchResults from "./searchResults";
 
 class Header extends Component {
   constructor(props) {
@@ -35,6 +37,7 @@ class Header extends Component {
       cartList: [],
       currentAddress: "",
       searchToggle: false,
+      productsData: [],
     };
   }
   componentDidMount() {
@@ -47,6 +50,7 @@ class Header extends Component {
     //     userId: items.userId,
     //   });
     // }
+    this.props.allProducts();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -60,6 +64,15 @@ class Header extends Component {
       });
     }
     if (
+      prevProps.allProductsData.status !== this.props.allProductsData.status &&
+      this.props.allProductsData.status === status.SUCCESS &&
+      this.props.allProductsData.data
+    ) {
+      this.setState({
+        productsData: this.props.allProductsData.data,
+      });
+    }
+    if (
       // this.props.selectedAddressData?.address &&
       this.state.currentAddress !== this.props.selectedAddressData?.address
     ) {
@@ -70,6 +83,7 @@ class Header extends Component {
       });
     }
   }
+
   handleClickCategoriesToggle = () => {
     this.setState({
       categoriesToggle: !this.state.categoriesToggle,
@@ -165,7 +179,8 @@ class Header extends Component {
   );
 
   render() {
-    const { categoriesToggle, matches, searchToggle } = this.state;
+    const { categoriesToggle, matches, searchToggle, productsData, cartList } =
+      this.state;
     const { allAddress } = this.props;
     const address = allAddress ? allAddress.address : "";
     let login = loginDetails();
@@ -307,8 +322,8 @@ class Header extends Component {
                       "/mycart/address",
                       "/mycart/address/add-new-address",
                       "/mycart/address/updated-address",
-                      "/mycart/address/order-placed/:id",
                       "/my-order",
+                      "/mycart/address/order-placed/:id",
                     ].includes(path) && this.renderBreadcrumb()
                   )}
                 </Grid>
@@ -322,8 +337,8 @@ class Header extends Component {
           "/mycart/address/order-details",
           "/mycart/address/add-new-address",
           "/mycart/address/updated-address",
-          "/mycart/address/order-placed/:id",
           "/my-order",
+          "/mycart/address/order-placed/:id",
         ].includes(path) && (
           <Box className="header-bottom-container">
             <Container>
@@ -357,23 +372,13 @@ class Header extends Component {
                 ) : (
                   <Grid item xs={2} md={6} lg={6}>
                     <Box className="search-box">
-                      <TextField
-                        id="outlined-search"
-                        className="search"
-                        variant="outlined"
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <img src={searchIcon} alt="" />
-                            </InputAdornment>
-                          ),
-                        }}
-                        placeholder="Search Your favorite veggies...  "
+                      <SearchResults
+                        data={productsData ? productsData : []}
+                        cartItemsData={cartList}
                       />
                     </Box>
                   </Grid>
                 )}
-
                 <Grid item xs={5} sm={4} md={3} lg={3}>
                   <Box
                     display={"inline-flex"}
@@ -430,18 +435,9 @@ class Header extends Component {
         )}
         {this.state.matches ? (
           <Box className={searchToggle ? "search-box active" : "search-box"}>
-            <TextField
-              id="outlined-search"
-              className="search"
-              variant="outlined"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <img src={searchIcon} alt="" />
-                  </InputAdornment>
-                ),
-              }}
-              placeholder="Search Your favorite veggies...  "
+            <SearchResults
+              data={productsData ? productsData : []}
+              cartItemsData={cartList}
             />
           </Box>
         ) : (
@@ -455,7 +451,8 @@ class Header extends Component {
 function mapStateToProps(state) {
   const { cartData } = state.home;
   const { cartItems } = state.cartitem;
-  const { shopCategoryData, productCategoryData } = state.allproducts;
+  const { shopCategoryData, productCategoryData, allProductsData } =
+    state.allproducts;
   const { allAddress, selectedAddressData } = state.alladdress;
   return {
     cartData,
@@ -464,12 +461,14 @@ function mapStateToProps(state) {
     selectedAddressData,
     shopCategoryData,
     productCategoryData,
+    allProductsData,
   };
 }
 
 const mapDispatchToProps = {
   getAllAddress,
   setShopByCategory,
+  allProducts,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
