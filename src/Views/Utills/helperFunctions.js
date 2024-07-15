@@ -159,9 +159,13 @@ export const loginDetails = () => {
 
 
 
-
+console.log(window.location.pathname)
 
 export const pathFile = {
   // dashboard: "DashBoard",
+  "/": "Home",
+  "": "Home",
+  "/product-details/": "Product Details",
+  "/mycart/address/order-placed": "Order Details"
 
 };
