@@ -36,11 +36,14 @@ class FeaturedProducts extends Component {
       cartList: [],
       dataId: "",
       isUpdateIncrease: null,
+      qauntityUnits: []
 
     };
   }
 
   componentDidMount() {
+    this.props.setShopByCategory([])
+
     // const items = loginDetails();
     // if (items?.userId) {
 
@@ -113,16 +116,20 @@ class FeaturedProducts extends Component {
 
 
 
-  handleAddToCart(id) {
+  handleAddToCart(id, qty) {
     const items = loginDetails();
     this.setState({
       dataId: id
     })
+
+
+
     if (items?.userId) {
       this.props.addItemToCart({
         userId: items.userId,
         productId: id,
-        quantity: "1",
+        quantity: 1,
+        quantityUnits: this.state.qauntityUnits[id] ? parseInt(this.state.qauntityUnits[id]) : qty
       });
     } else {
       this.props.navigate("/signin")
@@ -130,7 +137,7 @@ class FeaturedProducts extends Component {
 
   }
 
-  handleQuantityChange(id, increment, productQuantity) {
+  handleQuantityChange(id, increment, productQuantity = 0, qty) {
     const items = loginDetails();
     if (increment < 0 && productQuantity != 0) {
       this.setState({ isUpdateIncrease: false });
@@ -140,15 +147,18 @@ class FeaturedProducts extends Component {
     this.setState({
       dataId: id,
     });
-    this.setState({
-      dataId: id,
-    });
+
+
     productQuantity = productQuantity + increment;
+
+
+
     if (productQuantity != 0) {
       this.props.updateItemToCart({
         userId: items.userId,
         productId: id,
-        quantity: productQuantity.toString(),
+        quantity: parseInt(productQuantity),
+        quantityUnits: this.state.qauntityUnits[id] ? parseInt(this.state.qauntityUnits[id]) : qty
       });
     } else {
       this.props.deleteItemToCart({
@@ -160,11 +170,21 @@ class FeaturedProducts extends Component {
   handleContextMenu = (event) => {
     event.preventDefault();
   };
+  handleQuantity = (event, id) => {
+    const { value } = event.target;
+    let dupQty = this.state.qauntityUnits
+    dupQty[id] = value;
 
+
+    this.setState({
+      qauntityUnits: dupQty
+    })
+  };
 
   render() {
     const { data, cartList } = this.props;
-    const { productsData, dataId, isUpdateIncrease } = this.state;
+    const { productsData, dataId, isUpdateIncrease, qauntityUnits } = this.state;
+    console.log("qauntityUnits", qauntityUnits);
     return (
       <Box className="featured-products-container" onContextMenu={this.handleContextMenu}>
         <Container>
@@ -212,6 +232,26 @@ class FeaturedProducts extends Component {
                       <Box className="ratting">
                         <StarIcon /> {item?.ratings}
                       </Box>
+
+                      <>
+                        {item?.unitPrices?.length > 0 ? (
+                          <Box className="select">
+                            <FormControl fullWidth>
+                              <NativeSelect value={qauntityUnits[item.id] || ""} onChange={(event) => this.handleQuantity(event, item.id)}>
+                                {item.unitPrices.map((unitItem, index) => {
+
+                                  return <option key={index} value={unitItem.qty} >
+                                    {unitItem.qty}
+                                  </option>
+                                })}
+                              </NativeSelect>
+                            </FormControl>
+                          </Box>
+                        ) : (
+                          <></> // or any other placeholder or message you want to show
+                        )}
+                      </>
+
                     </Box>
                     <Box className="select">{item.unit}</Box>
                     {itemId ? (
@@ -222,15 +262,17 @@ class FeaturedProducts extends Component {
                           <Box
                             className="symbol"
                             onClick={() => {
+                              let unitqty = item.unitPrices[0].qty
                               if (itemId?.ProductId) {
                                 let d = itemId.Quantity;
                                 this.handleQuantityChange(
                                   itemId.ProductId,
                                   -1,
-                                  Number(d)
+                                  Number(d),
+                                  unitqty
                                 );
                               } else {
-                                this.handleQuantityChange(item.id, -1);
+                                this.handleQuantityChange(item.id, -1, "", unitqty);
                               }
                             }}
                           >
@@ -249,15 +291,17 @@ class FeaturedProducts extends Component {
                         <Box
                           className="symbol"
                           onClick={() => {
+                            let unitqty = item.unitPrices[0].qty
                             if (itemId?.ProductId) {
                               let d = itemId.Quantity;
                               this.handleQuantityChange(
                                 itemId.ProductId,
                                 1,
-                                Number(d)
+                                Number(d),
+                                unitqty
                               );
                             } else {
-                              this.handleQuantityChange(item.id, 1);
+                              this.handleQuantityChange(item.id, 1, "", unitqty);
                             }
                           }}
                         >
@@ -276,7 +320,9 @@ class FeaturedProducts extends Component {
                         <Button
                           variant="outlined"
                           onClick={() => {
-                            this.handleAddToCart(item.id);
+                            let unitqty = item.unitPrices[0].qty
+
+                            this.handleAddToCart(item.id, unitqty);
                           }}
                           disabled={
                             this.props.additems.status === status.IN_PROGRESS &&
