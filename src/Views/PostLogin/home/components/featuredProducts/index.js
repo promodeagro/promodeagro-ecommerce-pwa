@@ -184,7 +184,7 @@ class FeaturedProducts extends Component {
   render() {
     const { data, cartList } = this.props;
     const { productsData, dataId, isUpdateIncrease, qauntityUnits } = this.state;
-    console.log("qauntityUnits", qauntityUnits);
+  
     return (
       <Box className="featured-products-container" onContextMenu={this.handleContextMenu}>
         <Container>

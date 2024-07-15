@@ -34,6 +34,7 @@ class List extends Component {
       sortOrder: null, // Track sort order
       dataId: "",
       isUpdateIncrease: false,
+      qauntityUnits: []
     };
   }
 
@@ -84,7 +85,7 @@ class List extends Component {
     }
   }
 
-  handleAddToCart(id) {
+  handleAddToCart(id, qty) {
     const items = loginDetails();
     this.setState({
       dataId: id,
@@ -93,7 +94,8 @@ class List extends Component {
       this.props.addItemToCart({
         userId: items.userId,
         productId: id,
-        quantity: "1",
+        quantity: 1,
+        quantityUnits: this.state.qauntityUnits[id] ? parseInt(this.state.qauntityUnits[id]) : qty
       });
     } else {
       this.props.navigate("/signin");
@@ -110,7 +112,8 @@ class List extends Component {
     addedProducts,
     isUpdateIncrease,
     quantities,
-    cartItemsData
+    cartItemsData,
+    qauntityUnits
   ) {
     let returnData =
       sortedData.length > 0 &&
@@ -174,6 +177,24 @@ class List extends Component {
                 </Box>
               )}
             </Box>
+            <>
+              {item?.unitPrices?.length > 0 ? (
+                <Box className="select">
+                  <FormControl fullWidth>
+                    <NativeSelect value={qauntityUnits[item.id] || ""} onChange={(event) => this.handleQuantity(event, item.id)}>
+                      {item.unitPrices.map((unitItem, index) => {
+
+                        return <option key={index} value={unitItem.qty} >
+                          {unitItem.qty}
+                        </option>
+                      })}
+                    </NativeSelect>
+                  </FormControl>
+                </Box>
+              ) : (
+                <></> // or any other placeholder or message you want to show
+              )}
+            </>
             <Box className="select">{item.unit}</Box>
             {addedProducts.includes(item.id) || itemId ? (
               <Box className="number-input-container">
@@ -181,15 +202,17 @@ class List extends Component {
                   <Box
                     className="symbol"
                     onClick={() => {
+                      let unitqty = item.unitPrices[0].qty
                       if (itemId?.ProductId) {
                         let d = itemId.Quantity;
                         this.handleQuantityChange(
                           itemId.ProductId,
                           -1,
-                          Number(d)
+                          Number(d),
+                          unitqty
                         );
                       } else {
-                        this.handleQuantityChange(item.id, -1);
+                        this.handleQuantityChange(item.id, -1, "", unitqty);
                       }
                     }}
                   >
@@ -219,11 +242,13 @@ class List extends Component {
                 <Box
                   className="symbol"
                   onClick={() => {
+                    let unitqty = item.unitPrices[0]?.qty
                     if (itemId?.ProductId) {
+
                       let d = itemId.Quantity;
-                      this.handleQuantityChange(itemId.ProductId, 1, Number(d));
+                      this.handleQuantityChange(itemId.ProductId, 1, Number(d), unitqty);
                     } else {
-                      this.handleQuantityChange(item.id, 1);
+                      this.handleQuantityChange(item.id, 1, "", unitqty);
                     }
                   }}
                 >
@@ -241,7 +266,9 @@ class List extends Component {
                 <Button
                   variant="outlined"
                   onClick={() => {
-                    this.handleAddToCart(item.id);
+                    let unitqty = item.unitPrices[0].qty
+
+                    this.handleAddToCart(item.id, unitqty);
                   }}
                   disabled={
                     this.props.additems.status === status.IN_PROGRESS &&
@@ -271,30 +298,28 @@ class List extends Component {
     }
   }
 
-  handleQuantityChange(id, increment, productQuantity) {
+  handleQuantityChange(id, increment, productQuantity = 0, qty) {
     const items = loginDetails();
-    if (increment < 0) {
+    if (increment < 0 && productQuantity != 0) {
       this.setState({ isUpdateIncrease: false });
-    } else {
+    } else if (productQuantity != 0) {
       this.setState({ isUpdateIncrease: true });
     }
     this.setState({
       dataId: id,
     });
-    let cloneQuantities = _.cloneDeep(this.state.quantities);
 
-    if (!productQuantity) {
-      cloneQuantities[id] = cloneQuantities[id] + increment;
-    } else {
-      productQuantity = productQuantity + increment;
-    }
-    if (cloneQuantities[id] || productQuantity !== 0) {
+
+    productQuantity = productQuantity + increment;
+
+
+
+    if (productQuantity != 0) {
       this.props.updateItemToCart({
         userId: items.userId,
         productId: id,
-        quantity: cloneQuantities[id]
-          ? cloneQuantities[id]
-          : productQuantity.toString(),
+        quantity: parseInt(productQuantity),
+        quantityUnits: this.state.qauntityUnits[id] ? parseInt(this.state.qauntityUnits[id]) : qty
       });
     } else {
       this.props.deleteItemToCart({
@@ -308,9 +333,21 @@ class List extends Component {
     this.setState({ sortOrder: event.target.value });
   };
 
+  handleQuantity = (event, id) => {
+    const { value } = event.target;
+    let dupQty = this.state.qauntityUnits
+    dupQty[id] = value;
+
+
+    this.setState({
+      qauntityUnits: dupQty
+    })
+  };
+
+
   render() {
     const { data, cartItemsData } = this.props;
-    const { addedProducts, quantities, sortOrder, dataId, isUpdateIncrease } =
+    const { addedProducts, quantities, sortOrder, dataId, isUpdateIncrease, qauntityUnits } =
       this.state;
 
     // Sort data based on sortOrder
@@ -361,7 +398,8 @@ class List extends Component {
             addedProducts,
             isUpdateIncrease,
             quantities,
-            cartItemsData
+            cartItemsData,
+            qauntityUnits
           )}
         </Box>
       </Box>
