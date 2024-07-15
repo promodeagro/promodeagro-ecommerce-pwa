@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // import Header from "./components/Header";
 import Views from "./Views/index";
 import { useLocation } from "react-router-dom";
-// import { pathFile } from "Utils/helperFunctions";
+import { pathFile } from "Views/Utills/helperFunctions";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { connect } from "react-redux";
@@ -19,7 +19,7 @@ function App(props) {
   return (
     <Router>
       <div className="app">
-       <Header />
+        <Header />
 
         <MainContent />
         <Footer />
@@ -44,25 +44,24 @@ function App(props) {
   );
 }
 function MainContent() {
-  // const location = useLocation();
-  // useEffect(() => {
-  //   if (location) {
-  //     let locationToArr = location.pathname.split("/");
+  const location = useLocation();
+  useEffect(() => {
+    if (location) {
+      let locationToArr = location.pathname.split("/");
+      for (
+        let locationIndex = locationToArr.length - 1;
+        locationIndex >= 0;
+        locationIndex--
+      ) {
+        const value = locationToArr[locationIndex];
 
-  //     for (
-  //       let locationIndex = locationToArr.length - 1;
-  //       locationIndex >= 0;
-  //       locationIndex--
-  //     ) {
-  //       const value = locationToArr[locationIndex];
-
-  //       if (pathFile[value]) {
-  //         document.title = pathFile[value];
-  //         break;
-  //       }
-  //     }
-  //   }
-  // });
+        if (pathFile[value]) {
+          document.title = pathFile[value];
+          break;
+        }
+      }
+    }
+  });
   return (
     <Routes>
       <Route path="*" element={<Views />} />

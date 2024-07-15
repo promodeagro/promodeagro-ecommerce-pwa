@@ -11,7 +11,7 @@ import { productCategories } from "../../../Redux/AllProducts/AllProductSlice";
 import { fetchCartItems } from "../../../Redux/Cart/CartThunk";
 import status from "../../../Redux/Constants";
 import { Loader, loginDetails } from "Views/Utills/helperFunctions";
-
+import { setShopByCategory } from "../../../Redux/AllProducts/AllProductSlice";
 class Category extends Component {
   constructor(props) {
     super(props);
@@ -35,6 +35,7 @@ class Category extends Component {
 
   componentDidMount() {
     let items = loginDetails();
+    this.props.setShopByCategory([])
     if (items?.userId) {
       this.props.fetchCartItems({
         userId: items?.userId,
@@ -216,7 +217,7 @@ class Category extends Component {
               lg={hideFilter ? 12 : 9}
             >
               {this.props.cartItems.status === status.IN_PROGRESS.status ||
-              this.props.allProductsData.status === status.IN_PROGRESS ? (
+                this.props.allProductsData.status === status.IN_PROGRESS ? (
                 Loader.commonLoader()
               ) : (
                 <List
@@ -240,6 +241,6 @@ function mapStateToProps(state) {
   return { allProductsData, cartItems, shopCategoryData };
 }
 
-const mapDispatchToProps = { allProducts, fetchCartItems, productCategories };
+const mapDispatchToProps = { allProducts, fetchCartItems, productCategories, setShopByCategory };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Category);

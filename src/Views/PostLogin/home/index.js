@@ -13,7 +13,8 @@ import { connect } from "react-redux";
 import { Loader, loginDetails } from "Views/Utills/helperFunctions";
 import { getAllAddress } from "../../../Redux/Address/AddressThunk";
 import { setSelectedAdd } from "../../../Redux/Address/AddressSlice";
-import { productCategories } from "../../../Redux/AllProducts/AllProductSlice";
+import { productCategories, setShopByCategory } from "../../../Redux/AllProducts/AllProductSlice";
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -25,6 +26,8 @@ class Home extends Component {
   componentDidMount() {
     this.props.fetchHome();
     const items = loginDetails();
+    this.props.setShopByCategory([])
+
     if (items?.userId) {
 
       this.props.fetchCartItems({
@@ -109,6 +112,6 @@ function mapStateToProps(state) {
   return { homeData, cartItems, allAddress, selectedAddressData };
 }
 
-const mapDispatchToProps = { fetchHome, fetchCartItems, setSelectedAdd, getAllAddress, productCategories };
+const mapDispatchToProps = { fetchHome, fetchCartItems, setSelectedAdd, getAllAddress, productCategories, setShopByCategory };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

@@ -5,7 +5,7 @@ import {
   updateItemToCart,
   deleteItemToCart,
 } from "../../../../Redux/Cart/CartThunk";
-import { productDetailsData } from "../../../../Redux/AllProducts/AllProductSlice";
+import { productDetailsData, setShopByCategory } from "../../../../Redux/AllProducts/AllProductSlice";
 import { connect } from "react-redux";
 import {
   Box,
@@ -136,10 +136,11 @@ class List extends Component {
             </Box>
             <Box className="image"
               onClick={() => {
-                let data = _.cloneDeep(item)
+                this.props.setShopByCategory([[item.category], [item.name]])
+                // let data = _.cloneDeep(item)
 
-                data.Quantity = itemId?.Quantity ? itemId?.Quantity : 0
-                this.props.productDetailsData(data);
+                // data.Quantity = itemId?.Quantity ? itemId?.Quantity : 0
+                // this.props.productDetailsData(data);
                 this.props.navigate(`/product-details/${item.id}`)
               }
               }
@@ -152,10 +153,11 @@ class List extends Component {
             <Box className="name"
 
               onClick={() => {
-                let data = _.cloneDeep(item)
+                this.props.setShopByCategory([[item.category], [item.name]])
+                // let data = _.cloneDeep(item)
 
-                data.Quantity = itemId?.Quantity ? itemId?.Quantity : 0
-                this.props.productDetailsData(data);
+                // data.Quantity = itemId?.Quantity ? itemId?.Quantity : 0
+                // this.props.productDetailsData(data);
                 this.props.navigate(`/product-details/${item.id}`)
               }
               }>
@@ -378,7 +380,8 @@ const mapDispatchToProps = {
   fetchCartItems,
   updateItemToCart,
   deleteItemToCart,
-  productDetailsData
+  productDetailsData,
+  setShopByCategory
 };
 
 export default connect(

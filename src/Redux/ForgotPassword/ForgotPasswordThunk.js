@@ -6,7 +6,6 @@ export const forgotPassword = createAsyncThunk("changepassword", async (params) 
     try {
         let url = config.FORGOT_PASSWORD;
         const response = await preLoginService.post(url, params);
-        debugger
         return response.data;
     } catch (error) {
         return error;

@@ -158,7 +158,7 @@ class FeaturedProducts extends Component {
     }
   }
   handleContextMenu = (event) => {
-    event.preventDefault(); 
+    event.preventDefault();
   };
 
 
@@ -180,10 +180,12 @@ class FeaturedProducts extends Component {
                       <TurnedInNotOutlinedIcon />
                     </Box>
                     <Box className="image" onClick={() => {
-                      let data = _.cloneDeep(item)
+                      // let data = _.cloneDeep(item)
 
-                      data.Quantity = itemId?.Quantity ? itemId?.Quantity : 0
-                      this.props.productDetailsData(data);
+                      // data.Quantity = itemId?.Quantity ? itemId?.Quantity : 0
+                      // this.props.productDetailsData(data);
+
+                      this.props.setShopByCategory([[item.category], [item.name]])
                       this.props.navigate(`/product-details/${item.id}`)
                     }
 
@@ -193,9 +195,11 @@ class FeaturedProducts extends Component {
                       {/* </Link> */}
                     </Box>
                     <Box className="name" onClick={() => {
-                      let data = _.cloneDeep(item)
-                      data.Quantity = itemId?.Quantity ? itemId?.Quantity : 0
-                      this.props.productDetailsData(data);
+                      // let data = _.cloneDeep(item)
+                      // data.Quantity = itemId?.Quantity ? itemId?.Quantity : 0
+                      // this.props.productDetailsData(data);
+                      // this.props.productDetailsData(data)
+                      this.props.setShopByCategory([[item.category], [item.name]])
                       this.props.navigate(`/product-details/${item.id}`)
                     }}>
                       <Link to={`/product-details/${item.id}`}>{item?.name}</Link>
@@ -302,7 +306,7 @@ class FeaturedProducts extends Component {
       </Box>
     );
   }
-} 
+}
 
 function mapStateToProps(state) {
   const { homeData } = state.home;

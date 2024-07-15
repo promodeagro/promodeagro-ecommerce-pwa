@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
     allProducts,
-
+    productDetails
 } from "./AllProductthunk";
 import status from "./../Constants";
 
@@ -14,18 +14,19 @@ const AllProductsSlice = createSlice({
 
         shopCategoryData: [],
         productCategoryData: [],
-        prodducDetailsData:{}
+        prodducDetailsData: {},
+        productDetailsData: {}
 
     },
     reducers: {
-        productDetailsData : (state, action) => {
-            
+        productDetailsData: (state, action) => {
+
             state.prodducDetailsData = action.payload;
         },
 
 
         productCategories: (state, action) => {
-            
+
             state.productCategoryData = action.payload;
         },
 
@@ -60,10 +61,32 @@ const AllProductsSlice = createSlice({
                         status: status.FAILURE,
                     },
                 };
+            }).addCase(productDetails.pending.toString(), (state, action) => {
+                return {
+                    ...state,
+                    productDetailsData: {
+                        status: status.IN_PROGRESS,
+                    },
+                };
+            }).addCase(productDetails.fulfilled.toString(), (state, { payload }) => {
+                return {
+                    ...state,
+                    productDetailsData: {
+                        status: status.SUCCESS,
+                        data: payload,
+                    },
+                };
+            }).addCase(productDetails.rejected.toString(), (state, action) => {
+                return {
+                    ...state,
+                    productDetailsData: {
+                        status: status.FAILURE,
+                    },
+                };
             })
 
     },
 });
 
-export const { setShopByCategory, productCategories ,productDetailsData} = AllProductsSlice.actions;
+export const { setShopByCategory, productCategories, productDetailsData } = AllProductsSlice.actions;
 export default AllProductsSlice.reducer;
