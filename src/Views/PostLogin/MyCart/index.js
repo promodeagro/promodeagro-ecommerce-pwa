@@ -32,6 +32,7 @@ class MyCart extends Component {
       cartList: [],
       dataId: "",
       isUpdateIncrease: null,
+      loaderCount: 0
     };
   }
 
@@ -54,6 +55,7 @@ class MyCart extends Component {
     ) {
       this.setState({
         cartList: this.props.cartItems.data.items,
+        loaderCount: 1
       });
     }
 
@@ -76,8 +78,10 @@ class MyCart extends Component {
         userId: items.userId,
       });
     }
+
   }
-  handleQuantityChange(id, increment, productQuantity) {
+
+  handleQuantityChange(id, increment, productQuantity = 0, qty) {
     const items = loginDetails();
     if (increment < 0 && productQuantity != 0) {
       this.setState({ isUpdateIncrease: false });
@@ -93,7 +97,8 @@ class MyCart extends Component {
       this.props.updateItemToCart({
         userId: items.userId,
         productId: id,
-        quantity: productQuantity.toString(),
+        quantity: parseInt(productQuantity),
+        quantityUnits: qty
       });
     } else {
       this.props.deleteItemToCart({
@@ -148,7 +153,7 @@ class MyCart extends Component {
             ) : (
               <></>
             )}
-            {this.props.cartItems.status === status.IN_PROGRESS ? (
+            {this.props.cartItems.status === status.IN_PROGRESS && this.state.loaderCount == 0 ? (
               Loader.commonLoader()
             ) : (
               <Box className="cart-item-list">
@@ -220,10 +225,12 @@ class MyCart extends Component {
                                 className="symbol"
                                 onClick={() => {
                                   let d = item.Quantity;
+
                                   this.handleQuantityChange(
                                     item.ProductId,
                                     -1,
-                                    Number(d)
+                                    Number(d),
+                                    item.QuantityUnits
                                   );
                                 }}
                               >
@@ -252,7 +259,8 @@ class MyCart extends Component {
                                   this.handleQuantityChange(
                                     item.ProductId,
                                     1,
-                                    Number(d)
+                                    Number(d),
+                                    item.QuantityUnits
                                   );
                                 }}
                               >
