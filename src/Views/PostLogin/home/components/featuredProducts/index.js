@@ -20,7 +20,10 @@ import priceIcon from "../../../../../assets/img/price-icon.png";
 import noImage from "../../../../../assets/img/no-image.png";
 import { addDataInCart } from "../../../../../Redux/Home/HomeSlice";
 import { allProducts } from "../../../../../Redux/AllProducts/AllProductthunk";
-import { setShopByCategory, productDetailsData } from "../../../../../Redux/AllProducts/AllProductSlice";
+import {
+  setShopByCategory,
+  productDetailsData,
+} from "../../../../../Redux/AllProducts/AllProductSlice";
 import { connect } from "react-redux";
 import _ from "lodash";
 import { Link } from "react-router-dom";
@@ -36,13 +39,12 @@ class FeaturedProducts extends Component {
       cartList: [],
       dataId: "",
       isUpdateIncrease: null,
-      qauntityUnits: []
-
+      qauntityUnits: [],
     };
   }
 
   componentDidMount() {
-    this.props.setShopByCategory([])
+    this.props.setShopByCategory([]);
 
     // const items = loginDetails();
     // if (items?.userId) {
@@ -91,8 +93,7 @@ class FeaturedProducts extends Component {
       });
       this.setState({
         dataId: "",
-        isUpdateIncrease: null
-
+        isUpdateIncrease: null,
       });
     }
 
@@ -106,35 +107,29 @@ class FeaturedProducts extends Component {
       });
       this.setState({
         dataId: "",
-        isUpdateIncrease: null
-
+        isUpdateIncrease: null,
       });
     }
-
-
   }
-
-
 
   handleAddToCart(id, qty) {
     const items = loginDetails();
     this.setState({
-      dataId: id
-    })
-
-
+      dataId: id,
+    });
 
     if (items?.userId) {
       this.props.addItemToCart({
         userId: items.userId,
         productId: id,
         quantity: 1,
-        quantityUnits: this.state.qauntityUnits[id] ? parseInt(this.state.qauntityUnits[id]) : qty
+        quantityUnits: this.state.qauntityUnits[id]
+          ? parseInt(this.state.qauntityUnits[id])
+          : qty,
       });
     } else {
-      this.props.navigate("/signin")
+      this.props.navigate("/signin");
     }
-
   }
 
   handleQuantityChange(id, increment, productQuantity = 0, qty) {
@@ -148,17 +143,16 @@ class FeaturedProducts extends Component {
       dataId: id,
     });
 
-
     productQuantity = productQuantity + increment;
-
-
 
     if (productQuantity != 0) {
       this.props.updateItemToCart({
         userId: items.userId,
         productId: id,
         quantity: parseInt(productQuantity),
-        quantityUnits: this.state.qauntityUnits[id] ? parseInt(this.state.qauntityUnits[id]) : qty
+        quantityUnits: this.state.qauntityUnits[id]
+          ? parseInt(this.state.qauntityUnits[id])
+          : qty,
       });
     } else {
       this.props.deleteItemToCart({
@@ -172,21 +166,24 @@ class FeaturedProducts extends Component {
   };
   handleQuantity = (event, id) => {
     const { value } = event.target;
-    let dupQty = this.state.qauntityUnits
+    let dupQty = this.state.qauntityUnits;
     dupQty[id] = value;
 
-
     this.setState({
-      qauntityUnits: dupQty
-    })
+      qauntityUnits: dupQty,
+    });
   };
 
   render() {
     const { data, cartList } = this.props;
-    const { productsData, dataId, isUpdateIncrease, qauntityUnits } = this.state;
-  
+    const { productsData, dataId, isUpdateIncrease, qauntityUnits } =
+      this.state;
+
     return (
-      <Box className="featured-products-container" onContextMenu={this.handleContextMenu}>
+      <Box
+        className="featured-products-container"
+        onContextMenu={this.handleContextMenu}
+      >
         <Container>
           <Box className="heading">Featured Products</Box>
           <Box className="products">
@@ -199,30 +196,42 @@ class FeaturedProducts extends Component {
                     <Box className="icon">
                       <TurnedInNotOutlinedIcon />
                     </Box>
-                    <Box className="image" onClick={() => {
-                      // let data = _.cloneDeep(item)
+                    <Box
+                      className="image"
+                      onClick={() => {
+                        // let data = _.cloneDeep(item)
 
-                      // data.Quantity = itemId?.Quantity ? itemId?.Quantity : 0
-                      // this.props.productDetailsData(data);
+                        // data.Quantity = itemId?.Quantity ? itemId?.Quantity : 0
+                        // this.props.productDetailsData(data);
 
-                      this.props.setShopByCategory([[item.category], [item.name]])
-                      this.props.navigate(`/product-details/${item.id}`)
-                    }
-
-                    }>
+                        this.props.setShopByCategory([
+                          [item.category],
+                          [item.name],
+                        ]);
+                        this.props.navigate(`/product-details/${item.id}`);
+                      }}
+                    >
                       {/* <Link to={`/product-details/${item.id}`}> */}
                       <img src={item?.image ? item?.image : noImage} alt="" />
                       {/* </Link> */}
                     </Box>
-                    <Box className="name" onClick={() => {
-                      // let data = _.cloneDeep(item)
-                      // data.Quantity = itemId?.Quantity ? itemId?.Quantity : 0
-                      // this.props.productDetailsData(data);
-                      // this.props.productDetailsData(data)
-                      this.props.setShopByCategory([[item.category], [item.name]])
-                      this.props.navigate(`/product-details/${item.id}`)
-                    }}>
-                      <Link to={`/product-details/${item.id}`}>{item?.name}</Link>
+                    <Box
+                      className="name"
+                      onClick={() => {
+                        // let data = _.cloneDeep(item)
+                        // data.Quantity = itemId?.Quantity ? itemId?.Quantity : 0
+                        // this.props.productDetailsData(data);
+                        // this.props.productDetailsData(data)
+                        this.props.setShopByCategory([
+                          [item.category],
+                          [item.name],
+                        ]);
+                        this.props.navigate(`/product-details/${item.id}`);
+                      }}
+                    >
+                      <Link to={`/product-details/${item.id}`}>
+                        {item?.name}
+                      </Link>
                     </Box>
                     <Box className="price-ratting">
                       <Box className="price">
@@ -232,37 +241,39 @@ class FeaturedProducts extends Component {
                       <Box className="ratting">
                         <StarIcon /> {item?.ratings}
                       </Box>
-
-                      <>
-                        {item?.unitPrices?.length > 0 ? (
-                          <Box className="select">
-                            <FormControl fullWidth>
-                              <NativeSelect value={qauntityUnits[item.id] || ""} onChange={(event) => this.handleQuantity(event, item.id)}>
-                                {item.unitPrices.map((unitItem, index) => {
-
-                                  return <option key={index} value={unitItem.qty} >
+                    </Box>
+                    <>
+                      {item?.unitPrices?.length > 0 ? (
+                        <Box className="select">
+                          <FormControl fullWidth>
+                            <NativeSelect
+                              value={qauntityUnits[item.id] || ""}
+                              onChange={(event) =>
+                                this.handleQuantity(event, item.id)
+                              }
+                            >
+                              {item.unitPrices.map((unitItem, index) => {
+                                return (
+                                  <option key={index} value={unitItem.qty}>
                                     {unitItem.qty}
                                   </option>
-                                })}
-                              </NativeSelect>
-                            </FormControl>
-                          </Box>
-                        ) : (
-                          <></> // or any other placeholder or message you want to show
-                        )}
-                      </>
+                                );
+                              })}
+                            </NativeSelect>
+                          </FormControl>
+                        </Box>
+                      ) : (
+                        <Box className="select">{item.unit}</Box> // or any other placeholder or message you want to show
+                      )}
+                    </>
 
-                    </Box>
-                    <Box className="select">{item.unit}</Box>
                     {itemId ? (
                       <Box className="number-input-container">
                         {itemId && itemId.Quantity !== 0 ? (
-
-
                           <Box
                             className="symbol"
                             onClick={() => {
-                              let unitqty = item.unitPrices[0].qty
+                              let unitqty = item.unitPrices[0].qty;
                               if (itemId?.ProductId) {
                                 let d = itemId.Quantity;
                                 this.handleQuantityChange(
@@ -272,13 +283,27 @@ class FeaturedProducts extends Component {
                                   unitqty
                                 );
                               } else {
-                                this.handleQuantityChange(item.id, -1, "", unitqty);
+                                this.handleQuantityChange(
+                                  item.id,
+                                  -1,
+                                  "",
+                                  unitqty
+                                );
                               }
                             }}
                           >
-                            {(this.props.deleteItems.status === status.IN_PROGRESS && item.id === dataId && !isUpdateIncrease) ||
-                              (this.props.updateItems.status === status.IN_PROGRESS && item.id === dataId && !isUpdateIncrease) ? (
-                              <CircularProgress className="common-loader plus-icon" size={24} />
+                            {(this.props.deleteItems.status ===
+                              status.IN_PROGRESS &&
+                              item.id === dataId &&
+                              !isUpdateIncrease) ||
+                            (this.props.updateItems.status ===
+                              status.IN_PROGRESS &&
+                              item.id === dataId &&
+                              !isUpdateIncrease) ? (
+                              <CircularProgress
+                                className="common-loader plus-icon"
+                                size={24}
+                              />
                             ) : (
                               "-"
                             )}
@@ -291,7 +316,7 @@ class FeaturedProducts extends Component {
                         <Box
                           className="symbol"
                           onClick={() => {
-                            let unitqty = item.unitPrices[0].qty
+                            let unitqty = item.unitPrices[0].qty;
                             if (itemId?.ProductId) {
                               let d = itemId.Quantity;
                               this.handleQuantityChange(
@@ -301,14 +326,19 @@ class FeaturedProducts extends Component {
                                 unitqty
                               );
                             } else {
-                              this.handleQuantityChange(item.id, 1, "", unitqty);
+                              this.handleQuantityChange(
+                                item.id,
+                                1,
+                                "",
+                                unitqty
+                              );
                             }
                           }}
                         >
                           {this.props.updateItems.status ===
                             status.IN_PROGRESS &&
-                            item.id === dataId &&
-                            isUpdateIncrease ? (
+                          item.id === dataId &&
+                          isUpdateIncrease ? (
                             <CircularProgress className="common-loader plus-icon" />
                           ) : (
                             "+"
@@ -320,7 +350,7 @@ class FeaturedProducts extends Component {
                         <Button
                           variant="outlined"
                           onClick={() => {
-                            let unitqty = item.unitPrices[0].qty
+                            let unitqty = item.unitPrices[0].qty;
 
                             this.handleAddToCart(item.id, unitqty);
                           }}
@@ -330,7 +360,7 @@ class FeaturedProducts extends Component {
                           }
                           endIcon={
                             this.props.additems.status == status.IN_PROGRESS &&
-                              item.id == this.state.dataId ? (
+                            item.id == this.state.dataId ? (
                               <CircularProgress className="common-loader" />
                             ) : (
                               <></>
@@ -345,7 +375,10 @@ class FeaturedProducts extends Component {
                 );
               })}
           </Box>
-          <Box className="load-more-btn" onClick={() => this.props.setShopByCategory([])}>
+          <Box
+            className="load-more-btn"
+            onClick={() => this.props.setShopByCategory([])}
+          >
             <Link to="/category">Load More</Link>
           </Box>
         </Container>
@@ -365,7 +398,7 @@ function mapStateToProps(state) {
     cartItems,
     updateItems,
     deleteItems,
-    shopCategoryData
+    shopCategoryData,
   };
 }
 
@@ -376,12 +409,10 @@ const mapDispatchToProps = {
   updateItemToCart,
   deleteItemToCart,
   setShopByCategory,
-  productDetailsData
+  productDetailsData,
 };
-
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(navigateRouter(FeaturedProducts));
-

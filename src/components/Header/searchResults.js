@@ -24,6 +24,7 @@ import status from "../../Redux/Constants";
 import _ from "lodash";
 import { loginDetails } from "Views/Utills/helperFunctions";
 import { Link } from "react-router-dom";
+import { allProductsFilters } from "../../Redux/ProductFilters/ProductFiltersThunk";
 
 class SearchResults extends Component {
   constructor(props) {
@@ -253,6 +254,9 @@ class SearchResults extends Component {
 
   searchChange = (event) => {
     this.setState({ searchTerm: event.target.value });
+    setTimeout(() => {
+      this.props.allProductsFilters({ name: this.state.searchTerm });
+    }, 2000);
   };
 
   searchBgClick = () => {
@@ -334,6 +338,7 @@ const mapDispatchToProps = {
   updateItemToCart,
   deleteItemToCart,
   productDetailsData,
+  allProductsFilters,
 };
 
 export default connect(

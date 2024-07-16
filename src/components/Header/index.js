@@ -27,6 +27,7 @@ import { loginDetails } from "Views/Utills/helperFunctions";
 import { getAllAddress } from "../../Redux/Address/AddressThunk";
 import { allProducts } from "../../Redux/AllProducts/AllProductthunk";
 import SearchResults from "./searchResults";
+import { allProductsFilters } from "../../Redux/ProductFilters/ProductFiltersThunk";
 
 class Header extends Component {
   constructor(props) {
@@ -38,6 +39,7 @@ class Header extends Component {
       currentAddress: "",
       searchToggle: false,
       productsData: [],
+      productsFiltersData: [],
     };
   }
   componentDidMount() {
@@ -50,10 +52,22 @@ class Header extends Component {
     //     userId: items.userId,
     //   });
     // }
-    this.props.allProducts();
+    // this.props.allProducts();
+    // let items = this.state.productsFiltersData;
+    this.props.allProductsFilters({});
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.allProductsFiltersData.status !==
+        this.props.allProductsFiltersData.status &&
+      this.props.allProductsFiltersData.status === status.SUCCESS &&
+      this.props.allProductsFiltersData.data
+    ) {
+      this.setState({
+        productsFiltersData: this.props.allProductsFiltersData.data,
+      });
+    }
     if (
       prevProps.cartItems.status !== this.props.cartItems.status &&
       this.props.cartItems.status === status.SUCCESS &&
@@ -63,15 +77,7 @@ class Header extends Component {
         cartList: this.props.cartItems.data.items,
       });
     }
-    if (
-      prevProps.allProductsData.status !== this.props.allProductsData.status &&
-      this.props.allProductsData.status === status.SUCCESS &&
-      this.props.allProductsData.data
-    ) {
-      this.setState({
-        productsData: this.props.allProductsData.data,
-      });
-    }
+    
     if (
       // this.props.selectedAddressData?.address &&
       this.state.currentAddress !== this.props.selectedAddressData?.address
@@ -109,8 +115,9 @@ class Header extends Component {
         <h2>Vegetables</h2>
         <ul>
           {this.props.productCategoryData.length &&
-            this.props.productCategoryData[1]?.length &&
+          this.props.productCategoryData[1]?.length ? (
             this.props.productCategoryData[1]?.map((item) => {
+              const cleanSubcategory = item.subCategory.replace(/\s+/g, "-");
               return (
                 <li
                   onClick={() =>
@@ -120,10 +127,15 @@ class Header extends Component {
                     ])
                   }
                 >
-                  <Link to={"/category"}>{item.subCategory}</Link>
+                  <Link to={`/category/${item.category}-${cleanSubcategory}`}>
+                    {item.subCategory}
+                  </Link>
                 </li>
               );
-            })}
+            })
+          ) : (
+            <></>
+          )}
         </ul>
         <ul></ul>
       </Box>
@@ -131,18 +143,24 @@ class Header extends Component {
         <h3>Fruits</h3>
         <ul>
           {this.props.productCategoryData.length &&
-            this.props.productCategoryData[0]?.length &&
+          this.props.productCategoryData[0]?.length ? (
             this.props.productCategoryData[0]?.map((item) => {
+              const cleanSubcategory = item.subCategory.replace(/\s+/g, "-");
               return (
                 <li
                   onClick={() =>
                     this.handleFruitsandVeg(["FRUITS", `${item.subCategory}`])
                   }
                 >
-                  <Link to={"/category"}>{item.subCategory}</Link>
+                  <Link to={`/category/${item.category}-${cleanSubcategory}`}>
+                    {item.subCategory}
+                  </Link>
                 </li>
               );
-            })}
+            })
+          ) : (
+            <></>
+          )}
         </ul>
       </Box>
     </Box>
@@ -179,15 +197,19 @@ class Header extends Component {
   );
 
   render() {
-    const { categoriesToggle, matches, searchToggle, productsData, cartList } =
-      this.state;
+    const {
+      categoriesToggle,
+      matches,
+      searchToggle,
+      productsData,
+      cartList,
+      productsFiltersData,
+    } = this.state;
     const { allAddress } = this.props;
     const address = allAddress ? allAddress.address : "";
     let login = loginDetails();
 
     const path = window.location.pathname;
-
-    // console.log(path);
 
     return (
       <div className="header">
@@ -340,103 +362,103 @@ class Header extends Component {
           "/my-order",
           "/mycart/address/order-placed/:id",
         ].includes(path) && (
-            <Box className="header-bottom-container">
-              <Container>
-                <Grid container spacing={2} alignItems={"center"}>
-                  <Grid item xs={7} sm={8} md={3} lg={3}>
-                    <Box className="categories-container">
+          <Box className="header-bottom-container">
+            <Container>
+              <Grid container spacing={2} alignItems={"center"}>
+                <Grid item xs={7} sm={8} md={3} lg={3}>
+                  <Box className="categories-container">
+                    <Box
+                      className="categories-toggle"
+                      onClick={this.handleClickCategoriesToggle}
+                    >
+                      Shop by Categories
+                      <span>
+                        {categoriesToggle ? (
+                          <KeyboardArrowUpIcon />
+                        ) : (
+                          <KeyboardArrowDownIcon />
+                        )}
+                      </span>
+                    </Box>
+                    {categoriesToggle && this.renderCategories()}
+                    {categoriesToggle && (
                       <Box
-                        className="categories-toggle"
+                        className="categories-bg"
                         onClick={this.handleClickCategoriesToggle}
-                      >
-                        Shop by Categories
-                        <span>
-                          {categoriesToggle ? (
-                            <KeyboardArrowUpIcon />
-                          ) : (
-                            <KeyboardArrowDownIcon />
-                          )}
-                        </span>
-                      </Box>
-                      {categoriesToggle && this.renderCategories()}
-                      {categoriesToggle && (
-                        <Box
-                          className="categories-bg"
-                          onClick={this.handleClickCategoriesToggle}
-                        ></Box>
-                      )}
+                      ></Box>
+                    )}
+                  </Box>
+                </Grid>
+                {this.state.matches ? (
+                  ""
+                ) : (
+                  <Grid item xs={2} md={6} lg={6}>
+                    <Box className="search-box">
+                      <SearchResults
+                        data={productsFiltersData || []}
+                        cartItemsData={cartList}
+                      />
                     </Box>
                   </Grid>
-                  {this.state.matches ? (
-                    ""
-                  ) : (
-                    <Grid item xs={2} md={6} lg={6}>
-                      <Box className="search-box">
-                        <SearchResults
-                          data={productsData ? productsData : []}
-                          cartItemsData={cartList}
-                        />
-                      </Box>
-                    </Grid>
-                  )}
-                  <Grid item xs={5} sm={4} md={3} lg={3}>
-                    <Box
-                      display={"inline-flex"}
-                      justifyContent={"flex-end"}
-                      width={"100%"}
-                    >
-                      {this.state.matches ? (
+                )}
+                <Grid item xs={5} sm={4} md={3} lg={3}>
+                  <Box
+                    display={"inline-flex"}
+                    justifyContent={"flex-end"}
+                    width={"100%"}
+                  >
+                    {this.state.matches ? (
+                      <Button
+                        variant="outlined"
+                        className="search-icon"
+                        startIcon={<img src={searchIcon} alt="" />}
+                        onClick={this.searchToggle}
+                      ></Button>
+                    ) : (
+                      ""
+                    )}
+                    {login?.userId ? (
+                      <>
                         <Button
                           variant="outlined"
-                          className="search-icon"
-                          startIcon={<img src={searchIcon} alt="" />}
-                          onClick={this.searchToggle}
-                        ></Button>
-                      ) : (
-                        ""
-                      )}
-                      {login?.userId ? (
-                        <>
+                          className="notification"
+                          startIcon={<img src={notificationIcon} alt="" />}
+                        >
+                          <p></p>
+                        </Button>
+
+                        <Link to={"/mycart"}>
                           <Button
                             variant="outlined"
-                            className="notification"
-                            startIcon={<img src={notificationIcon} alt="" />}
+                            className="card"
+                            startIcon={<img src={cardIcon} alt="" />}
                           >
-                            <p></p>
+                            {this.props?.cartData?.length ? (
+                              <p>{this.props.cartData.length}</p>
+                            ) : (
+                              <></>
+                            )}
+                            {this.state.cartList?.length ? (
+                              <p>{this.state.cartList.length}</p>
+                            ) : (
+                              <></>
+                            )}
                           </Button>
-
-                          <Link to={"/mycart"}>
-                            <Button
-                              variant="outlined"
-                              className="card"
-                              startIcon={<img src={cardIcon} alt="" />}
-                            >
-                              {this.props?.cartData?.length ? (
-                                <p>{this.props.cartData.length}</p>
-                              ) : (
-                                <></>
-                              )}
-                              {this.state.cartList?.length ? (
-                                <p>{this.state.cartList.length}</p>
-                              ) : (
-                                <></>
-                              )}
-                            </Button>
-                          </Link>
-                        </>
-                      ) : (
-                        <></>
-                      )}
-                    </Box>
-                  </Grid>
+                        </Link>
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </Box>
                 </Grid>
-              </Container>
-            </Box>
-          )}
+              </Grid>
+            </Container>
+          </Box>
+        )}
         {this.state.matches ? (
           <Box className={searchToggle ? "search-box active" : "search-box"}>
             <SearchResults
-              data={productsData ? productsData : []}
+              data={productsFiltersData || []}
               cartItemsData={cartList}
             />
           </Box>
@@ -454,6 +476,7 @@ function mapStateToProps(state) {
   const { shopCategoryData, productCategoryData, allProductsData } =
     state.allproducts;
   const { allAddress, selectedAddressData } = state.alladdress;
+  const { allProductsFiltersData } = state.allproductsfilters;
   return {
     cartData,
     cartItems,
@@ -462,6 +485,7 @@ function mapStateToProps(state) {
     shopCategoryData,
     productCategoryData,
     allProductsData,
+    allProductsFiltersData,
   };
 }
 
@@ -469,6 +493,7 @@ const mapDispatchToProps = {
   getAllAddress,
   setShopByCategory,
   allProducts,
+  allProductsFilters,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
