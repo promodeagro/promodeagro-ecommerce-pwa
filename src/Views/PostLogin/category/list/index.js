@@ -98,7 +98,7 @@ class List extends Component {
   }
 
   handleAddToCart(id, qty) {
-    
+
     const items = loginDetails();
     this.setState({
       dataId: id,
@@ -170,15 +170,12 @@ class List extends Component {
             <Box className="name"
 
               onClick={() => {
-                this.props.setShopByCategory([[item.category], [item.name]])
-                // let data = _.cloneDeep(item)
 
-                // data.Quantity = itemId?.Quantity ? itemId?.Quantity : 0
-                // this.props.productDetailsData(data);
-                this.props.navigate(`/product-details/${item.id}`)
+
+                this.props.navigate(`/product-details/${item.category}/${item.name}/${item.id}`)
               }
               }>
-              <Link to={`/product-details/${item.id}`}>{item.name}</Link>
+              <Link >{item.name}</Link>
             </Box>
             <Box className="price-ratting">
               <Box className="price">

@@ -204,11 +204,8 @@ class FeaturedProducts extends Component {
                         // data.Quantity = itemId?.Quantity ? itemId?.Quantity : 0
                         // this.props.productDetailsData(data);
 
-                        this.props.setShopByCategory([
-                          [item.category],
-                          [item.name],
-                        ]);
-                        this.props.navigate(`/product-details/${item.id}`);
+
+                        this.props.navigate(`/product-details/${item.category}/${item.name}/${item.id}`)
                       }}
                     >
                       {/* <Link to={`/product-details/${item.id}`}> */}
@@ -222,14 +219,11 @@ class FeaturedProducts extends Component {
                         // data.Quantity = itemId?.Quantity ? itemId?.Quantity : 0
                         // this.props.productDetailsData(data);
                         // this.props.productDetailsData(data)
-                        this.props.setShopByCategory([
-                          [item.category],
-                          [item.name],
-                        ]);
-                        this.props.navigate(`/product-details/${item.id}`);
+
+                        this.props.navigate(`/product-details/${item.category}/${item.name}/${item.id}`)
                       }}
                     >
-                      <Link to={`/product-details/${item.id}`}>
+                      <Link >
                         {item?.name}
                       </Link>
                     </Box>
