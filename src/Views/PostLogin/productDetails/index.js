@@ -7,6 +7,8 @@ import {
   Rating,
   TextField,
   InputAdornment,
+  FormControl,
+  NativeSelect
 } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 // import RecentlyViewedItems from "./recentlyViewedItems";
@@ -65,7 +67,8 @@ class ProductDetails extends Component {
       isUpdateIncrease: null,
       recentList: [],
       loaderCount: 0,
-      pathName: ""
+      pathName: "",
+      qauntityUnits: ""
     };
   }
   componentDidMount() {
@@ -151,7 +154,9 @@ class ProductDetails extends Component {
       this.props.additems.status === status.SUCCESS &&
       this.props.additems.data
     ) {
-
+      this.setState({
+        qauntityUnits: ""
+      })
       this.props.productDetails({
         productId: this.props.params.id,
         userId: items?.userId ? items?.userId : "",
@@ -164,6 +169,9 @@ class ProductDetails extends Component {
       this.props.updateItems.status === status.SUCCESS &&
       this.props.updateItems.data
     ) {
+      this.setState({
+        qauntityUnits: ""
+      })
       this.props.productDetails({
         productId: this.props.params.id,
         userId: items?.userId ? items?.userId : "",
@@ -176,6 +184,9 @@ class ProductDetails extends Component {
       this.props.deleteItems.status === status.SUCCESS &&
       this.props.deleteItems.data
     ) {
+      this.setState({
+        qauntityUnits: ""
+      })
       this.props.productDetails({
         productId: this.props.params.id,
         userId: items?.userId ? items?.userId : "",
@@ -184,7 +195,7 @@ class ProductDetails extends Component {
     }
   }
 
-  handleAddToCart(id) {
+  handleAddToCart(id, qty) {
     const items = loginDetails();
 
     if (items?.userId && id) {
@@ -193,14 +204,14 @@ class ProductDetails extends Component {
         userId: items.userId,
         productId: id,
         quantity: 1,
-        quantityUnits: 1000
+        quantityUnits: this.state.qauntityUnits ? this.state.qauntityUnits : qty
       });
     } else if (!items?.userId) {
       this.props.navigate("/signin");
     }
   }
 
-  handleQuantityChange(id, increment, productQuantity) {
+  handleQuantityChange(id, increment, productQuantity, qty) {
     const items = loginDetails();
 
     if (increment < 0 && productQuantity != 0) {
@@ -215,7 +226,7 @@ class ProductDetails extends Component {
         userId: items.userId,
         productId: id,
         quantity: productQuantity,
-        quantityUnits: 1000
+        quantityUnits: this.state.qauntityUnits ? this.state.qauntityUnits : qty
       });
     } else {
       this.props.deleteItemToCart({
@@ -225,6 +236,12 @@ class ProductDetails extends Component {
     }
   }
 
+  handleQuantity(event) {
+    
+    this.setState({
+      qauntityUnits: event.target.value
+    })
+  }
   render() {
     const { productItem, itemQuantity, isUpdateIncrease, loaderCount } = this.state;
 
@@ -322,6 +339,31 @@ class ProductDetails extends Component {
                       <Box className="product-save">
                         You save <span>{productItem?.savingsPercentage} %</span>
                       </Box>
+
+                      <>
+                        {productItem?.unitPrices?.length > 0 ? (
+                          <Box className="select">
+                            <FormControl fullWidth>
+                              <NativeSelect
+                                value={this.state.qauntityUnits}
+                                onChange={(event) =>
+                                  this.handleQuantity(event)
+                                }
+                              >
+                                {productItem?.unitPrices?.map((unitItem, index) => {
+                                  return (
+                                    <option key={index} value={unitItem.qty}>
+                                      {unitItem.qty}
+                                    </option>
+                                  );
+                                })}
+                              </NativeSelect>
+                            </FormControl>
+                          </Box>
+                        ) : (
+                          <Box className="select">{productItem.unit}</Box> // or any other placeholder or message you want to show
+                        )}
+                      </>
                       <Box className="product-cart-buttons">
                         <Grid container spacing={2}>
                           <Grid item xs={12} sm={6} md={6} lg={8}>
@@ -330,10 +372,17 @@ class ProductDetails extends Component {
                                 <Box
                                   className="symbol"
                                   onClick={() => {
+                                    let unitqty = ""
+                                    if (productItem?.unitPrices?.length > 0) {
+                                      unitqty = productItem?.unitPrices[0]?.qty
+                                    } else {
+                                      unitqty = 1
+                                    }
                                     this.handleQuantityChange(
                                       this.props.params.id,
                                       -1,
-                                      Number(itemQuantity)
+                                      Number(itemQuantity),
+                                      unitqty
                                     );
                                   }}
                                 >
@@ -356,10 +405,18 @@ class ProductDetails extends Component {
                                 <Box
                                   className="symbol"
                                   onClick={() => {
+
+                                    let unitqty = ""
+                                    if (productItem?.unitPrices?.length > 0) {
+                                      unitqty = productItem?.unitPrices[0]?.qty
+                                    } else {
+                                      unitqty = 1
+                                    }
                                     this.handleQuantityChange(
                                       this.props.params.id,
                                       1,
-                                      Number(itemQuantity)
+                                      Number(itemQuantity),
+                                      unitqty
                                     );
                                   }}
                                 >
@@ -379,8 +436,17 @@ class ProductDetails extends Component {
                                 disabled={
                                   this.props.additems.status === status.IN_PROGRESS
                                 }
-                                onClick={() =>
-                                  this.handleAddToCart(productItem?.id)
+                                onClick={() => {
+
+
+                                  let unitqty = ""
+                                  if (productItem?.unitPrices?.length > 0) {
+                                    unitqty = productItem?.unitPrices[0]?.qty
+                                  } else {
+                                    unitqty = 1
+                                  }
+                                  this.handleAddToCart(productItem?.id, unitqty)
+                                }
                                 }
                                 endIcon={
                                   this.props.additems.status ===
