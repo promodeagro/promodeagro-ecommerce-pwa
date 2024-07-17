@@ -25,7 +25,7 @@ class AboutUs extends Component {
           <Container>
             <Box className="contents">
               <h2>
-                Welcome to <span>Promode Agro Farms !</span>
+                Welcome to{" "}<span>Promode Agro Farms !</span>
               </h2>
               <p>
                 At Promode Agro Farms, we are passionate about sustainable
@@ -41,13 +41,13 @@ class AboutUs extends Component {
         <Box className="our-story-container">
           <Container>
             <Grid container spacing={2}>
-              <Grid item xs={12} lg={3} md={6} sm={6}>
+              <Grid item xs={12} lg={3} md={3} sm={6}>
                 <Box className="heading">
                   <span>Our Story</span>
                   <h2>We are building a better future</h2>
                 </Box>
               </Grid>
-              <Grid item xs={12} lg={9} md={12} sm={12}>
+              <Grid item xs={12} lg={9} md={9} sm={12}>
                 <Box className="contents">
                   <p>
                     Promode Agro Farms was founded in 2021 by group of
@@ -80,7 +80,7 @@ class AboutUs extends Component {
           <Container>
             <Box className="services">
               <Grid container spacing={2}>
-                <Grid item xs={12} lg={3} md={6} sm={6}>
+                <Grid item xs={12} lg={3} md={3} sm={6}>
                   <Box className="service-box">
                     <Box className="icon">
                       <img src={deliveryTruck} alt="" />
@@ -91,7 +91,7 @@ class AboutUs extends Component {
                     </Box>
                   </Box>
                 </Grid>
-                <Grid item xs={12} lg={3} md={6} sm={6}>
+                <Grid item xs={12} lg={3} md={3} sm={6}>
                   <Box className="service-box">
                     <Box className="icon">
                       <img src={customerSupport} alt="" />
@@ -102,7 +102,7 @@ class AboutUs extends Component {
                     </Box>
                   </Box>
                 </Grid>
-                <Grid item xs={12} lg={3} md={6} sm={6}>
+                <Grid item xs={12} lg={3} md={3} sm={6}>
                   <Box className="service-box">
                     <Box className="icon">
                       <img src={lockSync} alt="" />
@@ -113,7 +113,7 @@ class AboutUs extends Component {
                     </Box>
                   </Box>
                 </Grid>
-                <Grid item xs={12} lg={3} md={6} sm={6}>
+                <Grid item xs={12} lg={3} md={3} sm={6}>
                   <Box className="service-box">
                     <Box className="icon">
                       <img src={securityCheck} alt="" />

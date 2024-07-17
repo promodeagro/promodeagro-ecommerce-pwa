@@ -15,6 +15,7 @@
     flex-wrap: wrap;
     h2 {
       display: flex;
+      flex-wrap: wrap;
       width: 100%;
       font-size: 32px;
       line-height: 40px;
@@ -23,7 +24,6 @@
       margin-bottom: 15px;
       span {
         display: inline-flex;
-        margin-left: 10px;
         color: #1f9151;
       }
     }
@@ -393,6 +393,60 @@
       font-size: 14px;
       padding-left: 30px;
       padding-right: 30px;
+    }
+  }
+}
+
+@media only screen and (max-width: 1150px) {
+  .welcome-promode-banner {
+    .contents {
+      width: 100%;
+    }
+  }
+}
+@media only screen and (max-width: 900px) {
+  .our-story-container {
+    .contents {
+      padding-left: 0;
+    }
+  }
+  .specialties-container {
+    .specialties-boxes {
+      .specialties-box {
+        width: 33.11%;
+      }
+    }
+  }
+}
+@media only screen and (max-width: 600px) { 
+  .our-story-container {
+    .contents {
+      p {
+        width: 100%;
+      }
+    }
+  }
+  .specialties-container {
+    .specialties-boxes {
+      flex-wrap: wrap;
+      .specialties-box {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 2px;
+      }
+    }
+  }
+  .our-mission-container {
+    .contents {
+      p {
+        width: 100%;
+      }
+    }
+  }
+  .sustainability-container {
+    background-size: contain;
+    .contents {
+      width: 100%;
     }
   }
 }

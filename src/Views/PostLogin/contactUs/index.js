@@ -125,7 +125,7 @@ class ContactUs extends Component {
         <Box className="contact-info">
           <Container>
             <Grid container spacing={5}>
-              <Grid item xs={12} lg={3} md={3} sm={12}>
+              <Grid item xs={12} lg={3} md={3} sm={4}>
                 <Box className="links-box">
                   <h2>Contact us</h2>
                   <ul>
@@ -144,7 +144,7 @@ class ContactUs extends Component {
                   </ul>
                 </Box>
               </Grid>
-              <Grid item xs={12} lg={9} md={9} sm={12}>
+              <Grid item xs={12} lg={9} md={9} sm={8}>
                 {activeTab === "support" && (
                   <Box className="support-details">
                     <Box className="support-box">
