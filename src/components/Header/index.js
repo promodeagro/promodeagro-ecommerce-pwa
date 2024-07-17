@@ -30,6 +30,10 @@ import SearchResults from "./searchResults";
 import { allProductsFilters } from "../../Redux/ProductFilters/ProductFiltersThunk";
 import _ from "lodash";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
+import AccountBoxTwoToneIcon from "@mui/icons-material/AccountBoxTwoTone";
+import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
+import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
+
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -42,6 +46,8 @@ class Header extends Component {
       productsData: [],
       productsFiltersData: [],
       categories: [],
+      profileModal: false,
+      currentName: ""
     };
   }
   componentDidMount() {
@@ -90,14 +96,16 @@ class Header extends Component {
       });
     }
 
-    if (
-      // this.props.selectedAddressData?.address &&
-      this.state.currentAddress !== this.props.selectedAddressData?.address
-    ) {
+    if (this.state.currentAddress !== this.props.selectedAddressData?.address) {
       this.setState({
         currentAddress: this.props.selectedAddressData?.address
           ? this.props.selectedAddressData.address
           : this.props.allAddress.data?.addresses[0]?.address,
+      });
+    }
+    if (this.state.currentName !== this.props.selectedAddressData?.name) {
+      this.setState({
+        currentName: this.props.selectedAddressData?.name,
       });
     }
   }
@@ -236,6 +244,13 @@ class Header extends Component {
     );
   };
 
+  handleProfileModal = () => {
+    const { profileModal } = this.state;
+    this.setState({
+      profileModal: !profileModal,
+    });
+  };
+
   render() {
     const {
       categoriesToggle,
@@ -244,6 +259,9 @@ class Header extends Component {
       productsData,
       cartList,
       productsFiltersData,
+      profileModal,
+      currentAddress,
+      currentName
     } = this.state;
     const { allAddress } = this.props;
     const address = allAddress ? allAddress.address : "";
@@ -268,13 +286,59 @@ class Header extends Component {
                   <Box className="support-box">
                     <img src={supportIcon} alt="" /> Customer Support 24/7
                   </Box>
-                  {this.state.currentAddress ? (
+                  {currentAddress && (
                     <Box className="deliver-box">
                       Deliver to <img src={deliverIcon} alt="Deliver Icon" />
-                      <span>{this.state.currentAddress}</span>
+                      <span>{currentAddress}</span>
                     </Box>
-                  ) : (
-                    <></>
+                  )}
+                  {currentName && (
+                    <Box className="profile-box">
+                      <Box
+                        className="profile"
+                        onClick={() => this.handleProfileModal()}
+                      >
+                        <AccountBoxTwoToneIcon />
+                        <span>{currentName}</span>
+                        <KeyboardArrowDownOutlinedIcon />
+                      </Box>
+                      {profileModal === true && (
+                        <Box className="profile-modal">
+                          <ul>
+                            <li onClick={() => this.handleProfileModal()}>
+                              <Link to="/my-profile/personal-information">
+                                <PermIdentityOutlinedIcon /> My Profile
+                              </Link>
+                            </li>
+                            <li onClick={() => this.handleProfileModal()}>
+                              <Link to="#">
+                                <PermIdentityOutlinedIcon /> Orders
+                              </Link>
+                            </li>
+                            <li onClick={() => this.handleProfileModal()}>
+                              <Link to="/my-profile/wish-list">
+                                <PermIdentityOutlinedIcon /> Wish list
+                              </Link>
+                            </li>
+                            <li onClick={() => this.handleProfileModal()}>
+                              <Link to="/contact-us">
+                                <PermIdentityOutlinedIcon /> Contact Us
+                              </Link>
+                            </li>
+                            <li onClick={() => this.handleProfileModal()}>
+                              <Link to="/my-profile/notification">
+                                <PermIdentityOutlinedIcon /> Notification
+                              </Link>
+                            </li>
+                            <li onClick={() => this.handleProfileModal()}>
+                              <Link to="#">
+                                <PermIdentityOutlinedIcon /> Logout
+                              </Link>
+                            </li>
+                          </ul>
+                        </Box>
+                      )}
+                    </Box>
                   )}
                   {/* <Box className="language-list-box">
                     <FormControl fullWidth>
