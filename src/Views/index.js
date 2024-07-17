@@ -8,6 +8,9 @@ const ContactUs = lazy(() => import("./../Views/PostLogin/contactUs"));
 const TermsCondition = lazy(() =>
   import("./../Views/PostLogin/termsCondition")
 );
+const PrivacyPolicy = lazy(() => import("./../Views/PostLogin/privacyPolicy"));
+const ReturnRefund = lazy(() => import("./../Views/PostLogin/returnRefund"));
+
 const PersonalInformation = lazy(() =>
   import("./../Views/PostLogin/myProfile/personalInformation")
 );
@@ -105,6 +108,8 @@ const Views = () => {
         <Route exact path={`/about-us`} element={<AboutUs />} />
         <Route exact path={`/contact-us`} element={<ContactUs />} />
         <Route exact path={`/terms-condition`} element={<TermsCondition />} />
+        <Route exact path={`/privacy-policy`} element={<PrivacyPolicy />} />
+        <Route exact path={`/return-refund`} element={<ReturnRefund />} />
         <Route
           exact
           path={`/my-profile/personal-information`}

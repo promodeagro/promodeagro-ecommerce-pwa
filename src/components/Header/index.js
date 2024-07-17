@@ -72,7 +72,7 @@ class Header extends Component {
 
     if (
       prevProps.allProductsFiltersData.status !==
-      this.props.allProductsFiltersData.status &&
+        this.props.allProductsFiltersData.status &&
       this.props.allProductsFiltersData.status === status.SUCCESS &&
       this.props.allProductsFiltersData.data
     ) {
@@ -225,9 +225,7 @@ class Header extends Component {
               {pathArr?.[3] ? <li>/</li> : <></>}
 
               <li className="active">
-                <Link >
-                  {pathArr?.[3]?.replaceAll("%20", " ")}{" "}
-                </Link>
+                <Link>{pathArr?.[3]?.replaceAll("%20", " ")} </Link>
               </li>
             </>
           ) : (
@@ -313,6 +311,8 @@ class Header extends Component {
                     "/about-us",
                     "/contact-us",
                     "/terms-condition",
+                    "/privacy-policy",
+                    "/return-refund",
                   ].includes(path)
                     ? 0
                     : 1
@@ -328,6 +328,8 @@ class Header extends Component {
                       "/about-us",
                       "/contact-us",
                       "/terms-condition",
+                      "/privacy-policy",
+                      "/return-refund",
                     ].includes(path)
                       ? ""
                       : "flex-end"
@@ -364,6 +366,8 @@ class Header extends Component {
                     "/about-us",
                     "/contact-us",
                     "/terms-condition",
+                    "/privacy-policy",
+                    "/return-refund",
                   ].includes(path) ? (
                     <Box className="categories" justifyContent={"flex-end"}>
                       <ul>
@@ -439,100 +443,102 @@ class Header extends Component {
           "/about-us",
           "/contact-us",
           "/terms-condition",
+          "/privacy-policy",
+          "/return-refund",
         ].includes(path) && (
-            <Box className="header-bottom-container">
-              <Container>
-                <Grid container spacing={2} alignItems={"center"}>
-                  <Grid item xs={7} sm={8} md={3} lg={3}>
-                    <Box className="categories-container">
+          <Box className="header-bottom-container">
+            <Container>
+              <Grid container spacing={2} alignItems={"center"}>
+                <Grid item xs={7} sm={8} md={3} lg={3}>
+                  <Box className="categories-container">
+                    <Box
+                      className="categories-toggle"
+                      onClick={this.handleClickCategoriesToggle}
+                    >
+                      Shop by Categories
+                      <span>
+                        {categoriesToggle ? (
+                          <KeyboardArrowUpIcon />
+                        ) : (
+                          <KeyboardArrowDownIcon />
+                        )}
+                      </span>
+                    </Box>
+                    {categoriesToggle && this.renderCategories()}
+                    {categoriesToggle && (
                       <Box
-                        className="categories-toggle"
+                        className="categories-bg"
                         onClick={this.handleClickCategoriesToggle}
-                      >
-                        Shop by Categories
-                        <span>
-                          {categoriesToggle ? (
-                            <KeyboardArrowUpIcon />
-                          ) : (
-                            <KeyboardArrowDownIcon />
-                          )}
-                        </span>
-                      </Box>
-                      {categoriesToggle && this.renderCategories()}
-                      {categoriesToggle && (
-                        <Box
-                          className="categories-bg"
-                          onClick={this.handleClickCategoriesToggle}
-                        ></Box>
-                      )}
+                      ></Box>
+                    )}
+                  </Box>
+                </Grid>
+                {this.state.matches ? (
+                  ""
+                ) : (
+                  <Grid item xs={2} md={6} lg={6}>
+                    <Box className="search-box">
+                      <SearchResults
+                        data={productsFiltersData || []}
+                        cartItemsData={cartList}
+                      />
                     </Box>
                   </Grid>
-                  {this.state.matches ? (
-                    ""
-                  ) : (
-                    <Grid item xs={2} md={6} lg={6}>
-                      <Box className="search-box">
-                        <SearchResults
-                          data={productsFiltersData || []}
-                          cartItemsData={cartList}
-                        />
-                      </Box>
-                    </Grid>
-                  )}
-                  <Grid item xs={5} sm={4} md={3} lg={3}>
-                    <Box
-                      display={"inline-flex"}
-                      justifyContent={"flex-end"}
-                      width={"100%"}
-                    >
-                      {this.state.matches ? (
+                )}
+                <Grid item xs={5} sm={4} md={3} lg={3}>
+                  <Box
+                    display={"inline-flex"}
+                    justifyContent={"flex-end"}
+                    width={"100%"}
+                  >
+                    {this.state.matches ? (
+                      <Button
+                        variant="outlined"
+                        className="search-icon"
+                        startIcon={<img src={searchIcon} alt="" />}
+                        onClick={this.searchToggle}
+                      ></Button>
+                    ) : (
+                      ""
+                    )}
+                    {login?.userId ? (
+                      <>
                         <Button
                           variant="outlined"
-                          className="search-icon"
-                          startIcon={<img src={searchIcon} alt="" />}
-                          onClick={this.searchToggle}
-                        ></Button>
-                      ) : (
-                        ""
-                      )}
-                      {login?.userId ? (
-                        <>
+                          className="notification"
+                          startIcon={<img src={notificationIcon} alt="" />}
+                        >
+                          <p></p>
+                        </Button>
+
+                        <Link to={"/mycart"}>
                           <Button
                             variant="outlined"
-                            className="notification"
-                            startIcon={<img src={notificationIcon} alt="" />}
+                            className="card"
+                            startIcon={<img src={cardIcon} alt="" />}
                           >
-                            <p></p>
+                            {this.props?.cartData?.length ? (
+                              <p>{this.props.cartData.length}</p>
+                            ) : (
+                              <></>
+                            )}
+                            {this.state.cartList?.length ? (
+                              <p>{this.state.cartList.length}</p>
+                            ) : (
+                              <></>
+                            )}
                           </Button>
-
-                          <Link to={"/mycart"}>
-                            <Button
-                              variant="outlined"
-                              className="card"
-                              startIcon={<img src={cardIcon} alt="" />}
-                            >
-                              {this.props?.cartData?.length ? (
-                                <p>{this.props.cartData.length}</p>
-                              ) : (
-                                <></>
-                              )}
-                              {this.state.cartList?.length ? (
-                                <p>{this.state.cartList.length}</p>
-                              ) : (
-                                <></>
-                              )}
-                            </Button>
-                          </Link>
-                        </>
-                      ) : (
-                        <></>
-                      )}
-                    </Box>
-                  </Grid>
+                        </Link>
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </Box>
                 </Grid>
-              </Container>
-            </Box>
-          )}
+              </Grid>
+            </Container>
+          </Box>
+        )}
         {this.state.matches ? (
           <Box className={searchToggle ? "search-box active" : "search-box"}>
             <SearchResults
