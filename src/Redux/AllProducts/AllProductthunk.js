@@ -21,3 +21,15 @@ export const productDetails = createAsyncThunk("productsdetails", async ({ produ
     return error;
   }
 });
+
+
+
+export const fetchCategories = createAsyncThunk("category", async () => {
+  try {
+    let url = config.CATEGOREIS ;
+    const response = await postLoginService.get(url);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+});

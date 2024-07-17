@@ -159,13 +159,18 @@ export const loginDetails = () => {
 
 
 
-console.log(window.location.pathname)
+let path = window.location.pathname
 
-export const pathFile = {
+const pathFile = {
   // dashboard: "DashBoard",
   "/": "Home",
   "": "Home",
   "/product-details/": "Product Details",
-  "/mycart/address/order-placed": "Order Details"
+  "/mycart/address/order-placed": "Order Details",
+
 
 };
+
+// pathFile[path.split("/")?.[0]] = `${path.split("/")?.[2]}`;
+console.log(pathFile)
+export { pathFile };

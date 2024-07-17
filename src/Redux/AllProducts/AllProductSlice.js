@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
     allProducts,
-    productDetails
+    productDetails,
+    fetchCategories
 } from "./AllProductthunk";
 import status from "./../Constants";
 
@@ -10,6 +11,9 @@ const AllProductsSlice = createSlice({
     initialState: {
         allProductsData: {
             status: null,
+        },
+        allCategories:{
+            status:null
         },
 
         shopCategoryData: [],
@@ -80,6 +84,29 @@ const AllProductsSlice = createSlice({
                 return {
                     ...state,
                     productDetailsData: {
+                        status: status.FAILURE,
+                    },
+                };
+            })
+            .addCase(fetchCategories.pending.toString(), (state, action) => {
+                return {
+                    ...state,
+                    allCategories: {
+                        status: status.IN_PROGRESS,
+                    },
+                };
+            }).addCase(fetchCategories.fulfilled.toString(), (state, { payload }) => {
+                return {
+                    ...state,
+                    allCategories: {
+                        status: status.SUCCESS,
+                        data: payload,
+                    },
+                };
+            }).addCase(fetchCategories.rejected.toString(), (state, action) => {
+                return {
+                    ...state,
+                    allCategories: {
                         status: status.FAILURE,
                     },
                 };

@@ -20,6 +20,7 @@ const Config = {
   PLACE_ORDER: `${BASE_URL}/order`,
   FORGOT_PASSWORD: `${BASE_URL}/changePassword`,
   PRODUCTS_FILTERS: `${BASE_URL}/products`,
+  CATEGOREIS:`${BASE_URL}/category`,
 };
 
 export default Config;
