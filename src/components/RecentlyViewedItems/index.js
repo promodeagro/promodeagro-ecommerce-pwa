@@ -56,8 +56,11 @@ class RecentlyViewedItems extends Component {
                         </Grid>
                         <Grid item xs={6} sm={6} md={8}>
                           <Box className="contents">
-                            <Box className="name">
-                              <Link to={`/product-details/${item.id}`}>{item?.name}</Link>
+                            <Box className="name"
+
+                            >
+
+                              <Link to={`/product-details/${item.category}/${item.name}/${item.id}`}>{item?.name}</Link>
                             </Box>
                             <Box className="price">
                               <img src={priceIcon} alt="" /> {item?.price}
