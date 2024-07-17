@@ -64,48 +64,37 @@ class ProductDetails extends Component {
       itemQuantity: null,
       isUpdateIncrease: null,
       recentList: [],
-      loaderCount: 0
+      loaderCount: 0,
+      pathName: ""
     };
   }
   componentDidMount() {
     const items = loginDetails()
+    this.setState({
+      pathName: window.location.pathname
+    })
     this.props.productDetails({
       productId: this.props.params.id,
       userId: items?.userId ? items?.userId : ""
     })
 
-    // if (this.props?.prodducDetailsData) {
-    //   this.setState({
-    //     productItem: this.props?.prodducDetailsData,
-    //     itemQuantity: parseInt(this.props?.prodducDetailsData?.Quantity),
-    //   });
-    //   let data = localStorage.getItem("recentviewitems");
-    //   if (data) {
-    //     let recentViewList = JSON.parse(data);
-    //     const isItemInList = recentViewList.some(
-    //       (item) => item.id === this.props?.prodducDetailsData.id
-    //     );
-    //     if (!isItemInList) {
-    //       recentViewList.unshift(this.props?.prodducDetailsData);
-    //       localStorage.setItem(
-    //         "recentviewitems",
-    //         JSON.stringify(recentViewList.slice(0, 3))
-    //       );
-    //     }
-    //   } else {
-    //     localStorage.setItem(
-    //       "recentviewitems",
-    //       JSON.stringify([this.props?.prodducDetailsData])
-    //     );
-    //   }
 
-    // }
   }
 
   componentDidUpdate(prevProps, prevState) {
     const items = loginDetails();
 
+    if (window.location.pathname != this.state.pathName) {
 
+      this.setState({
+        pathName: window.location.pathname
+      })
+      const items = loginDetails()
+      this.props.productDetails({
+        productId: this.props.params.id,
+        userId: items?.userId ? items?.userId : ""
+      })
+    }
 
     if (
       prevProps.productDetailsData.status !== this.props.productDetailsData.status &&
@@ -116,9 +105,41 @@ class ProductDetails extends Component {
       this.props.setShopByCategory([[this.props.productDetailsData?.data?.category], [this.props.productDetailsData?.data.name]])
       this.setState({
         productItem: this.props.productDetailsData?.data,
-        itemQuantity: this.props.productDetailsData?.data?.cartItem?.Quantity,
+        itemQuantity: this.props.productDetailsData?.data?.cartItem?.Quantity ? this.props.productDetailsData?.data?.cartItem?.Quantity : 0,
         loaderCount: 1
       });
+
+
+
+      let data = localStorage.getItem("recentviewitems");
+      if (data) {
+
+        let path = window.location.pathname.split("/")
+
+        let recentViewList = JSON.parse(data);
+        const isItemInList = recentViewList.some(
+          (item) => item.id === path[path.length - 1]
+        );
+
+        if (!isItemInList) {
+          recentViewList.unshift(this.props.productDetailsData?.data);
+          localStorage.setItem(
+            "recentviewitems",
+            JSON.stringify(recentViewList.slice(0, 3))
+          );
+        }
+      } else {
+
+        localStorage.setItem(
+          "recentviewitems",
+          JSON.stringify([this.props.productDetailsData?.data])
+        );
+      }
+
+
+
+
+
     }
 
 
@@ -395,7 +416,7 @@ class ProductDetails extends Component {
                           </Grid>
                         </Grid>
                       </Box>
-                      <Box className="pack-size">
+                      {/* <Box className="pack-size">
                         <h3>Pack Size</h3>
                         <Box
                           display={"flex"}
@@ -542,7 +563,7 @@ class ProductDetails extends Component {
                             <p>+2</p> More Combos
                           </Button>
                         </Box>
-                      </Box>
+                      </Box> */}
                     </Box>
                   </Grid>
                 </Grid>
