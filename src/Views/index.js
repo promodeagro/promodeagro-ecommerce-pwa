@@ -69,7 +69,7 @@ const Views = () => {
         <Route path={`/category/:category`} element={<Category />} />
 
         <Route path={`/category`} element={<Category />} />
-
+        <Route path={`/product-details/:category/:subcategory/:id`} element={<ProductDetails />} />
 
         <Route path={`/product-details/:id`} element={<ProductDetails />} />
         <Route path={`/mycart`} element={<MyCart />} />

@@ -296,10 +296,10 @@ class FeaturedProducts extends Component {
                               status.IN_PROGRESS &&
                               item.id === dataId &&
                               !isUpdateIncrease) ||
-                            (this.props.updateItems.status ===
-                              status.IN_PROGRESS &&
-                              item.id === dataId &&
-                              !isUpdateIncrease) ? (
+                              (this.props.updateItems.status ===
+                                status.IN_PROGRESS &&
+                                item.id === dataId &&
+                                !isUpdateIncrease) ? (
                               <CircularProgress
                                 className="common-loader plus-icon"
                                 size={24}
@@ -337,8 +337,8 @@ class FeaturedProducts extends Component {
                         >
                           {this.props.updateItems.status ===
                             status.IN_PROGRESS &&
-                          item.id === dataId &&
-                          isUpdateIncrease ? (
+                            item.id === dataId &&
+                            isUpdateIncrease ? (
                             <CircularProgress className="common-loader plus-icon" />
                           ) : (
                             "+"
@@ -350,8 +350,12 @@ class FeaturedProducts extends Component {
                         <Button
                           variant="outlined"
                           onClick={() => {
-                            let unitqty = item.unitPrices[0].qty;
-
+                            let unitqty = ""
+                            if (item?.unitPrices?.length > 0) {
+                              unitqty = item?.unitPrices[0]?.qty
+                            } else {
+                              unitqty = 1
+                            }
                             this.handleAddToCart(item.id, unitqty);
                           }}
                           disabled={
@@ -360,7 +364,7 @@ class FeaturedProducts extends Component {
                           }
                           endIcon={
                             this.props.additems.status == status.IN_PROGRESS &&
-                            item.id == this.state.dataId ? (
+                              item.id == this.state.dataId ? (
                               <CircularProgress className="common-loader" />
                             ) : (
                               <></>

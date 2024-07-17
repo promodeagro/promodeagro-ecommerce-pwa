@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid";
 import FormControl from "@mui/material/FormControl";
 import NativeSelect from "@mui/material/NativeSelect";
 import { setShopByCategory } from "../../Redux/AllProducts/AllProductSlice";
-import {fetchCategories} from "../../Redux/AllProducts/AllProductthunk";
+import { fetchCategories } from "../../Redux/AllProducts/AllProductthunk";
 import {
   KeyboardArrowDown as KeyboardArrowDownIcon,
   KeyboardArrowUp as KeyboardArrowUpIcon,
@@ -42,7 +42,7 @@ class Header extends Component {
       searchToggle: false,
       productsData: [],
       productsFiltersData: [],
-      categories:[]
+      categories: []
     };
   }
   componentDidMount() {
@@ -62,7 +62,6 @@ class Header extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-
     if (
       prevProps.allCategories.status !==
       this.props.allCategories.status &&
@@ -71,7 +70,7 @@ class Header extends Component {
     ) {
 
       this.setState({
-        categories:   this.props.allCategories.data,
+        categories: this.props.allCategories.data,
       });
     }
 
@@ -130,81 +129,82 @@ class Header extends Component {
   renderCategories = () => {
 
     return <Box className="categories-box">
-      {this.state.categories.length?
-        this.state.categories.map((item,index)=>{
-             if(index%2==0)
-             {
-              return  <Box className="categories">
-       
+      {this.state.categories.length ?
+        this.state.categories.map((item, index) => {
+
+          if (index % 2 == 0) {
+            return <Box className="categories">
+
               <h2>{item?.CategoryName}</h2>
               <ul>
-                {item?.Subcategories?.length 
+                {item?.Subcategories?.length
                   ? (
-                  item.Subcategories?.map((subcat) => {
-                    const { category } = item;
-      
-                    return (
-                      <li
-                        onClick={() => {
-      
-                          this.handleFruitsandVeg([
-                            `${item?.CategoryName}`,
-                            `${subcat}`,
-                          ])
-                          this.props.navigate(`/category/${item?.CategoryName}/${subcat}`)
-                        }
-                        }
-                      >
-                        <Link >
-                          {subcat}
-                        </Link>
-                      </li>
-                    );
-                  })
-                ) : (
-                  <></>
-                )}
+                    item.Subcategories?.map((subcat) => {
+                      const { category } = item;
+
+                      return (
+                        <li
+                          onClick={() => {
+
+                            this.handleFruitsandVeg([
+                              `${item?.CategoryName.toUpperCase()}`,
+                              `${subcat}`,
+                            ])
+                            this.props.navigate(`/category/${item?.CategoryName.toUpperCase()}/${subcat}`)
+                          }
+                          }
+                        >
+                          <Link >
+
+                            {subcat}
+                          </Link>
+                        </li>
+                      );
+                    })
+                  ) : (
+                    <></>
+                  )}
               </ul>
               <ul></ul>
             </Box>
-             }else {
-              return <Box className="sub-categories">
-                 <h3>{item?.CategoryName}</h3>
+          } else {
+            return <Box className="sub-categories">
+              <h3>{item?.CategoryName}</h3>
               <ul>
-                {item?.Subcategories?.length  
+                {item?.Subcategories?.length
                   ? (
                     item?.Subcategories.map((subcat) => {
-                    return (
-                      <li
-                        onClick={() => {
-                          this.handleFruitsandVeg([
-                            `${item?.CategoryName}`,
-                            `${subcat}`,
-                          ])
-                          this.props.navigate(`/category/${item?.CategoryName}/${subcat}`)
-                        }
-                        }
-      
-                      >
-      
-                        <Link>
-                          {subcat}
-                        </Link>
-                      </li>
-                    );
-                  })
-                ) : (
-                  <></>
-                )}
+                      return (
+                        <li
+                          onClick={() => {
+                            this.handleFruitsandVeg([
+                              `${item?.CategoryName}`,
+                              `${subcat}`,
+                            ])
+                            this.props.navigate(`/category/${item?.CategoryName}/${subcat}`)
+                          }
+                          }
+
+                        >
+
+                          <Link>
+                            {subcat}
+                          </Link>
+                        </li>
+                      );
+                    })
+                  ) : (
+                    <></>
+                  )}
               </ul>
             </Box>
-             }
+          }
         })
-      
-      :<></>}
-      
-     
-      
+
+        : <></>}
+
+
+
     </Box>
 
   }
@@ -217,8 +217,9 @@ class Header extends Component {
     return <Box className="breadcrumb">
       <ul>
         <li>
-          <Link to="/">
-            <HomeOutlinedIcon /> {pathArr?.[1]}
+          <Link to="/" >
+            <HomeOutlinedIcon />    Home
+            {/* {pathArr?.[1]} */}
           </Link>
         </li>
         {pathArr.length ? (
@@ -226,12 +227,13 @@ class Header extends Component {
             <li>/</li>
             <li
               onClick={() => {
-                this.props.navigate(`/category/${pathArr?.[2]}`);
+                this.props.navigate(`/category/${pathArr?.[2]?.toUpperCase()}`);
               }}
             >
-              <Link to={`/category/${pathArr?.[2]}`}>{pathArr?.[2]}</Link>
+              <Link >{pathArr?.[2]?.toUpperCase()}</Link>
             </li>
             <li>/</li>
+
             <li className="active">
               <Link to="/category">{pathArr?.[3]?.replaceAll("%20", " ")} </Link>
             </li>
@@ -520,7 +522,7 @@ class Header extends Component {
 function mapStateToProps(state) {
   const { cartData } = state.home;
   const { cartItems } = state.cartitem;
-  const { shopCategoryData, productCategoryData, allProductsData ,allCategories} =
+  const { shopCategoryData, productCategoryData, allProductsData, allCategories } =
     state.allproducts;
   const { allAddress, selectedAddressData } = state.alladdress;
   const { allProductsFiltersData } = state.allproductsfilters;

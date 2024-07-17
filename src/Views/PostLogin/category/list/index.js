@@ -34,11 +34,16 @@ class List extends Component {
       sortOrder: null, // Track sort order
       dataId: "",
       isUpdateIncrease: false,
-      qauntityUnits: []
+      qauntityUnits: [],
+
     };
   }
 
+
   componentDidUpdate(prevProps, prevState) {
+
+
+
     if (
       prevProps.additems.status !== this.props.additems.status &&
       this.props.additems.status === status.SUCCESS &&
@@ -48,6 +53,8 @@ class List extends Component {
         addedProducts: [],
         quantities: {},
       });
+      this.props.handleCartApiLoader(true)
+
       const items = loginDetails();
       this.props.fetchCartItems({
         userId: items.userId,
@@ -62,7 +69,10 @@ class List extends Component {
       this.setState({
         addedProducts: [],
         quantities: {},
+
+
       });
+      this.props.handleCartApiLoader(true)
       const items = loginDetails();
       this.props.fetchCartItems({
         userId: items.userId,
@@ -77,7 +87,9 @@ class List extends Component {
       this.setState({
         addedProducts: [],
         quantities: {},
+
       });
+      this.props.handleCartApiLoader(true)
       const items = loginDetails();
       this.props.fetchCartItems({
         userId: items.userId,
@@ -86,6 +98,7 @@ class List extends Component {
   }
 
   handleAddToCart(id, qty) {
+    
     const items = loginDetails();
     this.setState({
       dataId: id,
@@ -144,7 +157,8 @@ class List extends Component {
 
                 // data.Quantity = itemId?.Quantity ? itemId?.Quantity : 0
                 // this.props.productDetailsData(data);
-                this.props.navigate(`/product-details/${item.id}`)
+
+                this.props.navigate(`/product-details/${item.category}/${item.name}/${item.id}`)
               }
               }
 
@@ -246,6 +260,7 @@ class List extends Component {
                     if (itemId?.ProductId) {
 
                       let d = itemId.Quantity;
+
                       this.handleQuantityChange(itemId.ProductId, 1, Number(d), unitqty);
                     } else {
                       this.handleQuantityChange(item.id, 1, "", unitqty);
@@ -266,7 +281,13 @@ class List extends Component {
                 <Button
                   variant="outlined"
                   onClick={() => {
-                    let unitqty = item.unitPrices[0].qty
+                    let unitqty = ""
+                    if (item?.unitPrices?.length > 0) {
+                      unitqty = item?.unitPrices[0]?.qty
+                    } else {
+                      unitqty = 1
+                    }
+
 
                     this.handleAddToCart(item.id, unitqty);
                   }}
@@ -347,7 +368,7 @@ class List extends Component {
 
   render() {
     const { data, cartItemsData } = this.props;
-    const { addedProducts, quantities, sortOrder, dataId, isUpdateIncrease, qauntityUnits } =
+    const { addedProducts, quantities, sortOrder, dataId, isUpdateIncrease, qauntityUnits, } =
       this.state;
 
     // Sort data based on sortOrder
@@ -361,9 +382,9 @@ class List extends Component {
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={12} sm={12} md={6} lg={6}>
               <h2>
-                {this.props.shopCategoryData.length
-                  ? this.props.shopCategoryData[1]
-                  : ""}
+
+
+                {this.props.currentCategory}
               </h2>
             </Grid>
             <Grid item xs={12} sm={12} md={6} lg={6}>

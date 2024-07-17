@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Box, Container, Grid } from "@mui/material";
 import SideBar from "./sideBar";
@@ -12,132 +12,207 @@ import { fetchCartItems } from "../../../Redux/Cart/CartThunk";
 import status from "../../../Redux/Constants";
 import { Loader, loginDetails } from "Views/Utills/helperFunctions";
 import { setShopByCategory } from "../../../Redux/AllProducts/AllProductSlice";
-class Category extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      hideFilter: true,
-      products: [],
-      productsData: [],
-      cartList: [],
-      filters: {
-        minPrice: "",
-        maxPrice: "",
-        selectedRatings: [],
-        selectedDiscounts: [],
-        selectedCountry: "",
-        selectedProductTypes: [],
-        selectedPackSizes: [],
-        currentCategory: "",
-      },
-    };
-  }
+import _ from "lodash"
+import { useParams, useLocation } from "react-router-dom";
+function Category(props) {
 
-  componentDidMount() {
+  const location = useLocation();
+  const [hideFilter, setHideFilter] = useState(true)
+  const [products, setProducts] = useState([])
+  const [productsData, setProductsData] = useState([])
+  const [cartList, setCartList] = useState([])
+  const [categoryName, setCategoryName] = useState("")
+  const [productApiLoader, setProdductApiLoader] = useState(false)
+  const [getCartApiLoader, setCartApiLoader] = useState(false)
+  const [locationName, setLocationName] = useState("")
+  const [filters, setFilters] = useState({
+    minPrice: "",
+    maxPrice: "",
+    selectedRatings: [],
+    selectedDiscounts: [],
+    selectedCountry: "",
+    selectedProductTypes: [],
+    selectedPackSizes: [],
+    currentCategory: "",
+
+
+  })
+
+  useEffect(() => {
     let items = loginDetails();
-    this.props.setShopByCategory([])
     if (items?.userId) {
-      this.props.fetchCartItems({
+      setCartApiLoader(true)
+      props.fetchCartItems({
         userId: items?.userId,
       });
     }
 
-    this.props.allProducts();
-  }
+    // let path = _.cloneDeep(window.location.pathname)
+    // let pathArr = path.substring(path.lastIndexOf("/") + 1).replace("-", " ").split(" ")
 
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      prevProps.allProductsData.status !== this.props.allProductsData.status &&
-      this.props.allProductsData.status === status.SUCCESS &&
-      this.props.allProductsData.data
-    ) {
-      this.setState({
-        products: this.props.allProductsData.data,
-        productsData: this.props.allProductsData.data,
-      });
-      let fruits = [];
-      let vegetables = [];
+    // if (pathArr.length > 0) {
+    //   this.setState({
+    //     categoryName: pathArr?.[1]?.replaceAll("-", " ")
+    //   })
+    // }
+    setProdductApiLoader(true)
+    props.allProducts();
 
-      this.props.allProductsData.data.forEach((product) => {
-        if (product.category === "FRUITS") {
-          fruits.push(product);
-        } else if (product.category === "VEGETABLES") {
-          vegetables.push(product);
-        }
-      });
+  }, [])
 
-      this.props.productCategories([fruits, vegetables]);
-    }
 
-    if (
-      prevProps.cartItems.status !== this.props.cartItems.status &&
-      this.props.cartItems.status === status.SUCCESS &&
-      this.props.cartItems.data
-    ) {
-      this.setState({
-        cartList: this.props.cartItems.data.items,
-      });
-    }
-    if (
-      this.props.shopCategoryData?.length > 0 &&
-      this.props.allProductsData?.data?.length &&
-      this.state.currentCategory != this.props.shopCategoryData?.[1]
-    ) {
-      let fruits = [];
-      let vegetables = [];
-      let selectedItem = [];
-      this.setState({
-        currentCategory: this.props.shopCategoryData?.[1],
-      });
-      this.props.allProductsData.data.forEach((product) => {
-        if (product.category === "FRUITS") {
-          fruits.push(product);
-        } else if (product.category === "VEGETABLES") {
-          vegetables.push(product);
-        }
-      });
+  useEffect(() => {
+    if (location.pathname && props.allProductsData?.data) {
 
-      if (this.props.shopCategoryData[0] == "VEGETABLES") {
-        if (this.props.shopCategoryData?.[1]) {
-          vegetables?.forEach((product) => {
-            if (this.props.shopCategoryData?.[1] == product.subCategory) {
-              selectedItem.push(product);
-            }
-          });
-        } else {
-          selectedItem = vegetables;
-          // this.setState({
-          //   productsData:vegetables
-          //  })
-        }
-      } else if (this.props.shopCategoryData[0] == "FRUITS") {
-        if (this.props.shopCategoryData?.[1]) {
-          fruits?.forEach((product) => {
-            if (this.props.shopCategoryData?.[1] == product.subCategory) {
-              selectedItem.push(product);
-            }
-          });
-        } else {
-          selectedItem = fruits;
-          //  this.setState({
-          //   productsData:fruits
-          //  })
-        }
-      }
-      if (selectedItem.length > 0) {
-        this.setState({
-          productsData: selectedItem,
+      let path = location.pathname;
+      if (path.split("/")?.[3] && locationName !== location.pathname) {
+        setLocationName(location.pathname)
+        setCategoryName(path.split("/")?.[3].replaceAll("%20", " "))
+        let selectedItem = []
+        let catName = path.split("/")?.[3].replaceAll("%20", " ")
+        props.allProductsData?.data?.forEach((product) => {
+          if (product.subCategory == catName) {
+            selectedItem.push(product);
+          }
         });
-      }
-    }
-  }
 
-  handleFilterChange = (filters) => {
-    this.setState({ filters }, this.applyFilters);
+
+
+        if (selectedItem.length > 0 && productsData !== selectedItem) {
+
+          setProductsData(selectedItem)
+        }
+
+
+
+      } else if (path.split("/")?.[2] && props.allProductsData?.data?.length > 0 && locationName !== location.pathname) {
+        setLocationName(location.pathname)
+
+        setCategoryName(path.split("/")?.[2].replaceAll("%20", " "))
+        let selectedItem = []
+        props.allProductsData?.data?.forEach((product) => {
+          if (product.category == path.split("/")?.[2]) {
+            selectedItem.push(product);
+          }
+        });
+
+
+
+        if (selectedItem.length > 0 && productsData !== selectedItem) {
+
+          setProductsData(selectedItem)
+        }
+
+
+
+      } else if (props.allProductsData?.data?.length > 0 && locationName !== location.pathname) {
+        setCategoryName("")
+        setProductsData(props.allProductsData?.data)
+      }
+
+    }
+  }, [location.pathname, productsData, props.allProductsData.data]);
+
+
+  useEffect(() => {
+    if (props.allProductsData.status == status.SUCCESS && props.allProductsData.data && productApiLoader) {
+      setProdductApiLoader(false)
+      // setProductsData(props.allProductsData.data)
+      // setProducts(props.allProductsData.data)
+      // let fruits = [];
+      // let vegetables = [];
+
+      // props.allProductsData.data.forEach((product) => {
+      //   if (product.category === "FRUITS") {
+      //     fruits.push(product);
+      //   } else if (product.category === "VEGETABLES") {
+      //     vegetables.push(product);
+      //   }
+      // });
+
+      // props.productCategories([fruits, vegetables]);
+    }
+
+  }, [props.allProductsData.status])
+
+
+  useEffect(() => {
+    if (
+
+      props.cartItems.status === status.SUCCESS &&
+      props.cartItems.data && getCartApiLoader
+    ) {
+      setCartApiLoader(false)
+      setCartList(props.cartItems.data.items)
+
+    }
+  }, [props.cartItems.status])
+
+
+  // useEffect(() => {
+  //   let path = _.cloneDeep(window.location.pathname)
+  //   let pathArr = path.substring(path.lastIndexOf("/") + 1).replace("-", " ").split(" ")
+
+  //   if (
+
+  //     props.allProductsData?.data?.length &&
+  //     categoryName != pathArr[1]?.replaceAll("%20", "")
+  //   ) {
+
+  //     let fruits = [];
+  //     let vegetables = [];
+  //     let selectedItem = [];
+
+  //     if (pathArr.length > 0) {
+  //       setCategoryName(pathArr[1]?.replaceAll("%20", " "))
+  //     }
+  //     props.allProductsData.data.forEach((product) => {
+  //       if (product.category === "FRUITS") {
+  //         fruits.push(product);
+  //       } else if (product.category === "VEGETABLES") {
+  //         vegetables.push(product);
+  //       }
+  //     });
+
+  //     if (pathArr[0] == "VEGETABLES") {
+  //       if (pathArr[1]?.replaceAll("-", " ")) {
+  //         vegetables?.forEach((product) => {
+  //           if (pathArr[1]?.replaceAll("%20", " ") == product.subCategory) {
+  //             selectedItem.push(product);
+  //           }
+  //         });
+  //       } else {
+  //         selectedItem = vegetables;
+
+  //       }
+  //     } else if (pathArr[0] == "FRUITS") {
+  //       if (pathArr[1]?.replaceAll("%20", " ")) {
+  //         fruits?.forEach((product) => {
+  //           if (pathArr[1]?.replaceAll("%20", " ") == product.subCategory) {
+  //             selectedItem.push(product);
+  //           }
+  //         });
+  //       } else {
+  //         selectedItem = fruits;
+
+  //       }
+  //     }
+
+  //     if (selectedItem.length > 0) {
+  //       // setProductsData(selectedItem)
+  //     }
+  //   }
+  // }, [])
+
+
+
+  const handleFilterChange = (filters) => {
+
+    // this.setState({ filters }, this.applyFilters);
   };
 
-  applyFilters = () => {
-    const { products, filters } = this.state;
+  const applyFilters = () => {
+    // const { products, filters } = this.state;
     let productsData = [...products];
 
     if (filters.minPrice || filters.maxPrice) {
@@ -187,52 +262,57 @@ class Category extends Component {
         filters.selectedPackSizes.some((size) => product.packSize === size)
       );
     }
+    setProductsData(productsData)
 
-    this.setState({ productsData });
   };
 
-  toggleFilter = () => {
-    this.setState((prevState) => ({
-      hideFilter: !prevState.hideFilter,
-    }));
+  const toggleFilter = () => {
+    setHideFilter(!hideFilter)
+    // this.setState((prevState) => ({
+    //   hideFilter: !prevState.hideFilter,
+    // }));
   };
-  render() {
-    const { productsData, cartList, hideFilter, products } = this.state;
-    return (
-      <Box className="main-container">
-        <Container>
-          <Grid container spacing={2} alignItems={"flex-start"}>
-            <Grid item xs={12} sm={12} md={3} lg={3}>
-              <SideBar
-                onFilterChange={this.handleFilterChange}
-                toggleFilter={this.toggleFilter}
-                hideFilter={hideFilter}
-              />
-            </Grid>
-            <Grid
-              item
-              xs={hideFilter ? 12 : 12}
-              sm={hideFilter ? 12 : 12}
-              md={hideFilter ? 12 : 9}
-              lg={hideFilter ? 12 : 9}
-            >
-              {this.props.cartItems.status === status.IN_PROGRESS.status ||
-                this.props.allProductsData.status === status.IN_PROGRESS ? (
+  const handleCartApiLoader = (apiLoader) => {
+    setCartApiLoader(apiLoader)
+  }
+
+  return (
+    <Box className="main-container">
+      <Container>
+        <Grid container spacing={2} alignItems={"flex-start"}>
+          <Grid item xs={12} sm={12} md={3} lg={3}>
+            <SideBar
+              onFilterChange={handleFilterChange}
+              toggleFilter={toggleFilter}
+              hideFilter={hideFilter}
+            />
+          </Grid>
+          <Grid
+            item
+            xs={hideFilter ? 12 : 12}
+            sm={hideFilter ? 12 : 12}
+            md={hideFilter ? 12 : 9}
+            lg={hideFilter ? 12 : 9}
+          >
+            {
+              props.allProductsData.status === status.IN_PROGRESS ? (
                 Loader.commonLoader()
-              ) : (
+              ) :
+
                 <List
+                  handleCartApiLoader={handleCartApiLoader}
+                  currentCategory={categoryName}
                   data={productsData ? productsData : []}
                   cartItemsData={cartList}
                   hideFilter={hideFilter}
                 />
-              )}
-            </Grid>
+            }
           </Grid>
-        </Container>
-        <RecentlyViewedItems />
-      </Box>
-    );
-  }
+        </Grid>
+      </Container>
+      <RecentlyViewedItems />
+    </Box>
+  );
 }
 
 function mapStateToProps(state) {
