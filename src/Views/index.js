@@ -3,6 +3,27 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { loginDetails } from "./Utills/helperFunctions";
 const Home = lazy(() => import("./../Views/PostLogin/home"));
+const AboutUs = lazy(() => import("./../Views/PostLogin/aboutUs"));
+const ContactUs = lazy(() => import("./../Views/PostLogin/contactUs"));
+const TermsCondition = lazy(() =>
+  import("./../Views/PostLogin/termsCondition")
+);
+const PersonalInformation = lazy(() =>
+  import("./../Views/PostLogin/myProfile/personalInformation")
+);
+const ManageAddresses = lazy(() =>
+  import("./../Views/PostLogin/myProfile/manageAddresses")
+);
+const ChangePassword = lazy(() =>
+  import("./../Views/PostLogin/myProfile/changePassword")
+);
+const WishList = lazy(() => import("./../Views/PostLogin/myProfile/wishList"));
+const Notification = lazy(() =>
+  import("./../Views/PostLogin/myProfile/notification")
+);
+const AccountPrivacy = lazy(() =>
+  import("./../Views/PostLogin/myProfile/accountPrivacy")
+);
 const CategoryOne = lazy(() => import("./../Views/PostLogin/category"));
 const CategoryTwo = lazy(() => import("./../Views/PostLogin/category"));
 const Category = lazy(() => import("./../Views/PostLogin/category"));
@@ -37,8 +58,6 @@ const Views = () => {
   const location = useLocation();
   const isLoggedIn = !!loginDetails()?.token; // Check if user is logged in
 
-
-
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Routes location={location}>
@@ -54,33 +73,98 @@ const Views = () => {
         {!isLoggedIn && (
           <>
             <Route path={`/mycart`} element={<Navigate to="/" replace />} />
-            <Route path={`/mycart/address`} element={<Navigate to="/" replace />} />
-            <Route path={`/mycart/address/order-details`} element={<Navigate to="/" replace />} />
-            <Route path={`/mycart/payment-details`} element={<Navigate to="/" replace />} />
-            <Route path={`/mycart/address/add-new-address`} element={<Navigate to="/" replace />} />
-            <Route path={`/mycart/address/updated-address`} element={<Navigate to="/" replace />} />
-            <Route path={`/mycart/address/order-placed/:id`} element={<Navigate to="/" replace />} />
+            <Route
+              path={`/mycart/address`}
+              element={<Navigate to="/" replace />}
+            />
+            <Route
+              path={`/mycart/address/order-details`}
+              element={<Navigate to="/" replace />}
+            />
+            <Route
+              path={`/mycart/payment-details`}
+              element={<Navigate to="/" replace />}
+            />
+            <Route
+              path={`/mycart/address/add-new-address`}
+              element={<Navigate to="/" replace />}
+            />
+            <Route
+              path={`/mycart/address/updated-address`}
+              element={<Navigate to="/" replace />}
+            />
+            <Route
+              path={`/mycart/address/order-placed/:id`}
+              element={<Navigate to="/" replace />}
+            />
           </>
         )}
 
         <Route path={`/forgot-password`} element={<Forgot />} />
         <Route path={`/`} element={<Home />} />
-        <Route path={`/category/:category/:subcategory`} element={<Category />} />
+        <Route exact path={`/about-us`} element={<AboutUs />} />
+        <Route exact path={`/contact-us`} element={<ContactUs />} />
+        <Route exact path={`/terms-condition`} element={<TermsCondition />} />
+        <Route
+          exact
+          path={`/my-profile/personal-information`}
+          element={<PersonalInformation />}
+        />
+        <Route
+          exact
+          path={`/my-profile/manage-addresses`}
+          element={<ManageAddresses />}
+        />
+        <Route
+          exact
+          path={`/my-profile/change-password`}
+          element={<ChangePassword />}
+        />
+        <Route exact path={`/my-profile/wish-list`} element={<WishList />} />
+        <Route
+          exact
+          path={`/my-profile/notification`}
+          element={<Notification />}
+        />
+        <Route
+          exact
+          path={`/my-profile/account-privacy`}
+          element={<AccountPrivacy />}
+        />
+        <Route
+          path={`/category/:category/:subcategory`}
+          element={<Category />}
+        />
         <Route path={`/category/:category`} element={<Category />} />
 
         <Route path={`/category`} element={<Category />} />
-        <Route path={`/product-details/:category/:subcategory/:id`} element={<ProductDetails />} />
+        <Route
+          path={`/product-details/:category/:subcategory/:id`}
+          element={<ProductDetails />}
+        />
 
         <Route path={`/product-details/:id`} element={<ProductDetails />} />
         <Route path={`/mycart`} element={<MyCart />} />
         <Route path={`/signin`} element={<SignIn />} />
         <Route path={`/signup`} element={<SignUp />} />
         <Route path={`/mycart/address`} element={<Address />} />
-        <Route path={`/mycart/address/order-details`} element={<OrderDetails />} />
+        <Route
+          path={`/mycart/address/order-details`}
+          element={<OrderDetails />}
+        />
         <Route path={`/mycart/payment-details`} element={<PaymentOption />} />
-        <Route path={`/mycart/address/add-new-address`} element={<AddNewAddress />} />
-        <Route path={`/mycart/address/updated-address`} element={<UpdatedAddress />} />
-        <Route path={`/mycart/address/order-placed/:id`} element={<OrderPlaced />} />
+        <Route
+          path={`/mycart/address/add-new-address`}
+          element={<AddNewAddress />}
+        />
+        <Route
+          path={`/mycart/address/updated-address`}
+          element={<UpdatedAddress />}
+        />
+        <Route
+          path={`/mycart/address/order-placed/:id`}
+          element={<OrderPlaced />}
+        />
         <Route path={`/my-order`} element={<MyOrder />} />
       </Routes>
     </Suspense>

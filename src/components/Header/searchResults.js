@@ -37,6 +37,7 @@ class SearchResults extends Component {
       isUpdateIncrease: false,
     };
     this.searchInputRef = React.createRef();
+    this.debouncedSearch = _.debounce(this.props.allProductsFilters, 2000);
   }
 
   componentDidUpdate(prevProps) {
@@ -253,14 +254,16 @@ class SearchResults extends Component {
   }
 
   searchChange = (event) => {
-    this.setState({ searchTerm: event.target.value });
-    setTimeout(() => {
-      this.props.allProductsFilters({ name: this.state.searchTerm });
-    }, 2000);
+    const searchTerm = event.target.value;
+    this.setState({ searchTerm });
+
+    if (searchTerm.trim() !== "") {
+      this.debouncedSearch({ name: searchTerm });
+    }
   };
 
   searchBgClick = () => {
-    this.setState({ searchTerm: false });
+    this.setState({ searchTerm: "" });
     if (this.searchInputRef.current) {
       this.searchInputRef.current.value = "";
     }

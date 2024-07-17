@@ -5,18 +5,15 @@ import Grid from "@mui/material/Grid";
 import instagramIcon from "../../assets/img/instagram-icon.svg";
 import whatsappIcon from "../../assets/img/whatsapp-icon.svg";
 import linkedinIcon from "../../assets/img/linkedin-icon.svg";
-import { useLocation } from "react-router-dom";  // Import useLocation hook
+import { useLocation } from "react-router-dom"; // Import useLocation hook
 import { loginDetails } from "Views/Utills/helperFunctions";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const location = useLocation();
   const login = loginDetails();
 
-  useEffect(() => {
-
-
-
-  }, [location.pathname]);
+  useEffect(() => {}, [location.pathname]);
 
   return (
     <div className="footer">
@@ -39,13 +36,13 @@ const Footer = () => {
                     <h3>My Account</h3>
                     <ul>
                       <li>
-                        <a href="#">My Account</a>
+                        <Link to="/my-profile/personal-information">My Account</Link>
                       </li>
                       <li>
                         <a href="#">Order History</a>
                       </li>
                       <li>
-                        <a href="#">Shoping Cart</a>
+                        <Link to="/mycart">Shoping Cart</Link>
                       </li>
                       <li>
                         <a href="#">Wishlist</a>
@@ -63,16 +60,16 @@ const Footer = () => {
                   <h3>Helps</h3>
                   <ul>
                     <li>
-                      <a href="#">Contact</a>
+                      <Link to={"/contact-us"}>Contact Us</Link>
                     </li>
                     <li>
                       <a href="#">Faqs</a>
                     </li>
                     <li>
-                      <a href="#">Terms & Condition</a>
+                      <Link to="/terms-condition">Terms & Condition</Link>
                     </li>
                     <li>
-                      <a href="#">Privacy Policy</a>
+                      <Link to="/privacy-policy">Privacy Policy</Link>
                     </li>
                   </ul>
                 </Box>
@@ -82,7 +79,7 @@ const Footer = () => {
                   <h3>Proxy</h3>
                   <ul>
                     <li>
-                      <a href="#">About</a>
+                      <Link to={"/about-us"}>About Us</Link>
                     </li>
                     <li>
                       <a href="#">Product</a>

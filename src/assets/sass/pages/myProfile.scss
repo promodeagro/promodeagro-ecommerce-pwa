@@ -1,0 +1,545 @@
+.profile-container {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  padding: 30px 0 30px 0;
+  .profile-sidebar {
+    display: inline-flex;
+    width: 220px;
+    flex-wrap: wrap;
+    border-radius: 5px;
+    border: 1px solid #bfbfbf;
+    .heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 15px 15px;
+      font-size: 20px;
+      line-height: 24px;
+      font-weight: 600;
+      color: #000000;
+      border-bottom: 1px solid #bfbfbf;
+    }
+    .profile-links {
+      display: block;
+      width: 100%;
+      border-bottom: 1px solid #bfbfbf;
+      .sab-heading {
+        display: flex;
+        width: 100%;
+        padding: 15px;
+        align-items: center;
+        justify-content: flex-start;
+        font-weight: 600;
+        color: #2a3a31;
+        span {
+          width: 32px;
+          height: 32px;
+          margin-right: 10px;
+          border-radius: 50%;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid #bfbfbf;
+        }
+        button {
+          font-weight: 600;
+          color: #2a3a31;
+          span {
+            border: none;
+          }
+        }
+      }
+      .links {
+        display: flex;
+        width: 100%;
+        padding-bottom: 10px;
+        ul {
+          display: flex;
+          width: 100%;
+          flex-wrap: wrap;
+          padding: 0;
+          margin: 0;
+          li {
+            display: flex;
+            width: 100%;
+            a {
+              display: block;
+              width: 100%;
+              font-size: 13px;
+              line-height: 18px;
+              font-weight: 600;
+              color: #344054;
+              padding: 15px 25px;
+            }
+            &.active {
+              a {
+                color: #1b7643;
+                background-color: #1f915133;
+              }
+            }
+          }
+        }
+      }
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+  .profile-right {
+    display: flex;
+    flex-wrap: wrap;
+    width: calc(100% - 220px);
+    padding-left: 30px;
+    .heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0;
+
+      h2 {
+        display: inline-flex;
+        font-size: 20px;
+        line-height: 24px;
+        font-weight: 600;
+        color: #000000;
+      }
+      .edit-btn {
+        text-transform: lowercase;
+        color: #c1c1c1;
+        font-weight: 400;
+        svg {
+          font-size: 18px;
+        }
+      }
+      .address-btn {
+        font-size: 13px;
+      }
+      .address-cancel-btn {
+        font-size: 13px;
+        background-color: #bfbfbf;
+      }
+    }
+    .profile-forms {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      padding-top: 30px;
+      .textfield {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        padding-bottom: 15px;
+        label {
+          display: flex;
+          width: 100%;
+          padding-bottom: 5px;
+          font-weight: 500;
+        }
+        .input {
+          width: 300px;
+
+          .MuiInputBase-root {
+            background-color: #fcfcfc;
+            border-radius: 3px;
+            &::after,
+            &::before {
+              display: none;
+            }
+            input {
+              font-size: 13px;
+              padding-left: 10px;
+              padding-right: 10px;
+              padding-top: 10px;
+              padding-bottom: 10px;
+            }
+          }
+          &.outlined {
+            .MuiInputBase-root {
+              background-color: transparent;
+            }
+          }
+        }
+        p {
+          display: flex;
+          width: 100%;
+        }
+      }
+      .change-password-btn {
+        margin-top: 15px;
+        font-size: 13px;
+      }
+    }
+    .address-container {
+      display: flex;
+      width: 100%;
+      .address-card-container {
+        padding: 18px 20px;
+        border: 1px solid #d6d6d6;
+        border-radius: 16px;
+        position: relative;
+        min-height: 300px;
+        opacity: 1;
+        transform: translate3d(0, 0px, 0) scale(1);
+
+        .address-btn {
+          height: 32px;
+          width: 32px;
+          border-radius: 100%;
+          margin-right: 12px;
+          border: 1px solid #303030;
+          color: #303030;
+
+          svg {
+            font-size: 18px;
+          }
+
+          &:last-child {
+            margin-right: 0px;
+          }
+
+          &.active {
+            border: 1px solid #1f9151;
+            color: #1f9151;
+          }
+        }
+
+        .person-name {
+          margin-top: 22px;
+          color: #303030;
+          span {
+            display: inline-flex;
+            color: #1F9151;
+            font-size: 13px;
+            line-height: 18px;
+            font-weight: 500;
+            padding: 2px 10px;
+            border-radius: 3px;
+            background-color: #1F91511A;
+          }
+        }
+
+        address {
+          color: #6d6d6d;
+          font-size: 16px;
+          line-height: 20px;
+          margin: 14px 0px 26px 0px;
+        }
+
+        .contact-number {
+          .contact-heading {
+            font-size: 16px;
+            line-height: 20px;
+            font-weight: 600;
+            color: #303030;
+            margin-bottom: 8px;
+          }
+
+          .title {
+            width: 80px;
+            font-size: 14px;
+            line-height: 24px;
+            font-weight: 400;
+            color: #3c3c3c;
+          }
+
+          .details {
+            font-size: 14px;
+            line-height: 24px;
+            font-weight: 400;
+            color: #6d6d6d;
+          }
+        }
+      }
+    }
+    .products {
+      display: flex;
+      width: 100%;
+      margin-top: 30px;
+
+      flex-wrap: wrap;
+
+      .product-box {
+        display: inline-flex;
+        flex-wrap: wrap;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #e6e6e6;
+        position: relative;
+        width: 220px;
+        margin-right: 30px;
+        margin-bottom: 30px;
+
+        .sale {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 90px;
+          height: 32px;
+          font-size: 14px;
+          line-height: 32px;
+          font-weight: 400;
+          color: #ffffff;
+          display: inline-flex;
+          justify-content: center;
+          text-align: center;
+          background-color: #1f9151;
+          border-top-left-radius: 5px;
+          border-bottom-right-radius: 10px;
+        }
+
+        .icon {
+          cursor: pointer;
+          background-color: #fff;
+          position: absolute;
+          right: 10px;
+          top: 10px;
+          width: 24px;
+          height: 24px;
+          font-size: 13px;
+          color: #141b3499;
+          font-weight: 400;
+          line-height: 24px;
+          border-radius: 3px;
+          display: flex;
+          align-items: center;
+          text-align: center;
+          justify-content: center;
+          border: 1px solid #e5e5e5;
+
+          svg {
+            width: 20px;
+            height: 20px;
+          }
+        }
+
+        .image {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          height: 200px;
+          margin: 15px;
+          cursor: pointer;
+
+          img {
+            max-height: 200px;
+          }
+        }
+
+        .name {
+          display: flex;
+          width: 100%;
+
+          a {
+            font-size: 13px;
+            line-height: 18px;
+            color: #535554;
+            font-weight: 400;
+
+            &:hover {
+              color: #1f9151;
+            }
+          }
+        }
+
+        .price-ratting {
+          display: flex;
+          width: 100%;
+          justify-content: space-between;
+
+          .price {
+            display: inline-flex;
+            font-size: 14px;
+            line-height: 18px;
+            font-weight: 500;
+            color: #1a1a1a;
+            align-items: center;
+
+            img {
+              max-width: 8px;
+              height: 12px;
+              margin-right: 2px;
+            }
+
+            span {
+              margin-left: 7px;
+              color: #adadad;
+              font-weight: 400;
+              text-decoration: line-through;
+            }
+          }
+
+          .ratting {
+            display: inline-flex;
+            font-size: 14px;
+            line-height: 18px;
+            font-weight: 500;
+            color: #1a1a1a;
+            align-items: center;
+
+            svg {
+              width: 18px;
+              margin-right: 3px;
+              color: #ff8a00;
+            }
+          }
+        }
+
+        .select {
+          display: flex;
+          width: 100%;
+          font-size: 12px;
+          line-height: 16px;
+          color: #adadad;
+
+          .css-1eed5fa-MuiInputBase-root-MuiInput-root {
+            border: 1px solid #a8a8a833;
+            border-radius: 3px;
+            padding-left: 10px;
+
+            &::before {
+              display: none;
+            }
+
+            &::after {
+              display: none;
+            }
+
+            select {
+              font-size: 12px;
+              line-height: 16px;
+            }
+          }
+        }
+
+        .add-cart {
+          display: flex;
+          width: 100%;
+          margin-top: 10px;
+
+          .css-1rwt2y5-MuiButtonBase-root-MuiButton-root {
+            border: 1px solid #1f9151;
+            width: 100%;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 24px;
+            color: #1f9151;
+            text-transform: capitalize;
+            height: 36px;
+            &.Mui-disabled {
+              color: rgba(0, 0, 0, 0.26) !important;
+              border: 1px solid rgba(0, 0, 0, 0.12) !important;
+            }
+          }
+        }
+      }
+    }
+    .notification-container {
+      display: flex;
+      width: 100%;
+      flex-wrap: wrap;
+      margin-top: 30px;
+      .notification {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 20px;
+        p {
+          display: inline-flex;
+        }
+        button {
+          color: #2a3a31;
+          text-transform: capitalize;
+        }
+        .MuiAlert-message {
+          display: flex;
+          width: 100%;
+          align-items: center;
+          justify-content: space-between;
+        }
+      }
+    }
+    .promode-text-box {
+      margin-top: 30px;
+      margin-bottom: 30px;
+      display: flex;
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid #2a3a311a;
+      font-size: 13px;
+      line-height: 18px;
+      font-weight: 500;
+      color: #000000;
+      padding: 15px 15px 30px;
+    }
+    .delete-btn {
+      font-size: 13px;
+      &.MuiButton-colorError {
+        background-color: #d32f2f;
+      }
+    }
+    .add-address-container {
+      display: flex;
+      width: 60%;
+      margin-top: 30px;
+      .textfield {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        padding-bottom: 0px;
+        label {
+          display: flex;
+          width: 100%;
+          padding-bottom: 5px;
+          font-weight: 500;
+        }
+        .input {
+          .MuiInputBase-root {
+            border-radius: 3px;
+            &::after,
+            &::before {
+              display: none;
+            }
+            input {
+              font-size: 13px;
+              padding-left: 10px;
+              padding-right: 10px;
+              padding-top: 10px;
+              padding-bottom: 10px;
+            }
+          }
+          &.outlined {
+            .MuiInputBase-root {
+              background-color: transparent;
+            }
+          }
+        }
+        p {
+          display: flex;
+          width: 100%;
+        }
+      }
+      .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root {
+        color: #1f9151;
+
+        &.Mui-checked {
+          color: #1f9151;
+          border-color: #1f9151;
+        }
+      }
+      .css-ahj2mt-MuiTypography-root {
+        font-size: 12px;
+        line-height: 15px;
+        color: #b1b1b1;
+        font-weight: 500;
+      }
+      .save-address-btn {
+        width: 100%;
+      }
+    }
+  }
+}

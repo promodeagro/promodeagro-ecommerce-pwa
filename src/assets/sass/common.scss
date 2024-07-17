@@ -275,3 +275,37 @@ button {
     }
   }
 }
+
+.condition-contents-container {
+  display: block;
+  width: 100%;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  h1 {
+    display: block;
+    width: 100%;
+    color: #000000;
+    font-size: 32px;
+    line-height: 40px;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+  strong {
+    display: block;
+    width: 100%;
+    color: #000000;
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  p {
+    display: block;
+    width: 100%;
+    font-size: 13px;
+    line-height: 20px;
+    font-weight: 400;
+    color: #000000;
+    margin-bottom: 20px;
+  }
+}

@@ -14,8 +14,11 @@
 @import "./pages/category";
 @import "./pages/productDetails";
 @import "./pages/signin";
-@import "./pages/myCart/myCart.scss";
-@import "./pages/myCart/components/address.scss";
-@import "./pages/myCart/components/addNewAddress.scss";
-@import "./pages/myCart/components/orderPlaced.scss";
-@import "./pages/myOrder/myOrder.scss";
+@import "./pages/myCart/myCart";
+@import "./pages/myCart/components/address";
+@import "./pages/myCart/components/addNewAddress";
+@import "./pages/myCart/components/orderPlaced";
+@import "./pages/myOrder/myOrder";
+@import "./pages/myProfile";
+@import "./pages/aboutUs";
+@import "./pages/contactUs";

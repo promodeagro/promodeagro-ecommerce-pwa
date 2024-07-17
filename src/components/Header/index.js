@@ -26,10 +26,9 @@ import { Link } from "react-router-dom";
 import status from "../../Redux/Constants";
 import { loginDetails } from "Views/Utills/helperFunctions";
 import { getAllAddress } from "../../Redux/Address/AddressThunk";
-import { allProducts } from "../../Redux/AllProducts/AllProductthunk";
 import SearchResults from "./searchResults";
 import { allProductsFilters } from "../../Redux/ProductFilters/ProductFiltersThunk";
-import _ from "lodash"
+import _ from "lodash";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 class Header extends Component {
   constructor(props) {
@@ -42,7 +41,7 @@ class Header extends Component {
       searchToggle: false,
       productsData: [],
       productsFiltersData: [],
-      categories: []
+      categories: [],
     };
   }
   componentDidMount() {
@@ -55,29 +54,25 @@ class Header extends Component {
     //     userId: items.userId,
     //   });
     // }
-    // this.props.allProducts();
     // let items = this.state.productsFiltersData;
-    this.props.fetchCategories()
+    this.props.fetchCategories();
     this.props.allProductsFilters({});
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (
-      prevProps.allCategories.status !==
-      this.props.allCategories.status &&
+      prevProps.allCategories.status !== this.props.allCategories.status &&
       this.props.allCategories.status === status.SUCCESS &&
       this.props.allCategories.data
     ) {
-
       this.setState({
         categories: this.props.allCategories.data,
       });
     }
 
-
     if (
       prevProps.allProductsFiltersData.status !==
-      this.props.allProductsFiltersData.status &&
+        this.props.allProductsFiltersData.status &&
       this.props.allProductsFiltersData.status === status.SUCCESS &&
       this.props.allProductsFiltersData.data
     ) {
@@ -127,123 +122,120 @@ class Header extends Component {
   };
 
   renderCategories = () => {
+    return (
+      <Box className="categories-box">
+        {this.state.categories.length ? (
+          this.state.categories.map((item, index) => {
+            if (index % 2 == 0) {
+              return (
+                <Box className="categories">
+                  <h2>{item?.CategoryName}</h2>
+                  <ul>
+                    {item?.Subcategories?.length ? (
+                      item.Subcategories?.map((subcat) => {
+                        const { category } = item;
 
-    return <Box className="categories-box">
-      {this.state.categories.length ?
-        this.state.categories.map((item, index) => {
-
-          if (index % 2 == 0) {
-            return <Box className="categories">
-
-              <h2>{item?.CategoryName}</h2>
-              <ul>
-                {item?.Subcategories?.length
-                  ? (
-                    item.Subcategories?.map((subcat) => {
-                      const { category } = item;
-
-                      return (
-                        <li
-                          onClick={() => {
-
-                            this.handleFruitsandVeg([
-                              `${item?.CategoryName.toUpperCase()}`,
-                              `${subcat}`,
-                            ])
-                            this.props.navigate(`/category/${item?.CategoryName.toUpperCase()}/${subcat}`)
-                          }
-                          }
-                        >
-                          <Link >
-
-                            {subcat}
-                          </Link>
-                        </li>
-                      );
-                    })
-                  ) : (
-                    <></>
-                  )}
-              </ul>
-              <ul></ul>
-            </Box>
-          } else {
-            return <Box className="sub-categories">
-              <h3>{item?.CategoryName}</h3>
-              <ul>
-                {item?.Subcategories?.length
-                  ? (
-                    item?.Subcategories.map((subcat) => {
-                      return (
-                        <li
-                          onClick={() => {
-                            this.handleFruitsandVeg([
-                              `${item?.CategoryName}`,
-                              `${subcat}`,
-                            ])
-                            this.props.navigate(`/category/${item?.CategoryName}/${subcat}`)
-                          }
-                          }
-
-                        >
-
-                          <Link>
-                            {subcat}
-                          </Link>
-                        </li>
-                      );
-                    })
-                  ) : (
-                    <></>
-                  )}
-              </ul>
-            </Box>
-          }
-        })
-
-        : <></>}
-
-
-
-    </Box>
-
-  }
-
-  renderBreadcrumb = () => {
-    let path = _.cloneDeep(window.location.pathname)
-    let pathArr = path.split("/")
-
-    let subCat = pathArr[0]
-    return <Box className="breadcrumb">
-      <ul>
-        <li>
-          <Link to="/" >
-            <HomeOutlinedIcon />    Home
-            {/* {pathArr?.[1]} */}
-          </Link>
-        </li>
-        {pathArr.length ? (
-          <>
-            <li>/</li>
-            <li
-              onClick={() => {
-                this.props.navigate(`/category/${pathArr?.[2]?.toUpperCase()}`);
-              }}
-            >
-              <Link >{pathArr?.[2]?.toUpperCase()}</Link>
-            </li>
-            <li>/</li>
-
-            <li className="active">
-              <Link to="/category">{pathArr?.[3]?.replaceAll("%20", " ")} </Link>
-            </li>
-          </>
+                        return (
+                          <li
+                            onClick={() => {
+                              this.handleFruitsandVeg([
+                                `${item?.CategoryName.toUpperCase()}`,
+                                `${subcat}`,
+                              ]);
+                              this.props.navigate(
+                                `/category/${item?.CategoryName.toUpperCase()}/${subcat}`
+                              );
+                            }}
+                          >
+                            <Link>{subcat}</Link>
+                          </li>
+                        );
+                      })
+                    ) : (
+                      <></>
+                    )}
+                  </ul>
+                  <ul></ul>
+                </Box>
+              );
+            } else {
+              return (
+                <Box className="sub-categories">
+                  <h3>{item?.CategoryName}</h3>
+                  <ul>
+                    {item?.Subcategories?.length ? (
+                      item?.Subcategories.map((subcat) => {
+                        return (
+                          <li
+                            onClick={() => {
+                              this.handleFruitsandVeg([
+                                `${item?.CategoryName}`,
+                                `${subcat}`,
+                              ]);
+                              this.props.navigate(
+                                `/category/${item?.CategoryName}/${subcat}`
+                              );
+                            }}
+                          >
+                            <Link>{subcat}</Link>
+                          </li>
+                        );
+                      })
+                    ) : (
+                      <></>
+                    )}
+                  </ul>
+                </Box>
+              );
+            }
+          })
         ) : (
           <></>
         )}
-      </ul>
-    </Box>
-  }
+      </Box>
+    );
+  };
+
+  renderBreadcrumb = () => {
+    let path = _.cloneDeep(window.location.pathname);
+    let pathArr = path.split("/");
+
+    let subCat = pathArr[0];
+    return (
+      <Box className="breadcrumb">
+        <ul>
+          <li>
+            <Link to="/">
+              <HomeOutlinedIcon /> Home
+              {/* {pathArr?.[1]} */}
+            </Link>
+          </li>
+          {pathArr.length ? (
+            <>
+              <li>/</li>
+              <li
+                onClick={() => {
+                  this.props.navigate(
+                    `/category/${pathArr?.[2]?.toUpperCase()}`
+                  );
+                }}
+              >
+                <Link>{pathArr?.[2]?.toUpperCase()}</Link>
+              </li>
+              <li>/</li>
+              <li className="active">
+                <Link to="/category">
+                  {pathArr?.[3]?.replaceAll("%20", " ")}{" "}
+                </Link>
+              </li>
+            </>
+          ) : (
+            <></>
+          )}
+        </ul>
+      </Box>
+    );
+  };
 
   render() {
     const {
@@ -312,12 +304,32 @@ class Header extends Component {
                 item
                 xs={12}
                 md={4}
-                order={["/", "/signin", "/signup"].includes(path) ? 0 : 1}
+                order={
+                  [
+                    "/",
+                    "/signin",
+                    "/signup",
+                    "/about-us",
+                    "/contact-us",
+                    "/terms-condition",
+                  ].includes(path)
+                    ? 0
+                    : 1
+                }
               >
                 <Box
                   className="categories menu"
                   justifyContent={
-                    ["/", "/signin", "/signup"].includes(path) ? "" : "flex-end"
+                    [
+                      "/",
+                      "/signin",
+                      "/signup",
+                      "/about-us",
+                      "/contact-us",
+                      "/terms-condition",
+                    ].includes(path)
+                      ? ""
+                      : "flex-end"
                   }
                 >
                   <ul>
@@ -325,10 +337,10 @@ class Header extends Component {
                       <Link to={"/"}>Home</Link>
                     </li>
                     <li>
-                      <Link to={"#"}>About Us</Link>
+                      <Link to={"/about-us"}>About Us</Link>
                     </li>
                     <li>
-                      <Link to={"#"}>Contact Us</Link>
+                      <Link to={"/contact-us"}>Contact Us</Link>
                     </li>
                   </ul>
                 </Box>
@@ -344,7 +356,14 @@ class Header extends Component {
                   ) : (
                     <></>
                   )}
-                  {["/", "/signin", "/signup"].includes(path) ? (
+                  {[
+                    "/",
+                    "/signin",
+                    "/signup",
+                    "/about-us",
+                    "/contact-us",
+                    "/terms-condition",
+                  ].includes(path) ? (
                     <Box className="categories" justifyContent={"flex-end"}>
                       <ul>
                         <li className="quick">
@@ -410,100 +429,109 @@ class Header extends Component {
           "/mycart/address/updated-address",
           "/my-order",
           "/mycart/address/order-placed/:id",
+          "/my-profile/personal-information",
+          "/my-profile/manage-addresses",
+          "/my-profile/change-password",
+          "/my-profile/wish-list",
+          "/my-profile/notification",
+          "/my-profile/account-privacy",
+          "/about-us",
+          "/contact-us",
+          "/terms-condition",
         ].includes(path) && (
-            <Box className="header-bottom-container">
-              <Container>
-                <Grid container spacing={2} alignItems={"center"}>
-                  <Grid item xs={7} sm={8} md={3} lg={3}>
-                    <Box className="categories-container">
+          <Box className="header-bottom-container">
+            <Container>
+              <Grid container spacing={2} alignItems={"center"}>
+                <Grid item xs={7} sm={8} md={3} lg={3}>
+                  <Box className="categories-container">
+                    <Box
+                      className="categories-toggle"
+                      onClick={this.handleClickCategoriesToggle}
+                    >
+                      Shop by Categories
+                      <span>
+                        {categoriesToggle ? (
+                          <KeyboardArrowUpIcon />
+                        ) : (
+                          <KeyboardArrowDownIcon />
+                        )}
+                      </span>
+                    </Box>
+                    {categoriesToggle && this.renderCategories()}
+                    {categoriesToggle && (
                       <Box
-                        className="categories-toggle"
+                        className="categories-bg"
                         onClick={this.handleClickCategoriesToggle}
-                      >
-                        Shop by Categories
-                        <span>
-                          {categoriesToggle ? (
-                            <KeyboardArrowUpIcon />
-                          ) : (
-                            <KeyboardArrowDownIcon />
-                          )}
-                        </span>
-                      </Box>
-                      {categoriesToggle && this.renderCategories()}
-                      {categoriesToggle && (
-                        <Box
-                          className="categories-bg"
-                          onClick={this.handleClickCategoriesToggle}
-                        ></Box>
-                      )}
+                      ></Box>
+                    )}
+                  </Box>
+                </Grid>
+                {this.state.matches ? (
+                  ""
+                ) : (
+                  <Grid item xs={2} md={6} lg={6}>
+                    <Box className="search-box">
+                      <SearchResults
+                        data={productsFiltersData || []}
+                        cartItemsData={cartList}
+                      />
                     </Box>
                   </Grid>
-                  {this.state.matches ? (
-                    ""
-                  ) : (
-                    <Grid item xs={2} md={6} lg={6}>
-                      <Box className="search-box">
-                        <SearchResults
-                          data={productsFiltersData || []}
-                          cartItemsData={cartList}
-                        />
-                      </Box>
-                    </Grid>
-                  )}
-                  <Grid item xs={5} sm={4} md={3} lg={3}>
-                    <Box
-                      display={"inline-flex"}
-                      justifyContent={"flex-end"}
-                      width={"100%"}
-                    >
-                      {this.state.matches ? (
+                )}
+                <Grid item xs={5} sm={4} md={3} lg={3}>
+                  <Box
+                    display={"inline-flex"}
+                    justifyContent={"flex-end"}
+                    width={"100%"}
+                  >
+                    {this.state.matches ? (
+                      <Button
+                        variant="outlined"
+                        className="search-icon"
+                        startIcon={<img src={searchIcon} alt="" />}
+                        onClick={this.searchToggle}
+                      ></Button>
+                    ) : (
+                      ""
+                    )}
+                    {login?.userId ? (
+                      <>
                         <Button
                           variant="outlined"
-                          className="search-icon"
-                          startIcon={<img src={searchIcon} alt="" />}
-                          onClick={this.searchToggle}
-                        ></Button>
-                      ) : (
-                        ""
-                      )}
-                      {login?.userId ? (
-                        <>
+                          className="notification"
+                          startIcon={<img src={notificationIcon} alt="" />}
+                        >
+                          <p></p>
+                        </Button>
+
+                        <Link to={"/mycart"}>
                           <Button
                             variant="outlined"
-                            className="notification"
-                            startIcon={<img src={notificationIcon} alt="" />}
+                            className="card"
+                            startIcon={<img src={cardIcon} alt="" />}
                           >
-                            <p></p>
+                            {this.props?.cartData?.length ? (
+                              <p>{this.props.cartData.length}</p>
+                            ) : (
+                              <></>
+                            )}
+                            {this.state.cartList?.length ? (
+                              <p>{this.state.cartList.length}</p>
+                            ) : (
+                              <></>
+                            )}
                           </Button>
-
-                          <Link to={"/mycart"}>
-                            <Button
-                              variant="outlined"
-                              className="card"
-                              startIcon={<img src={cardIcon} alt="" />}
-                            >
-                              {this.props?.cartData?.length ? (
-                                <p>{this.props.cartData.length}</p>
-                              ) : (
-                                <></>
-                              )}
-                              {this.state.cartList?.length ? (
-                                <p>{this.state.cartList.length}</p>
-                              ) : (
-                                <></>
-                              )}
-                            </Button>
-                          </Link>
-                        </>
-                      ) : (
-                        <></>
-                      )}
-                    </Box>
-                  </Grid>
+                        </Link>
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </Box>
                 </Grid>
-              </Container>
-            </Box>
-          )}
+              </Grid>
+            </Container>
+          </Box>
+        )}
         {this.state.matches ? (
           <Box className={searchToggle ? "search-box active" : "search-box"}>
             <SearchResults
@@ -522,8 +550,12 @@ class Header extends Component {
 function mapStateToProps(state) {
   const { cartData } = state.home;
   const { cartItems } = state.cartitem;
-  const { shopCategoryData, productCategoryData, allProductsData, allCategories } =
-    state.allproducts;
+  const {
+    shopCategoryData,
+    productCategoryData,
+    allProductsData,
+    allCategories,
+  } = state.allproducts;
   const { allAddress, selectedAddressData } = state.alladdress;
   const { allProductsFiltersData } = state.allproductsfilters;
   return {
@@ -535,18 +567,16 @@ function mapStateToProps(state) {
     productCategoryData,
     allProductsData,
     allProductsFiltersData,
-    allCategories
+    allCategories,
   };
 }
 
 const mapDispatchToProps = {
   getAllAddress,
   setShopByCategory,
-  allProducts,
   allProductsFilters,
-  fetchCategories
+  fetchCategories,
 };
-
 
 export default connect(
   mapStateToProps,
