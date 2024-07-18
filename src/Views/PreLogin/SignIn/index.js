@@ -75,7 +75,13 @@ class Signin extends Component {
       this.props.loginData.status === status.SUCCESS &&
       this.props.loginData.data
     ) {
-      if (this.props.loginData.data.token) {
+
+
+      if (this.props.loginData.data.statusCode == 401) {
+        ErrorMessages.error(this.props.loginData.data.message);
+        return;
+      } else if (this.props.loginData.data.statusCode == 200 && this.props.loginData.data.token) {
+        ErrorMessages.success(this.props.loginData.data.message);
         this.setState({
           mobileNumber: "",
           password: "",
@@ -87,9 +93,13 @@ class Signin extends Component {
         );
         ErrorMessages.success("Logged In Successfully");
         this.props.navigate("/");
-      } else {
-        ErrorMessages.error(this.props.loginData.data.response?.data?.message);
+
       }
+      // if (this.props.loginData.data.token) {
+
+      // } else {
+      //   ErrorMessages.error(this.props.loginData.data.message);
+      // }
 
       // this.props.getAllAddress({
       //   userId: this.props.loginData.data.userId,
