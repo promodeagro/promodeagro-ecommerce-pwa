@@ -10,7 +10,6 @@ import {
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import {
   addItemToCart,
-  fetchCartItems,
   updateItemToCart,
   deleteItemToCart,
 } from "../../../../../Redux/Cart/CartThunk";
@@ -19,7 +18,6 @@ import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
 import priceIcon from "../../../../../assets/img/price-icon.png";
 import noImage from "../../../../../assets/img/no-image.png";
 import { addDataInCart } from "../../../../../Redux/Home/HomeSlice";
-import { allProducts } from "../../../../../Redux/AllProducts/AllProductthunk";
 import {
   setShopByCategory,
   productDetailsData,
@@ -35,49 +33,30 @@ class FeaturedProducts extends Component {
     super(props);
     this.state = {
       cartData: [],
-      productsData: [],
+
       cartList: [],
       dataId: "",
       isUpdateIncrease: null,
       qauntityUnits: [],
+      qauantites: []
     };
   }
 
-  componentDidMount() {
-    this.props.setShopByCategory([]);
 
-    // const items = loginDetails();
-    // if (items?.userId) {
-
-    //   this.props.fetchCartItems({
-    //     userId: items.userId,
-    //   });
-    // }
-
-    // this.props.allProducts();
-  }
 
   componentDidUpdate(prevProps, prevState) {
     const items = loginDetails();
 
-    if (
-      prevProps.allProductsData.status !== this.props.allProductsData.status &&
-      this.props.allProductsData.status === status.SUCCESS &&
-      this.props.allProductsData.data
-    ) {
-      this.setState({
-        productsData: this.props.allProductsData.data,
-      });
-    }
+
 
     if (
       prevProps.additems.status !== this.props.additems.status &&
       this.props.additems.status === status.SUCCESS &&
       this.props.additems.data
     ) {
-      this.props.fetchCartItems({
-        userId: items.userId,
-      });
+
+      this.getAllProduct()
+
       this.setState({
         dataId: "",
       });
@@ -88,9 +67,7 @@ class FeaturedProducts extends Component {
       this.props.updateItems.status === status.SUCCESS &&
       this.props.updateItems.data
     ) {
-      this.props.fetchCartItems({
-        userId: items.userId,
-      });
+      this.getAllProduct()
       this.setState({
         dataId: "",
         isUpdateIncrease: null,
@@ -102,9 +79,7 @@ class FeaturedProducts extends Component {
       this.props.deleteItems.status === status.SUCCESS &&
       this.props.deleteItems.data
     ) {
-      this.props.fetchCartItems({
-        userId: items.userId,
-      });
+      this.getAllProduct()
       this.setState({
         dataId: "",
         isUpdateIncrease: null,
@@ -161,17 +136,30 @@ class FeaturedProducts extends Component {
       });
     }
   }
+
+
+  getAllProduct() {
+    this.props.fetchHome()
+  }
   handleContextMenu = (event) => {
     event.preventDefault();
   };
-  handleQuantity = (event, id) => {
+  handleQuantity = (event, id, qty) => {
+    const items = loginDetails()
     const { value } = event.target;
     let dupQty = this.state.qauntityUnits;
     dupQty[id] = value;
-
     this.setState({
       qauntityUnits: dupQty,
     });
+    if (qty > 0) {
+      this.props.deleteItemToCart({
+        userId: items.userId,
+        productId: id,
+      });
+    }
+
+
   };
 
   render() {
@@ -189,7 +177,7 @@ class FeaturedProducts extends Component {
           <Box className="products">
             {data?.length &&
               data.slice(0, 5).map((item, index) => {
-                let itemId = cartList?.find((x) => x.ProductId === item.id);
+
                 return (
                   <Box className="product-box" key={index}>
                     <Box className="sale">Sale {item.savingsPercentage}%</Box>
@@ -199,10 +187,7 @@ class FeaturedProducts extends Component {
                     <Box
                       className="image"
                       onClick={() => {
-                        // let data = _.cloneDeep(item)
 
-                        // data.Quantity = itemId?.Quantity ? itemId?.Quantity : 0
-                        // this.props.productDetailsData(data);
 
 
                         this.props.navigate(`/product-details/${item.category}/${item.name}/${item.id}`)
@@ -215,10 +200,6 @@ class FeaturedProducts extends Component {
                     <Box
                       className="name"
                       onClick={() => {
-                        // let data = _.cloneDeep(item)
-                        // data.Quantity = itemId?.Quantity ? itemId?.Quantity : 0
-                        // this.props.productDetailsData(data);
-                        // this.props.productDetailsData(data)
 
                         this.props.navigate(`/product-details/${item.category}/${item.name}/${item.id}`)
                       }}
@@ -241,9 +222,9 @@ class FeaturedProducts extends Component {
                         <Box className="select">
                           <FormControl fullWidth>
                             <NativeSelect
-                              value={qauntityUnits[item.id] || ""}
+                              value={qauntityUnits[item.id] || item?.cartItem?.QuantityUnits || ""}
                               onChange={(event) =>
-                                this.handleQuantity(event, item.id)
+                                this.handleQuantity(event, item.id, item?.cartItem?.Quantity)
                               }
                             >
                               {item.unitPrices.map((unitItem, index) => {
@@ -261,19 +242,24 @@ class FeaturedProducts extends Component {
                       )}
                     </>
 
-                    {itemId ? (
+                    {item?.inCart ? (
                       <Box className="number-input-container">
-                        {itemId && itemId.Quantity !== 0 ? (
+                        {item?.inCart && item?.cartItem.Quantity !== 0 ? (
                           <Box
                             className="symbol"
                             onClick={() => {
-                              let unitqty = item.unitPrices[0].qty;
-                              if (itemId?.ProductId) {
-                                let d = itemId.Quantity;
+                              let unitqty = ""
+                              if (item?.unitPrices?.length > 0) {
+                                unitqty = item?.unitPrices[0]?.qty
+                              } else {
+                                unitqty = 1
+                              }
+                              if (item?.cartItem.ProductId) {
+                                let d = item?.cartItem.Quantity;
                                 this.handleQuantityChange(
-                                  itemId.ProductId,
+                                  item?.cartItem.ProductId,
                                   -1,
-                                  Number(d),
+                                  d,
                                   unitqty
                                 );
                               } else {
@@ -306,15 +292,20 @@ class FeaturedProducts extends Component {
                           <></>
                         )}
 
-                        <Box className="Number">{itemId?.Quantity}</Box>
+                        <Box className="Number">{item?.cartItem?.Quantity}</Box>
                         <Box
                           className="symbol"
                           onClick={() => {
-                            let unitqty = item.unitPrices[0].qty;
-                            if (itemId?.ProductId) {
-                              let d = itemId.Quantity;
+                            let unitqty = ""
+                            if (item?.unitPrices?.length > 0) {
+                              unitqty = item?.unitPrices[0]?.qty
+                            } else {
+                              unitqty = 1
+                            }
+                            if (item?.cartItem?.ProductId) {
+                              let d = item?.cartItem?.Quantity;
                               this.handleQuantityChange(
-                                itemId.ProductId,
+                                item?.cartItem?.ProductId,
                                 1,
                                 Number(d),
                                 unitqty
@@ -401,9 +392,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  allProducts,
   addItemToCart,
-  fetchCartItems,
   updateItemToCart,
   deleteItemToCart,
   setShopByCategory,
