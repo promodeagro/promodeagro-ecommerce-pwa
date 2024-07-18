@@ -69,8 +69,10 @@ function Category(props) {
 
 
   useEffect(() => {
-    if (location.pathname && props.allProductsData?.data) {
+    if (location.pathname && props.allProductsData.status == status.SUCCESS && productApiLoader && props.allProductsData?.data) {
 
+      setProdductApiLoader(false)
+      setLoaderCount(1)
       let path = location.pathname;
       if (path.split("/")?.[3] && locationName !== location.pathname) {
         setLocationName(location.pathname)
@@ -116,31 +118,11 @@ function Category(props) {
         setCategoryName("")
         setProductsData(props.allProductsData?.data)
       }
-      setLoaderCount(1)
     }
-  }, [location.pathname, productsData, props.allProductsData.data]);
+  }, [location.pathname, productsData, props.allProductsData.status == status.SUCCESS]);
 
 
-  useEffect(() => {
-    if (props.allProductsData.status == status.SUCCESS && props.allProductsData.data && productApiLoader) {
-      setProdductApiLoader(false)
-      // setProductsData(props.allProductsData.data)
-      // setProducts(props.allProductsData.data)
-      // let fruits = [];
-      // let vegetables = [];
 
-      // props.allProductsData.data.forEach((product) => {
-      //   if (product.category === "FRUITS") {
-      //     fruits.push(product);
-      //   } else if (product.category === "VEGETABLES") {
-      //     vegetables.push(product);
-      //   }
-      // });
-
-      // props.productCategories([fruits, vegetables]);
-    }
-
-  }, [props.allProductsData.status])
 
 
   useEffect(() => {
@@ -287,7 +269,7 @@ function Category(props) {
     const items = loginDetails();
 
     if (items?.userId) {
-
+      setLocationName("")
       setProdductApiLoader(true)
       setCartApiLoader(true)
       props.allProducts(items?.userId);

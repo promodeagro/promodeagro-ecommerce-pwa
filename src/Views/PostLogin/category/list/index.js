@@ -124,7 +124,6 @@ class List extends Component {
     let returnData =
       sortedData.length > 0 &&
       sortedData.map((item) => {
-
         return (
           <Box
             className={
@@ -382,6 +381,7 @@ class List extends Component {
     const sortedData = sortOrder
       ? _.orderBy(data, ["price"], [sortOrder === "lowToHigh" ? "asc" : "desc"])
       : data;
+
 
     return (
       <Box className="listing-container">
