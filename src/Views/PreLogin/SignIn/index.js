@@ -81,7 +81,6 @@ class Signin extends Component {
         ErrorMessages.error(this.props.loginData.data.message);
         return;
       } else if (this.props.loginData.data.statusCode == 200 && this.props.loginData.data.token) {
-        ErrorMessages.success(this.props.loginData.data.message);
         this.setState({
           mobileNumber: "",
           password: "",
