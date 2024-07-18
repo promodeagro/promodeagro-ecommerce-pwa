@@ -69,11 +69,11 @@ class ForgotPassword extends Component {
       this.props.forgotPassData.status === status.SUCCESS &&
       this.props.forgotPassData.data
     ) {
-      if (this.props.forgotPassData.data.response?.status === 400) {
-        ErrorMessages.error(
-          this.props.forgotPassData.data.response?.data?.message
-        );
-      } else if (this.props.forgotPassData.data) {
+
+      if ( this.props.forgotPassData.data.statusCode == 401) {
+        ErrorMessages.error(this.props.forgotPassData.data.message);
+        return;
+      } else if (this.props.forgotPassData.data.statusCode == 200) {
         this.setState({
           mobileNumber: "",
           password: "",
@@ -83,7 +83,10 @@ class ForgotPassword extends Component {
 
         ErrorMessages.success(this.props.forgotPassData.data?.message);
         this.props.navigate("/signin");
+
       }
+
+
     }
   }
 
