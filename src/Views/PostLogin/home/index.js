@@ -20,22 +20,26 @@ class Home extends Component {
     super(props);
     this.state = {
       data: [],
-      cartList: []
+      cartList: [],
+      loaderCount: 0
     };
   }
   componentDidMount() {
-    this.props.fetchHome();
+
     const items = loginDetails();
-    this.props.setShopByCategory([])
+
 
     if (items?.userId) {
-
+      this.props.fetchHome(items?.userId);
       this.props.fetchCartItems({
         userId: items?.userId,
       });
+
       this.props.getAllAddress({
         userId: items?.userId,
       })
+    } else {
+      this.props.fetchHome();
     }
   }
   componentDidUpdate(prevProps, prevState) {
@@ -46,6 +50,7 @@ class Home extends Component {
     ) {
       this.setState({
         data: this.props.homeData?.data,
+        loaderCount: 1
       });
 
       let fruits = [];
@@ -85,21 +90,37 @@ class Home extends Component {
     }
   }
 
+  fetchHome = () => {
+    const items = loginDetails();
+
+    if (items?.userId) {
+      this.props.fetchHome(items?.userId);
+      this.props.fetchCartItems({
+        userId: items?.userId,
+      });
+
+    }
+  }
+
   render() {
     const { data, cartList } = this.state;
     return (
       <Box className="main-container">
-        <MainBanner />
-        {this.props.homeData.status === status.IN_PROGRESS ? (
+
+        {this.props.homeData.status === status.IN_PROGRESS && this.state.loaderCount == 0 ? (
           Loader.commonLoader()
         ) : (
-          <FeaturedProducts data={data} cartList={cartList} />
+          <>
+            <MainBanner />
+            <FeaturedProducts data={data} cartList={cartList} fetchHome={this.fetchHome} />
+            <Service />
+            <OffersYouMightLike />
+            <TopSellingCategories />
+            <CustomersSays />
+          </>
         )}
 
-        <Service />
-        <OffersYouMightLike />
-        <TopSellingCategories />
-        <CustomersSays />
+
       </Box>
     );
   }
