@@ -56,25 +56,35 @@ const SignUp = ({ signUp, signupData }) => {
     mobileNumber: "",
     isSubmit: false,
   });
+  const [apiLoader, setApiLoader] = useState(false)
 
   const navigate = useNavigate();
 
   useEffect(() => {
     if (
       signupData.status === status.SUCCESS &&
-      signupData.data &&
-      formData.isSubmit
+      signupData.data && apiLoader
     ) {
-      setFormData({
-        ...formData,
-        mobileNumber: "",
-        password: "",
-        isSubmit: false,
-        cnfPassword: "",
-        name: "",
-      });
-      navigate("/signin");
-      ErrorMessages.success("Signup Successfully");
+      setApiLoader(false)
+      if (signupData.data.statusCode == 401) {
+        ErrorMessages.error(signupData.data.message);
+        return;
+      } else if (signupData.data.statusCode == 201) {
+        ErrorMessages.success(signupData.data.message);
+        setFormData({
+          ...formData,
+          mobileNumber: "",
+          password: "",
+          isSubmit: false,
+          cnfPassword: "",
+          name: "",
+        });
+        navigate("/signin");
+      }
+
+
+
+
     }
   }, [signupData.status]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -103,7 +113,7 @@ const SignUp = ({ signUp, signupData }) => {
     const { mobileNumber, password, name } = formData;
 
     const errorData = validateForm();
-
+    setApiLoader(true)
     setFormData({
       ...formData,
       isSubmit: true,
