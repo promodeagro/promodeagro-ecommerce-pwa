@@ -68,7 +68,8 @@ class ProductDetails extends Component {
       recentList: [],
       loaderCount: 0,
       pathName: "",
-      qauntityUnits: ""
+      qauntityUnits: "",
+      isDeleting: false
     };
   }
   componentDidMount() {
@@ -92,7 +93,7 @@ class ProductDetails extends Component {
       this.setState({
         pathName: window.location.pathname
       })
-      const items = loginDetails()
+
       this.props.productDetails({
         productId: this.props.params.id,
         userId: items?.userId ? items?.userId : ""
@@ -105,11 +106,11 @@ class ProductDetails extends Component {
       this.props.productDetailsData?.data
     ) {
 
-      this.props.setShopByCategory([[this.props.productDetailsData?.data?.category], [this.props.productDetailsData?.data.name]])
       this.setState({
         productItem: this.props.productDetailsData?.data,
         itemQuantity: this.props.productDetailsData?.data?.cartItem?.Quantity ? this.props.productDetailsData?.data?.cartItem?.Quantity : 0,
-        loaderCount: 1
+        loaderCount: 1,
+        qauntityUnits: this.props.productDetailsData?.data.cartItem.QuantityUnits
       });
 
 
@@ -154,14 +155,7 @@ class ProductDetails extends Component {
       this.props.additems.status === status.SUCCESS &&
       this.props.additems.data
     ) {
-      this.setState({
-        qauntityUnits: ""
-      })
-      this.props.productDetails({
-        productId: this.props.params.id,
-        userId: items?.userId ? items?.userId : "",
-        loaderCount: 1
-      })
+      this.productDetails()
     }
 
     if (
@@ -169,14 +163,7 @@ class ProductDetails extends Component {
       this.props.updateItems.status === status.SUCCESS &&
       this.props.updateItems.data
     ) {
-      this.setState({
-        qauntityUnits: ""
-      })
-      this.props.productDetails({
-        productId: this.props.params.id,
-        userId: items?.userId ? items?.userId : "",
-        loaderCount: 1
-      })
+      this.productDetails()
     }
 
     if (
@@ -184,16 +171,21 @@ class ProductDetails extends Component {
       this.props.deleteItems.status === status.SUCCESS &&
       this.props.deleteItems.data
     ) {
-      this.setState({
-        qauntityUnits: ""
-      })
-      this.props.productDetails({
-        productId: this.props.params.id,
-        userId: items?.userId ? items?.userId : "",
-        loaderCount: 0
-      })
+      this.productDetails()
     }
   }
+  productDetails() {
+    this.setState({
+      qauntityUnits: "",
+      isDeleting: false
+    })
+    const items = loginDetails();
+    this.props.productDetails({
+      productId: this.props.params.id,
+      userId: items?.userId ? items?.userId : "",
+    })
+  }
+
 
   handleAddToCart(id, qty) {
     const items = loginDetails();
@@ -204,7 +196,7 @@ class ProductDetails extends Component {
         userId: items.userId,
         productId: id,
         quantity: 1,
-        quantityUnits: this.state.qauntityUnits ? this.state.qauntityUnits : qty
+        quantityUnits: this.state.qauntityUnits ? parseInt(this.state.qauntityUnits) : qty
       });
     } else if (!items?.userId) {
       this.props.navigate("/signin");
@@ -226,9 +218,10 @@ class ProductDetails extends Component {
         userId: items.userId,
         productId: id,
         quantity: productQuantity,
-        quantityUnits: this.state.qauntityUnits ? this.state.qauntityUnits : qty
+        quantityUnits: this.state.qauntityUnits ? parseInt(this.state.qauntityUnits) : qty
       });
     } else {
+
       this.props.deleteItemToCart({
         userId: items.userId,
         productId: id,
@@ -236,14 +229,23 @@ class ProductDetails extends Component {
     }
   }
 
-  handleQuantity(event) {
-    
+  handleQuantity(event, qty) {
+    const items = loginDetails()
     this.setState({
-      qauntityUnits: event.target.value
+      qauntityUnits: event.target.value,
+      isDeleting: true
     })
+    if (qty > 0) {
+      this.props.deleteItemToCart({
+        userId: items.userId,
+        productId: this.props.params.id,
+      });
+    }
+
+
   }
   render() {
-    const { productItem, itemQuantity, isUpdateIncrease, loaderCount } = this.state;
+    const { productItem, itemQuantity, isUpdateIncrease, loaderCount, isDeleting } = this.state;
 
     const value = 4.5;
     return (
@@ -347,7 +349,7 @@ class ProductDetails extends Component {
                               <NativeSelect
                                 value={this.state.qauntityUnits}
                                 onChange={(event) =>
-                                  this.handleQuantity(event)
+                                  this.handleQuantity(event, productItem?.cartItem?.Quantity)
                                 }
                               >
                                 {productItem?.unitPrices?.map((unitItem, index) => {
@@ -388,7 +390,7 @@ class ProductDetails extends Component {
                                 >
                                   {(this.props.deleteItems.status ===
                                     status.IN_PROGRESS &&
-                                    !isUpdateIncrease) ||
+                                    !isUpdateIncrease && !isDeleting) ||
                                     (this.props.updateItems.status ===
                                       status.IN_PROGRESS &&
                                       !isUpdateIncrease) ? (
@@ -457,7 +459,7 @@ class ProductDetails extends Component {
                                   )
                                 }
                               >
-                                Add to Cart{" "}
+                                Add to Cart
                                 <ShoppingCartOutlinedIcon
                                   style={{ marginLeft: "10px" }}
                                 />
