@@ -49,16 +49,10 @@ class List extends Component {
       this.props.additems.status === status.SUCCESS &&
       this.props.additems.data
     ) {
-      this.setState({
-        addedProducts: [],
-        quantities: {},
-      });
-      this.props.handleCartApiLoader(true)
 
-      const items = loginDetails();
-      this.props.fetchCartItems({
-        userId: items.userId,
-      });
+      this.props.handleCartApiLoader(true)
+      this.getAllProduct()
+
     }
 
     if (
@@ -66,17 +60,10 @@ class List extends Component {
       this.props.updateItems.status === status.SUCCESS &&
       this.props.updateItems.data
     ) {
-      this.setState({
-        addedProducts: [],
-        quantities: {},
 
-
-      });
       this.props.handleCartApiLoader(true)
-      const items = loginDetails();
-      this.props.fetchCartItems({
-        userId: items.userId,
-      });
+      this.getAllProduct()
+
     }
 
     if (
@@ -84,17 +71,23 @@ class List extends Component {
       this.props.deleteItems.status === status.SUCCESS &&
       this.props.deleteItems.data
     ) {
-      this.setState({
-        addedProducts: [],
-        quantities: {},
 
-      });
       this.props.handleCartApiLoader(true)
-      const items = loginDetails();
-      this.props.fetchCartItems({
-        userId: items.userId,
-      });
+      this.getAllProduct()
     }
+  }
+
+  getAllProduct() {
+
+    this.setState({
+      addedProducts: [],
+      quantities: {},
+      dataId: "",
+      isUpdateIncrease: null,
+
+
+    });
+    this.props.allproducts()
   }
 
   handleAddToCart(id, qty) {
@@ -131,7 +124,6 @@ class List extends Component {
     let returnData =
       sortedData.length > 0 &&
       sortedData.map((item) => {
-        let itemId = cartItemsData?.find((x) => x.ProductId === item.id);
 
         return (
           <Box
@@ -152,11 +144,8 @@ class List extends Component {
             </Box>
             <Box className="image"
               onClick={() => {
-                this.props.setShopByCategory([[item.category], [item.name]])
-                // let data = _.cloneDeep(item)
 
-                // data.Quantity = itemId?.Quantity ? itemId?.Quantity : 0
-                // this.props.productDetailsData(data);
+
 
                 this.props.navigate(`/product-details/${item.category}/${item.name}/${item.id}`)
               }
@@ -192,7 +181,12 @@ class List extends Component {
               {item?.unitPrices?.length > 0 ? (
                 <Box className="select">
                   <FormControl fullWidth>
-                    <NativeSelect value={qauntityUnits[item.id] || ""} onChange={(event) => this.handleQuantity(event, item.id)}>
+                    <NativeSelect
+                      value={qauntityUnits[item.id] || item?.cartItem?.QuantityUnits || ""}
+                      onChange={(event) =>
+                        this.handleQuantity(event, item.id, item?.cartItem?.Quantity)
+                      }
+                    >
                       {item.unitPrices.map((unitItem, index) => {
 
                         return <option key={index} value={unitItem.qty} >
@@ -207,17 +201,23 @@ class List extends Component {
               )}
             </>
             <Box className="select">{item.unit}</Box>
-            {addedProducts.includes(item.id) || itemId ? (
+            {addedProducts.includes(item.id) || item?.inCart ? (
               <Box className="number-input-container">
-                {itemId && itemId.Quantity !== 0 ? (
+                {item?.inCart && item.cartItem?.Quantity !== 0 ? (
                   <Box
                     className="symbol"
                     onClick={() => {
-                      let unitqty = item.unitPrices[0].qty
-                      if (itemId?.ProductId) {
-                        let d = itemId.Quantity;
+                      let unitqty = ""
+                      if (item?.unitPrices?.length > 0) {
+                        unitqty = item?.unitPrices[0]?.qty
+                      } else {
+                        unitqty = 1
+                      }
+
+                      if (item?.cartItem?.ProductId) {
+                        let d = item.cartItem?.Quantity;
                         this.handleQuantityChange(
-                          itemId.ProductId,
+                          item?.cartItem?.ProductId,
                           -1,
                           Number(d),
                           unitqty
@@ -245,20 +245,23 @@ class List extends Component {
                   <></>
                 )}
 
-                <Box className="Number">
-                  {quantities[item.id]
-                    ? quantities[item.id]
-                    : itemId?.Quantity || 0}
-                </Box>
+                <Box className="Number">{item?.cartItem?.Quantity}</Box>
                 <Box
                   className="symbol"
                   onClick={() => {
-                    let unitqty = item.unitPrices[0]?.qty
-                    if (itemId?.ProductId) {
+                    let unitqty = ""
+                    if (item?.unitPrices?.length > 0) {
+                      unitqty = item?.unitPrices[0]?.qty
+                    } else {
+                      unitqty = 1
+                    }
 
-                      let d = itemId.Quantity;
 
-                      this.handleQuantityChange(itemId.ProductId, 1, Number(d), unitqty);
+                    if (item?.cartItem?.ProductId) {
+
+                      let d = item?.cartItem?.Quantity;
+
+                      this.handleQuantityChange(item?.cartItem?.ProductId, 1, Number(d), unitqty);
                     } else {
                       this.handleQuantityChange(item.id, 1, "", unitqty);
                     }
@@ -351,17 +354,24 @@ class List extends Component {
     this.setState({ sortOrder: event.target.value });
   };
 
-  handleQuantity = (event, id) => {
+
+  handleQuantity = (event, id, qty) => {
+    const items = loginDetails()
     const { value } = event.target;
-    let dupQty = this.state.qauntityUnits
+    let dupQty = this.state.qauntityUnits;
     dupQty[id] = value;
-
-
     this.setState({
-      qauntityUnits: dupQty
-    })
-  };
+      qauntityUnits: dupQty,
+    });
+    if (qty > 0) {
+      this.props.deleteItemToCart({
+        userId: items.userId,
+        productId: id,
+      });
+    }
 
+
+  };
 
   render() {
     const { data, cartItemsData } = this.props;

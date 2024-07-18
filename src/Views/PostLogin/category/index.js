@@ -37,14 +37,21 @@ function Category(props) {
 
 
   })
+  const [loaderCount, setLoaderCount] = useState(0)
 
   useEffect(() => {
     let items = loginDetails();
+    setProdductApiLoader(true)
+
     if (items?.userId) {
       setCartApiLoader(true)
       props.fetchCartItems({
         userId: items?.userId,
       });
+
+      props.allProducts(items?.userId);
+    } else {
+      props.allProducts();
     }
 
     // let path = _.cloneDeep(window.location.pathname)
@@ -55,8 +62,8 @@ function Category(props) {
     //     categoryName: pathArr?.[1]?.replaceAll("-", " ")
     //   })
     // }
-    setProdductApiLoader(true)
-    props.allProducts();
+
+
 
   }, [])
 
@@ -109,7 +116,7 @@ function Category(props) {
         setCategoryName("")
         setProductsData(props.allProductsData?.data)
       }
-
+      setLoaderCount(1)
     }
   }, [location.pathname, productsData, props.allProductsData.data]);
 
@@ -276,6 +283,22 @@ function Category(props) {
     setCartApiLoader(apiLoader)
   }
 
+  const allproducts = () => {
+    const items = loginDetails();
+
+    if (items?.userId) {
+
+      setProdductApiLoader(true)
+      setCartApiLoader(true)
+      props.allProducts(items?.userId);
+      props.fetchCartItems({
+        userId: items?.userId,
+      });
+
+    }
+  }
+
+
   return (
     <Box className="main-container">
       <Container>
@@ -295,7 +318,7 @@ function Category(props) {
             lg={hideFilter ? 12 : 9}
           >
             {
-              props.allProductsData.status === status.IN_PROGRESS ? (
+              props.allProductsData.status === status.IN_PROGRESS && loaderCount == 0 ? (
                 Loader.commonLoader()
               ) :
 
@@ -305,6 +328,7 @@ function Category(props) {
                   data={productsData ? productsData : []}
                   cartItemsData={cartList}
                   hideFilter={hideFilter}
+                  allproducts={allproducts}
                 />
             }
           </Grid>
