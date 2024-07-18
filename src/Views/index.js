@@ -62,7 +62,7 @@ const Views = () => {
   const isLoggedIn = !!loginDetails()?.token; // Check if user is logged in
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<></>}>
       <Routes location={location}>
         {/* Redirect to Home if user is logged in and tries to access signin or signup */}
         {isLoggedIn && (
