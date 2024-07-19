@@ -119,8 +119,9 @@ const AllAddress = (props) => {
     );
   };
 
-  const handleEdit = (address) => {
-    navigate("/mycart/address/updated-address", {
+  const handleEdit = (event, address) => {
+    event.stopPropagation();
+    navigate(`/mycart/address/updated-address/${address?.addressId}`, {
       state: { address },
     });
   };
@@ -193,7 +194,7 @@ const AllAddress = (props) => {
                                 ? "address-btn active"
                                 : "address-btn"
                             }
-                            onClick={() => handleEdit(item)}
+                            onClick={(event) => handleEdit(event, item)}
                           >
                             <BorderColorIcon />
                           </IconButton>
@@ -204,7 +205,8 @@ const AllAddress = (props) => {
                                 ? "address-btn active"
                                 : "address-btn"
                             }
-                            onClick={() => {
+                            onClick={(event) => {
+                              event.stopPropagation()
                               handleClickOpen(item);
                             }}
                           >
@@ -303,9 +305,10 @@ const AllAddress = (props) => {
             variant="outlined"
             className="outline-common-btn"
             color="error"
-            onClick={() => {
+            onClick={(event) => {
+              event.stopPropagation();
               let items = loginDetails();
-              handleDelete(items.userId, addressId);
+              handleDelete(items?.userId, addressId);
             }}
             disabled={props.deleteAddress.status == status.IN_PROGRESS}
             endIcon={
