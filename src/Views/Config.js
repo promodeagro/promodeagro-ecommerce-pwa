@@ -21,6 +21,10 @@ const Config = {
   FORGOT_PASSWORD: `${BASE_URL}/changePassword`,
   PRODUCTS_FILTERS: `${BASE_URL}/products`,
   CATEGOREIS:`${BASE_URL}/category`,
+  SET_DEFAULT_ADDRESS:`${BASE_URL}/setDefaultAddress`,
+  GET_DEFAULT_ADDRESS:`${BASE_URL}/getDefaultAddress`,
+  
+  
 };
 
 export default Config;

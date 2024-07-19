@@ -4,6 +4,8 @@ import {
   postAddress,
   deleteAddress,
   updateAddress,
+  setDefaultAddress,
+  fetchDefaultAddress
 } from "./AddressThunk";
 import status from "../Constants";
 
@@ -20,6 +22,12 @@ const AddressSlice = createSlice({
       status: null,
     },
     updateAddress: {
+      status: null,
+    },
+    defaultAddressData:{
+      status: null,
+    },
+    setDefaultAddressData:{
       status: null,
     },
     selectedAddressData: null,
@@ -130,7 +138,57 @@ const AddressSlice = createSlice({
             status: status.FAILURE,
           },
         };
-      });
+      })
+      .addCase(setDefaultAddress.pending.toString(), (state, action) => {
+        return {
+          ...state,
+          setDefaultAddressData: {
+            status: status.IN_PROGRESS,
+          },
+        };
+      })
+      .addCase(setDefaultAddress.fulfilled.toString(), (state, { payload }) => {
+        return {
+          ...state,
+          setDefaultAddressData: {
+            status: status.SUCCESS,
+            data: payload,
+          },
+        };
+      })
+      .addCase(setDefaultAddress.rejected.toString(), (state, action) => {
+        return {
+          ...state,
+          setDefaultAddressData: {
+            status: status.FAILURE,
+          },
+        };
+      })
+      .addCase(fetchDefaultAddress.pending.toString(), (state, action) => {
+        return {
+          ...state,
+          defaultAddressData: {
+            status: status.IN_PROGRESS,
+          },
+        };
+      })
+      .addCase(fetchDefaultAddress.fulfilled.toString(), (state, { payload }) => {
+        return {
+          ...state,
+          defaultAddressData: {
+            status: status.SUCCESS,
+            data: payload,
+          },
+        };
+      })
+      .addCase(fetchDefaultAddress.rejected.toString(), (state, action) => {
+        return {
+          ...state,
+          defaultAddressData: {
+            status: status.FAILURE,
+          },
+        };
+      })
   },
 });
 

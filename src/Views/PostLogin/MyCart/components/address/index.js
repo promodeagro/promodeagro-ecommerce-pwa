@@ -29,6 +29,7 @@ import { connect } from "react-redux";
 import status from "../../../../../Redux/Constants";
 import { fetchCartItems } from "../../../../../Redux/Cart/CartThunk";
 import { placeOrder } from "../../../../../Redux/Order/PlaceOrderThunk";
+import { fetchDefaultAddress } from "../../../../../Redux/Address/AddressThunk";
 import { ErrorMessages, Loader, loginDetails } from "Views/Utills/helperFunctions";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 const steps = ["Delivery Address", "Delivery Options"];
@@ -48,11 +49,15 @@ class Address extends Component {
       addressId: "",
       totalSavings: "",
       skipped: new Set(),
-      itemList: []
+      itemList: [],
+      defaultSelectedAddress: {}
     };
   }
 
   componentDidMount() {
+
+    this.getDefaultAddress()
+
     const tab = localStorage.getItem("selectedTab");
     if (
       (tab &&
@@ -71,11 +76,26 @@ class Address extends Component {
       this.props.fetchCartItems({
         userId: items?.userId,
       });
+
     }
 
   }
 
   componentDidUpdate(prevProps, prevState) {
+
+    if (
+      prevProps.defaultAddressData.status !== this.props.defaultAddressData.status &&
+      this.props.defaultAddressData.status === status.SUCCESS &&
+      this.props.defaultAddressData?.data
+    ) {
+
+      this.setState({
+        defaultSelectedAddress: this.props.defaultAddressData.data
+
+      });
+    }
+
+
     if (
       prevProps.cartItems.status !== this.props.cartItems.status &&
       this.props.cartItems.status === status.SUCCESS &&
@@ -171,6 +191,14 @@ class Address extends Component {
       selectedAddress: selectedAddress,
     });
   };
+  getDefaultAddress = () => {
+    let loginData = loginDetails()
+
+    if (loginData?.userId) {
+      this.props.fetchDefaultAddress(loginData?.userId)
+
+    }
+  }
 
   render() {
     const { activeStep, value, timneValue, cartList, totalPrice, skipped } =
@@ -220,7 +248,12 @@ class Address extends Component {
           </Box>
           {activeStep === 0 ? (
 
-            <AllAddress handleTabs={this.handleTabs} cartListLength={cartList.length} />
+            <AllAddress
+            selectedAddress={this.state.defaultSelectedAddress}
+              handleTabs={this.handleTabs}
+              cartListLength={cartList.length}
+              getDefaultAddress={this.getDefaultAddress}
+            />
 
 
           ) : activeStep === 1 ? (
@@ -642,7 +675,7 @@ class Address extends Component {
 
 function mapStateToProps(state) {
   const { cartItems } = state.cartitem;
-  const { allAddress, selectedAddressData } = state.alladdress;
+  const { allAddress, selectedAddressData, defaultAddressData } = state.alladdress;
   const { loginData } = state.login;
   const { placeOrderData } = state.placeorder;
   return {
@@ -651,6 +684,7 @@ function mapStateToProps(state) {
     allAddress,
     placeOrderData,
     selectedAddressData,
+    defaultAddressData
   };
 }
 
@@ -658,6 +692,7 @@ const mapDispatchToProps = {
   fetchCartItems,
   placeOrder,
   productDetailsData,
+  fetchDefaultAddress
 };
 
 export default connect(

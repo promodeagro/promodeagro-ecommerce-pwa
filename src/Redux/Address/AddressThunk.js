@@ -41,3 +41,26 @@ export const updateAddress = createAsyncThunk("updateaddress", async (params) =>
     return error;
   }
 });
+
+
+
+export const fetchDefaultAddress = createAsyncThunk("defaultaddress", async (userId) => {
+  try {
+    let url = config.GET_DEFAULT_ADDRESS + `/${userId}`;
+    const response = await postLoginService.get(url);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+});
+
+
+export const setDefaultAddress = createAsyncThunk("postdefaultaddress", async (params) => {
+  try {
+    let url = config.SET_DEFAULT_ADDRESS;
+    const response = await postLoginService.post(url, params);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+});

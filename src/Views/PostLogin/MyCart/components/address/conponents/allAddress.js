@@ -21,6 +21,7 @@ import { connect } from "react-redux";
 import {
   getAllAddress,
   deleteAddress,
+  setDefaultAddress,
 } from "../../../../../../Redux/Address/AddressThunk";
 import { setSelectedAdd } from "../../../../../../Redux/Address/AddressSlice";
 import status from "../../../../../../Redux/Constants";
@@ -34,10 +35,9 @@ const AllAddress = (props) => {
   const [allAddress, setAllAddress] = useState([]);
   const [allAddressApiLoader, setAllAddresApiLoader] = useState(false);
   const [deleteAddressApiLoader, setDeleteAddressApiLoader] = useState(false);
-  const [selectedAddress, setSelectedAddress] = useState({});
   const allAddressState = useSelector((state) => state.alladdress.allAddress);
   const [addressId, setAddressId] = useState("");
-
+  const [defaultAddressLoader, setDefaultAddressLoader] = useState(false)
   const postAddressStatus = useSelector(
     (state) => state.alladdress.postAddress.status
   );
@@ -65,10 +65,9 @@ const AllAddress = (props) => {
     ) {
       setAllAddresApiLoader(true);
       setAllAddress(allAddressState.data.addresses);
-      // if (!props.selectedAddressData?.address) {
-      dispatch(setSelectedAdd(allAddressState.data.addresses[0]));
-      setSelectedAddress(allAddressState.data.addresses[0]);
-      // }
+
+
+
     }
   }, [allAddressState]);
 
@@ -78,11 +77,7 @@ const AllAddress = (props) => {
     }
   }, [postAddressStatus]);
 
-  useEffect(() => {
-    if (props.selectedAddressData) {
-      setSelectedAddress(props.selectedAddressData);
-    }
-  }, [props.selectedAddressData]);
+
 
   useEffect(() => {
     if (deleteAddressStatus === status.SUCCESS && deleteAddressApiLoader) {
@@ -98,6 +93,21 @@ const AllAddress = (props) => {
       setOpen(false);
     }
   }, [deleteAddressStatus]);
+
+  useEffect(() => {
+
+    if (props.setDefaultAddressData.status == status.SUCCESS && defaultAddressLoader) {
+
+      if (props.setDefaultAddressData.data) {
+
+        setDefaultAddressLoader(false)
+        props.getDefaultAddress()
+      }
+    }
+
+  }, [props.setDefaultAddressData.status])
+
+
 
   const handleDelete = (userId, addressId) => {
     setDeleteAddressApiLoader(true);
@@ -125,9 +135,19 @@ const AllAddress = (props) => {
     setOpen(false);
   };
 
+
+
   const handleSelectedAddress = (selcet) => {
-    dispatch(setSelectedAdd(selcet));
-    setSelectedAddress(selcet);
+
+    const loginData = loginDetails()
+    setDefaultAddressLoader(true)
+
+    props.setDefaultAddress({
+      userId: loginData?.userId,
+      addressId: selcet?.addressId
+    }
+    )
+
   };
 
   return (
@@ -151,13 +171,13 @@ const AllAddress = (props) => {
                   return (
                     <Grid key={index} item xs={12} lg={4} md={6} sm={6}>
                       <Box
-                        className={`address-card-container ${item.addressId == selectedAddress.addressId
+                        className={`address-card-container ${item.addressId == props?.selectedAddress?.addressId
                           ? "active"
                           : ""
                           }`}
                         onClick={() => handleSelectedAddress(item)}
                       >
-                        {item.addressId == selectedAddress.addressId ? (
+                        {item.addressId == props?.selectedAddress.addressId ? (
                           <Box className="active-check">
                             <CheckIcon />
                           </Box>
@@ -169,7 +189,7 @@ const AllAddress = (props) => {
                           <IconButton
                             aria-label="edit"
                             className={
-                              item.addressId == selectedAddress.addressId
+                              item.addressId == props?.selectedAddress.addressId
                                 ? "address-btn active"
                                 : "address-btn"
                             }
@@ -180,7 +200,7 @@ const AllAddress = (props) => {
                           <IconButton
                             aria-label="delete"
                             className={
-                              item.addressId == selectedAddress.addressId
+                              item.addressId == props?.selectedAddress.addressId
                                 ? "address-btn active"
                                 : "address-btn"
                             }
@@ -212,7 +232,7 @@ const AllAddress = (props) => {
                             </span>
                           </Box>
                         </Box>
-                        {item.addressId == selectedAddress.addressId ? (
+                        {item.addressId == props?.selectedAddress.addressId ? (
                           <FormControlLabel
                             checked
                             control={<Checkbox />}
@@ -247,10 +267,9 @@ const AllAddress = (props) => {
               fullWidth
               className="common-btn proceed-btn"
               onClick={() => {
-                props.handleTabs(1, selectedAddress);
+                props.handleTabs(1, props?.selectedAddress);
                 localStorage.setItem("selectedTab", 1);
                 navigate("/mycart/address/order-details");
-                // here route change of page 1
               }}
             >
               Proceed Next
@@ -309,18 +328,20 @@ function mapStateToProps(state) {
   const { cartData } = state.home;
   const { cartItems } = state.cartitem;
 
-  const { allAddress, selectedAddressData, deleteAddress } = state.alladdress;
+  const { allAddress, selectedAddressData, deleteAddress, setDefaultAddressData } = state.alladdress;
   return {
     cartData,
     cartItems,
     allAddress,
     deleteAddress,
     selectedAddressData,
+    setDefaultAddressData
   };
 }
 
 const mapDispatchToProps = {
   getAllAddress,
+  setDefaultAddress
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllAddress);
