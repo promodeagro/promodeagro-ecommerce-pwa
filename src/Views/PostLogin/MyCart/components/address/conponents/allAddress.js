@@ -38,6 +38,7 @@ const AllAddress = (props) => {
   const allAddressState = useSelector((state) => state.alladdress.allAddress);
   const [addressId, setAddressId] = useState("");
   const [defaultAddressLoader, setDefaultAddressLoader] = useState(false)
+  const [selectedAddressId, setSelectedAddressId] = useState("")
   const postAddressStatus = useSelector(
     (state) => state.alladdress.postAddress.status
   );
@@ -71,11 +72,8 @@ const AllAddress = (props) => {
     }
   }, [allAddressState]);
 
-  useEffect(() => {
-    if (postAddressStatus === status.SUCCESS) {
-      console.log(postAddressStatus.data);
-    }
-  }, [postAddressStatus]);
+
+
 
 
 
@@ -84,6 +82,7 @@ const AllAddress = (props) => {
       let items = loginDetails();
       setAllAddresApiLoader(true);
       setDeleteAddressApiLoader(false);
+      props.getDefaultAddress()
       dispatch(
         getAllAddress({
           userId: items.userId,
@@ -99,7 +98,7 @@ const AllAddress = (props) => {
     if (props.setDefaultAddressData.status == status.SUCCESS && defaultAddressLoader) {
 
       if (props.setDefaultAddressData.data) {
-
+        setSelectedAddressId("");
         setDefaultAddressLoader(false)
         props.getDefaultAddress()
       }
@@ -142,7 +141,7 @@ const AllAddress = (props) => {
 
     const loginData = loginDetails()
     setDefaultAddressLoader(true)
-
+    setSelectedAddressId(selcet?.addressId)
     props.setDefaultAddress({
       userId: loginData?.userId,
       addressId: selcet?.addressId
@@ -171,79 +170,84 @@ const AllAddress = (props) => {
                 allAddress.map((item, index) => {
                   return (
                     <Grid key={index} item xs={12} lg={4} md={6} sm={6}>
-                      <Box
-                        className={`address-card-container ${item.addressId == props?.selectedAddress?.addressId
-                          ? "active"
-                          : ""
-                          }`}
-                        onClick={() => handleSelectedAddress(item)}
-                      >
-                        {item.addressId == props?.selectedAddress.addressId ? (
-                          <Box className="active-check">
-                            <CheckIcon />
-                          </Box>
-                        ) : (
-                          <></>
-                        )}
+                      {item?.addressId === selectedAddressId && props.setDefaultAddressData.status == status.IN_PROGRESS ?
+                        Loader.commonLoader()
+                        : <>
+                          <Box
+                            className={`address-card-container ${item.addressId == props?.selectedAddress?.addressId
+                              ? "active"
+                              : ""
+                              }`}
+                            onClick={() => handleSelectedAddress(item)}
+                          >
+                            {item.addressId == props?.selectedAddress.addressId ? (
+                              <Box className="active-check">
+                                <CheckIcon />
+                              </Box>
+                            ) : (
+                              <></>
+                            )}
 
-                        <Box className="d-flex align-items-center">
-                          <IconButton
-                            aria-label="edit"
-                            className={
-                              item.addressId == props?.selectedAddress.addressId
-                                ? "address-btn active"
-                                : "address-btn"
-                            }
-                            onClick={(event) => handleEdit(event, item)}
-                          >
-                            <BorderColorIcon />
-                          </IconButton>
-                          <IconButton
-                            aria-label="delete"
-                            className={
-                              item.addressId == props?.selectedAddress.addressId
-                                ? "address-btn active"
-                                : "address-btn"
-                            }
-                            onClick={(event) => {
-                              event.stopPropagation()
-                              handleClickOpen(item);
-                            }}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </Box>
-                        <h3 className="person-name">{item.name}</h3>
-                        <address>
-                          {item.address} {item.zipCode}
-                        </address>
-                        <Box className="d-block contact-number">
-                          <span className="d-block contact-heading">
-                            Contact
-                          </span>
-                          <Box className="d-flex align-items-center">
-                            <span className="d-block title">Phone</span>
-                            <span className="d-block details">
-                              {item.phoneNumber}
-                            </span>
+                            <Box className="d-flex align-items-center">
+                              <IconButton
+                                aria-label="edit"
+                                className={
+                                  item.addressId == props?.selectedAddress.addressId
+                                    ? "address-btn active"
+                                    : "address-btn"
+                                }
+                                onClick={(event) => handleEdit(event, item)}
+                              >
+                                <BorderColorIcon />
+                              </IconButton>
+                              <IconButton
+                                aria-label="delete"
+                                className={
+                                  item.addressId == props?.selectedAddress.addressId
+                                    ? "address-btn active"
+                                    : "address-btn"
+                                }
+                                onClick={(event) => {
+                                  event.stopPropagation()
+                                  handleClickOpen(item);
+                                }}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </Box>
+                            <h3 className="person-name">{item.name}</h3>
+                            <address>
+                              {item.address} {item.zipCode}
+                            </address>
+                            <Box className="d-block contact-number">
+                              <span className="d-block contact-heading">
+                                Contact
+                              </span>
+                              <Box className="d-flex align-items-center">
+                                <span className="d-block title">Phone</span>
+                                <span className="d-block details">
+                                  {item.phoneNumber}
+                                </span>
+                              </Box>
+                              <Box className="d-flex align-items-center">
+                                <span className="d-block title">Email</span>
+                                <span className="d-block details">
+                                  {item.email}
+                                </span>
+                              </Box>
+                            </Box>
+                            {item.addressId == props?.selectedAddress.addressId ? (
+                              <FormControlLabel
+                                checked
+                                control={<Checkbox />}
+                                label="Make This Default Address"
+                              />
+                            ) : (
+                              <></>
+                            )}
                           </Box>
-                          <Box className="d-flex align-items-center">
-                            <span className="d-block title">Email</span>
-                            <span className="d-block details">
-                              {item.email}
-                            </span>
-                          </Box>
-                        </Box>
-                        {item.addressId == props?.selectedAddress.addressId ? (
-                          <FormControlLabel
-                            checked
-                            control={<Checkbox />}
-                            label="Make This Default Address"
-                          />
-                        ) : (
-                          <></>
-                        )}
-                      </Box>
+                        </>}
+
                     </Grid>
                   );
                 })}

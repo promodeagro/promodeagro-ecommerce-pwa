@@ -82,7 +82,6 @@ class Address extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-
     if (
       prevProps.defaultAddressData.status !== this.props.defaultAddressData.status &&
       this.props.defaultAddressData.status === status.SUCCESS &&
@@ -119,6 +118,7 @@ class Address extends Component {
         let data1 = {
           productId: item.ProductId,
           quantity: item.Quantity,
+          quantityUnits: item.QuantityUnits
         };
         itemListData.push(data1);
         cartListData.push(data);
@@ -249,7 +249,7 @@ class Address extends Component {
           {activeStep === 0 ? (
 
             <AllAddress
-            selectedAddress={this.state.defaultSelectedAddress}
+              selectedAddress={this.state.defaultSelectedAddress}
               handleTabs={this.handleTabs}
               cartListLength={cartList.length}
               getDefaultAddress={this.getDefaultAddress}

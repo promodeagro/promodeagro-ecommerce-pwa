@@ -47,7 +47,9 @@ class Header extends Component {
       productsFiltersData: [],
       categories: [],
       profileModal: false,
-      currentName: ""
+      currentName: "",
+      currentPathName: "",
+      pathId: ""
     };
   }
   componentDidMount() {
@@ -65,15 +67,42 @@ class Header extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    let path = window.location.pathname
+    if (this.state.currentPathName != window.location.pathname) {
+
+
+      if (path.includes("updated-address") || path.includes("order-placed")) {
+        const id = this.extractIdFromPath(path)
+
+        this.setState({
+          pathId: id
+        })
+      } else if (this.state.pathId) {
+        this.setState({
+          pathId: ""
+        })
+      }
+
+
+    }
     if (
       prevProps.defaultAddressData.status !== this.props.defaultAddressData.status &&
       this.props.defaultAddressData.status === status.SUCCESS &&
-      this.props.defaultAddressData.data && this.state.currentAddress?.addressId != this.props.defaultAddressData?.data?.addressId
+      this.props.defaultAddressData.data
     ) {
-      this.setState({
-        currentAddress: this.props.defaultAddressData.data,
-        currentName: this.props.defaultAddressData.data?.name
-      });
+
+      if (this.props.defaultAddressData.data?.status == 404) {
+        this.setState({
+          currentAddress: {},
+          currentName: ""
+        });
+      } else if (this.props.defaultAddressData.data?.addressId) {
+        this.setState({
+          currentAddress: this.props.defaultAddressData.data,
+          currentName: this.props.defaultAddressData.data?.name
+        });
+      }
+
     }
 
     if (
@@ -112,6 +141,14 @@ class Header extends Component {
     //     currentName: this.props.selectedAddressData?.name,
     //   });
     // }
+  }
+
+  extractIdFromPath = (path) => {
+    // Example: Assuming URL path format is '/mycart/address/updated-address/:id'
+    // Splitting the path by '/' and getting the last segment as ID
+    const pathSegments = path.split('/');
+    const id = pathSegments[pathSegments.length - 1];
+    return id;
   }
 
   handleClickCategoriesToggle = () => {
@@ -484,9 +521,9 @@ class Header extends Component {
                       "/mycart/address/order-details",
                       "/mycart/address",
                       "/mycart/address/add-new-address",
-                      "/mycart/address/updated-address/:id",
+                      `/mycart/address/updated-address/${this.state?.pathId}`,
                       "/my-order",
-                      "/mycart/address/order-placed/:id",
+                      `/mycart/address/order-placed/${this.state?.pathId}`,
                     ].includes(path) && this.renderBreadcrumb()
                   )}
                 </Grid>
@@ -499,9 +536,9 @@ class Header extends Component {
           "/mycart/address",
           "/mycart/address/order-details",
           "/mycart/address/add-new-address",
-          "/mycart/address/updated-address/:id",
+          `/mycart/address/updated-address/${this.state?.pathId}`,
           "/my-order",
-          "/mycart/address/order-placed/:id",
+          `/mycart/address/order-placed/${this.state?.pathId}`,
           "/my-profile/personal-information",
           "/my-profile/manage-addresses",
           "/my-profile/change-password",
