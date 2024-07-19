@@ -93,7 +93,7 @@ const Views = () => {
               element={<Navigate to="/" replace />}
             />
             <Route
-              path={`/mycart/address/updated-address`}
+              path={`/mycart/address/updated-address/:id`}
               element={<Navigate to="/" replace />}
             />
             <Route
@@ -163,7 +163,7 @@ const Views = () => {
           element={<AddNewAddress />}
         />
         <Route
-          path={`/mycart/address/updated-address`}
+          path={`/mycart/address/updated-address/:id`}
           element={<UpdatedAddress />}
         />
         <Route
