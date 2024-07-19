@@ -163,10 +163,10 @@ let path = window.location.pathname
 
 const pathFile = {
   // dashboard: "DashBoard",
-  "/": "Home",
-  "": "Home",
-  "/product-details/": "Product Details",
-  "/mycart/address/order-placed": "Order Details",
+  "/": "Promode Agro Farms",
+  "": "Promode Agro Farms",
+  "/product-details/": "Promode Agro Farms",
+  "/mycart/address/order-placed": "Promode Agro Farms",
 
 
 };
