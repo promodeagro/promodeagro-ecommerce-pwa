@@ -333,14 +333,14 @@ class Header extends Component {
                       <span>{currentAddress?.address}</span>
                     </Box>
                   )}
-                  {currentName && (
+                  {loginDetails()?.name ?
                     <Box className="profile-box">
                       <Box
                         className="profile"
                         onClick={() => this.handleProfileModal()}
                       >
                         <AccountBoxTwoToneIcon />
-                        <span>{currentName}</span>
+                        <span>{loginDetails()?.name}</span>
                         <KeyboardArrowDownOutlinedIcon />
                       </Box>
                       {profileModal === true && (
@@ -380,7 +380,9 @@ class Header extends Component {
                         </Box>
                       )}
                     </Box>
-                  )}
+                    : <></>}
+
+
                   {/* <Box className="language-list-box">
                     <FormControl fullWidth>
                       <NativeSelect
@@ -480,8 +482,13 @@ class Header extends Component {
                           <Link to="/category">Quick Links</Link>
                         </li>
                         <li
-                          onClick={() =>
+                          onClick={() => {
                             this.handleFruitsandVeg(["FRUITS", "Exotic Fruits"])
+                            this.props.navigate(
+                              `/category/FRUITS/Exotic Fruits`
+                            );
+                          }
+
                           }
                         >
                           <Link to="/category">Exotic Fruits</Link>
@@ -494,14 +501,14 @@ class Header extends Component {
                             ])
                           }
                         >
-                          <Link to="/category">Leafy Vegetables</Link>
+                          <Link to="/category/VEGETABLES/Leafy Vegetables">Leafy Vegetables</Link>
                         </li>
                         <li
                           onClick={() =>
                             this.handleFruitsandVeg(["FRUITS", "Fresh fruits"])
                           }
                         >
-                          <Link to="/category">Fresh fruits</Link>
+                          <Link to="/category/FRUITS/Fresh fruits">Fresh fruits</Link>
                         </li>
                         <li
                           onClick={() =>
@@ -511,7 +518,7 @@ class Header extends Component {
                             ])
                           }
                         >
-                          <Link to="/category">Cuts & Sprouts</Link>
+                          <Link to="/category/VEGETABLES/Cuts & Sprouts">Cuts & Sprouts</Link>
                         </li>
                       </ul>
                     </Box>
