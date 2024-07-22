@@ -37,7 +37,7 @@ function Category(props) {
   useEffect(() => {
     let items = loginDetails();
     setProdductApiLoader(true);
-
+    setAPIDataLoaded(true);
     if (items?.userId) {
       setCartApiLoader(true);
       props.fetchCartItems({
@@ -53,7 +53,7 @@ function Category(props) {
   useEffect(() => {
     if (props.allProductsData?.status == status?.SUCCESS && productApiLoader) {
       setProdductApiLoader(false);
-      setAPIDataLoaded(true);
+      setAPIDataLoaded(false);
       setProductsData(props.allProductsData?.data);
     } else if (
       props.allProductsData?.status == status?.FAILURE &&
