@@ -12,19 +12,21 @@ import { fetchCartItems } from "../../../Redux/Cart/CartThunk";
 import status from "../../../Redux/Constants";
 import { Loader, loginDetails } from "Views/Utills/helperFunctions";
 import { setShopByCategory } from "../../../Redux/AllProducts/AllProductSlice";
-import _ from "lodash"
+import _ from "lodash";
 import { useParams, useLocation } from "react-router-dom";
+import userEvent from "@testing-library/user-event";
 function Category(props) {
-
+  const { category, subcategory } = useParams();
   const location = useLocation();
-  const [hideFilter, setHideFilter] = useState(true)
-  const [products, setProducts] = useState([])
-  const [productsData, setProductsData] = useState([])
-  const [cartList, setCartList] = useState([])
-  const [categoryName, setCategoryName] = useState("")
-  const [productApiLoader, setProdductApiLoader] = useState(false)
-  const [getCartApiLoader, setCartApiLoader] = useState(false)
-  const [locationName, setLocationName] = useState("")
+  const [hideFilter, setHideFilter] = useState(true);
+  const [products, setProducts] = useState([]);
+  const [productsData, setProductsData] = useState([]);
+  const [cartList, setCartList] = useState([]);
+  const [categoryName, setCategoryName] = useState("");
+  const [productApiLoader, setProdductApiLoader] = useState(false);
+  const [getCartApiLoader, setCartApiLoader] = useState(false);
+  const [locationName, setLocationName] = useState("");
+  // const [categoryData, setCategoryData] = useState([])
   const [filters, setFilters] = useState({
     minPrice: "",
     maxPrice: "",
@@ -34,17 +36,15 @@ function Category(props) {
     selectedProductTypes: [],
     selectedPackSizes: [],
     currentCategory: "",
-
-
-  })
-  const [loaderCount, setLoaderCount] = useState(0)
+  });
+  const [loaderCount, setLoaderCount] = useState(0);
 
   useEffect(() => {
     let items = loginDetails();
-    setProdductApiLoader(true)
+    setProdductApiLoader(true);
 
     if (items?.userId) {
-      setCartApiLoader(true)
+      setCartApiLoader(true);
       props.fetchCartItems({
         userId: items?.userId,
       });
@@ -62,81 +62,103 @@ function Category(props) {
     //     categoryName: pathArr?.[1]?.replaceAll("-", " ")
     //   })
     // }
-
-
-
-  }, [])
-
+  }, []);
 
   useEffect(() => {
-    if (location.pathname && props.allProductsData.status == status.SUCCESS && productApiLoader && props.allProductsData?.data) {
+    if (props.allProductsData?.status == status?.SUCCESS && productApiLoader) {
+      setProdductApiLoader(false);
+      setLoaderCount(1);
+      if (props.allProductsData?.data) {
+        const categoryData = props.allProductsData?.data;
 
-      setProdductApiLoader(false)
-      setLoaderCount(1)
-      let path = location.pathname;
-      if (path.split("/")?.[3] && locationName !== location.pathname) {
-        setLocationName(location.pathname)
-        setCategoryName(path.split("/")?.[3].replaceAll("%20", " "))
-        let selectedItem = []
-        let catName = path.split("/")?.[3].replaceAll("%20", " ")
-        props.allProductsData?.data?.forEach((product) => {
-          if (product.subCategory == catName) {
-            selectedItem.push(product);
+        if (subcategory) {
+          let selectedItem = [];
+          categoryData?.forEach((product) => {
+            if (product.subCategory == subcategory) {
+              selectedItem.push(product);
+            }
+          });
+
+          if (selectedItem.length > 0 && productsData !== selectedItem) {
+            setProductsData(selectedItem);
           }
-        });
-
-
-
-        if (selectedItem.length > 0 && productsData !== selectedItem) {
-
-          setProductsData(selectedItem)
-        }
-
-
-
-      } else if (path.split("/")?.[2] && props.allProductsData?.data?.length > 0 && locationName !== location.pathname) {
-        setLocationName(location.pathname)
-
-        setCategoryName(path.split("/")?.[2].replaceAll("%20", " "))
-        let selectedItem = []
-        props.allProductsData?.data?.forEach((product) => {
-          if (product.category == path.split("/")?.[2]) {
-            selectedItem.push(product);
+        } else if (category && categoryData?.length > 0) {
+        
+          let selectedItem = [];
+          categoryData?.forEach((product) => {
+            if (product.category == category) {
+              selectedItem.push(product);
+            }
+          });
+          if (selectedItem.length > 0 && productsData !== selectedItem) {
+            setProductsData(selectedItem);
           }
-        });
-
-
-
-        if (selectedItem.length > 0 && productsData !== selectedItem) {
-
-          setProductsData(selectedItem)
+        } else if (categoryData?.length > 0) {
+          setCategoryName("");
+          setProductsData(categoryData);
         }
-
-
-
-      } else if (props.allProductsData?.data?.length > 0 && locationName !== location.pathname) {
-        setCategoryName("")
-        setProductsData(props.allProductsData?.data)
       }
+    } else if (
+      props.allProductsData?.status == status?.FAILURE &&
+      productApiLoader
+    ) {
+      setProdductApiLoader(false);
     }
-  }, [location.pathname, productsData, props.allProductsData.status == status.SUCCESS]);
+  }, [props.allProductsData.status, subcategory, category]);
 
+  // useEffect(() => {
+  //   if (location.pathname && categoryData && categoryData.length > 0) {
 
+  //     let path = location.pathname;
+  //     if (path.split("/")?.[3] && locationName !== location.pathname) {
+  //       setLocationName(location.pathname)
+  //       setCategoryName(path.split("/")?.[3].replaceAll("%20", " "))
+  //       let selectedItem = []
+  //       let catName = path.split("/")?.[3].replaceAll("%20", " ")
+  //       categoryData?.forEach((product) => {
+  //         if (product.subCategory == catName) {
+  //           selectedItem.push(product);
+  //         }
+  //       });
 
+  //       if (selectedItem.length > 0 && productsData !== selectedItem) {
 
+  //         setProductsData(selectedItem)
+  //       }
+
+  //     } else if (path.split("/")?.[2] && categoryData?.length > 0 && locationName !== location.pathname) {
+  //       setLocationName(location.pathname)
+
+  //       setCategoryName(path.split("/")?.[2].replaceAll("%20", " "))
+  //       let selectedItem = []
+  //       categoryData?.forEach((product) => {
+  //         if (product.category == path.split("/")?.[2]) {
+  //           selectedItem.push(product);
+  //         }
+  //       });
+
+  //       if (selectedItem.length > 0 && productsData !== selectedItem) {
+
+  //         setProductsData(selectedItem)
+  //       }
+
+  //     } else if (categoryData?.length > 0 && locationName !== location.pathname) {
+  //       setCategoryName("")
+  //       setProductsData(categoryData)
+  //     }
+  //   }
+  // }, [location.pathname, categoryData]);
 
   useEffect(() => {
     if (
-
       props.cartItems.status === status.SUCCESS &&
-      props.cartItems.data && getCartApiLoader
+      props.cartItems.data &&
+      getCartApiLoader
     ) {
-      setCartApiLoader(false)
-      setCartList(props.cartItems.data.items)
-
+      setCartApiLoader(false);
+      setCartList(props.cartItems.data.items);
     }
-  }, [props.cartItems.status])
-
+  }, [props.cartItems.status]);
 
   // useEffect(() => {
   //   let path = _.cloneDeep(window.location.pathname)
@@ -193,10 +215,7 @@ function Category(props) {
   //   }
   // }, [])
 
-
-
   const handleFilterChange = (filters) => {
-
     // this.setState({ filters }, this.applyFilters);
   };
 
@@ -251,35 +270,32 @@ function Category(props) {
         filters.selectedPackSizes.some((size) => product.packSize === size)
       );
     }
-    setProductsData(productsData)
-
+    setProductsData(productsData);
   };
 
   const toggleFilter = () => {
-    setHideFilter(!hideFilter)
+    setHideFilter(!hideFilter);
     // this.setState((prevState) => ({
     //   hideFilter: !prevState.hideFilter,
     // }));
   };
   const handleCartApiLoader = (apiLoader) => {
-    setCartApiLoader(apiLoader)
-  }
+    setCartApiLoader(apiLoader);
+  };
 
   const allproducts = () => {
     const items = loginDetails();
 
     if (items?.userId) {
-      setLocationName("")
-      setProdductApiLoader(true)
-      setCartApiLoader(true)
+      setLocationName("");
+      setProdductApiLoader(true);
+      setCartApiLoader(true);
       props.allProducts(items?.userId);
       props.fetchCartItems({
         userId: items?.userId,
       });
-
     }
-  }
-
+  };
 
   return (
     <Box className="main-container">
@@ -299,20 +315,19 @@ function Category(props) {
             md={hideFilter ? 12 : 9}
             lg={hideFilter ? 12 : 9}
           >
-            {
-              props.allProductsData.status === status.IN_PROGRESS && loaderCount == 0 ? (
-                Loader.commonLoader()
-              ) :
-
-                <List
-                  handleCartApiLoader={handleCartApiLoader}
-                  currentCategory={categoryName}
-                  data={productsData ? productsData : []}
-                  cartItemsData={cartList}
-                  hideFilter={hideFilter}
-                  allproducts={allproducts}
-                />
-            }
+            {props.allProductsData.status === status.IN_PROGRESS &&
+            loaderCount == 0 ? (
+              Loader.commonLoader()
+            ) : (
+              <List
+                handleCartApiLoader={handleCartApiLoader}
+                currentCategory={categoryName}
+                data={productsData ? productsData : []}
+                cartItemsData={cartList}
+                hideFilter={hideFilter}
+                allproducts={allproducts}
+              />
+            )}
           </Grid>
         </Grid>
       </Container>
@@ -327,6 +342,11 @@ function mapStateToProps(state) {
   return { allProductsData, cartItems, shopCategoryData };
 }
 
-const mapDispatchToProps = { allProducts, fetchCartItems, productCategories, setShopByCategory };
+const mapDispatchToProps = {
+  allProducts,
+  fetchCartItems,
+  productCategories,
+  setShopByCategory,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Category);
