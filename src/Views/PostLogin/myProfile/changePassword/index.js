@@ -4,6 +4,7 @@ import {
   Button,
   Container,
   TextField,
+  CircularProgress,
   FormHelperText,
 } from "@mui/material";
 import ProfileSideBar from "../profileSideBar";
@@ -11,7 +12,10 @@ import {
   ErrorMessages,
   ValidationEngine,
 } from "../../../Utills/helperFunctions";
-
+import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
+import { connect } from "react-redux";
+import { forgotPassword } from "../../../../Redux/ForgotPassword/ForgotPasswordThunk";
+import status from "../../../../Redux/Constants";
 const validationSchema = {
   currentPassword: [
     {
@@ -37,12 +41,29 @@ class ChangePassword extends Component {
     };
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.forgotPassData.status !== this.props.forgotPassData.status &&
+      this.props.forgotPassData.status === status.SUCCESS &&
+      this.props.forgotPassData.data
+    ) {
+      if (this.props.forgotPassData.data.statusCode == 401) {
+        ErrorMessages.error(this.props.forgotPassData.data.message);
+        return;
+      } else if (this.props.forgotPassData.data.statusCode == 200) {
+        ErrorMessages.success(this.props.forgotPassData.data?.message);
+        this.props.navigate("/signin");
+      }
+    }
+  }
+
   validateForm = () => {
     const { currentPassword, newPassword } = this.state;
     const error = ValidationEngine.validate(validationSchema, {
       currentPassword,
       newPassword,
     });
+
     return error;
   };
 
@@ -58,6 +79,13 @@ class ChangePassword extends Component {
       isSubmit: true,
     });
     if (errorData.isValid) {
+      let mobileNumber = localStorage.getItem("curr_mobile");
+
+      this.props.forgotPassword({
+        mobileNumber: mobileNumber ? mobileNumber : "",
+        oldPassword: this.state.currentPassword,
+        newPassword: this.state.newPassword,
+      });
     }
   };
 
@@ -121,7 +149,15 @@ class ChangePassword extends Component {
                 <Button
                   className="common-btn change-password-btn"
                   variant="contained"
+                  disabled={this.props.forgotPassData.status === status.IN_PROGRESS}
                   onClick={() => this.handleChangePassword()}
+                  endIcon={
+                    this.props.forgotPassData.status === status.IN_PROGRESS ? (
+                      <CircularProgress className="common-loader" />
+                    ) : (
+                      <></>
+                    )
+                  }
                 >
                   Change Password
                 </Button>
@@ -134,4 +170,15 @@ class ChangePassword extends Component {
   }
 }
 
-export default ChangePassword;
+function mapStateToProps(state) {
+  const { forgotPassData } = state.forgotpassword;
+
+  return { forgotPassData };
+}
+
+const mapDispatchToProps = { forgotPassword };
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(navigateRouter(ChangePassword));
