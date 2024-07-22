@@ -19,7 +19,7 @@ const Config = {
   UPDATE_ADDRESS: `${BASE_URL}/updateAddress`,
   PLACE_ORDER: `${BASE_URL}/order`,
   FORGOT_PASSWORD: `${BASE_URL}/changePassword`,
-  PRODUCTS_FILTERS: `${BASE_URL}/products`,
+  GLOBAL_SEARCH: `${BASE_URL}/products/search`,
   CATEGOREIS:`${BASE_URL}/category`,
   SET_DEFAULT_ADDRESS:`${BASE_URL}/setDefaultAddress`,
   GET_DEFAULT_ADDRESS:`${BASE_URL}/getDefaultAddress`,

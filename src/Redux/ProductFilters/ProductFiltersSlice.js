@@ -1,41 +1,39 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { allProductsFilters } from "./ProductFiltersThunk";
+import { fetchGlobalSearchItems } from "./ProductFiltersThunk";
 import status from "../Constants";
 
 const AllProductsFiltersSlice = createSlice({
   name: "allproductsfilters",
   initialState: {
-    allProductsFiltersData: {
-      status: null,
-    },
+    globalSearchRes: { status: "", data: [] },
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(allProductsFilters.pending.toString(), (state, action) => {
+      .addCase(fetchGlobalSearchItems.pending.toString(), (state, action) => {
         return {
           ...state,
-          allProductsFiltersData: {
+          globalSearchRes: {
             status: status.IN_PROGRESS,
           },
         };
       })
       .addCase(
-        allProductsFilters.fulfilled.toString(),
+        fetchGlobalSearchItems.fulfilled.toString(),
         (state, { payload }) => {
           return {
             ...state,
-            allProductsFiltersData: {
+            globalSearchRes: {
               status: status.SUCCESS,
               data: payload,
             },
           };
         }
       )
-      .addCase(allProductsFilters.rejected.toString(), (state, action) => {
+      .addCase(fetchGlobalSearchItems.rejected.toString(), (state, action) => {
         return {
           ...state,
-          allProductsFiltersData: {
+          globalSearchRes: {
             status: status.FAILURE,
           },
         };

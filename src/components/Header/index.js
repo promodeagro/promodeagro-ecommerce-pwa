@@ -27,7 +27,6 @@ import status from "../../Redux/Constants";
 import { loginDetails } from "Views/Utills/helperFunctions";
 import { getAllAddress } from "../../Redux/Address/AddressThunk";
 import SearchResults from "./searchResults";
-import { allProductsFilters } from "../../Redux/ProductFilters/ProductFiltersThunk";
 import _ from "lodash";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import AccountBoxTwoToneIcon from "@mui/icons-material/AccountBoxTwoTone";
@@ -44,12 +43,11 @@ class Header extends Component {
       currentAddress: {},
       searchToggle: false,
       productsData: [],
-      productsFiltersData: [],
       categories: [],
       profileModal: false,
       currentName: "",
       currentPathName: "",
-      pathId: ""
+      pathId: "",
     };
   }
   componentDidMount() {
@@ -58,51 +56,43 @@ class Header extends Component {
       .addEventListener("change", (e) => this.setState({ matches: e.matches }));
     let items = loginDetails();
     if (items?.userId) {
-      this.props.fetchDefaultAddress(items?.userId)
+      this.props.fetchDefaultAddress(items?.userId);
     }
-    // let items = this.state.productsFiltersData;
     this.props.fetchCategories();
-    this.props.allProductsFilters({});
-
   }
 
   componentDidUpdate(prevProps, prevState) {
-    let path = window.location.pathname
+    let path = window.location.pathname;
     if (this.state.currentPathName != window.location.pathname) {
-
-
       if (path.includes("updated-address") || path.includes("order-placed")) {
-        const id = this.extractIdFromPath(path)
+        const id = this.extractIdFromPath(path);
 
         this.setState({
-          pathId: id
-        })
+          pathId: id,
+        });
       } else if (this.state.pathId) {
         this.setState({
-          pathId: ""
-        })
+          pathId: "",
+        });
       }
-
-
     }
     if (
-      prevProps.defaultAddressData.status !== this.props.defaultAddressData.status &&
+      prevProps.defaultAddressData.status !==
+        this.props.defaultAddressData.status &&
       this.props.defaultAddressData.status === status.SUCCESS &&
       this.props.defaultAddressData.data
     ) {
-
       if (this.props.defaultAddressData.data?.status == 404) {
         this.setState({
           currentAddress: {},
-          currentName: ""
+          currentName: "",
         });
       } else if (this.props.defaultAddressData.data?.addressId) {
         this.setState({
           currentAddress: this.props.defaultAddressData.data,
-          currentName: this.props.defaultAddressData.data?.name
+          currentName: this.props.defaultAddressData.data?.name,
         });
       }
-
     }
 
     if (
@@ -116,16 +106,6 @@ class Header extends Component {
     }
 
     if (
-      prevProps.allProductsFiltersData.status !==
-      this.props.allProductsFiltersData.status &&
-      this.props.allProductsFiltersData.status === status.SUCCESS &&
-      this.props.allProductsFiltersData.data
-    ) {
-      this.setState({
-        productsFiltersData: this.props.allProductsFiltersData.data,
-      });
-    }
-    if (
       prevProps.cartItems.status !== this.props.cartItems.status &&
       this.props.cartItems.status === status.SUCCESS &&
       this.props.cartItems.data
@@ -134,7 +114,6 @@ class Header extends Component {
         cartList: this.props.cartItems.data.items,
       });
     }
-
 
     // if (this.state.currentName !== this.props.selectedAddressData?.name) {
     //   this.setState({
@@ -146,10 +125,10 @@ class Header extends Component {
   extractIdFromPath = (path) => {
     // Example: Assuming URL path format is '/mycart/address/updated-address/:id'
     // Splitting the path by '/' and getting the last segment as ID
-    const pathSegments = path.split('/');
+    const pathSegments = path.split("/");
     const id = pathSegments[pathSegments.length - 1];
     return id;
-  }
+  };
 
   handleClickCategoriesToggle = () => {
     this.setState({
@@ -299,10 +278,9 @@ class Header extends Component {
       searchToggle,
       productsData,
       cartList,
-      productsFiltersData,
       profileModal,
       currentAddress,
-      currentName
+      currentName,
     } = this.state;
     const { allAddress } = this.props;
     const address = allAddress ? allAddress.address : "";
@@ -333,7 +311,7 @@ class Header extends Component {
                       <span>{currentAddress?.address}</span>
                     </Box>
                   )}
-                  {loginDetails()?.name ?
+                  {loginDetails()?.name ? (
                     <Box className="profile-box">
                       <Box
                         className="profile"
@@ -380,8 +358,9 @@ class Header extends Component {
                         </Box>
                       )}
                     </Box>
-                    : <></>}
-
+                  ) : (
+                    <></>
+                  )}
 
                   {/* <Box className="language-list-box">
                     <FormControl fullWidth>
@@ -483,13 +462,14 @@ class Header extends Component {
                         </li>
                         <li
                           onClick={() => {
-                            this.handleFruitsandVeg(["FRUITS", "Exotic Fruits"])
+                            this.handleFruitsandVeg([
+                              "FRUITS",
+                              "Exotic Fruits",
+                            ]);
                             this.props.navigate(
                               `/category/FRUITS/Exotic Fruits`
                             );
-                          }
-
-                          }
+                          }}
                         >
                           <Link to="/category">Exotic Fruits</Link>
                         </li>
@@ -501,14 +481,18 @@ class Header extends Component {
                             ])
                           }
                         >
-                          <Link to="/category/VEGETABLES/Leafy Vegetables">Leafy Vegetables</Link>
+                          <Link to="/category/VEGETABLES/Leafy Vegetables">
+                            Leafy Vegetables
+                          </Link>
                         </li>
                         <li
                           onClick={() =>
                             this.handleFruitsandVeg(["FRUITS", "Fresh fruits"])
                           }
                         >
-                          <Link to="/category/FRUITS/Fresh fruits">Fresh fruits</Link>
+                          <Link to="/category/FRUITS/Fresh fruits">
+                            Fresh fruits
+                          </Link>
                         </li>
                         <li
                           onClick={() =>
@@ -518,7 +502,9 @@ class Header extends Component {
                             ])
                           }
                         >
-                          <Link to="/category/VEGETABLES/Cuts & Sprouts">Cuts & Sprouts</Link>
+                          <Link to="/category/VEGETABLES/Cuts & Sprouts">
+                            Cuts & Sprouts
+                          </Link>
                         </li>
                       </ul>
                     </Box>
@@ -558,103 +544,101 @@ class Header extends Component {
           "/privacy-policy",
           "/return-refund",
         ].includes(path) && (
-            <Box className="header-bottom-container">
-              <Container>
-                <Grid container spacing={2} alignItems={"center"}>
-                  <Grid item xs={7} sm={8} md={3} lg={3}>
-                    <Box className="categories-container">
+          <Box className="header-bottom-container">
+            <Container>
+              <Grid container spacing={2} alignItems={"center"}>
+                <Grid item xs={7} sm={8} md={3} lg={3}>
+                  <Box className="categories-container">
+                    <Box
+                      className="categories-toggle"
+                      onClick={this.handleClickCategoriesToggle}
+                    >
+                      Shop by Categories
+                      <span>
+                        {categoriesToggle ? (
+                          <KeyboardArrowUpIcon />
+                        ) : (
+                          <KeyboardArrowDownIcon />
+                        )}
+                      </span>
+                    </Box>
+                    {categoriesToggle && this.renderCategories()}
+                    {categoriesToggle && (
                       <Box
-                        className="categories-toggle"
+                        className="categories-bg"
                         onClick={this.handleClickCategoriesToggle}
-                      >
-                        Shop by Categories
-                        <span>
-                          {categoriesToggle ? (
-                            <KeyboardArrowUpIcon />
-                          ) : (
-                            <KeyboardArrowDownIcon />
-                          )}
-                        </span>
-                      </Box>
-                      {categoriesToggle && this.renderCategories()}
-                      {categoriesToggle && (
-                        <Box
-                          className="categories-bg"
-                          onClick={this.handleClickCategoriesToggle}
-                        ></Box>
-                      )}
+                      ></Box>
+                    )}
+                  </Box>
+                </Grid>
+                {this.state.matches ? (
+                  ""
+                ) : (
+                  <Grid item xs={2} md={6} lg={6}>
+                    <Box className="search-box">
+                      <SearchResults
+                        cartItemsData={cartList}
+                      />
                     </Box>
                   </Grid>
-                  {this.state.matches ? (
-                    ""
-                  ) : (
-                    <Grid item xs={2} md={6} lg={6}>
-                      <Box className="search-box">
-                        <SearchResults
-                          data={productsFiltersData || []}
-                          cartItemsData={cartList}
-                        />
-                      </Box>
-                    </Grid>
-                  )}
-                  <Grid item xs={5} sm={4} md={3} lg={3}>
-                    <Box
-                      display={"inline-flex"}
-                      justifyContent={"flex-end"}
-                      width={"100%"}
-                    >
-                      {this.state.matches ? (
+                )}
+                <Grid item xs={5} sm={4} md={3} lg={3}>
+                  <Box
+                    display={"inline-flex"}
+                    justifyContent={"flex-end"}
+                    width={"100%"}
+                  >
+                    {this.state.matches ? (
+                      <Button
+                        variant="outlined"
+                        className="search-icon"
+                        startIcon={<img src={searchIcon} alt="" />}
+                        onClick={this.searchToggle}
+                      ></Button>
+                    ) : (
+                      ""
+                    )}
+                    {login?.userId ? (
+                      <>
                         <Button
                           variant="outlined"
-                          className="search-icon"
-                          startIcon={<img src={searchIcon} alt="" />}
-                          onClick={this.searchToggle}
-                        ></Button>
-                      ) : (
-                        ""
-                      )}
-                      {login?.userId ? (
-                        <>
+                          className="notification"
+                          startIcon={<img src={notificationIcon} alt="" />}
+                        >
+                          <p></p>
+                        </Button>
+
+                        <Link to={"/mycart"}>
                           <Button
                             variant="outlined"
-                            className="notification"
-                            startIcon={<img src={notificationIcon} alt="" />}
+                            className="card"
+                            startIcon={<img src={cardIcon} alt="" />}
                           >
-                            <p></p>
+                            {this.props?.cartData?.length ? (
+                              <p>{this.props.cartData.length}</p>
+                            ) : (
+                              <></>
+                            )}
+                            {this.state.cartList?.length ? (
+                              <p>{this.state.cartList.length}</p>
+                            ) : (
+                              <></>
+                            )}
                           </Button>
-
-                          <Link to={"/mycart"}>
-                            <Button
-                              variant="outlined"
-                              className="card"
-                              startIcon={<img src={cardIcon} alt="" />}
-                            >
-                              {this.props?.cartData?.length ? (
-                                <p>{this.props.cartData.length}</p>
-                              ) : (
-                                <></>
-                              )}
-                              {this.state.cartList?.length ? (
-                                <p>{this.state.cartList.length}</p>
-                              ) : (
-                                <></>
-                              )}
-                            </Button>
-                          </Link>
-                        </>
-                      ) : (
-                        <></>
-                      )}
-                    </Box>
-                  </Grid>
+                        </Link>
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </Box>
                 </Grid>
-              </Container>
-            </Box>
-          )}
+              </Grid>
+            </Container>
+          </Box>
+        )}
         {this.state.matches ? (
           <Box className={searchToggle ? "search-box active" : "search-box"}>
             <SearchResults
-              data={productsFiltersData || []}
               cartItemsData={cartList}
             />
           </Box>
@@ -675,8 +659,9 @@ function mapStateToProps(state) {
     allProductsData,
     allCategories,
   } = state.allproducts;
-  const { allAddress, selectedAddressData, defaultAddressData } = state.alladdress;
-  const { allProductsFiltersData } = state.allproductsfilters;
+  const { allAddress, selectedAddressData, defaultAddressData } =
+    state.alladdress;
+  
   return {
     cartData,
     cartItems,
@@ -685,18 +670,16 @@ function mapStateToProps(state) {
     shopCategoryData,
     productCategoryData,
     allProductsData,
-    allProductsFiltersData,
     allCategories,
-    defaultAddressData
+    defaultAddressData,
   };
 }
 
 const mapDispatchToProps = {
   getAllAddress,
   setShopByCategory,
-  allProductsFilters,
   fetchCategories,
-  fetchDefaultAddress
+  fetchDefaultAddress,
 };
 
 export default connect(

@@ -2,16 +2,12 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import config from "../../Views/Config";
 import { postLoginService } from "../../Services";
 
-export const allProductsFilters = createAsyncThunk(
-  "productsfilters",
+export const fetchGlobalSearchItems = createAsyncThunk(
+  "search/fetchGlobalSearchItems",
   async (params) => {
     try {
-      let url = config.PRODUCTS_FILTERS;
-      // console.log(params);
-      if (params?.name) {
-        url = `${url}?name=${params.name}`;
-      }
-      const response = await postLoginService.get(url);
+      let url = config.GLOBAL_SEARCH;
+      const response = await postLoginService.get(url, { params });
       return response.data;
     } catch (error) {
       return error;
