@@ -17,16 +17,12 @@ import { useParams, useLocation } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 function Category(props) {
   const { category, subcategory } = useParams();
-  const location = useLocation();
   const [hideFilter, setHideFilter] = useState(true);
   const [products, setProducts] = useState([]);
   const [productsData, setProductsData] = useState([]);
   const [cartList, setCartList] = useState([]);
-  const [categoryName, setCategoryName] = useState("");
   const [productApiLoader, setProdductApiLoader] = useState(false);
   const [getCartApiLoader, setCartApiLoader] = useState(false);
-  const [locationName, setLocationName] = useState("");
-  // const [categoryData, setCategoryData] = useState([])
   const [filters, setFilters] = useState({
     minPrice: "",
     maxPrice: "",
@@ -35,9 +31,8 @@ function Category(props) {
     selectedCountry: "",
     selectedProductTypes: [],
     selectedPackSizes: [],
-    currentCategory: "",
   });
-  const [loaderCount, setLoaderCount] = useState(0);
+  const [APIDataLoaded, setAPIDataLoaded] = useState(false);
 
   useEffect(() => {
     let items = loginDetails();
@@ -53,101 +48,48 @@ function Category(props) {
     } else {
       props.allProducts();
     }
-
-    // let path = _.cloneDeep(window.location.pathname)
-    // let pathArr = path.substring(path.lastIndexOf("/") + 1).replace("-", " ").split(" ")
-
-    // if (pathArr.length > 0) {
-    //   this.setState({
-    //     categoryName: pathArr?.[1]?.replaceAll("-", " ")
-    //   })
-    // }
   }, []);
 
   useEffect(() => {
     if (props.allProductsData?.status == status?.SUCCESS && productApiLoader) {
       setProdductApiLoader(false);
-      setLoaderCount(1);
-      if (props.allProductsData?.data) {
-        const categoryData = props.allProductsData?.data;
-
-        if (subcategory) {
-          let selectedItem = [];
-          categoryData?.forEach((product) => {
-            if (product.subCategory == subcategory) {
-              selectedItem.push(product);
-            }
-          });
-
-          if (selectedItem.length > 0 && productsData !== selectedItem) {
-            setProductsData(selectedItem);
-          }
-        } else if (category && categoryData?.length > 0) {
-        
-          let selectedItem = [];
-          categoryData?.forEach((product) => {
-            if (product.category == category) {
-              selectedItem.push(product);
-            }
-          });
-          if (selectedItem.length > 0 && productsData !== selectedItem) {
-            setProductsData(selectedItem);
-          }
-        } else if (categoryData?.length > 0) {
-          setCategoryName("");
-          setProductsData(categoryData);
-        }
-      }
+      setAPIDataLoaded(true);
+      setProductsData(props.allProductsData?.data);
     } else if (
       props.allProductsData?.status == status?.FAILURE &&
       productApiLoader
     ) {
       setProdductApiLoader(false);
     }
-  }, [props.allProductsData.status, subcategory, category]);
+  }, [props.allProductsData.status]);
 
-  // useEffect(() => {
-  //   if (location.pathname && categoryData && categoryData.length > 0) {
+  useEffect(() => {
+    if (props.allProductsData?.data) {
+      const categoryData = props.allProductsData?.data;
+      if (subcategory) {
+        let selectedItem = [];
+        categoryData?.forEach((product) => {
+          if (product.subCategory == subcategory) {
+            selectedItem.push(product);
+          }
+        });
 
-  //     let path = location.pathname;
-  //     if (path.split("/")?.[3] && locationName !== location.pathname) {
-  //       setLocationName(location.pathname)
-  //       setCategoryName(path.split("/")?.[3].replaceAll("%20", " "))
-  //       let selectedItem = []
-  //       let catName = path.split("/")?.[3].replaceAll("%20", " ")
-  //       categoryData?.forEach((product) => {
-  //         if (product.subCategory == catName) {
-  //           selectedItem.push(product);
-  //         }
-  //       });
-
-  //       if (selectedItem.length > 0 && productsData !== selectedItem) {
-
-  //         setProductsData(selectedItem)
-  //       }
-
-  //     } else if (path.split("/")?.[2] && categoryData?.length > 0 && locationName !== location.pathname) {
-  //       setLocationName(location.pathname)
-
-  //       setCategoryName(path.split("/")?.[2].replaceAll("%20", " "))
-  //       let selectedItem = []
-  //       categoryData?.forEach((product) => {
-  //         if (product.category == path.split("/")?.[2]) {
-  //           selectedItem.push(product);
-  //         }
-  //       });
-
-  //       if (selectedItem.length > 0 && productsData !== selectedItem) {
-
-  //         setProductsData(selectedItem)
-  //       }
-
-  //     } else if (categoryData?.length > 0 && locationName !== location.pathname) {
-  //       setCategoryName("")
-  //       setProductsData(categoryData)
-  //     }
-  //   }
-  // }, [location.pathname, categoryData]);
+        if (selectedItem.length > 0 && productsData !== selectedItem) {
+          setProductsData(selectedItem);
+        }
+      } else if (category && categoryData?.length > 0) {
+        let selectedItem = [];
+        categoryData?.forEach((product) => {
+          if (product.category == category) {
+            selectedItem.push(product);
+          }
+        });
+        if (selectedItem.length > 0 && productsData !== selectedItem) {
+          setProductsData(selectedItem);
+        }
+      }
+    }
+  }, [subcategory, category, props.allProductsData?.status]);
 
   useEffect(() => {
     if (
@@ -160,71 +102,23 @@ function Category(props) {
     }
   }, [props.cartItems.status]);
 
-  // useEffect(() => {
-  //   let path = _.cloneDeep(window.location.pathname)
-  //   let pathArr = path.substring(path.lastIndexOf("/") + 1).replace("-", " ").split(" ")
-
-  //   if (
-
-  //     props.allProductsData?.data?.length &&
-  //     categoryName != pathArr[1]?.replaceAll("%20", "")
-  //   ) {
-
-  //     let fruits = [];
-  //     let vegetables = [];
-  //     let selectedItem = [];
-
-  //     if (pathArr.length > 0) {
-  //       setCategoryName(pathArr[1]?.replaceAll("%20", " "))
-  //     }
-  //     props.allProductsData.data.forEach((product) => {
-  //       if (product.category === "FRUITS") {
-  //         fruits.push(product);
-  //       } else if (product.category === "VEGETABLES") {
-  //         vegetables.push(product);
-  //       }
-  //     });
-
-  //     if (pathArr[0] == "VEGETABLES") {
-  //       if (pathArr[1]?.replaceAll("-", " ")) {
-  //         vegetables?.forEach((product) => {
-  //           if (pathArr[1]?.replaceAll("%20", " ") == product.subCategory) {
-  //             selectedItem.push(product);
-  //           }
-  //         });
-  //       } else {
-  //         selectedItem = vegetables;
-
-  //       }
-  //     } else if (pathArr[0] == "FRUITS") {
-  //       if (pathArr[1]?.replaceAll("%20", " ")) {
-  //         fruits?.forEach((product) => {
-  //           if (pathArr[1]?.replaceAll("%20", " ") == product.subCategory) {
-  //             selectedItem.push(product);
-  //           }
-  //         });
-  //       } else {
-  //         selectedItem = fruits;
-
-  //       }
-  //     }
-
-  //     if (selectedItem.length > 0) {
-  //       // setProductsData(selectedItem)
-  //     }
-  //   }
-  // }, [])
+  useEffect(() => {
+    if (productsData?.length && filters) {
+      applyFilters();
+    }
+  }, [filters, productsData]);
 
   const handleFilterChange = (filters) => {
+    setFilters(filters);
     // this.setState({ filters }, this.applyFilters);
   };
 
   const applyFilters = () => {
     // const { products, filters } = this.state;
-    let productsData = [...products];
-
+    // let productsData = [...productsData];
+    let res = [];
     if (filters.minPrice || filters.maxPrice) {
-      productsData = productsData.filter((product) => {
+      res = productsData?.filter((product) => {
         const price = parseFloat(product.price);
         return (
           (!filters.minPrice || price >= parseFloat(filters.minPrice)) &&
@@ -234,13 +128,13 @@ function Category(props) {
     }
 
     if (filters.selectedRatings.length > 0) {
-      productsData = productsData.filter((product) =>
+      res = productsData?.filter((product) =>
         filters.selectedRatings.some((rating) => product.ratings >= rating)
       );
     }
 
     if (filters.selectedDiscounts.length > 0) {
-      productsData = productsData.filter((product) => {
+      res = productsData?.filter((product) => {
         const savingsPercentage = parseInt(product.savingsPercentage);
         return filters.selectedDiscounts.some((discountRange) => {
           if (discountRange === "upto5") return savingsPercentage <= 5;
@@ -254,19 +148,19 @@ function Category(props) {
     }
 
     if (filters.selectedCountry) {
-      productsData = productsData.filter(
+      res = productsData?.filter(
         (product) => product.origin === filters.selectedCountry
       );
     }
 
     if (filters.selectedProductTypes.length > 0) {
-      productsData = productsData.filter((product) =>
+      res = productsData?.filter((product) =>
         filters.selectedProductTypes.includes(product.type)
       );
     }
 
     if (filters.selectedPackSizes.length > 0) {
-      productsData = productsData.filter((product) =>
+      res = productsData?.filter((product) =>
         filters.selectedPackSizes.some((size) => product.packSize === size)
       );
     }
@@ -287,7 +181,6 @@ function Category(props) {
     const items = loginDetails();
 
     if (items?.userId) {
-      setLocationName("");
       setProdductApiLoader(true);
       setCartApiLoader(true);
       props.allProducts(items?.userId);
@@ -316,12 +209,12 @@ function Category(props) {
             lg={hideFilter ? 12 : 9}
           >
             {props.allProductsData.status === status.IN_PROGRESS &&
-            loaderCount == 0 ? (
+            APIDataLoaded ? (
               Loader.commonLoader()
             ) : (
               <List
                 handleCartApiLoader={handleCartApiLoader}
-                currentCategory={categoryName}
+                currentCategory={subcategory ? subcategory : category}
                 data={productsData ? productsData : []}
                 cartItemsData={cartList}
                 hideFilter={hideFilter}
