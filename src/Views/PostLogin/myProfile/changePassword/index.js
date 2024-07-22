@@ -4,6 +4,7 @@ import {
   Button,
   Container,
   TextField,
+  CircularProgress,
   FormHelperText,
 } from "@mui/material";
 import ProfileSideBar from "../profileSideBar";
@@ -148,7 +149,15 @@ class ChangePassword extends Component {
                 <Button
                   className="common-btn change-password-btn"
                   variant="contained"
+                  disabled={this.props.forgotPassData.status === status.IN_PROGRESS}
                   onClick={() => this.handleChangePassword()}
+                  endIcon={
+                    this.props.forgotPassData.status === status.IN_PROGRESS ? (
+                      <CircularProgress className="common-loader" />
+                    ) : (
+                      <></>
+                    )
+                  }
                 >
                   Change Password
                 </Button>
