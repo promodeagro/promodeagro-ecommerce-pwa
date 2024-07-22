@@ -110,7 +110,7 @@ class ProductDetails extends Component {
         productItem: this.props.productDetailsData?.data,
         itemQuantity: this.props.productDetailsData?.data?.cartItem?.Quantity ? this.props.productDetailsData?.data?.cartItem?.Quantity : 0,
         loaderCount: 1,
-        qauntityUnits: this.props.productDetailsData?.data.cartItem.QuantityUnits
+        qauntityUnits: this.props.productDetailsData?.data?.cartItem?.QuantityUnits
       });
 
 
