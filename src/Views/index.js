@@ -100,6 +100,34 @@ const Views = () => {
               path={`/mycart/address/order-placed/:id`}
               element={<Navigate to="/" replace />}
             />
+            <Route
+              path={`/my-profile/wish-list`}
+              element={<Navigate to="/" replace />}
+            />
+            <Route
+              path={`/my-profile/manage-addresses`}
+              element={<Navigate to="/" replace />}
+            />
+            <Route
+              path={`/my-profile/personal-information`}
+              element={<Navigate to="/" replace />}
+            />
+            <Route
+              path={`/my-profile/change-password`}
+              element={<Navigate to="/" replace />}
+            />
+            <Route
+              path={`/my-profile/wish-list`}
+              element={<Navigate to="/" replace />}
+            />
+            <Route
+              path={`/my-profile/notification`}
+              element={<Navigate to="/" replace />}
+            />
+            <Route
+              path={`/my-profile/account-privacy`}
+              element={<Navigate to="/" replace />}
+            />
           </>
         )}
 
