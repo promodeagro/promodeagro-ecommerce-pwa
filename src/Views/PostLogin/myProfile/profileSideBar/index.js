@@ -3,7 +3,7 @@ import { Box, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
-
+// import myOrder from "Views/PostLogin/myOrder";
 class ProfileSideBar extends Component {
   constructor(props) {
     super(props);
@@ -48,7 +48,9 @@ class ProfileSideBar extends Component {
     return (
       <Box className="profile-sidebar">
         <Box className="heading">
-          My Orders <ChevronRightOutlinedIcon />
+          <Link to={"/my-order"} className="heading">
+            My Orders <ChevronRightOutlinedIcon />
+          </Link>
         </Box>
         {sections.map((section, index) => (
           <Box className="profile-links" key={index}>

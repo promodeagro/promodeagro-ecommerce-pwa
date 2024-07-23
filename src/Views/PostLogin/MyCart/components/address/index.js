@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import _ from "lodash";
 import { productDetailsData } from "../../../../../Redux/AllProducts/AllProductSlice";
+import { fetchAvailableDeliverySlot } from "../../../../../Redux/Order/PlaceOrderThunk";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import InfoIcon from "@mui/icons-material/Info";
@@ -30,7 +31,11 @@ import status from "../../../../../Redux/Constants";
 import { fetchCartItems } from "../../../../../Redux/Cart/CartThunk";
 import { placeOrder } from "../../../../../Redux/Order/PlaceOrderThunk";
 import { fetchDefaultAddress } from "../../../../../Redux/Address/AddressThunk";
-import { ErrorMessages, Loader, loginDetails } from "Views/Utills/helperFunctions";
+import {
+  ErrorMessages,
+  Loader,
+  loginDetails,
+} from "Views/Utills/helperFunctions";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 const steps = ["Delivery Address", "Delivery Options"];
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
@@ -50,22 +55,33 @@ class Address extends Component {
       totalSavings: "",
       skipped: new Set(),
       itemList: [],
-      defaultSelectedAddress: {}
+      defaultSelectedAddress: {},
+      deliverySlot: "today",
+      deliverySlotData: [],
+      selectedDeliverySlot: "",
+      slots: [],
+      id: 0,
     };
   }
 
   componentDidMount() {
+    this.getDefaultAddress();
 
-    this.getDefaultAddress()
+    if (window?.location?.pathname === "/myCart/address/order-details") {
+      this.props.fetchAvailableDeliverySlot(this.state?.deliverySlot);
+    }
 
     const tab = localStorage.getItem("selectedTab");
     if (
       (tab &&
         this.state.activeStep != tab &&
         window.location.pathname == "/mycart/address/order-details") ||
-      window.location.pathname == "/mycart/payment-details" || window.location.pathname == "/myCart/address/order-details"
+      window.location.pathname == "/mycart/payment-details" ||
+      window.location.pathname == "/myCart/address/order-details"
     ) {
-
+      if (window.location.pathname == "/mycart/address/order-details") {
+        this.props.fetchAvailableDeliverySlot(this.state?.deliverySlot);
+      }
       this.setState({
         activeStep: parseInt(tab),
       });
@@ -76,24 +92,33 @@ class Address extends Component {
       this.props.fetchCartItems({
         userId: items?.userId,
       });
-
     }
-
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (
-      prevProps.defaultAddressData.status !== this.props.defaultAddressData.status &&
-      this.props.defaultAddressData.status === status.SUCCESS &&
-      this.props.defaultAddressData?.data
+      prevProps.deliverySlotData?.status !==
+        this.props?.deliverySlotData?.status &&
+      this.props?.deliverySlotData?.status === status.SUCCESS &&
+      this.props?.deliverySlotData?.data
     ) {
-
       this.setState({
-        defaultSelectedAddress: this.props.defaultAddressData.data
-
+        deliverySlotData: this.props?.deliverySlotData?.data,
+        selectedDeliverySlot: this.props?.deliverySlotData?.data[0],
+        slots: this.props?.deliverySlotData?.data,
+        timneValue: 0,
       });
     }
-
+    if (
+      prevProps.defaultAddressData?.status !==
+        this.props?.defaultAddressData?.status &&
+      this.props?.defaultAddressData?.status === status.SUCCESS &&
+      this.props?.defaultAddressData?.data
+    ) {
+      this.setState({
+        defaultSelectedAddress: this.props?.defaultAddressData?.data,
+      });
+    }
 
     if (
       prevProps.cartItems.status !== this.props.cartItems.status &&
@@ -101,8 +126,8 @@ class Address extends Component {
       this.props.cartItems.data
     ) {
       let cartListData = [];
-      let itemListData = []
-      this.props.cartItems.data.items.forEach(item => {
+      let itemListData = [];
+      this.props.cartItems.data.items.forEach((item) => {
         let data = {
           mrp: item.Mrp,
           price: item.Price,
@@ -118,19 +143,17 @@ class Address extends Component {
         let data1 = {
           productId: item.ProductId,
           quantity: item.Quantity,
-          quantityUnits: item.QuantityUnits
+          quantityUnits: item.QuantityUnits,
         };
         itemListData.push(data1);
         cartListData.push(data);
       });
 
-
-
       this.setState({
         totalPrice: this.props.cartItems.data.subTotal,
         totalSavings: this.props.cartItems.data.savings,
         cartList: cartListData,
-        itemList: itemListData
+        itemList: itemListData,
       });
     }
 
@@ -139,26 +162,32 @@ class Address extends Component {
       this.props.placeOrderData.status === status.SUCCESS &&
       this.props.placeOrderData.data
     ) {
-
       if (this.props.placeOrderData.data.orderId) {
         localStorage.removeItem("selectedTab");
-        ErrorMessages.success(this.props.placeOrderData.data.message)
+        ErrorMessages.success(this.props.placeOrderData.data.message);
 
-
-        this.props.navigate(`/mycart/address/order-placed/${this.props.placeOrderData.data.orderId}`);
+        this.props.navigate(
+          `/mycart/address/order-placed/${this.props.placeOrderData.data.orderId}`
+        );
       } else {
-
       }
-
     }
   }
 
   handlePlaceOrder = () => {
     let login = loginDetails();
-    const { selectedAddress, totalPrice, itemList } = this.state;
+    let addressId = localStorage.getItem("address");
+    const {
+      totalPrice,
+      itemList,
+      defaultSelectedAddress,
+      cartListData,
+      selectedDeliverySlot,
+    } = this.state;
 
     let data = {
-      addressId: this.props.selectedAddressData?.addressId,
+      addressId: addressId,
+      deliverySlotId: selectedDeliverySlot?.slotId,
       // paymentMethod: "",
       paymentDetails: {
         method: "Credit Card",
@@ -169,6 +198,7 @@ class Address extends Component {
       items: itemList,
       userId: login.userId,
     };
+
     this.props.placeOrder(data);
   };
 
@@ -180,9 +210,62 @@ class Address extends Component {
   };
   handleChange = (event, newValue) => {
     this.setState({ value: newValue });
+    if (newValue === 0) {
+      this.props?.fetchAvailableDeliverySlot("today");
+    } else if (newValue === 1) {
+      this.props?.fetchAvailableDeliverySlot("tomorrow");
+    } else {
+      let today = new Date();
+
+      let tomorrow = new Date(today);
+      tomorrow.setDate(today.getDate() + 1);
+
+      let formattedDate = tomorrow.toISOString().slice(0, 10);
+      this.props?.fetchAvailableDeliverySlot(formattedDate);
+    }
   };
   timingSlotHandleChange = (event, newTimeValue) => {
+    const { deliverySlotData } = this.state;
     this.setState({ timneValue: newTimeValue });
+    if (newTimeValue == 0) {
+      this.setState({
+        slots: deliverySlotData,
+      });
+      // all slot
+    } else if (newTimeValue == 1) {
+      const afternoonSlots = deliverySlotData.filter((slot) => {
+        const startTime24 = this.convertTimeTo24Hour(slot.startTime);
+
+        return startTime24 >= 12 && startTime24 < 16;
+      });
+      this.setState({
+        slots: afternoonSlots,
+      });
+    } else if (newTimeValue == 2) {
+      const eveningSlots = deliverySlotData.filter((slot) => {
+        const startTime24 = this.convertTimeTo24Hour(slot.startTime);
+
+        return startTime24 >= 16 && startTime24 <= 19;
+      });
+      this.setState({
+        slots: eveningSlots,
+      });
+    }
+  };
+
+  convertTimeTo24Hour = (time) => {
+    const [hours, minutes] = time.split(":");
+    const period = time.slice(-2).toUpperCase();
+
+    let hours24 = parseInt(hours, 10);
+
+    if (period === "PM" && hours24 < 12) {
+      hours24 += 12;
+    } else if (period === "AM" && hours24 === 12) {
+      hours24 = 0;
+    }
+
+    return hours24 + parseInt(minutes, 10) / 60;
   };
 
   handleTabs = (value, selectedAddress) => {
@@ -192,13 +275,21 @@ class Address extends Component {
     });
   };
   getDefaultAddress = () => {
-    let loginData = loginDetails()
+    let loginData = loginDetails();
 
     if (loginData?.userId) {
-      this.props.fetchDefaultAddress(loginData?.userId)
-
+      this.props.fetchDefaultAddress(loginData?.userId);
     }
-  }
+  };
+
+  handleSlotChange = (event, slotId) => {
+    const slotIndex = event.target.value;
+
+    this.setState({
+      id: Number(slotIndex),
+      selectedDeliverySlot: this.state.slots[Number(slotIndex)],
+    });
+  };
 
   render() {
     const { activeStep, value, timneValue, cartList, totalPrice, skipped } =
@@ -247,19 +338,16 @@ class Address extends Component {
             </Stepper>
           </Box>
           {activeStep === 0 ? (
-
             <AllAddress
               selectedAddress={this.state.defaultSelectedAddress}
               handleTabs={this.handleTabs}
               cartListLength={cartList.length}
               getDefaultAddress={this.getDefaultAddress}
             />
-
-
           ) : activeStep === 1 ? (
             <Box className="select-delivery-option-container">
-              {cartList.length > 0 ?
-
+              {cartList.length > 0 &&
+              this.props.cartItems?.status === status?.SUCCESS ? (
                 <Grid container spacing={2} data-aos="zoom-in-down">
                   <Grid item xs={12} lg={8} md={12} sm={12}>
                     <Box className="delivery-option-details">
@@ -288,10 +376,7 @@ class Address extends Component {
                                   <img src={item.image} alt="" />
                                 </Box>
                               );
-                            })
-
-
-                          }
+                            })}
                           <Box className="view-all-img-box">
                             <Link to={"/mycart"}>
                               <span className="d-block">
@@ -304,13 +389,21 @@ class Address extends Component {
                           className="delivery-slot-select"
                           onClick={this.handleOpen}
                         >
-                          <span className="title">Delivery Slot</span>
+                          <span className="title">Delivery Slot </span>
                           <Box className="d-flex align-items-center justify-content-between w-100">
                             <Box className="d-flex align-items-center">
                               <AccessTimeIcon className="time-icon" />
-                              <span className="d-block slot-time">
-                                28 May, Tue, Between 2:00 PM - 5:00 PM
-                              </span>
+                              {this.state.deliverySlotData?.length ? (
+                                <span className="d-block slot-time">
+                                  {this.state?.selectedDeliverySlot?.date}
+                                  {this.state?.selectedDeliverySlot?.dayOfWeek}
+                                  Beteween
+                                  {this.state?.selectedDeliverySlot?.startTime}-
+                                  {this.state?.selectedDeliverySlot?.endTime}
+                                </span>
+                              ) : (
+                                <></>
+                              )}
                             </Box>
                             <KeyboardArrowDownIcon className="down-arrow-icon" />
                           </Box>
@@ -355,7 +448,7 @@ class Address extends Component {
                             }
                             endIcon={
                               this.props.placeOrderData.status ===
-                                status.IN_PROGRESS ? (
+                              status.IN_PROGRESS ? (
                                 <CircularProgress className="common-loader" />
                               ) : (
                                 <></>
@@ -409,11 +502,12 @@ class Address extends Component {
                     </Box>
                   </Grid>
                 </Grid>
-
-                :
+              ) : this.props.cartItems?.status === status?.SUCCESS &&
+                cartList.length == 0 ? (
                 <Box>There is no item in cart</Box>
-              }
-
+              ) : (
+                <></>
+              )}
             </Box>
           ) : activeStep === 2 ? (
             <></>
@@ -616,7 +710,7 @@ class Address extends Component {
             <Box className="modal-body">
               <Box className="days-slot-tab">
                 <Tabs
-                  value={this.state.value}
+                  value={this.state?.value}
                   onChange={this.handleChange}
                   aria-label="basic tabs example"
                 >
@@ -626,44 +720,158 @@ class Address extends Component {
                 </Tabs>
               </Box>
               <Divider />
-              <Box className="slot-timing-tab">
-                <Tabs
-                  value={this.state.timneValue}
-                  onChange={this.timingSlotHandleChange}
-                  aria-label="basic tabs example"
-                >
-                  <Tab label="All Slots" />
-                  <Tab label="Afternoon " />
-                  <Tab label="Evening" />
-                </Tabs>
-              </Box>
-              {timneValue === 0 ? (
-                <Box className="time-slot-checkbox">
-                  <RadioGroup
-                    row
-                    aria-labelledby="demo-row-radio-buttons-group-label"
-                    name="row-radio-buttons-group"
-                  >
-                    <Grid container spacing={2}>
-                      <Grid item xs={12} lg={4} md={4} sm={6}>
-                        <FormControlLabel
-                          value="afternoonSlot"
-                          control={<Radio />}
-                          label="2:00 PM - 4:00 PM"
-                        />
-                      </Grid>
-                      <Grid item xs={12} lg={4} md={4} sm={6}>
+              {this.props.deliverySlotData?.status == status.IN_PROGRESS ? (
+                <>{Loader.commonLoader()}</>
+              ) : (
+                <>
+                  <Box className="slot-timing-tab">
+                    <Tabs
+                      value={this.state?.timneValue}
+                      onChange={this.timingSlotHandleChange}
+                      aria-label="basic tabs example"
+                    >
+                      <Tab label="All Slots" />
+                      <Tab label="Afternoon " />
+                      <Tab label="Evening" />
+                    </Tabs>
+                  </Box>
+                  {timneValue === 0 ? (
+                    <Box className="time-slot-checkbox">
+                      <RadioGroup
+                        row
+                        aria-labelledby="demo-row-radio-buttons-group-label"
+                        name="row-radio-buttons-group"
+                        value={this.state.id}
+                        onChange={(event) => this.handleSlotChange(event)}
+                      >
+                        <Grid container spacing={2}>
+                          {this.state.slots?.length ? (
+                            this.state?.slots?.map((item, index) => {
+                              return (
+                                <Grid
+                                  item
+                                  xs={12}
+                                  lg={4}
+                                  md={4}
+                                  sm={6}
+                                  // onClick={this.setState({
+                                  //   selectedDeliverySlot: item,
+                                  // })}
+                                >
+                                  <FormControlLabel
+                                    value={index.toString()}
+                                    control={<Radio />}
+                                    label={`${item?.startTime} - ${item?.endTime}`}
+                                  />
+                                </Grid>
+                              );
+                            })
+                          ) : (
+                            <></>
+                          )}
+
+                          {/* <Grid item xs={12} lg={4} md={4} sm={6}>
                         <FormControlLabel
                           value="eveningSlot"
                           control={<Radio />}
                           label="4:00 PM - 6:00 PM"
                         />
-                      </Grid>
-                    </Grid>
-                  </RadioGroup>
-                </Box>
-              ) : (
-                ""
+                      </Grid> */}
+                        </Grid>
+                      </RadioGroup>
+                    </Box>
+                  ) : timneValue === 1 ? (
+                    <Box className="time-slot-checkbox">
+                      <RadioGroup
+                        row
+                        aria-labelledby="demo-row-radio-buttons-group-label"
+                        name="row-radio-buttons-group"
+                        value={this.state.id}
+                        onChange={(event) => this.handleSlotChange(event)}
+                      >
+                        <Grid container spacing={2}>
+                          {this.state.slots?.length ? (
+                            this.state?.slots?.map((item, index) => {
+                              return (
+                                <Grid
+                                  item
+                                  xs={12}
+                                  lg={4}
+                                  md={4}
+                                  sm={6}
+                                  // onClick={this.setState({
+                                  //   selectedDeliverySlot: item,
+                                  // })}
+                                >
+                                  <FormControlLabel
+                                    value={index.toString()}
+                                    control={<Radio />}
+                                    label={`${item?.startTime} - ${item?.endTime}`}
+                                  />
+                                </Grid>
+                              );
+                            })
+                          ) : (
+                            <></>
+                          )}
+
+                          {/* <Grid item xs={12} lg={4} md={4} sm={6}>
+                      <FormControlLabel
+                        value="eveningSlot"
+                        control={<Radio />}
+                        label="4:00 PM - 6:00 PM"
+                      />
+                    </Grid> */}
+                        </Grid>
+                      </RadioGroup>
+                    </Box>
+                  ) : (
+                    <Box className="time-slot-checkbox">
+                      <RadioGroup
+                        row
+                        aria-labelledby="demo-row-radio-buttons-group-label"
+                        name="row-radio-buttons-group"
+                        value={this.state.id}
+                        onChange={(event) => this.handleSlotChange(event)}
+                      >
+                        <Grid container spacing={2}>
+                          {this.state.slots?.length ? (
+                            this.state?.slots?.map((item, index) => {
+                              return (
+                                <Grid
+                                  item
+                                  xs={12}
+                                  lg={4}
+                                  md={4}
+                                  sm={6}
+                                  // onClick={this.setState({
+                                  //   selectedDeliverySlot: item,
+                                  // })}
+                                >
+                                  <FormControlLabel
+                                    value={index.toString()}
+                                    control={<Radio />}
+                                    label={`${item?.startTime} - ${item?.endTime}`}
+                                  />
+                                </Grid>
+                              );
+                            })
+                          ) : (
+                            <></>
+                          )}
+
+                          {/* <Grid item xs={12} lg={4} md={4} sm={6}>
+                      <FormControlLabel
+                        value="eveningSlot"
+                        control={<Radio />}
+                        label="4:00 PM - 6:00 PM"
+                      />
+                    </Grid> */}
+                        </Grid>
+                      </RadioGroup>
+                    </Box>
+                  )}
+                </>
               )}
             </Box>
           </Box>
@@ -675,16 +883,18 @@ class Address extends Component {
 
 function mapStateToProps(state) {
   const { cartItems } = state.cartitem;
-  const { allAddress, selectedAddressData, defaultAddressData } = state.alladdress;
+  const { allAddress, selectedAddressData, defaultAddressData } =
+    state.alladdress;
   const { loginData } = state.login;
-  const { placeOrderData } = state.placeorder;
+  const { placeOrderData, deliverySlotData } = state.placeorder;
   return {
     cartItems,
     loginData,
     allAddress,
     placeOrderData,
     selectedAddressData,
-    defaultAddressData
+    defaultAddressData,
+    deliverySlotData,
   };
 }
 
@@ -692,7 +902,8 @@ const mapDispatchToProps = {
   fetchCartItems,
   placeOrder,
   productDetailsData,
-  fetchDefaultAddress
+  fetchDefaultAddress,
+  fetchAvailableDeliverySlot,
 };
 
 export default connect(

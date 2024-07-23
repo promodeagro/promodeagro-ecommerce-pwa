@@ -31,4 +31,16 @@ export const fetchOrderById = createAsyncThunk("orderbyid", async (orderId) => {
   }
 });
 
-
+export const fetchAvailableDeliverySlot = createAsyncThunk(
+  "deliveryslot",
+  async (day) => {
+    try {
+      
+      let url = config.DELIVERY_SLOT + `?day=${day}`;
+      const response = await postLoginService.get(url);
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);

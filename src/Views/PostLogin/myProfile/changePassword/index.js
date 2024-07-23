@@ -79,13 +79,6 @@ class ChangePassword extends Component {
       isSubmit: true,
     });
     if (errorData.isValid) {
-      let mobileNumber = localStorage.getItem("curr_mobile");
-
-      this.props.forgotPassword({
-        mobileNumber: mobileNumber ? mobileNumber : "",
-        oldPassword: this.state.currentPassword,
-        newPassword: this.state.newPassword,
-      });
     }
   };
 
@@ -149,15 +142,17 @@ class ChangePassword extends Component {
                 <Button
                   className="common-btn change-password-btn"
                   variant="contained"
-                  disabled={this.props.forgotPassData.status === status.IN_PROGRESS}
+                  // disabled={
+                  //   this.props.forgotPassData.status === status.IN_PROGRESS
+                  // }
                   onClick={() => this.handleChangePassword()}
-                  endIcon={
-                    this.props.forgotPassData.status === status.IN_PROGRESS ? (
-                      <CircularProgress className="common-loader" />
-                    ) : (
-                      <></>
-                    )
-                  }
+                  // endIcon={
+                  //   this.props.forgotPassData.status === status.IN_PROGRESS ? (
+                  //     <CircularProgress className="common-loader" />
+                  //   ) : (
+                  //     <></>
+                  //   )
+                  // }
                 >
                   Change Password
                 </Button>

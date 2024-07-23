@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
     placeOrder,
     fetchAllorders,
-    fetchOrderById
+    fetchOrderById,
+    fetchAvailableDeliverySlot
 } from "./PlaceOrderThunk";
 import status from "../Constants";
 
@@ -17,7 +18,10 @@ const PlaceOrderSlice = createSlice({
         },
         orderByIdData: {
             status: null
-        }
+        },
+    deliverySlotData:{
+        status:false
+    }
 
 
     },
@@ -98,6 +102,31 @@ const PlaceOrderSlice = createSlice({
                 return {
                     ...state,
                     orderByIdData: {
+                        status: status.FAILURE,
+                    },
+                };
+            })
+            .addCase(fetchAvailableDeliverySlot.pending.toString(), (state, action) => {
+                return {
+                    ...state,
+                    deliverySlotData: {
+                        status: status.IN_PROGRESS,
+                    },
+                };
+            })
+            .addCase(fetchAvailableDeliverySlot.fulfilled.toString(), (state, { payload }) => {
+                return {
+                    ...state,
+                    deliverySlotData: {
+                        status: status.SUCCESS,
+                        data: payload,
+                    },
+                };
+            })
+            .addCase(fetchAvailableDeliverySlot.rejected.toString(), (state, action) => {
+                return {
+                    ...state,
+                    deliverySlotData: {
                         status: status.FAILURE,
                     },
                 };

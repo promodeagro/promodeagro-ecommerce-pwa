@@ -23,6 +23,8 @@ const Config = {
   CATEGOREIS:`${BASE_URL}/category`,
   SET_DEFAULT_ADDRESS:`${BASE_URL}/setDefaultAddress`,
   GET_DEFAULT_ADDRESS:`${BASE_URL}/getDefaultAddress`,
+  DELIVERY_SLOT: `${BASE_URL}/getAvailableDeliverySlots`,
+
   
   
 };

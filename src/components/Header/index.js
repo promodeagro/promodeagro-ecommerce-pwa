@@ -63,7 +63,10 @@ class Header extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     let path = window.location.pathname;
-    if (this.state.currentPathName != window.location.pathname) {
+    if (
+      this.state.currentPathName != window.location.pathname &&
+      !window.location.pathname.includes(this.state.pathId)
+    ) {
       if (path.includes("updated-address") || path.includes("order-placed")) {
         const id = this.extractIdFromPath(path);
 
@@ -517,6 +520,12 @@ class Header extends Component {
                       `/mycart/address/updated-address/${this.state?.pathId}`,
                       "/my-order",
                       `/mycart/address/order-placed/${this.state?.pathId}`,
+                      "/my-profile/change-password",
+                      "/my-profile/manage-addresses",
+                      "/my-profile/personal-information",
+                      "/my-profile/wish-list",
+                      "/my-profile/notification",
+                      "/my-profile/account-privacy",
                     ].includes(path) && this.renderBreadcrumb()
                   )}
                 </Grid>
@@ -531,6 +540,7 @@ class Header extends Component {
           "/mycart/address/add-new-address",
           `/mycart/address/updated-address/${this.state?.pathId}`,
           "/my-order",
+          "/myCart/address/order-details",
           `/mycart/address/order-placed/${this.state?.pathId}`,
           "/my-profile/personal-information",
           "/my-profile/manage-addresses",
@@ -576,9 +586,7 @@ class Header extends Component {
                 ) : (
                   <Grid item xs={2} md={6} lg={6}>
                     <Box className="search-box">
-                      <SearchResults
-                        cartItemsData={cartList}
-                      />
+                      <SearchResults cartItemsData={cartList} />
                     </Box>
                   </Grid>
                 )}
@@ -638,9 +646,7 @@ class Header extends Component {
         )}
         {this.state.matches ? (
           <Box className={searchToggle ? "search-box active" : "search-box"}>
-            <SearchResults
-              cartItemsData={cartList}
-            />
+            <SearchResults cartItemsData={cartList} />
           </Box>
         ) : (
           ""
@@ -661,7 +667,7 @@ function mapStateToProps(state) {
   } = state.allproducts;
   const { allAddress, selectedAddressData, defaultAddressData } =
     state.alladdress;
-  
+
   return {
     cartData,
     cartItems,
