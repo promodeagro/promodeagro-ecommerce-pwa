@@ -33,11 +33,12 @@ function Category(props) {
     selectedPackSizes: [],
   });
   const [APIDataLoaded, setAPIDataLoaded] = useState(false);
-
+  const [currentPath, setCurrentPath] = useState("");
   useEffect(() => {
     let items = loginDetails();
     setProdductApiLoader(true);
     setAPIDataLoaded(true);
+    setCurrentPath(window.location.pathname);
     if (items?.userId) {
       setCartApiLoader(true);
       props.fetchCartItems({
@@ -54,6 +55,7 @@ function Category(props) {
     if (props.allProductsData?.status == status?.SUCCESS && productApiLoader) {
       setProdductApiLoader(false);
       setAPIDataLoaded(false);
+      debugger;
       setProductsData(props.allProductsData?.data);
     } else if (
       props.allProductsData?.status == status?.FAILURE &&
@@ -62,6 +64,26 @@ function Category(props) {
       setProdductApiLoader(false);
     }
   }, [props.allProductsData.status]);
+
+  useEffect(() => {
+    if (currentPath != window.location.pathname) {
+      setProdductApiLoader(true);
+      setAPIDataLoaded(true);
+      setCurrentPath(window.location.pathname);
+      let items = loginDetails();
+
+      if (items?.userId) {
+        setCartApiLoader(true);
+        props.fetchCartItems({
+          userId: items?.userId,
+        });
+
+        props.allProducts(items?.userId);
+      } else {
+        props.allProducts();
+      }
+    }
+  }, [window.location.pathname]);
 
   useEffect(() => {
     if (props.allProductsData?.data) {
