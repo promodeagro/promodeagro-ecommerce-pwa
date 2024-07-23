@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import {
   addItemToCart,
-  fetchCartItems,
   updateItemToCart,
   deleteItemToCart,
 } from "../../Redux/Cart/CartThunk";
@@ -105,8 +104,9 @@ class SearchResults extends Component {
 
   fetchUserCartItems() {
     const items = loginDetails();
-    this.props.fetchCartItems({
-      userId: items.userId,
+    this.props.fetchGlobalSearchItems({
+      query: this.state.searchTerm,
+      userId: items?.userId,
     });
   }
 
@@ -214,10 +214,9 @@ class SearchResults extends Component {
                 )}
               </Grid>
               <Grid item xs={4} sm={4} md={4} lg={4}>
-                {addedProducts.includes(item.id) || item?.inCart ? (
+                {item?.inCart ? (
                   <>
-                    {this.state?.isProductSelecting ||
-                    this.props.cartItems.status === status.IN_PROGRESS ||
+                    {this.props.globalSearchRes.status === status.IN_PROGRESS ||
                     (item?.id == this.state?.dataId &&
                       this.props?.deleteItems?.status ==
                         status?.IN_PROGRESS) ? (
@@ -227,8 +226,7 @@ class SearchResults extends Component {
                             variant="outlined"
                             disabled
                             endIcon={
-                              this.state?.isProductSelecting ||
-                              this.props.cartItems.status ===
+                              this.props.globalSearchRes.status ===
                                 status.IN_PROGRESS ||
                               (item?.id == this.state?.dataId &&
                                 this.props?.deleteItems?.status ==
@@ -446,7 +444,12 @@ class SearchResults extends Component {
 
     if (searchTerm.trim() !== "") {
       this.setState({ searchLoader: true });
-      this.debouncedSearch({ query: searchTerm });
+      const items = loginDetails();
+      if (items?.userId) {
+        this.debouncedSearch({ query: searchTerm, userId: items?.userId });
+      } else {
+        this.props.navigate("/signin");
+      }
     }
   };
 
@@ -565,7 +568,6 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
   addItemToCart,
-  fetchCartItems,
   updateItemToCart,
   deleteItemToCart,
   productDetailsData,
