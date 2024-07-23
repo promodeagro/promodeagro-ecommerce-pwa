@@ -5,7 +5,7 @@ import {
   deleteAddress,
   updateAddress,
   setDefaultAddress,
-  fetchDefaultAddress
+  fetchDefaultAddress,
 } from "./AddressThunk";
 import status from "../Constants";
 
@@ -18,16 +18,16 @@ const AddressSlice = createSlice({
     postAddress: {
       status: null,
     },
-    deleteAddress: {
+    deleteAddresses: {
       status: null,
     },
     updateAddress: {
       status: null,
     },
-    defaultAddressData:{
+    defaultAddressData: {
       status: null,
     },
-    setDefaultAddressData:{
+    setDefaultAddressData: {
       status: null,
     },
     selectedAddressData: null,
@@ -92,7 +92,7 @@ const AddressSlice = createSlice({
       .addCase(deleteAddress.pending.toString(), (state, action) => {
         return {
           ...state,
-          deleteAddress: {
+          deleteAddresses: {
             status: status.IN_PROGRESS,
           },
         };
@@ -100,7 +100,7 @@ const AddressSlice = createSlice({
       .addCase(deleteAddress.fulfilled.toString(), (state, { payload }) => {
         return {
           ...state,
-          deleteAddress: {
+          deleteAddresses: {
             status: status.SUCCESS,
             data: payload,
           },
@@ -109,7 +109,7 @@ const AddressSlice = createSlice({
       .addCase(deleteAddress.rejected.toString(), (state, action) => {
         return {
           ...state,
-          deleteAddress: {
+          deleteAddresses: {
             status: status.FAILURE,
           },
         };
@@ -172,15 +172,18 @@ const AddressSlice = createSlice({
           },
         };
       })
-      .addCase(fetchDefaultAddress.fulfilled.toString(), (state, { payload }) => {
-        return {
-          ...state,
-          defaultAddressData: {
-            status: status.SUCCESS,
-            data: payload,
-          },
-        };
-      })
+      .addCase(
+        fetchDefaultAddress.fulfilled.toString(),
+        (state, { payload }) => {
+          return {
+            ...state,
+            defaultAddressData: {
+              status: status.SUCCESS,
+              data: payload,
+            },
+          };
+        }
+      )
       .addCase(fetchDefaultAddress.rejected.toString(), (state, action) => {
         return {
           ...state,
@@ -188,7 +191,7 @@ const AddressSlice = createSlice({
             status: status.FAILURE,
           },
         };
-      })
+      });
   },
 });
 

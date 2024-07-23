@@ -343,6 +343,7 @@ class Address extends Component {
               handleTabs={this.handleTabs}
               cartListLength={cartList.length}
               getDefaultAddress={this.getDefaultAddress}
+              defaultSelectedAddress={this.state.defaultSelectedAddress}
             />
           ) : activeStep === 1 ? (
             <Box className="select-delivery-option-container">
