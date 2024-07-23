@@ -200,17 +200,21 @@ class List extends Component {
             <Box className="select">{item.unit}</Box>
             {addedProducts.includes(item.id) || item?.inCart ? (
               <>
-                {this.state?.isProductSelecting &&
-                item?.id == this.state?.dataId &&
-                this.props?.deleteItems?.status == status?.IN_PROGRESS ? (
+                {this.state?.isProductSelecting ||
+                this.props.cartItems.status === status.IN_PROGRESS ||
+                (item?.id == this.state?.dataId &&
+                  this.props?.deleteItems?.status == status?.IN_PROGRESS) ? (
                   <>
                     <Box className="add-cart">
                       <Button
                         variant="outlined"
                         disabled
                         endIcon={
-                          this.props.deleteItems.status == status.IN_PROGRESS &&
-                          item.id == this.state.dataId ? (
+                          this.state?.isProductSelecting ||
+                          this.props.cartItems.status === status.IN_PROGRESS ||
+                          (item?.id == this.state?.dataId &&
+                            this.props?.deleteItems?.status ==
+                              status?.IN_PROGRESS) ? (
                             <CircularProgress className="common-loader" />
                           ) : (
                             <></>

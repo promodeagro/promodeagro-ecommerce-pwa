@@ -28,6 +28,7 @@ import { loginDetails } from "Views/Utills/helperFunctions";
 import { Link } from "react-router-dom";
 import { fetchGlobalSearchItems } from "../../Redux/ProductFilters/ProductFiltersThunk";
 import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
+import { withRouter } from "components/withRouter";
 
 class SearchResults extends Component {
   constructor(props) {
@@ -40,9 +41,14 @@ class SearchResults extends Component {
       isUpdateIncrease: false,
       productsFiltersData: [],
       qauntityUnits: [],
+      searchLoader: false,
+      showResult: false,
     };
     this.searchInputRef = React.createRef();
-    this.debouncedSearch = _.debounce(this.props.fetchGlobalSearchItems, 2000);
+    this.debouncedSearch = _.debounce((params) => {
+      this.setState({ searchLoader: true });
+      this.props.fetchGlobalSearchItems(params);
+    }, 1000);
   }
 
   componentDidUpdate(prevProps) {
@@ -52,6 +58,7 @@ class SearchResults extends Component {
     ) {
       if (this.props.globalSearchRes.data) {
         this.setState({
+          searchLoader: false,
           productsFiltersData: this.props.globalSearchRes.data,
         });
       }
@@ -83,6 +90,10 @@ class SearchResults extends Component {
       this.resetState();
       this.fetchUserCartItems();
     }
+
+    if (prevProps.location.pathname !== this.props.location.pathname) {
+      this.searchBgClick();
+    }
   }
 
   resetState() {
@@ -106,6 +117,7 @@ class SearchResults extends Component {
       this.props.addItemToCart({
         userId: items.userId,
         productId: id,
+        quantity: 1,
         quantityUnits: this.state.qauntityUnits[id]
           ? parseInt(this.state.qauntityUnits[id])
           : qty,
@@ -204,18 +216,23 @@ class SearchResults extends Component {
               <Grid item xs={4} sm={4} md={4} lg={4}>
                 {addedProducts.includes(item.id) || item?.inCart ? (
                   <>
-                    {this.state?.isProductSelecting &&
-                    item?.id == this.state?.dataId &&
-                    this.props?.deleteItems?.status == status?.IN_PROGRESS ? (
+                    {this.state?.isProductSelecting ||
+                    this.props.cartItems.status === status.IN_PROGRESS ||
+                    (item?.id == this.state?.dataId &&
+                      this.props?.deleteItems?.status ==
+                        status?.IN_PROGRESS) ? (
                       <>
                         <Box className="add-cart">
                           <Button
                             variant="outlined"
                             disabled
                             endIcon={
-                              this.props.deleteItems.status ==
-                                status.IN_PROGRESS &&
-                              item.id == this.state.dataId ? (
+                              this.state?.isProductSelecting ||
+                              this.props.cartItems.status ===
+                                status.IN_PROGRESS ||
+                              (item?.id == this.state?.dataId &&
+                                this.props?.deleteItems?.status ==
+                                  status?.IN_PROGRESS) ? (
                                 <CircularProgress className="common-loader" />
                               ) : (
                                 <></>
@@ -422,15 +439,19 @@ class SearchResults extends Component {
 
   searchChange = (event) => {
     const searchTerm = event.target.value;
+    if (searchTerm.length) {
+      this.setState({ showResult: true });
+    }
     this.setState({ searchTerm });
 
     if (searchTerm.trim() !== "") {
+      this.setState({ searchLoader: true });
       this.debouncedSearch({ query: searchTerm });
     }
   };
 
   searchBgClick = () => {
-    this.setState({ searchTerm: "" });
+    this.setState({ showResult: false, searchTerm: "" });
     if (this.searchInputRef.current) {
       this.searchInputRef.current.value = "";
     }
@@ -470,6 +491,8 @@ class SearchResults extends Component {
       addedProducts,
       quantities,
       qauntityUnits,
+      searchLoader,
+      showResult,
     } = this.state;
 
     return (
@@ -495,19 +518,24 @@ class SearchResults extends Component {
               searchTerm && productsFiltersData ? "active" : ""
             }`}
           >
-            {searchTerm && productsFiltersData.length === 0 ? (
-              <p className="no-data">There is no data</p>
-            ) : (
-              this.handleCategories(
-                productsFiltersData,
-                dataId,
-                addedProducts,
-                isUpdateIncrease,
-                quantities,
-                cartItemsData,
-                qauntityUnits
+            {showResult ? (
+              this.props.globalSearchRes.status === status.IN_PROGRESS ||
+              searchLoader ? (
+                <CircularProgress className="common-loader" />
+              ) : searchTerm && productsFiltersData.length === 0 ? (
+                <p className="no-data">There is no data</p>
+              ) : (
+                this.handleCategories(
+                  productsFiltersData,
+                  dataId,
+                  addedProducts,
+                  isUpdateIncrease,
+                  quantities,
+                  cartItemsData,
+                  qauntityUnits
+                )
               )
-            )}
+            ) : null}
           </Box>
         </Box>
         <Box
@@ -547,4 +575,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(navigateRouter(SearchResults));
+)(withRouter(SearchResults));

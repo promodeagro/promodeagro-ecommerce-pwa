@@ -55,7 +55,6 @@ function Category(props) {
     if (props.allProductsData?.status == status?.SUCCESS && productApiLoader) {
       setProdductApiLoader(false);
       setAPIDataLoaded(false);
-      debugger;
       setProductsData(props.allProductsData?.data);
     } else if (
       props.allProductsData?.status == status?.FAILURE &&
