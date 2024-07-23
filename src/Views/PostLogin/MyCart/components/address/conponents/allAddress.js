@@ -42,7 +42,7 @@ const AllAddress = (props) => {
     (state) => state.alladdress.postAddress.status
   );
   const deleteAddressStatus = useSelector(
-    (state) => state.alladdress.deleteAddress.status
+    (state) => state.alladdress.deleteAddresses.status
   );
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -57,6 +57,14 @@ const AllAddress = (props) => {
       })
     );
   }, []);
+  
+  useEffect(()=>{
+    if(props.defaultSelectedAddress.addressId){
+      setSelectedAddressId(props.defaultSelectedAddress.addressId)
+    }
+  },[props.defaultSelectedAddress])
+
+
 
   useEffect(() => {
     if (
@@ -66,6 +74,9 @@ const AllAddress = (props) => {
     ) {
       setAllAddresApiLoader(true);
       setAllAddress(allAddressState.data.addresses);
+      if (allAddressState.data.addresses.length == 0) {
+        setSelectedAddressId("");
+      }
     }
   }, [allAddressState]);
 
@@ -220,15 +231,16 @@ const AllAddress = (props) => {
                                 </span>
                               </Box>
                             </Box>
-                            {item.addressId == selectedAddressId ? (
+                            {/* {item.addressId == selectedAddressId ? (
                               <FormControlLabel
+                                
                                 checked
                                 control={<Checkbox />}
                                 label="Make This Default Address"
                               />
                             ) : (
                               <></>
-                            )}
+                            )} */}
                           </Box>
                         </>
                       )}
@@ -250,7 +262,7 @@ const AllAddress = (props) => {
             </Link>
           </Grid>
         </Grid>
-        {props?.cartListLength > 0 ? (
+        {props?.cartListLength > 0 && selectedAddressId ? (
           <Box className="d-flex justify-content-end w-100">
             <Button
               variant="contained"
@@ -299,9 +311,9 @@ const AllAddress = (props) => {
               let items = loginDetails();
               handleDelete(items?.userId, addressId);
             }}
-            disabled={props.deleteAddress.status == status.IN_PROGRESS}
+            disabled={props.deleteAddresses.status == status.IN_PROGRESS}
             endIcon={
-              props.deleteAddress.status === status.IN_PROGRESS ? (
+              props.deleteAddresses.status === status.IN_PROGRESS ? (
                 <CircularProgress className="common-loader delete" />
               ) : (
                 <></>
@@ -323,14 +335,14 @@ function mapStateToProps(state) {
   const {
     allAddress,
     selectedAddressData,
-    deleteAddress,
+    deleteAddresses,
     setDefaultAddressData,
   } = state.alladdress;
   return {
     cartData,
     cartItems,
     allAddress,
-    deleteAddress,
+    deleteAddresses,
     selectedAddressData,
     setDefaultAddressData,
   };

@@ -3,6 +3,8 @@ import { Box, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
+import { connect } from "react-redux";
+import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 // import myOrder from "Views/PostLogin/myOrder";
 class ProfileSideBar extends Component {
   constructor(props) {
@@ -76,7 +78,14 @@ class ProfileSideBar extends Component {
             <span>
               <PermIdentityOutlinedIcon />
             </span>
-            <Button>Logout</Button>
+            <Button
+              onClick={() => {
+                localStorage.removeItem("login");
+                this.props.navigate("/signin");
+              }}
+            >
+              Logout{" "}
+            </Button>
           </Box>
         </Box>
       </Box>
@@ -84,4 +93,13 @@ class ProfileSideBar extends Component {
   }
 }
 
-export default ProfileSideBar;
+function mapStateToProps(state) {
+  return {};
+}
+
+const mapDispatchToProps = {};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(navigateRouter(ProfileSideBar));

@@ -8,7 +8,7 @@ import {
   TextField,
   InputAdornment,
   FormControl,
-  NativeSelect
+  NativeSelect,
 } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 // import RecentlyViewedItems from "./recentlyViewedItems";
@@ -35,7 +35,10 @@ import reviewImg from "../../../assets/img/review-img.png";
 import { connect } from "react-redux";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import status from "../../../Redux/Constants";
-import { allProducts, productDetails } from "../../../Redux/AllProducts/AllProductthunk";
+import {
+  allProducts,
+  productDetails,
+} from "../../../Redux/AllProducts/AllProductthunk";
 import { setShopByCategory } from "../../../Redux/AllProducts/AllProductSlice";
 import {
   addItemToCart,
@@ -44,6 +47,7 @@ import {
   deleteItemToCart,
 } from "../../../Redux/Cart/CartThunk";
 import { Loader, loginDetails } from "Views/Utills/helperFunctions";
+import { TheatersSharp } from "@mui/icons-material";
 const labels = {
   0.5: "0.5 out of 5",
   1: "1 out of 5",
@@ -69,56 +73,54 @@ class ProductDetails extends Component {
       loaderCount: 0,
       pathName: "",
       qauntityUnits: "",
-      isDeleting: false
+      isDeleting: false,
     };
   }
   componentDidMount() {
-    const items = loginDetails()
+    const items = loginDetails();
     this.setState({
-      pathName: window.location.pathname
-    })
+      pathName: window.location.pathname,
+    });
     this.props.productDetails({
       productId: this.props.params.id,
-      userId: items?.userId ? items?.userId : ""
-    })
-
-
+      userId: items?.userId ? items?.userId : "",
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
     const items = loginDetails();
 
     if (window.location.pathname != this.state.pathName) {
-
       this.setState({
-        pathName: window.location.pathname
-      })
+        pathName: window.location.pathname,
+      });
 
       this.props.productDetails({
         productId: this.props.params.id,
-        userId: items?.userId ? items?.userId : ""
-      })
+        userId: items?.userId ? items?.userId : "",
+      });
     }
 
     if (
-      prevProps.productDetailsData.status !== this.props.productDetailsData.status &&
+      prevProps.productDetailsData.status !==
+        this.props.productDetailsData.status &&
       this.props.productDetailsData.status === status.SUCCESS &&
       this.props.productDetailsData?.data
     ) {
-
       this.setState({
         productItem: this.props.productDetailsData?.data,
-        itemQuantity: this.props.productDetailsData?.data?.cartItem?.Quantity ? this.props.productDetailsData?.data?.cartItem?.Quantity : 0,
+        itemQuantity: this.props.productDetailsData?.data?.cartItem?.Quantity
+          ? this.props.productDetailsData?.data?.cartItem?.Quantity
+          : 0,
         loaderCount: 1,
-        qauntityUnits: this.props.productDetailsData?.data?.cartItem?.QuantityUnits
+        qauntityUnits:
+          this.props.productDetailsData?.data?.cartItem?.QuantityUnits,
+        isDeleting: false,
       });
-
-
 
       let data = localStorage.getItem("recentviewitems");
       if (data) {
-
-        let path = window.location.pathname.split("/")
+        let path = window.location.pathname.split("/");
 
         let recentViewList = JSON.parse(data);
         const isItemInList = recentViewList.some(
@@ -133,29 +135,19 @@ class ProductDetails extends Component {
           );
         }
       } else {
-
         localStorage.setItem(
           "recentviewitems",
           JSON.stringify([this.props.productDetailsData?.data])
         );
       }
-
-
-
-
-
     }
-
-
-
-
 
     if (
       prevProps.additems.status !== this.props.additems.status &&
       this.props.additems.status === status.SUCCESS &&
       this.props.additems.data
     ) {
-      this.productDetails()
+      this.productDetails();
     }
 
     if (
@@ -163,7 +155,7 @@ class ProductDetails extends Component {
       this.props.updateItems.status === status.SUCCESS &&
       this.props.updateItems.data
     ) {
-      this.productDetails()
+      this.productDetails();
     }
 
     if (
@@ -171,32 +163,32 @@ class ProductDetails extends Component {
       this.props.deleteItems.status === status.SUCCESS &&
       this.props.deleteItems.data
     ) {
-      this.productDetails()
+      this.productDetails();
     }
   }
   productDetails() {
     this.setState({
       qauntityUnits: "",
-      isDeleting: false
-    })
+      isDeleting: false,
+    });
     const items = loginDetails();
     this.props.productDetails({
       productId: this.props.params.id,
       userId: items?.userId ? items?.userId : "",
-    })
+    });
   }
-
 
   handleAddToCart(id, qty) {
     const items = loginDetails();
 
     if (items?.userId && id) {
-
       this.props.addItemToCart({
         userId: items.userId,
         productId: id,
         quantity: 1,
-        quantityUnits: this.state.qauntityUnits ? parseInt(this.state.qauntityUnits) : qty
+        quantityUnits: this.state.qauntityUnits
+          ? parseInt(this.state.qauntityUnits)
+          : qty,
       });
     } else if (!items?.userId) {
       this.props.navigate("/signin");
@@ -218,10 +210,11 @@ class ProductDetails extends Component {
         userId: items.userId,
         productId: id,
         quantity: productQuantity,
-        quantityUnits: this.state.qauntityUnits ? parseInt(this.state.qauntityUnits) : qty
+        quantityUnits: this.state.qauntityUnits
+          ? parseInt(this.state.qauntityUnits)
+          : qty,
       });
     } else {
-
       this.props.deleteItemToCart({
         userId: items.userId,
         productId: id,
@@ -230,31 +223,37 @@ class ProductDetails extends Component {
   }
 
   handleQuantity(event, qty) {
-    const items = loginDetails()
+    const items = loginDetails();
     this.setState({
       qauntityUnits: event.target.value,
-      isDeleting: true
-    })
+      isDeleting: true,
+    });
     if (qty > 0) {
+      this.setState({
+        isDeleting: true,
+      });
       this.props.deleteItemToCart({
         userId: items.userId,
         productId: this.props.params.id,
       });
     }
-
-
   }
   render() {
-    const { productItem, itemQuantity, isUpdateIncrease, loaderCount, isDeleting } = this.state;
+    const {
+      productItem,
+      itemQuantity,
+      isUpdateIncrease,
+      loaderCount,
+      isDeleting,
+    } = this.state;
 
     const value = 4.5;
     return (
       <Box className="main-container">
         <>
-          {loaderCount == 0 ?
+          {loaderCount == 0 ? (
             Loader.commonLoader()
-            :
-
+          ) : (
             <Container>
               <Box className="share-icons-container">
                 <span>Share on</span>
@@ -349,16 +348,21 @@ class ProductDetails extends Component {
                               <NativeSelect
                                 value={this.state.qauntityUnits}
                                 onChange={(event) =>
-                                  this.handleQuantity(event, productItem?.cartItem?.Quantity)
+                                  this.handleQuantity(
+                                    event,
+                                    productItem?.cartItem?.Quantity
+                                  )
                                 }
                               >
-                                {productItem?.unitPrices?.map((unitItem, index) => {
-                                  return (
-                                    <option key={index} value={unitItem.qty}>
-                                      {unitItem.qty}
-                                    </option>
-                                  );
-                                })}
+                                {productItem?.unitPrices?.map(
+                                  (unitItem, index) => {
+                                    return (
+                                      <option key={index} value={unitItem.qty}>
+                                        {unitItem.qty}
+                                      </option>
+                                    );
+                                  }
+                                )}
                               </NativeSelect>
                             </FormControl>
                           </Box>
@@ -369,102 +373,142 @@ class ProductDetails extends Component {
                       <Box className="product-cart-buttons">
                         <Grid container spacing={2}>
                           <Grid item xs={12} sm={6} md={6} lg={8}>
-                            {parseInt(itemQuantity) != 0 ? (
-                              <Box className="number-input-container">
-                                <Box
-                                  className="symbol"
-                                  onClick={() => {
-                                    let unitqty = ""
-                                    if (productItem?.unitPrices?.length > 0) {
-                                      unitqty = productItem?.unitPrices[0]?.qty
-                                    } else {
-                                      unitqty = 1
+                            <>
+                              {" "}
+                              {this.state.isDeleting &&
+                              this.props.deleteItems.status ===
+                                status.IN_PROGRESS ? (
+                                <>
+                                  <Button
+                                    className="add-cart-btn"
+                                    variant="contained"
+                                    disabled={
+                                      this.props.deleteItems.status ===
+                                      status.IN_PROGRESS
                                     }
-                                    this.handleQuantityChange(
-                                      this.props.params.id,
-                                      -1,
-                                      Number(itemQuantity),
-                                      unitqty
-                                    );
-                                  }}
-                                >
-                                  {(this.props.deleteItems.status ===
-                                    status.IN_PROGRESS &&
-                                    !isUpdateIncrease && !isDeleting) ||
-                                    (this.props.updateItems.status ===
-                                      status.IN_PROGRESS &&
-                                      !isUpdateIncrease) ? (
-                                    <CircularProgress
-                                      className="common-loader plus-icon"
-                                      size={24}
-                                    />
-                                  ) : (
-                                    "-"
-                                  )}
-                                </Box>
-
-                                <Box className="Number">{itemQuantity}</Box>
-                                <Box
-                                  className="symbol"
-                                  onClick={() => {
-
-                                    let unitqty = ""
-                                    if (productItem?.unitPrices?.length > 0) {
-                                      unitqty = productItem?.unitPrices[0]?.qty
-                                    } else {
-                                      unitqty = 1
+                                    endIcon={
+                                      this.props.deleteItems.status ===
+                                      status.IN_PROGRESS ? (
+                                        <CircularProgress className="common-loader " />
+                                      ) : (
+                                        <></>
+                                      )
                                     }
-                                    this.handleQuantityChange(
-                                      this.props.params.id,
-                                      1,
-                                      Number(itemQuantity),
-                                      unitqty
-                                    );
-                                  }}
-                                >
-                                  {this.props.updateItems.status ===
-                                    status.IN_PROGRESS &&
-                                    this.state.isUpdateIncrease ? (
-                                    <CircularProgress className="common-loader plus-icon" />
+                                  ></Button>
+                                </>
+                              ) : (
+                                <>
+                                  {parseInt(itemQuantity) != 0 ? (
+                                    <Box className="number-input-container">
+                                      <Box
+                                        className="symbol"
+                                        onClick={() => {
+                                          let unitqty = "";
+                                          if (
+                                            productItem?.unitPrices?.length > 0
+                                          ) {
+                                            unitqty =
+                                              productItem?.unitPrices[0]?.qty;
+                                          } else {
+                                            unitqty = 1;
+                                          }
+                                          this.handleQuantityChange(
+                                            this.props.params.id,
+                                            -1,
+                                            Number(itemQuantity),
+                                            unitqty
+                                          );
+                                        }}
+                                      >
+                                        {(this.props.deleteItems.status ===
+                                          status.IN_PROGRESS &&
+                                          !isUpdateIncrease &&
+                                          !isDeleting) ||
+                                        (this.props.updateItems.status ===
+                                          status.IN_PROGRESS &&
+                                          !isUpdateIncrease) ? (
+                                          <CircularProgress
+                                            className="common-loader plus-icon"
+                                            size={24}
+                                          />
+                                        ) : (
+                                          "-"
+                                        )}
+                                      </Box>
+
+                                      <Box className="Number">
+                                        {itemQuantity}
+                                      </Box>
+                                      <Box
+                                        className="symbol"
+                                        onClick={() => {
+                                          let unitqty = "";
+                                          if (
+                                            productItem?.unitPrices?.length > 0
+                                          ) {
+                                            unitqty =
+                                              productItem?.unitPrices[0]?.qty;
+                                          } else {
+                                            unitqty = 1;
+                                          }
+                                          this.handleQuantityChange(
+                                            this.props.params.id,
+                                            1,
+                                            Number(itemQuantity),
+                                            unitqty
+                                          );
+                                        }}
+                                      >
+                                        {this.props.updateItems.status ===
+                                          status.IN_PROGRESS &&
+                                        this.state.isUpdateIncrease ? (
+                                          <CircularProgress className="common-loader plus-icon" />
+                                        ) : (
+                                          "+"
+                                        )}
+                                      </Box>
+                                    </Box>
                                   ) : (
-                                    "+"
+                                    <Button
+                                      className="add-cart-btn"
+                                      variant="contained"
+                                      disabled={
+                                        this.props.additems.status ===
+                                        status.IN_PROGRESS
+                                      }
+                                      onClick={() => {
+                                        let unitqty = "";
+                                        if (
+                                          productItem?.unitPrices?.length > 0
+                                        ) {
+                                          unitqty =
+                                            productItem?.unitPrices[0]?.qty;
+                                        } else {
+                                          unitqty = 1;
+                                        }
+                                        this.handleAddToCart(
+                                          productItem?.id,
+                                          unitqty
+                                        );
+                                      }}
+                                      endIcon={
+                                        this.props.additems.status ===
+                                        status.IN_PROGRESS ? (
+                                          <CircularProgress className="common-loader " />
+                                        ) : (
+                                          <></>
+                                        )
+                                      }
+                                    >
+                                      Add to Cart
+                                      <ShoppingCartOutlinedIcon
+                                        style={{ marginLeft: "10px" }}
+                                      />
+                                    </Button>
                                   )}
-                                </Box>
-                              </Box>
-                            ) : (
-                              <Button
-                                className="add-cart-btn"
-                                variant="contained"
-                                disabled={
-                                  this.props.additems.status === status.IN_PROGRESS
-                                }
-                                onClick={() => {
-
-
-                                  let unitqty = ""
-                                  if (productItem?.unitPrices?.length > 0) {
-                                    unitqty = productItem?.unitPrices[0]?.qty
-                                  } else {
-                                    unitqty = 1
-                                  }
-                                  this.handleAddToCart(productItem?.id, unitqty)
-                                }
-                                }
-                                endIcon={
-                                  this.props.additems.status ===
-                                    status.IN_PROGRESS ? (
-                                    <CircularProgress className="common-loader " />
-                                  ) : (
-                                    <></>
-                                  )
-                                }
-                              >
-                                Add to Cart
-                                <ShoppingCartOutlinedIcon
-                                  style={{ marginLeft: "10px" }}
-                                />
-                              </Button>
-                            )}
+                                </>
+                              )}
+                            </>
                           </Grid>
                           <Grid item xs={12} sm={6} md={6} lg={4}>
                             <Button
@@ -685,17 +729,18 @@ class ProductDetails extends Component {
               <Box className="product-contents">
                 <h3>About the Product</h3>
                 <p>
-                  Granny Smith apples are light green in colour. They are popularly
-                  used in manyapple dishes, such asapple pie, applecobbler,apple
-                  crisp, andapple cake. They are also commonly eaten raw astable
-                  apples. Granny Smith are high in antioxidant activity, and they
-                  boast the highest concentration of phenols amongst the apple
-                  breeds, efficient source of antioxidants, particularly the
-                  flavonoids cyanidin and epicatechin, especially if eaten with the
-                  skin intact. Granny Smiths are also naturally low in calories and
-                  high in dietary fiber and potassium, making them commonly
-                  recommended as a component of healthy and weight-loss diets. Click
-                  here for delicious fruit recipes
+                  Granny Smith apples are light green in colour. They are
+                  popularly used in manyapple dishes, such asapple pie,
+                  applecobbler,apple crisp, andapple cake. They are also
+                  commonly eaten raw astable apples. Granny Smith are high in
+                  antioxidant activity, and they boast the highest concentration
+                  of phenols amongst the apple breeds, efficient source of
+                  antioxidants, particularly the flavonoids cyanidin and
+                  epicatechin, especially if eaten with the skin intact. Granny
+                  Smiths are also naturally low in calories and high in dietary
+                  fiber and potassium, making them commonly recommended as a
+                  component of healthy and weight-loss diets. Click here for
+                  delicious fruit recipes
                 </p>
                 <Box className="other-info">
                   <h4>
@@ -727,35 +772,50 @@ class ProductDetails extends Component {
                       <Box className="line">
                         <span>5 Star</span>
                         <Box className="percent-line">
-                          <Box className="percent" style={{ width: "67%" }}></Box>
+                          <Box
+                            className="percent"
+                            style={{ width: "67%" }}
+                          ></Box>
                         </Box>
                         <p>67%</p>
                       </Box>
                       <Box className="line">
                         <span>4 Star</span>
                         <Box className="percent-line">
-                          <Box className="percent" style={{ width: "13%" }}></Box>
+                          <Box
+                            className="percent"
+                            style={{ width: "13%" }}
+                          ></Box>
                         </Box>
                         <p>13%</p>
                       </Box>
                       <Box className="line">
                         <span>3 Star</span>
                         <Box className="percent-line">
-                          <Box className="percent" style={{ width: "10%" }}></Box>
+                          <Box
+                            className="percent"
+                            style={{ width: "10%" }}
+                          ></Box>
                         </Box>
                         <p>10%</p>
                       </Box>
                       <Box className="line">
                         <span>2 Star</span>
                         <Box className="percent-line">
-                          <Box className="percent" style={{ width: "6%" }}></Box>
+                          <Box
+                            className="percent"
+                            style={{ width: "6%" }}
+                          ></Box>
                         </Box>
                         <p>6%</p>
                       </Box>
                       <Box className="line">
                         <span>1 Star</span>
                         <Box className="percent-line">
-                          <Box className="percent" style={{ width: "4%" }}></Box>
+                          <Box
+                            className="percent"
+                            style={{ width: "4%" }}
+                          ></Box>
                         </Box>
                         <p>4%</p>
                       </Box>
@@ -799,9 +859,9 @@ class ProductDetails extends Component {
                                   className="rating"
                                 />
                                 <p>
-                                  "We love Landingfolio! Our designers were using it
-                                  for their projects, so we already knew what kind
-                                  of design they want."
+                                  "We love Landingfolio! Our designers were
+                                  using it for their projects, so we already
+                                  knew what kind of design they want."
                                 </p>
                                 <strong>Devon Lane</strong>
                               </Box>
@@ -823,9 +883,9 @@ class ProductDetails extends Component {
                                   className="rating"
                                 />
                                 <p>
-                                  "We love Landingfolio! Our designers were using it
-                                  for their projects, so we already knew what kind
-                                  of design they want."
+                                  "We love Landingfolio! Our designers were
+                                  using it for their projects, so we already
+                                  knew what kind of design they want."
                                 </p>
                                 <strong>Devon Lane</strong>
                               </Box>
@@ -838,8 +898,7 @@ class ProductDetails extends Component {
                 </Grid>
               </Box>
             </Container>
-          }
-
+          )}
 
           <RecentlyViewedItems />
         </>
@@ -850,8 +909,12 @@ class ProductDetails extends Component {
 
 function mapStateToProps(state) {
   const { homeData } = state.home;
-  const { allProductsData, shopCategoryData, prodducDetailsData, productDetailsData } =
-    state.allproducts;
+  const {
+    allProductsData,
+    shopCategoryData,
+    prodducDetailsData,
+    productDetailsData,
+  } = state.allproducts;
   const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
   return {
     allProductsData,
@@ -862,7 +925,7 @@ function mapStateToProps(state) {
     updateItems,
     deleteItems,
     shopCategoryData,
-    productDetailsData
+    productDetailsData,
   };
 }
 
@@ -873,7 +936,7 @@ const mapDispatchToProps = {
   updateItemToCart,
   deleteItemToCart,
   productDetails,
-  setShopByCategory
+  setShopByCategory,
 };
 
 export default connect(
