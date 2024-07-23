@@ -98,7 +98,7 @@
                 padding-top: 10px;
                 padding-bottom: 10px;
                 margin-bottom: 10px;
-                border-bottom: 1px solid #E2E4E9;
+                border-bottom: 1px solid #e2e4e9;
               }
               a {
                 display: flex;
@@ -646,6 +646,25 @@
           font-size: 12px;
           line-height: 16px;
           color: #adadad;
+
+          .css-1eed5fa-MuiInputBase-root-MuiInput-root {
+            border: 1px solid #a8a8a833;
+            border-radius: 3px;
+            padding-left: 10px;
+
+            &::before {
+              display: none;
+            }
+
+            &::after {
+              display: none;
+            }
+
+            select {
+              font-size: 12px;
+              line-height: 16px;
+            }
+          }
         }
       }
       &.active {
