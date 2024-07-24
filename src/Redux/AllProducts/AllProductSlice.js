@@ -2,7 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
     allProducts,
     productDetails,
-    fetchCategories
+    fetchCategories,
+    fetchFilteredProducts,
+    fetchProductByCategory,
+    fetchProductBySubCategory
 } from "./AllProductthunk";
 import status from "./../Constants";
 
@@ -19,7 +22,18 @@ const AllProductsSlice = createSlice({
         shopCategoryData: [],
         productCategoryData: [],
         prodducDetailsData: {},
-        productDetailsData: {}
+        productDetailsData: {
+
+        },
+        filteredProductData:{
+            status:null
+        },
+        productByCategoryData:{
+            status:null 
+        },
+        productBySubCategoryData:{
+            status:null 
+        }
 
     },
     reducers: {
@@ -107,6 +121,75 @@ const AllProductsSlice = createSlice({
                 return {
                     ...state,
                     allCategories: {
+                        status: status.FAILURE,
+                    },
+                };
+            })
+            .addCase(fetchFilteredProducts.pending.toString(), (state, action) => {
+                return {
+                    ...state,
+                    filteredProductData: {
+                        status: status.IN_PROGRESS,
+                    },
+                };
+            }).addCase(fetchFilteredProducts.fulfilled.toString(), (state, { payload }) => {
+                return {
+                    ...state,
+                    filteredProductData: {
+                        status: status.SUCCESS,
+                        data: payload,
+                    },
+                };
+            }).addCase(fetchFilteredProducts.rejected.toString(), (state, action) => {
+                return {
+                    ...state,
+                    filteredProductData: {
+                        status: status.FAILURE,
+                    },
+                };
+            })
+            .addCase(fetchProductByCategory.pending.toString(), (state, action) => {
+                return {
+                    ...state,
+                    productByCategoryData: {
+                        status: status.IN_PROGRESS,
+                    },
+                };
+            }).addCase(fetchProductByCategory.fulfilled.toString(), (state, { payload }) => {
+                return {
+                    ...state,
+                    productByCategoryData: {
+                        status: status.SUCCESS,
+                        data: payload,
+                    },
+                };
+            }).addCase(fetchProductByCategory.rejected.toString(), (state, action) => {
+                return {
+                    ...state,
+                    productByCategoryData: {
+                        status: status.FAILURE,
+                    },
+                };
+            })
+            .addCase(fetchProductBySubCategory.pending.toString(), (state, action) => {
+                return {
+                    ...state,
+                    productBySubCategoryData: {
+                        status: status.IN_PROGRESS,
+                    },
+                };
+            }).addCase(fetchProductBySubCategory.fulfilled.toString(), (state, { payload }) => {
+                return {
+                    ...state,
+                    productBySubCategoryData: {
+                        status: status.SUCCESS,
+                        data: payload,
+                    },
+                };
+            }).addCase(fetchProductBySubCategory.rejected.toString(), (state, action) => {
+                return {
+                    ...state,
+                    productBySubCategoryData: {
                         status: status.FAILURE,
                     },
                 };

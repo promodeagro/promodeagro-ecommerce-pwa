@@ -1,11 +1,11 @@
 const BASE_URL1 = "https://fakestoreapi.com";
 // const BASE_URL = "https://khs9kwylpc.execute-api.us-east-1.amazonaws.com";
-const BASE_URL = "https://09ubwkjphb.execute-api.us-east-1.amazonaws.com"
+const BASE_URL = "https://09ubwkjphb.execute-api.us-east-1.amazonaws.com";
 
 const Config = {
   BASE_URL,
   HOME: `${BASE_URL}/product`,
-  TOP_SELLING: `${BASE_URL1}/products`,
+  FILTERED_PRODUCTS: `${BASE_URL}/products`,
   SIGN_UP: `${BASE_URL}/register`,
   SIGN_IN: `${BASE_URL}/login`,
   ALL_PRODUCTS: `${BASE_URL}/product`,
@@ -20,13 +20,12 @@ const Config = {
   PLACE_ORDER: `${BASE_URL}/order`,
   FORGOT_PASSWORD: `${BASE_URL}/changePassword`,
   GLOBAL_SEARCH: `${BASE_URL}/products/search`,
-  CATEGOREIS:`${BASE_URL}/category`,
-  SET_DEFAULT_ADDRESS:`${BASE_URL}/setDefaultAddress`,
-  GET_DEFAULT_ADDRESS:`${BASE_URL}/getDefaultAddress`,
+  CATEGOREIS: `${BASE_URL}/category`,
+  SET_DEFAULT_ADDRESS: `${BASE_URL}/setDefaultAddress`,
+  GET_DEFAULT_ADDRESS: `${BASE_URL}/getDefaultAddress`,
   DELIVERY_SLOT: `${BASE_URL}/getAvailableDeliverySlots`,
-
-  
-  
+  PRODUCT_BY_SUBCATEGORY: `${BASE_URL}/getProductBySubCategory`,
+  PRODUCT_BY_CATEGORY: `${BASE_URL}/getProductByCategory`,
 };
 
 export default Config;
