@@ -524,7 +524,9 @@ class SearchResults extends Component {
             {showResult ? (
               this.props.globalSearchRes.status === status.IN_PROGRESS ||
               searchLoader ? (
-                <CircularProgress className="common-loader" />
+                <Box className="search-loader">
+                  <CircularProgress className="common-loader" />
+                </Box>
               ) : searchTerm && productsFiltersData.length === 0 ? (
                 <p className="no-data">There is no data</p>
               ) : (

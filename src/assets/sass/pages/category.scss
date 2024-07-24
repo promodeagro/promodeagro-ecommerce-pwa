@@ -54,7 +54,7 @@
         display: flex;
         width: 100%;
 
-        .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
+        .MuiInputBase-root {
           margin-right: 10px;
 
           &.Mui-focused {
@@ -91,7 +91,7 @@
           margin-bottom: 10px;
           flex-wrap: wrap;
 
-          .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root {
+          .MuiCheckbox-root {
             display: inline-flex;
             padding: 0;
             margin-right: 5px;
@@ -190,29 +190,30 @@
       align-items: center;
       line-height: 24px;
       margin-right: 15px;
+      > div {
+        > div {
+          border: 1px solid #d2cfcf;
+          border-radius: 2px;
 
-      .css-1eed5fa-MuiInputBase-root-MuiInput-root {
-        border: 1px solid #d2cfcf;
-        border-radius: 2px;
+          &::before {
+            display: none;
+          }
 
-        &::before {
-          display: none;
-        }
+          &::after {
+            display: none;
+          }
 
-        &::after {
-          display: none;
-        }
+          select {
+            padding: 7px 10px;
+            padding-right: 30px;
+            font-size: 13px;
+            line-height: 17px;
+          }
 
-        select {
-          padding: 7px 10px;
-          padding-right: 30px;
-          font-size: 13px;
-          line-height: 17px;
-        }
-
-        .css-1g12qau-MuiSvgIcon-root-MuiNativeSelect-icon {
-          right: 0px;
-          top: 4px;
+          svg {
+            right: 0px;
+            top: 4px;
+          }
         }
       }
     }
@@ -385,23 +386,24 @@
         font-size: 12px;
         line-height: 16px;
         color: #adadad;
+        > div {
+          > div {
+            border: 1px solid #a8a8a833;
+            border-radius: 3px;
+            padding-left: 10px;
 
-        .css-1eed5fa-MuiInputBase-root-MuiInput-root {
-          border: 1px solid #a8a8a833;
-          border-radius: 3px;
-          padding-left: 10px;
+            &::before {
+              display: none;
+            }
 
-          &::before {
-            display: none;
-          }
+            &::after {
+              display: none;
+            }
 
-          &::after {
-            display: none;
-          }
-
-          select {
-            font-size: 12px;
-            line-height: 16px;
+            select {
+              font-size: 12px;
+              line-height: 16px;
+            }
           }
         }
       }
@@ -410,7 +412,7 @@
         display: flex;
         width: 100%;
         margin-top: 10px;
-        .css-1rwt2y5-MuiButtonBase-root-MuiButton-root {
+        button {
           border: 1px solid #1f9151;
           width: 100%;
           font-weight: 500;
@@ -429,7 +431,7 @@
       .number-input-container {
         display: flex;
         width: 100%;
-        margin-top: 12px;
+        margin-top: 10px;
 
         .symbol {
           width: 33.33%;
@@ -464,8 +466,6 @@
         }
       }
     }
-
-    
   }
 }
 
