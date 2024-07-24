@@ -5,8 +5,12 @@ import SideBar from "./sideBar";
 import List from "./list";
 // import RecentlyViewedItems from "./recentlyViewedItems";
 import RecentlyViewedItems from "components/RecentlyViewedItems";
-import { allProducts } from "../../../Redux/AllProducts/AllProductthunk";
-import { productCategories } from "../../../Redux/AllProducts/AllProductSlice";
+import {
+  allProducts,
+  fetchProductBySubCategory,
+  fetchProductByCategory,
+  fetchFilteredProducts,
+} from "../../../Redux/AllProducts/AllProductthunk";
 
 import { fetchCartItems } from "../../../Redux/Cart/CartThunk";
 import status from "../../../Redux/Constants";
@@ -17,11 +21,17 @@ import { useParams, useLocation } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 function Category(props) {
   const { category, subcategory } = useParams();
+  const data = useParams();
+  console.log("data", data);
   const [hideFilter, setHideFilter] = useState(true);
   const [products, setProducts] = useState([]);
   const [productsData, setProductsData] = useState([]);
   const [cartList, setCartList] = useState([]);
   const [productApiLoader, setProdductApiLoader] = useState(false);
+  const [subCategoryApiLoader, setSubCatergoryLoader] = useState(false);
+  const [categoryApiLoader, setCatergoryLoader] = useState(false);
+  const [filteredProductApiLoader, setFilteredProductApiLoader] =
+    useState(false);
   const [getCartApiLoader, setCartApiLoader] = useState(false);
   const [filters, setFilters] = useState({
     minPrice: "",
@@ -36,20 +46,36 @@ function Category(props) {
   const [currentPath, setCurrentPath] = useState("");
   useEffect(() => {
     let items = loginDetails();
-    setProdductApiLoader(true);
-    setAPIDataLoaded(true);
-    setCurrentPath(window.location.pathname);
+
+    // setCurrentPath(window.location.pathname);
     if (items?.userId) {
       setCartApiLoader(true);
       props.fetchCartItems({
         userId: items?.userId,
       });
-
-      props.allProducts(items?.userId);
-    } else {
-      props.allProducts();
     }
   }, []);
+
+  useEffect(() => {
+    let items = loginDetails();
+    if (subcategory) {
+      const data = {
+        subcategory: subcategory.replaceAll("%20", ""),
+        userId: items?.userId,
+      };
+      setSubCatergoryLoader(true);
+      setAPIDataLoaded(true);
+      props.fetchProductBySubCategory(data);
+    } else if (category) {
+      setAPIDataLoaded(true);
+      setCatergoryLoader(true);
+      props.fetchProductByCategory(category, items?.userId);
+    } else {
+      setAPIDataLoaded(true);
+      setProdductApiLoader(true);
+      props.allProducts(items?.userId);
+    }
+  }, [subcategory, category, window.location.pathname]);
 
   useEffect(() => {
     if (props.allProductsData?.status == status?.SUCCESS && productApiLoader) {
@@ -65,52 +91,38 @@ function Category(props) {
   }, [props.allProductsData.status]);
 
   useEffect(() => {
-    if (currentPath != window.location.pathname) {
-      setProdductApiLoader(true);
-      setAPIDataLoaded(true);
-      setCurrentPath(window.location.pathname);
-      let items = loginDetails();
-
-      if (items?.userId) {
-        setCartApiLoader(true);
-        props.fetchCartItems({
-          userId: items?.userId,
-        });
-
-        props.allProducts(items?.userId);
-      } else {
-        props.allProducts();
-      }
+    if (
+      props.productBySubCategoryData?.status == status?.SUCCESS &&
+      subCategoryApiLoader
+    ) {
+      setSubCatergoryLoader(false);
+      setAPIDataLoaded(false);
+      setProductsData(props.productBySubCategoryData?.data);
+    } else if (
+      props.productBySubCategoryData?.status == status?.FAILURE &&
+      subCategoryApiLoader
+    ) {
+      setProdductApiLoader(false);
     }
-  }, [window.location.pathname]);
+  }, [props.productBySubCategoryData.status]);
 
   useEffect(() => {
-    if (props.allProductsData?.data) {
-      const categoryData = props.allProductsData?.data;
-      if (subcategory) {
-        let selectedItem = [];
-        categoryData?.forEach((product) => {
-          if (product.subCategory == subcategory) {
-            selectedItem.push(product);
-          }
-        });
-
-        if (selectedItem.length > 0 && productsData !== selectedItem) {
-          setProductsData(selectedItem);
-        }
-      } else if (category && categoryData?.length > 0) {
-        let selectedItem = [];
-        categoryData?.forEach((product) => {
-          if (product.category == category) {
-            selectedItem.push(product);
-          }
-        });
-        if (selectedItem.length > 0 && productsData !== selectedItem) {
-          setProductsData(selectedItem);
-        }
-      }
+    if (
+      props.productByCategoryData?.status == status.SUCCESS &&
+      categoryApiLoader &&
+      props.productByCategoryData?.data
+    ) {
+      setAPIDataLoaded(false);
+      setProductsData(props.productByCategoryData?.data);
+      setCatergoryLoader(false);
+    } else if (
+      props.productByCategoryData?.status == status.FAILUREs &&
+      categoryApiLoader
+    ) {
+      setAPIDataLoaded(false);
+      setCatergoryLoader(false);
     }
-  }, [subcategory, category, props.allProductsData?.status]);
+  }, [props.productByCategoryData?.status]);
 
   useEffect(() => {
     if (
@@ -202,9 +214,20 @@ function Category(props) {
     const items = loginDetails();
 
     if (items?.userId) {
-      setProdductApiLoader(true);
+      if (subcategory) {
+        const data = {
+          subcategory: subcategory.replaceAll("%20", ""),
+          userId: items?.userId,
+        };
+        props.fetchProductBySubCategory(data);
+      } else if (category) {
+        setCatergoryLoader(true);
+        props.fetchProductByCategory(category, items?.userId);
+      } else {
+        setProdductApiLoader(true);
+        props.allProducts(items?.userId);
+      }
       setCartApiLoader(true);
-      props.allProducts(items?.userId);
       props.fetchCartItems({
         userId: items?.userId,
       });
@@ -229,8 +252,7 @@ function Category(props) {
             md={hideFilter ? 12 : 9}
             lg={hideFilter ? 12 : 9}
           >
-            {props.allProductsData.status === status.IN_PROGRESS &&
-            APIDataLoaded ? (
+            {APIDataLoaded ? (
               Loader.commonLoader()
             ) : (
               <List
@@ -251,16 +273,31 @@ function Category(props) {
 }
 
 function mapStateToProps(state) {
-  const { allProductsData, shopCategoryData } = state.allproducts;
+  const {
+    allProductsData,
+    shopCategoryData,
+    filteredProductData,
+    productByCategoryData,
+    productBySubCategoryData,
+  } = state.allproducts;
   const { cartItems } = state.cartitem;
-  return { allProductsData, cartItems, shopCategoryData };
+  return {
+    allProductsData,
+    cartItems,
+    shopCategoryData,
+    filteredProductData,
+    productByCategoryData,
+    productBySubCategoryData,
+  };
 }
 
 const mapDispatchToProps = {
   allProducts,
   fetchCartItems,
-  productCategories,
   setShopByCategory,
+  fetchProductBySubCategory,
+  fetchProductByCategory,
+  fetchFilteredProducts,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Category);
