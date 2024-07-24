@@ -477,7 +477,7 @@
         }
       }
 
-      .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root {
+      .MuiInputBase-root {
         background-color: #ffffff;
         &.Mui-focused {
           .MuiOutlinedInput-notchedOutline {
@@ -587,9 +587,8 @@
         .add-cart {
           display: flex;
           width: 100%;
-          margin-top: 10px;
 
-          .css-1rwt2y5-MuiButtonBase-root-MuiButton-root {
+          button {
             border: 1px solid #1f9151;
             width: 100%;
             font-weight: 500;
@@ -647,23 +646,24 @@
           font-size: 12px;
           line-height: 16px;
           color: #adadad;
+          > div {
+            > div {
+              border: 1px solid #a8a8a833;
+              border-radius: 3px;
+              padding-left: 10px;
 
-          .css-1eed5fa-MuiInputBase-root-MuiInput-root {
-            border: 1px solid #a8a8a833;
-            border-radius: 3px;
-            padding-left: 10px;
+              &::before {
+                display: none;
+              }
 
-            &::before {
-              display: none;
-            }
+              &::after {
+                display: none;
+              }
 
-            &::after {
-              display: none;
-            }
-
-            select {
-              font-size: 12px;
-              line-height: 16px;
+              select {
+                font-size: 12px;
+                line-height: 16px;
+              }
             }
           }
         }

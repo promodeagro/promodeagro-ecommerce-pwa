@@ -266,11 +266,10 @@ button {
   font-weight: 500;
   color: #1a1a1a;
 }
-
-.MuiTooltip-tooltip {
-  &.css-1k51tf5-MuiTooltip-tooltip {
+.MuiTooltip-popper {
+  .MuiTooltip-tooltip {
     background-color: #1f9151;
-    .css-kudwh-MuiTooltip-arrow {
+    .MuiTooltip-arrow {
       color: #1f9151;
     }
   }

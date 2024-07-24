@@ -211,13 +211,13 @@
           color: #303030;
           span {
             display: inline-flex;
-            color: #1F9151;
+            color: #1f9151;
             font-size: 13px;
             line-height: 18px;
             font-weight: 500;
             padding: 2px 10px;
             border-radius: 3px;
-            background-color: #1F91511A;
+            background-color: #1f91511a;
           }
         }
 
@@ -394,23 +394,24 @@
           font-size: 12px;
           line-height: 16px;
           color: #adadad;
+          > div {
+            > div {
+              border: 1px solid #a8a8a833;
+              border-radius: 3px;
+              padding-left: 10px;
 
-          .css-1eed5fa-MuiInputBase-root-MuiInput-root {
-            border: 1px solid #a8a8a833;
-            border-radius: 3px;
-            padding-left: 10px;
+              &::before {
+                display: none;
+              }
 
-            &::before {
-              display: none;
-            }
+              &::after {
+                display: none;
+              }
 
-            &::after {
-              display: none;
-            }
-
-            select {
-              font-size: 12px;
-              line-height: 16px;
+              select {
+                font-size: 12px;
+                line-height: 16px;
+              }
             }
           }
         }
@@ -523,7 +524,7 @@
           width: 100%;
         }
       }
-      .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root {
+      .MuiCheckbox-root {
         color: #1f9151;
 
         &.Mui-checked {
@@ -531,7 +532,7 @@
           border-color: #1f9151;
         }
       }
-      .css-ahj2mt-MuiTypography-root {
+      .MuiTypography-root {
         font-size: 12px;
         line-height: 15px;
         color: #b1b1b1;

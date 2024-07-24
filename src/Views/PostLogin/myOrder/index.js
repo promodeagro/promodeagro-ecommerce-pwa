@@ -199,14 +199,13 @@ class MyOrder extends Component {
                             </Grid>
                             <Grid item xs={5} lg={5} md={5} sm={5}>
                               <Box className="order-status-bar">
-                                <Stepper activeStep={item?.status}>
+                                <Stepper activeStep={item?.status} alternativeLabel>
                                   {steps.map((label, index) => {
                                     return (
                                       <Step key={label}>
                                         <StepLabel
                                           StepIconComponent={CustomStepIcon}
                                           icon={index + 1}
-                                          activeStep
                                         >
                                           {label}
                                         </StepLabel>

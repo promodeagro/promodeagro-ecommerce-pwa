@@ -234,6 +234,35 @@
       }
     }
 
+    .select {
+      margin-top: 10px;
+      display: flex;
+      width: 100px;
+      font-size: 12px;
+      line-height: 16px;
+      color: #adadad;
+      > div {
+        > div {
+          border: 1px solid #a8a8a833;
+          border-radius: 3px;
+          padding-left: 10px;
+
+          &::before {
+            display: none;
+          }
+
+          &::after {
+            display: none;
+          }
+
+          select {
+            font-size: 12px;
+            line-height: 16px;
+          }
+        }
+      }
+    }
+
     .product-cart-buttons {
       display: flex;
       width: 100%;
@@ -465,7 +494,7 @@
 }
 
 .choose-container {
-  margin-top: 30px;
+  margin-top: 60px;
   margin-bottom: 40px;
   padding-left: 45px;
   padding-right: 45px;
@@ -719,7 +748,7 @@
         }
       }
 
-      .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root {
+      .MuiInputBase-root {
         &.Mui-focused {
           .MuiOutlinedInput-notchedOutline {
             border-color: #1f9151;
