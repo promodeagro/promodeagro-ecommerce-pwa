@@ -31,7 +31,7 @@
             color: #ffffff;
             border-radius: 50%;
             border: 1px dashed #1f9151;
-            .css-117w1su-MuiStepIcon-text {
+            .MuiStepIcon-text {
               fill: #1f9151;
             }
           }
@@ -176,7 +176,7 @@
           }
         }
 
-        .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root {
+        .MuiCheckbox-root {
           color: #1f9151;
 
           &.Mui-checked {
@@ -185,7 +185,7 @@
           }
         }
 
-        .css-ahj2mt-MuiTypography-root {
+        .MuiTypography-root {
           font-size: 12px;
           line-height: 15px;
           color: #b1b1b1;
@@ -523,12 +523,12 @@
       .days-slot-tab {
         padding: 24px 32px 15px;
 
-        .css-jpln7h-MuiTabs-scroller {
+        .MuiTabs-scroller {
           overflow-x: auto !important;
           padding-bottom: 10px;
         }
 
-        .css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
+        button {
           height: 42px;
           border: 1px solid #cdcdcd;
           border-radius: 4px;
@@ -551,7 +551,7 @@
           }
         }
 
-        .css-1aquho2-MuiTabs-indicator {
+        .MuiTabs-indicator {
           display: none;
         }
       }
@@ -565,11 +565,11 @@
         background-color: #edededcc;
         opacity: 80%;
 
-        .css-jpln7h-MuiTabs-scroller {
+        .MuiTabs-scroller {
           overflow-x: auto !important;
         }
 
-        .css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
+        button {
           padding: 0px;
           margin-right: 25px;
           text-transform: capitalize;
@@ -588,7 +588,7 @@
           }
         }
 
-        .css-1aquho2-MuiTabs-indicator {
+        .MuiTabs-indicator {
           background-color: #1a1a1a;
         }
       }
@@ -597,20 +597,20 @@
         margin-top: 41px;
         padding: 0px 32px;
 
-        .css-j204z7-MuiFormControlLabel-root {
+        .MuiFormControlLabel-root {
           margin-right: 0px;
           height: 48px;
           border: 1px solid #1f9151;
           width: 100%;
 
-          .css-ahj2mt-MuiTypography-root {
+          .MuiTypography-root {
             font-size: 18px;
             line-height: 18px;
             font-weight: 500;
             color: #000000;
           }
 
-          .css-vqmohf-MuiButtonBase-root-MuiRadio-root {
+          .MuiRadio-root {
             color: #bebebe;
 
             &.Mui-checked {
@@ -649,7 +649,7 @@
       }
     }
     .address-stepper-container {
-      .css-m5vj9m-MuiStepper-root {
+      .MuiStepper-root {
         flex-wrap: wrap;
         flex-direction: column;
       }

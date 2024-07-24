@@ -1,101 +1,89 @@
 .add-new-address-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin: 60px 0px 220px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 60px 0px 220px;
 
-    .address-details {
-        width: 50%;
+  .address-details {
+    width: 50%;
 
-        h2 {
-            margin-bottom: 24px;
-            color: #2A3A31;
-            font-weight: 500;
-        }
-
-        .form-info {
-            padding-left: 16px;
-
-            .form-field-title {
-                font-size: 14px;
-                line-height: 20px;
-                color: #353535;
-                font-weight: 500;
-                margin-bottom: 8px;
-            }
-
-            .form-text-field {
-                .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
-                    padding: 0px 16px;
-                    height: 46px;
-
-                }
-
-                .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
-                    border: 1px solid #CACACA;
-                    border-radius: 8px;
-                }
-
-                .css-1o9s3wi-MuiInputBase-input-MuiOutlinedInput-input {
-                    padding: 0px 16px;
-                    height: 46px;
-                }
-            }
-
-            .country-select-box {
-                .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
-                    border: none;
-                }
-
-                .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
-                    padding: 0px 32px 0px 0px;
-
-                    .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
-                        border: none;
-
-                    }
-                }
-            }
-
-            .common-select-box {
-                width: 100%;
-
-                .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
-                    height: 46px;
-                    padding: 0px 16px;
-                    display: flex;
-                    align-items: center;
-                }
-
-                .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
-                    border: 1px solid #CACACA;
-                    border-radius: 8px;
-                }
-            }
-
-            .location-btn {
-                height: 52px;
-                margin-top: 20px;
-            }
-
-        }
+    h2 {
+      margin-bottom: 24px;
+      color: #2a3a31;
+      font-weight: 500;
     }
+
+    .form-info {
+      padding-left: 16px;
+
+      .form-field-title {
+        font-size: 14px;
+        line-height: 20px;
+        color: #353535;
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+
+      .form-text-field {
+        input {
+          padding: 0px 16px;
+          height: 46px;
+        }
+
+        fieldset {
+          border: 1px solid #cacaca;
+          border-radius: 8px;
+        }
+      }
+
+      .country-select-box {
+        fieldset {
+          border: none;
+        }
+
+        .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+          padding: 0px 32px 0px 0px;
+
+          .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+            border: none;
+          }
+        }
+      }
+
+      .common-select-box {
+        width: 100%;
+
+        .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+          height: 46px;
+          padding: 0px 16px;
+          display: flex;
+          align-items: center;
+        }
+
+        .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+          border: 1px solid #cacaca;
+          border-radius: 8px;
+        }
+      }
+
+      .location-btn {
+        height: 52px;
+        margin-top: 20px;
+      }
+    }
+  }
 }
 @media only screen and (max-width: 1200px) {
-    .add-new-address-container {
-
-    
-        .address-details {
-            width: 75%;
-        }
+  .add-new-address-container {
+    .address-details {
+      width: 75%;
     }
+  }
 }
 @media only screen and (max-width: 796px) {
-    .add-new-address-container {
-
-    
-        .address-details {
-            width: 100%;
-        }
+  .add-new-address-container {
+    .address-details {
+      width: 100%;
     }
+  }
 }
