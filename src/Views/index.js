@@ -96,6 +96,10 @@ const Views = () => {
               path={`/mycart/address/updated-address/:id`}
               element={<Navigate to="/" replace />}
             />
+               <Route
+              path={`/my-profile/address/updated-address/:id`}
+              element={<Navigate to="/" replace />}
+            />
             <Route
               path={`/mycart/address/order-placed/:id`}
               element={<Navigate to="/" replace />}
@@ -192,6 +196,10 @@ const Views = () => {
         />
         <Route
           path={`/mycart/address/updated-address/:id`}
+          element={<UpdatedAddress />}
+        />
+         <Route
+          path={`/my-profile/address/updated-address/:id`}
           element={<UpdatedAddress />}
         />
         <Route

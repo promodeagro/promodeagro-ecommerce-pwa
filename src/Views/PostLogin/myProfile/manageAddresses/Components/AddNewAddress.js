@@ -100,15 +100,13 @@ const AddNewAddress = (props) => {
   const [defaultAddApiLoader, setDefaultApiLoader] = useState(false);
 
   useEffect(() => {
-    
     if (
       props.setDefaultAddressData?.status === status.SUCCESS &&
       defaultAddApiLoader &&
       props.setDefaultAddressData?.data
     ) {
-
-      setDefaultApiLoader(false,true);
-      props.handleModal(false);
+      setDefaultApiLoader(false);
+      props.handleModal(false, true);
       setIsChecked(false);
     }
   }, [props.setDefaultAddressData?.status]);

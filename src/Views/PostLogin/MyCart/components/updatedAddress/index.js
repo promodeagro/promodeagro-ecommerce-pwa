@@ -112,7 +112,7 @@ const UpdatedAddress = ({ updateAddress, updateAddressState }) => {
         zipCode: "",
       });
       setApiLoader(false);
-      navigate("/mycart/address/");
+      navigate(-1);
       ErrorMessages.success("Address Successfully Update");
     }
   }, [updateAddressState]);

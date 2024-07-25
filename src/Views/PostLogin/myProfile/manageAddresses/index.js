@@ -53,7 +53,7 @@ class ManageAddresses extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    //
+    
     if (
       prevProps.defaultAddressData?.status !==
         this.props?.defaultAddressData?.status &&
@@ -108,11 +108,20 @@ class ManageAddresses extends Component {
     });
     if (defualtApisStatus) {
       this.apiCalls();
+    } else {
+      let items = loginDetails();
+      this.props.getAllAddress(items);
     }
   };
 
+   handleEdit = (event, address) => {
+    event.stopPropagation();
+    this.props.navigate(`/mycart/address/updated-address/${address?.addressId}`, {
+      state: { address },
+    });
+  };
   render() {
-    const { addAddressModal, defaultAddressId ,loaderStatus} = this.state;
+    const { addAddressModal, defaultAddressId, loaderStatus } = this.state;
     return (
       <Box className="main-container">
         {this.props.allAddress?.status == status.IN_PROGRESS && loaderStatus ? (
@@ -159,6 +168,7 @@ class ManageAddresses extends Component {
                                     <IconButton
                                       aria-label="edit"
                                       className="address-btn"
+                                      onClick={(event)=>this.handleEdit(event,item)}
                                     >
                                       <BorderColorIcon />
                                     </IconButton>
