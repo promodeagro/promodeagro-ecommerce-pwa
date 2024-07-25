@@ -47,7 +47,7 @@ class Header extends Component {
       profileModal: false,
       currentName: "",
       currentPathName: "",
-      pathId: "",
+      pathId: null,
     };
   }
   componentDidMount() {
@@ -553,6 +553,7 @@ class Header extends Component {
           "/terms-condition",
           "/privacy-policy",
           "/return-refund",
+          `/mycart/address/updated-address/${this.state?.pathId}`,
         ].includes(path) && (
           <Box className="header-bottom-container">
             <Container>

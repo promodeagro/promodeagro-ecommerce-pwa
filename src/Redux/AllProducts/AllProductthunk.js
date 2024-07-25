@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import config from "../../Views/Config";
 import { postLoginService } from ".././../Services";
+import { loginDetails } from "Views/Utills/helperFunctions";
 
 export const allProducts = createAsyncThunk("products", async (userId) => {
   try {
@@ -39,6 +40,7 @@ export const fetchProductByCategory = createAsyncThunk(
   "productcategory",
   async (category, userId) => {
     try {
+      const userId=loginDetails()?.userId
       let url =
         config.PRODUCT_BY_CATEGORY + `?category=${category}&userId=${userId}`;
       const response = await postLoginService.get(url);
@@ -51,11 +53,15 @@ export const fetchProductByCategory = createAsyncThunk(
 
 export const fetchProductBySubCategory = createAsyncThunk(
   "subcategory",
-  async (params) => {
+  async (subcategory,userId) => {
+
     try {
+      const userId=loginDetails()?.userId
+      console.log("userid ",userId)
+
       let url =
         config.PRODUCT_BY_SUBCATEGORY +
-        `?subcategory=${params?.subcategory}&userId=${params?.userId}`;
+        `?subcategory=${subcategory}&userId=${userId}`;
       const response = await postLoginService.get(url);
       return response.data;
     } catch (error) {

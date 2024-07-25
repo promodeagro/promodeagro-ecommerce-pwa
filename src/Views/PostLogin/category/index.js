@@ -44,36 +44,40 @@ function Category(props) {
   });
   const [APIDataLoaded, setAPIDataLoaded] = useState(false);
   const [currentPath, setCurrentPath] = useState("");
+  const [userId, setUserId] = useState(loginDetails()?.userId);
   useEffect(() => {
-    let items = loginDetails();
 
     // setCurrentPath(window.location.pathname);
-    if (items?.userId) {
+    if (userId) {
       setCartApiLoader(true);
       props.fetchCartItems({
-        userId: items?.userId,
+        userId: userId
       });
     }
   }, []);
 
   useEffect(() => {
-    let items = loginDetails();
     if (subcategory) {
-      const data = {
-        subcategory: subcategory.replaceAll("%20", ""),
-        userId: items?.userId,
-      };
+    
       setSubCatergoryLoader(true);
       setAPIDataLoaded(true);
-      props.fetchProductBySubCategory(data);
+
+      props.fetchProductBySubCategory(
+        subcategory.replaceAll("%20", ""),
+        userId?userId:""
+      );
     } else if (category) {
       setAPIDataLoaded(true);
       setCatergoryLoader(true);
-      props.fetchProductByCategory(category, items?.userId);
+
+      props.fetchProductByCategory(
+        category,
+        userId ? userId : ""
+      );
     } else {
       setAPIDataLoaded(true);
       setProdductApiLoader(true);
-      props.allProducts(items?.userId);
+      props.allProducts(userId);
     }
   }, [subcategory, category, window.location.pathname]);
 
@@ -211,25 +215,27 @@ function Category(props) {
   };
 
   const allproducts = () => {
-    const items = loginDetails();
-
-    if (items?.userId) {
+    if (userId) {
       if (subcategory) {
-        const data = {
-          subcategory: subcategory.replaceAll("%20", ""),
-          userId: items?.userId,
-        };
-        props.fetchProductBySubCategory(data);
+        // const data = {
+        //   subcategory: ,
+        //   userId: ,
+        // };
+        setSubCatergoryLoader(true);
+        props.fetchProductBySubCategory(
+          subcategory.replaceAll("%20", ""),
+          userId
+        );
       } else if (category) {
         setCatergoryLoader(true);
-        props.fetchProductByCategory(category, items?.userId);
+        props.fetchProductByCategory(category, userId);
       } else {
         setProdductApiLoader(true);
-        props.allProducts(items?.userId);
+        props.allProducts(userId);
       }
       setCartApiLoader(true);
       props.fetchCartItems({
-        userId: items?.userId,
+        userId: userId,
       });
     }
   };
