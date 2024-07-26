@@ -5,10 +5,7 @@ import {
   updateItemToCart,
   deleteItemToCart,
 } from "../../../../Redux/Cart/CartThunk";
-import {
-  productDetailsData,
-  setShopByCategory,
-} from "../../../../Redux/AllProducts/AllProductSlice";
+import { productDetailsData } from "../../../../Redux/AllProducts/AllProductSlice";
 import { connect } from "react-redux";
 import {
   Box,
@@ -27,6 +24,10 @@ import status from "../../../../Redux/Constants";
 import _ from "lodash";
 import { loginDetails } from "../../../Utills/helperFunctions";
 import { Link } from "react-router-dom";
+import {
+  deleteProductWishList,
+  setProductWishList,
+} from "../../../../Redux/AllProducts/AllProductthunk";
 
 class List extends Component {
   constructor(props) {
@@ -135,7 +136,13 @@ class List extends Component {
               <Box className="sale">Sale {item.savingsPercentage}%</Box>
             )}
 
-            <Box className="icon">
+            <Box
+              className="icon"
+              onClick={(event) => {
+                event.preventDefault();
+                this.handleWishList(item?.id, false);
+              }}
+            >
               <TurnedInNotOutlinedIcon />
             </Box>
             <Box
@@ -380,6 +387,23 @@ class List extends Component {
     }
   };
 
+  handleWishList(id, isBookMarked = false) {
+    const item = loginDetails();
+    if (item?.userId) {
+      if (isBookMarked) {
+        this.props.deleteProductWishList({
+          userId: item?.userId,
+          productId: id,
+        });
+      } else {
+        this.props.setProductWishList({
+          userId: item?.userId,
+          productId: id,
+        });
+      }
+    }
+  }
+
   render() {
     const { data, cartItemsData } = this.props;
     const {
@@ -456,7 +480,8 @@ const mapDispatchToProps = {
   updateItemToCart,
   deleteItemToCart,
   productDetailsData,
-  setShopByCategory,
+  deleteProductWishList,
+  setProductWishList,
 };
 
 export default connect(

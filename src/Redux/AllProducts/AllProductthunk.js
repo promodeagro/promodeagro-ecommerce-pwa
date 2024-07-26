@@ -40,7 +40,7 @@ export const fetchProductByCategory = createAsyncThunk(
   "productcategory",
   async (category, userId) => {
     try {
-      const userId=loginDetails()?.userId
+      const userId = loginDetails()?.userId;
       let url =
         config.PRODUCT_BY_CATEGORY + `?category=${category}&userId=${userId}`;
       const response = await postLoginService.get(url);
@@ -53,11 +53,10 @@ export const fetchProductByCategory = createAsyncThunk(
 
 export const fetchProductBySubCategory = createAsyncThunk(
   "subcategory",
-  async (subcategory,userId) => {
-
+  async (subcategory, userId) => {
     try {
-      const userId=loginDetails()?.userId
-      console.log("userid ",userId)
+      const userId = loginDetails()?.userId;
+      console.log("userid ", userId);
 
       let url =
         config.PRODUCT_BY_SUBCATEGORY +
@@ -77,6 +76,48 @@ export const fetchFilteredProducts = createAsyncThunk(
       let url =
         config.FILTERED_PRODUCTS +
         `?minPrice=${params?.minPrice}&maxPrice=${params?.maxPrice}&discounts=upto`;
+      const response = await postLoginService.get(url);
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const setProductWishList = createAsyncThunk(
+  "setwishlist",
+  async (params) => {
+    try {
+      let url = config.ADD_PRODUCT_WISHLIST;
+
+      const response = await postLoginService.post(url,params);
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const deleteProductWishList = createAsyncThunk(
+  "deletewishlist",
+  async (params) => {
+    try {
+      let url = config.DELETE_PRODUCT_WISHLIST;
+
+      const response = await postLoginService.delete(url);
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const fetchProductWishList = createAsyncThunk(
+  "fetchwishlist",
+  async (params) => {
+    try {
+      let url = config.GET_PRODUCT_WISHLIST;
+
       const response = await postLoginService.get(url);
       return response.data;
     } catch (error) {

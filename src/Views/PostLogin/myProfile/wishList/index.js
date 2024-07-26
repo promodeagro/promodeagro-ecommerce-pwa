@@ -40,7 +40,7 @@ class WishList extends Component {
                   <Box className="image">
                     <img src={noImage} alt="" />
                   </Box>
-                  <Box className="name">Green Apple</Box>
+                  <Box className="name">Green Apple adakhkd</Box>
                   <Box className="price-ratting">
                     <Box className="price">
                       <img src={priceIcon} alt="" /> 14.99

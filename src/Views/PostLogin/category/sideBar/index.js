@@ -54,7 +54,7 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
     boxSizing: "border-box",
   },
 }));
-
+// import { fetchFilteredProducts } from "Redux/AllProducts/AllProductthunk";
 class SideBar extends Component {
   constructor(props) {
     super(props);
@@ -89,6 +89,7 @@ class SideBar extends Component {
   };
 
   applyFilters = () => {
+    debugger;
     this.props.onFilterChange(this.state);
   };
 
@@ -135,7 +136,7 @@ class SideBar extends Component {
               </Box>
             </Box>
             <Box className="filter">
-              <h3>Rating</h3>
+              <h3>Rating </h3>
               <ul className="checkbox">
                 <li>
                   <Checkbox

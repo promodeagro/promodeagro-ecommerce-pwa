@@ -22,6 +22,10 @@ import {
   setShopByCategory,
   productDetailsData,
 } from "../../../../../Redux/AllProducts/AllProductSlice";
+import {
+  setProductWishList,
+  deleteProductWishList,
+} from "../../../../../Redux/AllProducts/AllProductthunk";
 import { connect } from "react-redux";
 import _ from "lodash";
 import { Link } from "react-router-dom";
@@ -158,6 +162,23 @@ class FeaturedProducts extends Component {
     }
   };
 
+  handleWishList(id, isBookMarked = false) {
+    const item = loginDetails();
+    if (item?.userId) {
+      if (isBookMarked) {
+        this.props.deleteProductWishList({
+          userId: item?.userId,
+          productId: id,
+        });
+      } else {
+        this.props.setProductWishList({
+          userId: item?.userId,
+          productId: id,
+        });
+      }
+    }
+  }
+
   render() {
     const { data, cartList } = this.props;
     const { productsData, dataId, isUpdateIncrease, qauntityUnits } =
@@ -176,7 +197,13 @@ class FeaturedProducts extends Component {
                 return (
                   <Box className="product-box" key={index}>
                     <Box className="sale">Sale {item.savingsPercentage}%</Box>
-                    <Box className="icon">
+                    <Box
+                      className="icon"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        this.handleWishList(item?.id,false);
+                      }}
+                    >
                       <TurnedInNotOutlinedIcon />
                     </Box>
                     <Box
@@ -410,6 +437,8 @@ const mapDispatchToProps = {
   deleteItemToCart,
   setShopByCategory,
   productDetailsData,
+  setProductWishList,
+  deleteProductWishList,
 };
 
 export default connect(
