@@ -275,11 +275,12 @@ const UpdatedAddress = ({ updateAddress, updateAddressState }) => {
                 )}
               </Grid>
               <Grid item xs={6} lg={6} md={6} sm={6} marginTop={"25px"}>
-                <Link to={"/mycart/address"}>
+                <Link>
                   <Button
                     variant="outlined"
                     fullWidth
                     className="outline-common-btn"
+                    onClick={() => navigate(-1)}
                   >
                     Cancel
                   </Button>
