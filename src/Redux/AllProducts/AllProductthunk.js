@@ -2,7 +2,6 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import config from "../../Views/Config";
 import { postLoginService } from ".././../Services";
 import { loginDetails } from "Views/Utills/helperFunctions";
-
 export const allProducts = createAsyncThunk("products", async (userId) => {
   try {
     let url = config.ALL_PRODUCTS + `?userId=${userId}`;
@@ -90,7 +89,7 @@ export const setProductWishList = createAsyncThunk(
     try {
       let url = config.ADD_PRODUCT_WISHLIST;
 
-      const response = await postLoginService.post(url,params);
+      const response = await postLoginService.post(url, params);
       return response.data;
     } catch (error) {
       return error;
@@ -100,10 +99,12 @@ export const setProductWishList = createAsyncThunk(
 
 export const deleteProductWishList = createAsyncThunk(
   "deletewishlist",
-  async (params) => {
+  async ( productId) => {
     try {
-      let url = config.DELETE_PRODUCT_WISHLIST;
-
+      const userId = loginDetails()?.userId;
+      let url =
+        config.DELETE_PRODUCT_WISHLIST +
+        `?userId=${userId}&productId=${productId}`;
       const response = await postLoginService.delete(url);
       return response.data;
     } catch (error) {
@@ -116,7 +117,9 @@ export const fetchProductWishList = createAsyncThunk(
   "fetchwishlist",
   async (params) => {
     try {
-      let url = config.GET_PRODUCT_WISHLIST;
+      const userId = loginDetails()?.userId;
+
+      let url = config.GET_PRODUCT_WISHLIST + `?userId=${userId}`;
 
       const response = await postLoginService.get(url);
       return response.data;

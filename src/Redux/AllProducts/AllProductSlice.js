@@ -256,7 +256,7 @@ const AllProductsSlice = createSlice({
       .addCase(deleteProductWishList.pending.toString(), (state, action) => {
         return {
           ...state,
-          setBookmarksData: {
+          deleteBookMarkData: {
             status: status.IN_PROGRESS,
           },
         };
@@ -266,7 +266,7 @@ const AllProductsSlice = createSlice({
         (state, { payload }) => {
           return {
             ...state,
-            setBookmarksData: {
+            deleteBookMarkData: {
               status: status.SUCCESS,
               data: payload,
             },
@@ -276,7 +276,7 @@ const AllProductsSlice = createSlice({
       .addCase(deleteProductWishList.rejected.toString(), (state, action) => {
         return {
           ...state,
-          setBookmarksData: {
+          deleteBookMarkData: {
             status: status.FAILURE,
           },
         };
@@ -284,7 +284,7 @@ const AllProductsSlice = createSlice({
       .addCase(fetchProductWishList.pending.toString(), (state, action) => {
         return {
           ...state,
-          setBookmarksData: {
+          bookMarksData: {
             status: status.IN_PROGRESS,
           },
         };
@@ -294,7 +294,7 @@ const AllProductsSlice = createSlice({
         (state, { payload }) => {
           return {
             ...state,
-            setBookmarksData: {
+            bookMarksData: {
               status: status.SUCCESS,
               data: payload,
             },
@@ -304,7 +304,7 @@ const AllProductsSlice = createSlice({
       .addCase(fetchProductWishList.rejected.toString(), (state, action) => {
         return {
           ...state,
-          setBookmarksData: {
+          bookMarksData: {
             status: status.FAILURE,
           },
         };
