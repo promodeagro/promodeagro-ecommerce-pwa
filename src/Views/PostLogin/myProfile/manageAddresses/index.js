@@ -53,7 +53,6 @@ class ManageAddresses extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    
     if (
       prevProps.defaultAddressData?.status !==
         this.props?.defaultAddressData?.status &&
@@ -95,11 +94,7 @@ class ManageAddresses extends Component {
     }
   }
   handleAddAddress = () => {
-    const { addAddressModal, isSubmit } = this.state;
-    this.setState({
-      addAddressModal: !addAddressModal,
-      isSubmit: false,
-    });
+    this.props.navigate("/my-profile/manage-addresses/add-new-address");
   };
 
   handleModal = (status, defualtApisStatus) => {
@@ -114,11 +109,14 @@ class ManageAddresses extends Component {
     }
   };
 
-   handleEdit = (event, address) => {
+  handleEdit = (event, address) => {
     event.stopPropagation();
-    this.props.navigate(`/mycart/address/updated-address/${address?.addressId}`, {
-      state: { address },
-    });
+    this.props.navigate(
+      `/mycart/address/updated-address/${address?.addressId}`,
+      {
+        state: { address },
+      }
+    );
   };
   render() {
     const { addAddressModal, defaultAddressId, loaderStatus } = this.state;
@@ -136,15 +134,16 @@ class ManageAddresses extends Component {
                 <Box className="heading">
                   <h2>Manage Addresses</h2>
                   <Button
-                    className={
-                      addAddressModal === true
-                        ? "common-btn address-cancel-btn"
-                        : "common-btn address-btn"
-                    }
+                    className="common-btn address-btn"
+                    // className={
+                    //   addAddressModal === true
+                    //     ? "common-btn address-cancel-btn"
+                    //     : "common-btn address-btn"
+                    // }
                     variant="contained"
                     onClick={() => this.handleAddAddress()}
                   >
-                    {addAddressModal === true ? <>Cancel</> : <>Add Address</>}
+                    Add Address
                   </Button>
                 </Box>
                 {addAddressModal === true ? (
@@ -168,7 +167,9 @@ class ManageAddresses extends Component {
                                     <IconButton
                                       aria-label="edit"
                                       className="address-btn"
-                                      onClick={(event)=>this.handleEdit(event,item)}
+                                      onClick={(event) =>
+                                        this.handleEdit(event, item)
+                                      }
                                     >
                                       <BorderColorIcon />
                                     </IconButton>

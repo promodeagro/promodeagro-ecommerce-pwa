@@ -12,13 +12,15 @@ import {
   FormHelperText,
   Autocomplete,
   CircularProgress,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   postAddress,
-  getAllAddress,
+  setDefaultAddress,
 } from "../../../../../Redux/Address/AddressThunk";
 import status from "../../../../../Redux/Constants";
 import { loginDetails } from "Views/Utills/helperFunctions";
@@ -79,7 +81,8 @@ const validationSchema = {
 
 const AddNewAddress = (props) => {
   const [apiLoader, setApiLoader] = useState(false);
-
+  const [isChecked, setIsChecked] = useState(false);
+  const [defaultAddApiLoader, setDefaultApiLoader] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -89,32 +92,49 @@ const AddNewAddress = (props) => {
     isSubmit: false,
   });
 
-  const postAddressStatus = useSelector(
-    (state) => state.alladdress.postAddress.status
-  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (
-      postAddressStatus === status.SUCCESS &&
+      props.postAddress.status === status.SUCCESS &&
       apiLoader &&
       formData.isSubmit
     ) {
       setApiLoader(false);
-      setFormData({
-        ...formData,
-        isSubmit: false,
-        name: "",
-        email: "",
-        address: "",
-        phoneNumber: "",
-        zipCode: "",
-      });
-      navigate("/mycart/address");
+      if (isChecked) {
+        setDefaultApiLoader(true);
+        props?.setDefaultAddress({
+          userId: loginDetails()?.userId,
+          addressId: props.postAddress?.data?.addressId,
+        });
+      } else {
+        setFormData({
+          ...formData,
+          isSubmit: false,
+          name: "",
+          email: "",
+          address: "",
+          phoneNumber: "",
+          zipCode: "",
+        });
+        navigate(-1);
+      }
+
       ErrorMessages.success("Add Address Successfully");
     }
-  }, [postAddressStatus, dispatch, navigate]);
+  }, [props.postAddress.status]);
+
+  useEffect(() => {
+    if (
+      props.setDefaultAddressData?.status === status.SUCCESS &&
+      defaultAddApiLoader &&
+      props.setDefaultAddressData?.data
+    ) {
+      setIsChecked(false);
+      navigate(-1);
+    }
+  }, [props.setDefaultAddressData?.status]);
 
   const validateForm = () => {
     const { name, email, address, phoneNumber, zipCode } = formData;
@@ -159,10 +179,14 @@ const AddNewAddress = (props) => {
   const handleValueChange = (event) => {
     const { name, value, type, checked } = event.target;
     const val = type === "checkbox" ? checked : value;
-    setFormData({
-      ...formData,
-      [name]: val,
-    });
+    if (type === "checkbox") {
+      setIsChecked(val);
+    } else {
+      setFormData({
+        ...formData,
+        [name]: val,
+      });
+    }
   };
 
   const { name, email, address, phoneNumber, zipCode, isSubmit } = formData;
@@ -273,33 +297,47 @@ const AddNewAddress = (props) => {
                   </FormHelperText>
                 )}
               </Grid>
-              <Grid item xs={6} lg={6} md={6} sm={6} marginTop={"25px"}>
-                <Link to={"/mycart/address"}>
+              <Grid item>
+                <FormControlLabel
+                  value={isChecked}
+                  onChange={handleValueChange}
+                  control={<Checkbox />}
+                  label="Make This Default Address"
+                />
+              </Grid>
+
+              <Grid item xs={10} lg={6} md={6} sm={6} marginTop={"25px"}>
+                <Link>
                   <Button
                     variant="outlined"
                     fullWidth
                     className="outline-common-btn"
+                    onClick={() => navigate(-1)}
                   >
                     Cancel
                   </Button>
                 </Link>
               </Grid>
-              <Grid item xs={6} lg={6} md={6} sm={6} marginTop={"25px"}>
+              <Grid item xs={10} lg={6} md={6} sm={6}>
                 <Button
                   variant="contained"
                   fullWidth
                   className="common-btn"
                   onClick={handleSubmit}
-                  disabled={props.postAddress.status == status.IN_PROGRESS}
+                  disabled={
+                    props.postAddress.status == status.IN_PROGRESS ||
+                    props.setDefaultAddressData?.status === status.IN_PROGRESS
+                  }
                   endIcon={
-                    props.postAddress.status === status.IN_PROGRESS ? (
+                    props.postAddress.status === status.IN_PROGRESS ||
+                    props.setDefaultAddressData?.status ===
+                      status.IN_PROGRESS ? (
                       <CircularProgress className="common-loader" />
                     ) : (
                       <></>
                     )
                   }
                 >
-                  
                   Save
                 </Button>
               </Grid>
@@ -312,12 +350,12 @@ const AddNewAddress = (props) => {
 };
 
 function mapStateToProps(state) {
-  const { postAddress } = state.alladdress;
-  return { postAddress };
+  const { postAddress, setDefaultAddressData } = state.alladdress;
+  return { postAddress, setDefaultAddressData };
 }
 
 const mapDispatchToProps = {
-  getAllAddress,
+  setDefaultAddress,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddNewAddress);

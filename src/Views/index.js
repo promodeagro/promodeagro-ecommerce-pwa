@@ -27,8 +27,7 @@ const Notification = lazy(() =>
 const AccountPrivacy = lazy(() =>
   import("./../Views/PostLogin/myProfile/accountPrivacy")
 );
-const CategoryOne = lazy(() => import("./../Views/PostLogin/category"));
-const CategoryTwo = lazy(() => import("./../Views/PostLogin/category"));
+
 const Category = lazy(() => import("./../Views/PostLogin/category"));
 const ProductDetails = lazy(() =>
   import("./../Views/PostLogin/productDetails")
@@ -96,7 +95,7 @@ const Views = () => {
               path={`/mycart/address/updated-address/:id`}
               element={<Navigate to="/" replace />}
             />
-               <Route
+            <Route
               path={`/my-profile/address/updated-address/:id`}
               element={<Navigate to="/" replace />}
             />
@@ -195,10 +194,15 @@ const Views = () => {
           element={<AddNewAddress />}
         />
         <Route
+          path={`/my-profile/manage-addresses/add-new-address`}
+          element={<AddNewAddress />}
+        />
+
+        <Route
           path={`/mycart/address/updated-address/:id`}
           element={<UpdatedAddress />}
         />
-         <Route
+        <Route
           path={`/my-profile/address/updated-address/:id`}
           element={<UpdatedAddress />}
         />

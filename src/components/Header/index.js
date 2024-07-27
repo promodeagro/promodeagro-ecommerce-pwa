@@ -305,7 +305,12 @@ class Header extends Component {
               </Grid>
               <Grid item xs={6} sm={8} md={8}>
                 <Box className="header-top-right">
-                  <Box className="support-box">
+                  <Box
+                    className="support-box"
+                    onClick={() => {
+                      this.props.navigate("/contact-us");
+                    }}
+                  >
                     <img src={supportIcon} alt="" /> Customer Support 24/7
                   </Box>
                   {currentAddress?.address && (
@@ -517,6 +522,7 @@ class Header extends Component {
                       "/mycart/address/order-details",
                       "/mycart/address",
                       "/mycart/address/add-new-address",
+                      "/my-profile/manage-addresses/add-new-address",
                       `/mycart/address/updated-address/${this.state?.pathId}`,
                       "/my-order",
                       `/mycart/address/order-placed/${this.state?.pathId}`,
@@ -538,6 +544,7 @@ class Header extends Component {
           "/mycart/address",
           "/mycart/address/order-details",
           "/mycart/address/add-new-address",
+          "/my-profile/manage-addresses/add-new-address",
           `/mycart/address/updated-address/${this.state?.pathId}`,
           "/my-order",
           "/myCart/address/order-details",
