@@ -11,6 +11,7 @@ import {
   NativeSelect,
 } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
+import BookmarkOutlinedIcon from "@mui/icons-material/BookmarkOutlined";
 // import RecentlyViewedItems from "./recentlyViewedItems";
 import RecentlyViewedItems from "components/RecentlyViewedItems";
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
@@ -38,6 +39,8 @@ import status from "../../../Redux/Constants";
 import {
   allProducts,
   productDetails,
+  deleteProductWishList,
+  setProductWishList,
 } from "../../../Redux/AllProducts/AllProductthunk";
 import { setShopByCategory } from "../../../Redux/AllProducts/AllProductSlice";
 import {
@@ -89,6 +92,28 @@ class ProductDetails extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const items = loginDetails();
+
+    if (
+      prevProps.deleteBookMarkData.status !==
+        this.props.deleteBookMarkData.status &&
+      this.props.deleteBookMarkData.status === status.SUCCESS
+    ) {
+      this.props.productDetails({
+        productId: this.props.params.id,
+        userId: items?.userId ? items?.userId : "",
+      });
+    }
+
+    if (
+      prevProps.setBookmarksData.status !==
+        this.props.setBookmarksData.status &&
+      this.props.setBookmarksData.status === status.SUCCESS
+    ) {
+      this.props.productDetails({
+        productId: this.props.params.id,
+        userId: items?.userId ? items?.userId : "",
+      });
+    }
 
     if (window.location.pathname != this.state.pathName) {
       this.setState({
@@ -238,6 +263,22 @@ class ProductDetails extends Component {
       });
     }
   }
+  handleWishList(id, isBookMarked) {
+    const item = loginDetails();
+    this.setState({
+      bookMarkId: id,
+    });
+    if (item?.userId) {
+      if (isBookMarked) {
+        this.props.deleteProductWishList(id);
+      } else {
+        this.props.setProductWishList({
+          userId: item?.userId,
+          productId: id,
+        });
+      }
+    }
+  }
   render() {
     const {
       productItem,
@@ -285,8 +326,20 @@ class ProductDetails extends Component {
                   <Grid item xs={12} sm={12} md={5} lg={5}>
                     <Box className="product-images">
                       <Box className="big-image">
-                        <Box className="icon">
-                          <TurnedInNotOutlinedIcon />
+                        <Box
+                          className="icon"
+                          onClick={() =>
+                            this.handleWishList(
+                              productItem?.id,
+                              productItem?.inWishlist
+                            )
+                          }
+                        >
+                          {productItem?.inWishlist ? (
+                            <BookmarkOutlinedIcon />
+                          ) : (
+                            <TurnedInNotOutlinedIcon />
+                          )}
                         </Box>
                         <img src={productItem?.image} alt="" />
                       </Box>
@@ -914,6 +967,8 @@ function mapStateToProps(state) {
     shopCategoryData,
     prodducDetailsData,
     productDetailsData,
+    setBookmarksData,
+    deleteBookMarkData,
   } = state.allproducts;
   const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
   return {
@@ -926,6 +981,8 @@ function mapStateToProps(state) {
     deleteItems,
     shopCategoryData,
     productDetailsData,
+    setBookmarksData,
+    deleteBookMarkData,
   };
 }
 
@@ -937,6 +994,8 @@ const mapDispatchToProps = {
   deleteItemToCart,
   productDetails,
   setShopByCategory,
+  setProductWishList,
+  deleteProductWishList,
 };
 
 export default connect(
