@@ -15,6 +15,7 @@ import {
 } from "../../../../../Redux/Cart/CartThunk";
 import StarIcon from "@mui/icons-material/Star";
 import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
+import BookmarkOutlinedIcon from "@mui/icons-material/BookmarkOutlined";
 import priceIcon from "../../../../../assets/img/price-icon.png";
 import noImage from "../../../../../assets/img/no-image.png";
 import { addDataInCart } from "../../../../../Redux/Home/HomeSlice";
@@ -30,7 +31,7 @@ import { connect } from "react-redux";
 import _ from "lodash";
 import { Link } from "react-router-dom";
 import status from "../../../../../Redux/Constants";
-import { loginDetails } from "Views/Utills/helperFunctions";
+import { Loader, loginDetails } from "Views/Utills/helperFunctions";
 
 class FeaturedProducts extends Component {
   constructor(props) {
@@ -44,11 +45,34 @@ class FeaturedProducts extends Component {
       qauntityUnits: [],
       qauantites: [],
       isProductSelecting: false,
+      bookMarkId: "",
     };
   }
 
   componentDidUpdate(prevProps, prevState) {
     const items = loginDetails();
+
+    if (
+      prevProps.deleteBookMarkData.status !==
+        this.props.deleteBookMarkData.status &&
+      this.props.deleteBookMarkData.status === status.SUCCESS
+    ) {
+      this.getAllProduct();
+      this.setState({
+        bookMarkId: "",
+      });
+    }
+
+    if (
+      prevProps.setBookmarksData.status !==
+        this.props.setBookmarksData.status &&
+      this.props.setBookmarksData.status === status.SUCCESS
+    ) {
+      this.getAllProduct();
+      this.setState({
+        bookMarkId: "",
+      });
+    }
 
     if (
       prevProps.additems.status !== this.props.additems.status &&
@@ -162,14 +186,14 @@ class FeaturedProducts extends Component {
     }
   };
 
-  handleWishList(id, isBookMarked = false) {
+  handleWishList(id, isBookMarked) {
     const item = loginDetails();
+    this.setState({
+      bookMarkId: id,
+    });
     if (item?.userId) {
       if (isBookMarked) {
-        this.props.deleteProductWishList({
-          userId: item?.userId,
-          productId: id,
-        });
+        this.props.deleteProductWishList(id);
       } else {
         this.props.setProductWishList({
           userId: item?.userId,
@@ -181,8 +205,13 @@ class FeaturedProducts extends Component {
 
   render() {
     const { data, cartList } = this.props;
-    const { productsData, dataId, isUpdateIncrease, qauntityUnits } =
-      this.state;
+    const {
+      productsData,
+      dataId,
+      isUpdateIncrease,
+      qauntityUnits,
+      bookMarkId,
+    } = this.state;
 
     return (
       <Box
@@ -197,15 +226,36 @@ class FeaturedProducts extends Component {
                 return (
                   <Box className="product-box" key={index}>
                     <Box className="sale">Sale {item.savingsPercentage}%</Box>
-                    <Box
-                      className="icon"
-                      onClick={(event) => {
-                        event.preventDefault();
-                        this.handleWishList(item?.id,false);
-                      }}
-                    >
-                      <TurnedInNotOutlinedIcon />
-                    </Box>
+
+                    {loginDetails()?.userId ? (
+                      bookMarkId == item?.id &&
+                      this.props.deleteBookMarkData.status ===
+                        status.IN_PROGRESS ? (
+                        <Box className="icon">
+                          <CircularProgress
+                            className="common-loader plus-icon"
+                            size={24}
+                          />
+                        </Box>
+                      ) : (
+                        <Box
+                          className="icon"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            this.handleWishList(item.id, item?.inWishlist);
+                          }}
+                        >
+                          {item?.inWishlist ? (
+                            <BookmarkOutlinedIcon />
+                          ) : (
+                            <TurnedInNotOutlinedIcon />
+                          )}
+                        </Box>
+                      )
+                    ) : (
+                      <></>
+                    )}
+
                     <Box
                       className="image"
                       onClick={() => {
@@ -258,7 +308,7 @@ class FeaturedProducts extends Component {
                               {item.unitPrices.map((unitItem, index) => {
                                 return (
                                   <option key={index} value={unitItem.qty}>
-                                    {unitItem.qty}
+                                    {unitItem.qty} {item.unit}
                                   </option>
                                 );
                               })}
@@ -420,6 +470,7 @@ function mapStateToProps(state) {
   const { homeData } = state.home;
   const { allProductsData, shopCategoryData } = state.allproducts;
   const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
+  const { setBookmarksData, deleteBookMarkData } = state.allproducts;
   return {
     allProductsData,
     homeData,
@@ -428,6 +479,8 @@ function mapStateToProps(state) {
     updateItems,
     deleteItems,
     shopCategoryData,
+    setBookmarksData,
+    deleteBookMarkData,
   };
 }
 
