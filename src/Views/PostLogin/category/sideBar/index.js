@@ -11,6 +11,10 @@ import {
 import { styled } from "@mui/material/styles";
 import StarIcon from "@mui/icons-material/Star";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import { fetchFilteredProducts } from "../../../../Redux/AllProducts/AllProductthunk";
+import { connect } from "react-redux";
+import _ from "lodash";
+import { loginDetails } from "Views/Utills/helperFunctions";
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 40,
   height: 20,
@@ -66,7 +70,28 @@ class SideBar extends Component {
       selectedCountry: "",
       selectedProductTypes: [],
       selectedPackSizes: [],
+      currentPathName: "",
     };
+    this.debouncedFilter = _.debounce((params) => {
+      this.props.handleFilterApiLoader(true);
+      debugger
+      this.props.fetchFilteredProducts(params);
+    }, 1000);
+  }
+
+  componentDidUpdate() {
+    if (this.state.currentPathName != window.location.pathname) {
+      this.setState({
+        minPrice: "",
+        maxPrice: "",
+        selectedRatings: [],
+        selectedDiscounts: [],
+        selectedCountry: "",
+        selectedProductTypes: [],
+        selectedPackSizes: [],
+        currentPathName: window.location.pathname,
+      });
+    }
   }
 
   handlePriceChange = (field, value) => {
@@ -88,8 +113,85 @@ class SideBar extends Component {
     this.setState({ [field]: value }, this.applyFilters);
   };
 
+  checkStatus = () => {
+    const {
+      minPrice,
+      maxPrice,
+      selectedRatings,
+      selectedDiscounts,
+      selectedCountry,
+      selectedProductTypes,
+      selectedPackSizes,
+    } = this.state;
+
+    // Check if all relevant fields are empty or have a length of 0
+    const allFieldsEmpty =
+      minPrice === "" &&
+      maxPrice === "" &&
+      selectedRatings.length === 0 &&
+      selectedDiscounts.length === 0 &&
+      selectedCountry === "" &&
+      selectedProductTypes.length === 0 &&
+      selectedPackSizes.length === 0;
+
+    return !allFieldsEmpty;
+    // Update status based on all fields being empty
+  };
+
   applyFilters = () => {
-    debugger;
+    // let data = { ...this.state };
+    const {
+      minPrice,
+      maxPrice,
+      selectedRatings,
+      selectedDiscounts,
+      selectedCountry,
+      selectedProductTypes,
+      selectedPackSizes,
+    } = this.state;
+    // data.userId = loginDetails().userId;
+    // if (this.props?.subcategory) {
+    //   data.subcategory = this.props?.subcategory;
+    // } else if (this.props.category) {
+    //   data.category = this.props?.category;
+    // }
+    let rating = "";
+    let discounts = "";
+    if (selectedRatings.length > 0) {
+      selectedRatings.forEach((item) => {
+        const ratingValue = parseFloat(item); // Convert item to a floating point number
+
+        if (ratingValue >= 2 && ratingValue < 5) {
+          rating += ratingValue + ".0" + " &" + " up,";
+        } else {
+          rating += ratingValue + ".0" + ",";
+        }
+      });
+    }
+    if (selectedDiscounts.length > 0) {
+      selectedDiscounts.forEach((item) => {
+        if (item.includes("more25")) {
+          discounts += "morethan25" + ",";
+        } else {
+          discounts += item + ",";
+        }
+      });
+    }
+    let status = this.checkStatus();
+    if (status) {
+      this.debouncedFilter({
+        category: this.props?.category,
+        subcategory: this.props?.subcategory,
+        minPrice: minPrice,
+        maxPrice: maxPrice,
+        discounts: discounts,
+        ratingFilter: rating,
+        userId: loginDetails()?.userId,
+      });
+    } else {
+      this.props.allproducts();
+    }
+
     this.props.onFilterChange(this.state);
   };
 
@@ -356,4 +458,35 @@ class SideBar extends Component {
   }
 }
 
-export default SideBar;
+// fetchFilteredProducts
+
+function mapStateToProps(state) {
+  const {
+    allProductsData,
+    shopCategoryData,
+    filteredProductData,
+    productByCategoryData,
+    productBySubCategoryData,
+  } = state.allproducts;
+  const { cartItems } = state.cartitem;
+  return {
+    allProductsData,
+    cartItems,
+    shopCategoryData,
+    filteredProductData,
+    productByCategoryData,
+    productBySubCategoryData,
+  };
+}
+
+const mapDispatchToProps = {
+  fetchFilteredProducts,
+  // allProducts,
+  // fetchCartItems,
+  // setShopByCategory,
+  // fetchProductBySubCategory,
+  // fetchProductByCategory,
+  // fetchFilteredProducts,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SideBar);

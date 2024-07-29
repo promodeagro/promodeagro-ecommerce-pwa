@@ -45,35 +45,31 @@ function Category(props) {
   const [APIDataLoaded, setAPIDataLoaded] = useState(false);
   const [currentPath, setCurrentPath] = useState("");
   const [userId, setUserId] = useState(loginDetails()?.userId);
-  useEffect(() => {
 
+  useEffect(() => {
     // setCurrentPath(window.location.pathname);
     if (userId) {
       setCartApiLoader(true);
       props.fetchCartItems({
-        userId: userId
+        userId: userId,
       });
     }
   }, []);
 
   useEffect(() => {
     if (subcategory) {
-    
       setSubCatergoryLoader(true);
       setAPIDataLoaded(true);
 
       props.fetchProductBySubCategory(
         subcategory.replaceAll("%20", ""),
-        userId?userId:""
+        userId ? userId : ""
       );
     } else if (category) {
       setAPIDataLoaded(true);
       setCatergoryLoader(true);
 
-      props.fetchProductByCategory(
-        category,
-        userId ? userId : ""
-      );
+      props.fetchProductByCategory(category, userId ? userId : "");
     } else {
       setAPIDataLoaded(true);
       setProdductApiLoader(true);
@@ -82,10 +78,34 @@ function Category(props) {
   }, [subcategory, category, window.location.pathname]);
 
   useEffect(() => {
-    if (props.allProductsData?.status == status?.SUCCESS && productApiLoader) {
+    if (
+      props.filteredProductData?.status == status?.SUCCESS &&
+      filteredProductApiLoader &&
+      props.filteredProductData?.data
+    ) {
+      setFilteredProductApiLoader(false);
+      setAPIDataLoaded(false);
+      setProductsData(props.filteredProductData?.data);
+    } else if (
+      props.filteredProductData?.status == status?.FAILURE &&
+      filteredProductApiLoader
+    ) {
+      setFilteredProductApiLoader(false);
+    }
+  }, [props.filteredProductData.status]);
+
+  useEffect(() => {
+    if (
+      props.allProductsData?.status == status?.SUCCESS &&
+      productApiLoader &&
+      props.allProductsData?.data
+    ) {
       setProdductApiLoader(false);
       setAPIDataLoaded(false);
-      setProductsData(props.allProductsData?.data);
+      if (props.allProductsData?.data?.response?.status == 500) {
+      } else {
+        setProductsData(props.allProductsData?.data);
+      }
     } else if (
       props.allProductsData?.status == status?.FAILURE &&
       productApiLoader
@@ -140,68 +160,70 @@ function Category(props) {
   }, [props.cartItems.status]);
 
   useEffect(() => {
-    if (productsData?.length && filters) {
-      applyFilters();
+    if (filters) {
+      // applyFilters();
     }
-  }, [filters, productsData]);
+  }, [filters]);
 
   const handleFilterChange = (filters) => {
     setFilters(filters);
-    // this.setState({ filters }, this.applyFilters);
+    const data = { ...filters };
+    data.userId = loginDetails()?.userId;
+
+    // setTimeout(() => {
+    //   props.fetchFilteredProducts(data);
+    // }, 500);
+    // applyFilters();
   };
 
   const applyFilters = () => {
     // const { products, filters } = this.state;
-    // let productsData = [...productsData];
-    let res = [];
-    if (filters.minPrice || filters.maxPrice) {
-      res = productsData?.filter((product) => {
-        const price = parseFloat(product.price);
-        return (
-          (!filters.minPrice || price >= parseFloat(filters.minPrice)) &&
-          (!filters.maxPrice || price <= parseFloat(filters.maxPrice))
-        );
-      });
-    }
-
-    if (filters.selectedRatings.length > 0) {
-      res = productsData?.filter((product) =>
-        filters.selectedRatings.some((rating) => product.ratings >= rating)
-      );
-    }
-
-    if (filters.selectedDiscounts.length > 0) {
-      res = productsData?.filter((product) => {
-        const savingsPercentage = parseInt(product.savingsPercentage);
-        return filters.selectedDiscounts.some((discountRange) => {
-          if (discountRange === "upto5") return savingsPercentage <= 5;
-          if (discountRange === "10to15")
-            return savingsPercentage >= 10 && savingsPercentage <= 15;
-          if (discountRange === "15to25")
-            return savingsPercentage >= 15 && savingsPercentage <= 25;
-          if (discountRange === "more25") return savingsPercentage > 25;
-        });
-      });
-    }
-
-    if (filters.selectedCountry) {
-      res = productsData?.filter(
-        (product) => product.origin === filters.selectedCountry
-      );
-    }
-
-    if (filters.selectedProductTypes.length > 0) {
-      res = productsData?.filter((product) =>
-        filters.selectedProductTypes.includes(product.type)
-      );
-    }
-
-    if (filters.selectedPackSizes.length > 0) {
-      res = productsData?.filter((product) =>
-        filters.selectedPackSizes.some((size) => product.packSize === size)
-      );
-    }
-    setProductsData(productsData);
+    // let productData = [...productsData];
+    // let res = [];
+    // if (filters.minPrice || filters.maxPrice) {
+    //   res = productData?.filter((product) => {
+    //     const price = parseFloat(product.price);
+    //     debugger;
+    //     return (
+    //       (!filters.minPrice || price >= parseFloat(filters.minPrice)) &&
+    //       (!filters.maxPrice || price <= parseFloat(filters.maxPrice))
+    //     );
+    //   });
+    // }
+    // if (filters.selectedRatings.length > 0) {
+    //   res = productData?.filter((product) =>
+    //     filters.selectedRatings.some((rating) => product.ratings >= rating)
+    //   );
+    // }
+    // if (filters.selectedDiscounts.length > 0) {
+    //   res = productData?.filter((product) => {
+    //     const savingsPercentage = parseInt(product.savingsPercentage);
+    //     return filters.selectedDiscounts.some((discountRange) => {
+    //       if (discountRange === "upto5") return savingsPercentage <= 5;
+    //       if (discountRange === "10to15")
+    //         return savingsPercentage >= 10 && savingsPercentage <= 15;
+    //       if (discountRange === "15to25")
+    //         return savingsPercentage >= 15 && savingsPercentage <= 25;
+    //       if (discountRange === "more25") return savingsPercentage > 25;
+    //     });
+    //   });
+    // }
+    // if (filters.selectedCountry) {
+    //   res = productData?.filter(
+    //     (product) => product.origin === filters.selectedCountry
+    //   );
+    // }
+    // if (filters.selectedProductTypes.length > 0) {
+    //   res = productData?.filter((product) =>
+    //     filters.selectedProductTypes.includes(product.type)
+    //   );
+    // }
+    // if (filters.selectedPackSizes.length > 0) {
+    //   res = productData?.filter((product) =>
+    //     filters.selectedPackSizes.some((size) => product.packSize === size)
+    //   );
+    // }
+    // setProductsData(productData);
   };
 
   const toggleFilter = () => {
@@ -216,28 +238,34 @@ function Category(props) {
 
   const allproducts = () => {
     if (userId) {
-      if (subcategory) {
-        // const data = {
-        //   subcategory: ,
-        //   userId: ,
-        // };
-        setSubCatergoryLoader(true);
-        props.fetchProductBySubCategory(
-          subcategory.replaceAll("%20", ""),
-          userId
-        );
-      } else if (category) {
-        setCatergoryLoader(true);
-        props.fetchProductByCategory(category, userId);
-      } else {
-        setProdductApiLoader(true);
-        props.allProducts(userId);
-      }
       setCartApiLoader(true);
       props.fetchCartItems({
         userId: userId,
       });
     }
+
+    if (subcategory) {
+      // const data = {
+      //   subcategory: ,
+      //   userId: ,
+      // };
+      setSubCatergoryLoader(true);
+      props.fetchProductBySubCategory(
+        subcategory.replaceAll("%20", ""),
+        userId
+      );
+    } else if (category) {
+      setCatergoryLoader(true);
+      props.fetchProductByCategory(category, userId);
+    } else {
+      setProdductApiLoader(true);
+      props.allProducts(userId);
+    }
+  };
+
+  const handleFilterApiLoader = (status) => {
+    setAPIDataLoaded(true);
+    setFilteredProductApiLoader(status);
   };
 
   return (
@@ -249,6 +277,10 @@ function Category(props) {
               onFilterChange={handleFilterChange}
               toggleFilter={toggleFilter}
               hideFilter={hideFilter}
+              category={category}
+              subcategory={subcategory}
+              handleFilterApiLoader={handleFilterApiLoader}
+              allproducts={allproducts}
             />
           </Grid>
           <Grid

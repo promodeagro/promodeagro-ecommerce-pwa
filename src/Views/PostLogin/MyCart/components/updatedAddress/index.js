@@ -103,8 +103,8 @@ const UpdatedAddress = (props) => {
     props.getAllAddress({
       userId: loginDetails()?.userId,
     });
-    // setDefaultAddressLoader(true);
-    // props.fetchDefaultAddress(loginDetails()?.userId);
+    setDefaultAddressLoader(true);
+    props.fetchDefaultAddress(loginDetails()?.userId);
   }, [id]);
 
   useEffect(() => {
@@ -112,24 +112,24 @@ const UpdatedAddress = (props) => {
       props.setDefaultAddressData?.status === status.SUCCESS &&
       defaultAPILoader
     ) {
-      debugger;
       setdefaultAPILoader(false);
       // setIsChecked(false);
       navigate(-1);
     }
   }, [props.setDefaultAddressData?.status]);
-  // useEffect(() => {
-  //   if (
-  //     props.defaultAddressData.status === status.SUCCESS &&
-  //     props.defaultAddressData?.data &&
-  //     defaultAddressLoader
-  //   ) {
-  //     setDefaultAddressLoader(false);
-  //     if (props.defaultAddressData?.data?.addressId === id) {
-  //       setIsChecked(true);
-  //     }
-  //   }
-  // }, [props.defaultAddressData.status]);
+  useEffect(() => {
+    if (
+      props.defaultAddressData.status === status.SUCCESS &&
+      props.defaultAddressData?.data &&
+      defaultAddressLoader
+    ) {
+      setDefaultAddressLoader(false);
+      if (props.defaultAddressData?.data?.addressId === id) {
+        // debugger;
+        // setIsChecked(true);
+      }
+    }
+  }, [props.defaultAddressData.status]);
   useEffect(() => {
     if (
       props.allAddress.status === status.SUCCESS &&
@@ -342,15 +342,27 @@ const UpdatedAddress = (props) => {
                       </FormHelperText>
                     )}
                   </Grid>
+                  <>
+                    {props.defaultAddressData.status == status.SUCCESS ? (
+                      <>
+                        {props.defaultAddressData?.data?.addressId === id ? (
+                          <></>
+                        ) : (
+                          <Grid item>
+                            <FormControlLabel
+                              value={isChecked}
+                              onChange={handleValueChange}
+                              control={<Checkbox />}
+                              label="Make This Default Address"
+                            />
+                          </Grid>
+                        )}
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </>
 
-                  <Grid item>
-                    <FormControlLabel
-                      value={isChecked}
-                      onChange={handleValueChange}
-                      control={<Checkbox />}
-                      label="Make This Default Address"
-                    />
-                  </Grid>
                   <Grid item xs={6} lg={6} md={6} sm={6} marginTop={"25px"}>
                     <Link>
                       <Button

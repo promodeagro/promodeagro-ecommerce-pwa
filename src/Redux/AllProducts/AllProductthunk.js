@@ -72,9 +72,16 @@ export const fetchFilteredProducts = createAsyncThunk(
   "filteredproducts",
   async (params) => {
     try {
+      console.log("pamr", params);
       let url =
         config.FILTERED_PRODUCTS +
-        `?minPrice=${params?.minPrice}&maxPrice=${params?.maxPrice}&discounts=upto`;
+        `?minPrice=${params?.minPrice}&maxPrice=${params?.maxPrice}&discounts=${
+          params?.discounts
+        }&subcategory=${
+          params?.subcategory ? params?.subcategory : ""
+        }&ratingFilter=${params?.ratingFilter}&category=${
+          params?.category ? params?.category : ""
+        }&userId=${params?.userId}`;
       const response = await postLoginService.get(url);
       return response.data;
     } catch (error) {
@@ -99,7 +106,7 @@ export const setProductWishList = createAsyncThunk(
 
 export const deleteProductWishList = createAsyncThunk(
   "deletewishlist",
-  async ( productId) => {
+  async (productId) => {
     try {
       const userId = loginDetails()?.userId;
       let url =
@@ -120,6 +127,23 @@ export const fetchProductWishList = createAsyncThunk(
       const userId = loginDetails()?.userId;
 
       let url = config.GET_PRODUCT_WISHLIST + `?userId=${userId}`;
+
+      const response = await postLoginService.get(url, { userId });
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+// getProductReview
+
+export const fetchProductReview = createAsyncThunk(
+  "getProductReview",
+  async (productId) => {
+    try {
+      const userId = loginDetails()?.userId;
+
+      let url = config.GET_PRODUCT_REIVEW + `/${productId}`;
 
       const response = await postLoginService.get(url);
       return response.data;

@@ -242,7 +242,7 @@ class List extends Component {
                       {item.unitPrices.map((unitItem, index) => {
                         return (
                           <option key={index} value={unitItem.qty}>
-                            {unitItem.qty}
+                            {unitItem.qty} {item.unit}
                           </option>
                         );
                       })}
@@ -250,10 +250,10 @@ class List extends Component {
                   </FormControl>
                 </Box>
               ) : (
-                <></> // or any other placeholder or message you want to show
+                <Box className="select">{item.unit}</Box>
               )}
             </>
-            <Box className="select">{item.unit}</Box>
+
             {addedProducts.includes(item.id) || item?.inCart ? (
               <Box className="number-input-container">
                 {item?.inCart && item.cartItem?.Quantity !== 0 ? (

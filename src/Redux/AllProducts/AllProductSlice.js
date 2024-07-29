@@ -9,6 +9,7 @@ import {
   setProductWishList,
   deleteProductWishList,
   fetchProductWishList,
+  fetchProductReview
 } from "./AllProductthunk";
 import status from "./../Constants";
 
@@ -44,6 +45,9 @@ const AllProductsSlice = createSlice({
     bookMarksData: {
       status: null,
     },
+    productReviewData:{
+      status:null
+    }
   },
   reducers: {
     productDetailsData: (state, action) => {

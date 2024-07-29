@@ -10,6 +10,7 @@ import ProfileSideBar from "../profileSideBar";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import {
   ErrorMessages,
+  loginDetails,
   ValidationEngine,
 } from "../../../Utills/helperFunctions";
 
@@ -55,6 +56,13 @@ class PersonalInformation extends Component {
       editInformation: false,
     };
   }
+  componentDidMount() {
+    let items = loginDetails();
+    this.setState({
+      name: items?.name,
+    });
+    debugger;
+  }
 
   validateForm = () => {
     const { name, email, mobileNumber } = this.state;
@@ -86,6 +94,9 @@ class PersonalInformation extends Component {
     this.setState({
       editInformation: !editInformation,
       isSubmit: false,
+      name: loginDetails()?.name,
+      email: loginDetails()?.email,
+      mobileNumber: loginDetails()?.mobileNumber,
     });
   };
 
@@ -122,6 +133,7 @@ class PersonalInformation extends Component {
                     className="input"
                     variant="standard"
                     fullWidth
+                    disabled={!editInformation}
                     name="name"
                     value={name}
                     type="text"
@@ -142,6 +154,7 @@ class PersonalInformation extends Component {
                     variant="standard"
                     fullWidth
                     name="email"
+                    disabled={!editInformation}
                     value={email}
                     type="text"
                     placeholder="Yahiyaalikhan@example.com"
@@ -160,6 +173,7 @@ class PersonalInformation extends Component {
                     className="input"
                     variant="standard"
                     fullWidth
+                    disabled={!editInformation}
                     name="mobileNumber"
                     value={mobileNumber}
                     type="text"

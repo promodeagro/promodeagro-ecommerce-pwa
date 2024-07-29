@@ -118,6 +118,10 @@ class Address extends Component {
       this.setState({
         defaultSelectedAddress: this.props?.defaultAddressData?.data,
       });
+      localStorage.setItem(
+        "address",
+        this.props?.defaultAddressData?.data?.addressId
+      );
     }
 
     if (
@@ -184,7 +188,7 @@ class Address extends Component {
       cartListData,
       selectedDeliverySlot,
     } = this.state;
-
+    debugger;
     let data = {
       addressId: addressId,
       deliverySlotId: selectedDeliverySlot?.slotId,

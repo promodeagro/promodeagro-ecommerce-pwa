@@ -9,6 +9,11 @@ import {
   FormHelperText,
   FormControlLabel,
   Checkbox,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  CircularProgress,
 } from "@mui/material";
 import ProfileSideBar from "../profileSideBar";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
@@ -43,6 +48,8 @@ class ManageAddresses extends Component {
       allAddresses: [],
       deleteId: "",
       loaderStatus: false,
+      open: false,
+      addressId: "",
     };
   }
   componentDidMount() {
@@ -71,6 +78,7 @@ class ManageAddresses extends Component {
     ) {
       this.setState({
         deleteId: "",
+        open: false,
       });
       this.apiCalls();
     }
@@ -118,11 +126,26 @@ class ManageAddresses extends Component {
       }
     );
   };
+  handleClickOpen = (item) => {
+    this.setState({
+      addressId: item.addressId,
+      open: true,
+      deleteId: item?.addressId,
+    });
+  };
+
+  handleClose = () => {
+    this.setState({
+      addressId: "",
+      open: false,
+    });
+  };
+
   render() {
     const { addAddressModal, defaultAddressId, loaderStatus } = this.state;
     return (
       <Box className="main-container">
-        {this.props.allAddress?.status == status.IN_PROGRESS && loaderStatus ? (
+        {this.props.allAddress?.status == status.IN_PROGRESS ? (
           Loader.commonLoader()
         ) : (
           <Container>
@@ -146,92 +169,130 @@ class ManageAddresses extends Component {
                     Add Address
                   </Button>
                 </Box>
-                {addAddressModal === true ? (
-                  <AddNewAddress handleModal={this.handleModal} />
-                ) : (
-                  <Box className="address-container">
-                    <Grid container spacing={4} alignItems={"center"}>
-                      {this.state.allAddresses?.length > 0 ? (
-                        this.state.allAddresses?.map((item) => {
-                          if (item?.addressId === this.state.deleteId) {
-                            return (
-                              <Grid item xs={12} lg={4} md={6} sm={6}>
-                                {Loader.commonLoader()}
-                              </Grid>
-                            );
-                          } else {
-                            return (
-                              <Grid item xs={12} lg={4} md={6} sm={6}>
-                                <Box className="address-card-container">
-                                  <Box className="d-flex align-items-center">
-                                    <IconButton
-                                      aria-label="edit"
-                                      className="address-btn"
-                                      onClick={(event) =>
-                                        this.handleEdit(event, item)
-                                      }
-                                    >
-                                      <BorderColorIcon />
-                                    </IconButton>
-                                    <IconButton
-                                      aria-label="delete"
-                                      className="address-btn"
-                                      onClick={() => {
-                                        this.setState({
-                                          deleteId: item?.addressId,
-                                        });
-                                        this.props.deleteAddress({
-                                          userId: loginDetails()?.userId,
-                                          addressId: item?.addressId,
-                                        });
-                                      }}
-                                    >
-                                      <DeleteIcon />
-                                    </IconButton>
-                                  </Box>
-                                  <h3 className="person-name">
-                                    {item?.name}{" "}
-                                    {item.addressId === defaultAddressId ? (
-                                      <span>Default</span>
-                                    ) : (
-                                      <></>
-                                    )}
-                                  </h3>
-                                  <address>{item?.address}</address>
-                                  <Box className="d-block contact-number">
-                                    <span className="d-block contact-heading">
-                                      Contact
-                                    </span>
-                                    <Box className="d-flex align-items-center">
-                                      <span className="d-block title">
-                                        Phone
-                                      </span>
-                                      <span className="d-block details">
-                                        {item?.phoneNumber}
-                                      </span>
-                                    </Box>
-                                    <Box className="d-flex align-items-center">
-                                      <span className="d-block title">
-                                        Email
-                                      </span>
-                                      <span className="d-block details">
-                                        {item?.email}
-                                      </span>
-                                    </Box>
-                                  </Box>
+                <Box className="address-container">
+                  <Grid container spacing={4} alignItems={"center"}>
+                    {this.state.allAddresses?.length > 0 ? (
+                      this.state.allAddresses?.map((item) => {
+                        return (
+                          <Grid item xs={12} lg={4} md={6} sm={6}>
+                            <Box className="address-card-container">
+                              <Box className="d-flex align-items-center">
+                                <IconButton
+                                  aria-label="edit"
+                                  className="address-btn"
+                                  onClick={(event) =>
+                                    this.handleEdit(event, item)
+                                  }
+                                >
+                                  <BorderColorIcon />
+                                </IconButton>
+                                <IconButton
+                                  aria-label="delete"
+                                  className="address-btn"
+                                  onClick={(event) => {
+                                    event.stopPropagation();
+                                    this.handleClickOpen(item);
+                                  }}
+                                  // onClick={() => {
+
+                                  //   this.setState({
+                                  //     deleteId: item?.addressId,
+                                  //   });
+                                  //   this.props.deleteAddress({
+                                  //     userId: loginDetails()?.userId,
+                                  //     addressId: item?.addressId,
+                                  //   });
+                                  // }}
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+                              </Box>
+                              <h3 className="person-name">
+                                {item?.name}{" "}
+                                {item.addressId === defaultAddressId ? (
+                                  <span>Default</span>
+                                ) : (
+                                  <></>
+                                )}
+                              </h3>
+                              <address>{item?.address}</address>
+                              <Box className="d-block contact-number">
+                                <span className="d-block contact-heading">
+                                  Contact
+                                </span>
+                                <Box className="d-flex align-items-center">
+                                  <span className="d-block title">Phone</span>
+                                  <span className="d-block details">
+                                    {item?.phoneNumber}
+                                  </span>
                                 </Box>
-                              </Grid>
-                            );
-                          }
-                        })
-                      ) : (
-                        <></>
-                      )}
-                    </Grid>
-                  </Box>
-                )}
+                                <Box className="d-flex align-items-center">
+                                  <span className="d-block title">Email</span>
+                                  <span className="d-block details">
+                                    {item?.email}
+                                  </span>
+                                </Box>
+                              </Box>
+                            </Box>
+                          </Grid>
+                        );
+                      })
+                    ) : (
+                      <p>There Is No Address Found</p>
+                    )}
+                  </Grid>
+                </Box>
               </Box>
             </Box>
+
+            <Dialog
+              open={this.state.open}
+              onClose={this.handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Are you sure you want to delete this address?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions
+                style={{ justifyContent: "center", paddingBottom: "24px" }}
+              >
+                <Button
+                  variant="outlined"
+                  className="outline-common-btn"
+                  onClick={this.handleClose}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="outlined"
+                  className="outline-common-btn"
+                  color="error"
+                  onClick={(event) => {
+                    event.stopPropagation();
+
+                    this.props.deleteAddress({
+                      userId: loginDetails()?.userId,
+                      addressId: this.state.addressId,
+                    });
+                  }}
+                  disabled={
+                    this.props.deleteAddresses.status == status.IN_PROGRESS
+                  }
+                  endIcon={
+                    this.props.deleteAddresses.status === status.IN_PROGRESS ? (
+                      <CircularProgress className="common-loader delete" />
+                    ) : (
+                      <></>
+                    )
+                  }
+                >
+                  Delete
+                </Button>
+              </DialogActions>
+            </Dialog>
           </Container>
         )}
       </Box>
