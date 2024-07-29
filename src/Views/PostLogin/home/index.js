@@ -11,9 +11,15 @@ import { fetchCartItems } from "../../../Redux/Cart/CartThunk";
 import status from "../../../Redux/Constants";
 import { connect } from "react-redux";
 import { Loader, loginDetails } from "Views/Utills/helperFunctions";
-import { getAllAddress } from "../../../Redux/Address/AddressThunk";
+import {
+  getAllAddress,
+  fetchDefaultAddress,
+} from "../../../Redux/Address/AddressThunk";
 import { setSelectedAdd } from "../../../Redux/Address/AddressSlice";
-import { productCategories, setShopByCategory } from "../../../Redux/AllProducts/AllProductSlice";
+import {
+  productCategories,
+  setShopByCategory,
+} from "../../../Redux/AllProducts/AllProductSlice";
 
 class Home extends Component {
   constructor(props) {
@@ -21,23 +27,22 @@ class Home extends Component {
     this.state = {
       data: [],
       cartList: [],
-      loaderCount: 0
+      loaderCount: 0,
     };
   }
   componentDidMount() {
-
     const items = loginDetails();
-
 
     if (items?.userId) {
       this.props.fetchHome(items?.userId);
       this.props.fetchCartItems({
         userId: items?.userId,
       });
+      this.props.fetchDefaultAddress(items?.userId);
 
-      this.props.getAllAddress({
-        userId: items?.userId,
-      })
+      // this.props.getAllAddress({
+      //   userId: items?.userId,
+      // })
     } else {
       this.props.fetchHome();
     }
@@ -50,21 +55,20 @@ class Home extends Component {
     ) {
       this.setState({
         data: this.props.homeData?.data,
-        loaderCount: 1
+        loaderCount: 1,
       });
 
       let fruits = [];
       let vegetables = [];
 
-      this.props.homeData?.data.forEach(product => {
+      this.props.homeData?.data.forEach((product) => {
         if (product.category === "FRUITS") {
           fruits.push(product);
         } else if (product.category === "VEGETABLES") {
           vegetables.push(product);
         }
       });
-      this.props.productCategories([fruits, vegetables])
-
+      this.props.productCategories([fruits, vegetables]);
     }
 
     if (
@@ -86,7 +90,6 @@ class Home extends Component {
       this.props.allAddress.data
     ) {
       this.props.setSelectedAdd(this.props.allAddress.data.addresses[0]);
-
     }
   }
 
@@ -98,29 +101,30 @@ class Home extends Component {
       this.props.fetchCartItems({
         userId: items?.userId,
       });
-
     }
-  }
+  };
 
   render() {
     const { data, cartList } = this.state;
     return (
       <Box className="main-container">
-
-        {this.props.homeData.status === status.IN_PROGRESS && this.state.loaderCount == 0 ? (
+        {this.props.homeData.status === status.IN_PROGRESS &&
+        this.state.loaderCount == 0 ? (
           Loader.commonLoader()
         ) : (
           <>
             <MainBanner />
-            <FeaturedProducts data={data} cartList={cartList} fetchHome={this.fetchHome} />
+            <FeaturedProducts
+              data={data}
+              cartList={cartList}
+              fetchHome={this.fetchHome}
+            />
             <Service />
             <OffersYouMightLike />
             <TopSellingCategories />
             <CustomersSays />
           </>
         )}
-
-
       </Box>
     );
   }
@@ -133,6 +137,14 @@ function mapStateToProps(state) {
   return { homeData, cartItems, allAddress, selectedAddressData };
 }
 
-const mapDispatchToProps = { fetchHome, fetchCartItems, setSelectedAdd, getAllAddress, productCategories, setShopByCategory };
+const mapDispatchToProps = {
+  fetchHome,
+  fetchCartItems,
+  setSelectedAdd,
+  getAllAddress,
+  productCategories,
+  setShopByCategory,
+  fetchDefaultAddress,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
