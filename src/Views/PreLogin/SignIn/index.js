@@ -90,7 +90,7 @@ class Signin extends Component {
           "login",
           JSON.stringify(this.props.loginData.data)
         );
-        ErrorMessages.success("Logged In Successfully");
+        // ErrorMessages.success("Logged In Successfully");
         this.props.navigate("/");
 
       }
