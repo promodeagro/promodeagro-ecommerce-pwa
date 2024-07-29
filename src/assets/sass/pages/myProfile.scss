@@ -436,6 +436,44 @@
             }
           }
         }
+
+        .number-input-container {
+          display: flex;
+          width: 100%;
+          margin-top: 10px;
+  
+          .symbol {
+            width: 33.33%;
+            border: 1px solid #1f9151;
+            background-color: #1f9151;
+            height: 36px;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            border-radius: 4px 0px 0px 4px;
+  
+            &:last-child {
+              border-radius: 0px 4px 4px 0px;
+            }
+          }
+  
+          .Number {
+            width: 33.33%;
+            height: 36px;
+            border: 1px solid #1f9151;
+            background-color: #ffffff;
+            font-size: 16px;
+            line-height: 24px;
+            color: #1f9151;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+          }
+        }
       }
     }
     .notification-container {
