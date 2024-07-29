@@ -49,8 +49,11 @@ class Header extends Component {
       currentPathName: "",
       pathId: null,
     };
+    this.profileModalRef = React.createRef();
+
   }
   componentDidMount() {
+    document.addEventListener("mousedown", this.handleClickOutside);
     window
       .matchMedia("(max-width: 900px)")
       .addEventListener("change", (e) => this.setState({ matches: e.matches }));
@@ -125,6 +128,10 @@ class Header extends Component {
     // }
   }
 
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
+  }
+
   extractIdFromPath = (path) => {
     // Example: Assuming URL path format is '/mycart/address/updated-address/:id'
     // Splitting the path by '/' and getting the last segment as ID
@@ -150,6 +157,18 @@ class Header extends Component {
     this.setState({
       searchToggle: !this.state.searchToggle,
     });
+  };
+
+
+  handleClickOutside = (event) => {
+    if (
+      this.profileModalRef.current &&
+      !this.profileModalRef.current.contains(event.target)
+    ) {
+      this.setState({
+        profileModal: false,
+      });
+    }
   };
 
   renderCategories = () => {
@@ -230,44 +249,49 @@ class Header extends Component {
   renderBreadcrumb = () => {
     let path = _.cloneDeep(window.location.pathname);
     let pathArr = path.split("/");
-
-    let subCat = pathArr[0];
     return (
-      <Box className="breadcrumb">
-        <ul>
-          <li>
-            <Link to="/">
-              <HomeOutlinedIcon /> Home
-              {/* {pathArr?.[1]} */}
-            </Link>
-          </li>
-          {pathArr.length ? (
-            <>
-              <li>/</li>
-              <li
-                onClick={() => {
-                  this.props.navigate(
-                    `/category/${pathArr?.[2]?.toUpperCase()}`
-                  );
-                }}
-              >
-                <Link>{pathArr?.[2]?.toUpperCase()}</Link>
+      <>
+        {!window.location.pathname.includes("updated-address") ? (
+          <Box className="breadcrumb">
+            <ul>
+              <li>
+                <Link to="/">
+                  <HomeOutlinedIcon /> Home
+                  {/* {pathArr?.[1]} */}
+                </Link>
               </li>
-              {pathArr?.[3] ? <li>/</li> : <></>}
+              {pathArr.length ? (
+                <>
+                  <li>/</li>
+                  <li
+                    onClick={() => {
+                      this.props.navigate(
+                        `/category/${pathArr?.[2]?.toUpperCase()}`
+                      );
+                    }}
+                  >
+                    <Link>{pathArr?.[2]?.toUpperCase()}</Link>
+                  </li>
+                  {pathArr?.[3] ? <li>/</li> : <></>}
 
-              <li className="active">
-                <Link>{pathArr?.[3]?.replaceAll("%20", " ")} </Link>
-              </li>
-            </>
-          ) : (
-            <></>
-          )}
-        </ul>
-      </Box>
+                  <li className="active">
+                    <Link>{pathArr?.[3]?.replaceAll("%20", " ")} </Link>
+                  </li>
+                </>
+              ) : (
+                <></>
+              )}
+            </ul>
+          </Box>
+        ) : (
+          <></>
+        )}
+      </>
     );
   };
 
   handleProfileModal = () => {
+    debugger;
     const { profileModal } = this.state;
     this.setState({
       profileModal: !profileModal,
@@ -313,10 +337,15 @@ class Header extends Component {
                   >
                     <img src={supportIcon} alt="" /> Customer Support 24/7
                   </Box>
-                  {currentAddress?.address && (
-                    <Box className="deliver-box">
+                  {currentAddress?.name && loginDetails()?.userId && (
+                    <Box
+                      className="deliver-box"
+                      onClick={() =>
+                        this.props.navigate("/my-profile/manage-addresses")
+                      }
+                    >
                       Deliver to <img src={deliverIcon} alt="Deliver Icon" />
-                      <span>{currentAddress?.address}</span>
+                      <span>{currentAddress?.name}</span>
                     </Box>
                   )}
                   {loginDetails()?.name ? (
@@ -329,8 +358,10 @@ class Header extends Component {
                         <span>{loginDetails()?.name}</span>
                         <KeyboardArrowDownOutlinedIcon />
                       </Box>
-                      {profileModal === true && (
-                        <Box className="profile-modal">
+                      {profileModal  && (
+                        <Box className="profile-modal"
+                        ref={this.profileModalRef}
+                        >
                           <ul>
                             <li onClick={() => this.handleProfileModal()}>
                               <Link to="/my-profile/personal-information">
@@ -338,7 +369,7 @@ class Header extends Component {
                               </Link>
                             </li>
                             <li onClick={() => this.handleProfileModal()}>
-                              <Link to="#">
+                              <Link to="/my-order">
                                 <PermIdentityOutlinedIcon /> Orders
                               </Link>
                             </li>
@@ -357,8 +388,14 @@ class Header extends Component {
                                 <PermIdentityOutlinedIcon /> Notification
                               </Link>
                             </li>
-                            <li onClick={() => this.handleProfileModal()}>
-                              <Link to="#">
+                            <li
+                              onClick={() => {
+                                this.handleProfileModal();
+                                localStorage.removeItem("login");
+                                this.props.navigate("/signin");
+                              }}
+                            >
+                              <Link>
                                 <PermIdentityOutlinedIcon /> Logout
                               </Link>
                             </li>
