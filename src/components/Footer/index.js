@@ -23,8 +23,7 @@ const Footer = () => {
             <Box className="footer-about-text">
               <h3>About Promode Agro farms </h3>
               <p>
-                Morbi cursus porttitor enim lobortis molestie. Duis gravida
-                turpis dui, eget bibendum magna congue nec.
+                We are growing vegetables, fruits in most natural way and delivering at optimal price. We make regional (Bengali/Odisha/North Indian) fruit and vegetables items available to Hyderabad customers.
               </p>
             </Box>
           </Grid>
@@ -36,7 +35,9 @@ const Footer = () => {
                     <h3>My Account</h3>
                     <ul>
                       <li>
-                        <Link to="/my-profile/personal-information">My Account</Link>
+                        <Link to="/my-profile/personal-information">
+                          My Account
+                        </Link>
                       </li>
                       <li>
                         <a href="#">Order History</a>
