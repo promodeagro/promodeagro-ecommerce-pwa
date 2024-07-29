@@ -31,7 +31,7 @@ const Footer = () => {
           <Grid item xs={12} sm={12} md={8}>
             <Grid container spacing={2}>
               {login?.userId && (
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid item xs={4} sm={3} md={3}>
                   <Box className="footer-links">
                     <h3>My Account</h3>
                     <ul>
@@ -55,7 +55,7 @@ const Footer = () => {
                 </Grid>
               )}
 
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid item xs={4} sm={3} md={3}>
                 <Box className="footer-links">
                   <h3>Helps</h3>
                   <ul>
@@ -74,7 +74,7 @@ const Footer = () => {
                   </ul>
                 </Box>
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid item xs={4} sm={3} md={3}>
                 <Box className="footer-links">
                   <h3>Proxy</h3>
                   <ul>
@@ -90,7 +90,7 @@ const Footer = () => {
                   </ul>
                 </Box>
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid item xs={12} sm={3} md={3}>
                 <Box className="footer-social">
                   <h3>Social</h3>
                   <ul>

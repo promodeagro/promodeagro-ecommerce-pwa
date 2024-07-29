@@ -102,5 +102,22 @@
 @media (max-width: 600px) {
   .footer {
     padding-bottom: 30px;
+    .footer-social {
+      ul {
+        margin-bottom: 0;
+        li {
+          display: inline-flex;
+          margin-bottom: 0;
+          margin-right: 15px;
+          a {
+            font-size: 0px;
+            img {
+              max-width: 24px;
+              margin-right: 0;
+            }
+          }
+        }
+      }
+    }
   }
 }

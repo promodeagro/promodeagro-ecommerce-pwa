@@ -38,7 +38,7 @@ class Header extends Component {
     super(props);
     this.state = {
       categoriesToggle: false,
-      matches: window.matchMedia("(max-width: 900px)").matches,
+      matches: window.matchMedia("(max-width: 767px)").matches,
       cartList: [],
       currentAddress: {},
       searchToggle: false,
@@ -425,13 +425,28 @@ class Header extends Component {
             </Grid>
           </Container>
         </Box>
+        {currentAddress?.name && loginDetails()?.userId && (
+          <Container>
+            <Box
+              className="mobile-deliver-box"
+              onClick={() =>
+                this.props.navigate("/my-profile/manage-addresses")
+              }
+            >
+              {currentAddress?.name}
+              <KeyboardArrowDownOutlinedIcon />
+            </Box>
+          </Container>
+        )}
         <Box className="header-categories-container">
           <Container>
             <Grid container spacing={2} alignItems={"center"}>
               <Grid
                 item
                 xs={12}
+                sm={4}
                 md={4}
+                lg={4}
                 order={
                   [
                     "/",
@@ -478,7 +493,7 @@ class Header extends Component {
                 </Box>
               </Grid>
               {!matches && (
-                <Grid item xs={12} md={8}>
+                <Grid item xs={12} sm={8} md={8} lg={8}>
                   {["/my-order"].includes(path) ? (
                     <Box className="back-shopping">
                       <Link to="/">
@@ -497,7 +512,7 @@ class Header extends Component {
                     "/terms-condition",
                     "/privacy-policy",
                     "/return-refund",
-                  ].includes(path) ? (
+                  ] ? (
                     <Box className="categories" justifyContent={"flex-end"}>
                       <ul>
                         <li className="quick">
@@ -600,7 +615,7 @@ class Header extends Component {
           <Box className="header-bottom-container">
             <Container>
               <Grid container spacing={2} alignItems={"center"}>
-                <Grid item xs={7} sm={8} md={3} lg={3}>
+                <Grid item xs={12} sm={4} md={3} lg={4}>
                   <Box className="categories-container">
                     <Box
                       className="categories-toggle"
@@ -624,31 +639,24 @@ class Header extends Component {
                     )}
                   </Box>
                 </Grid>
-                {this.state.matches ? (
-                  ""
-                ) : (
-                  <Grid item xs={2} md={6} lg={6}>
-                    <Box className="search-box">
-                      <SearchResults cartItemsData={cartList} />
-                    </Box>
-                  </Grid>
-                )}
-                <Grid item xs={5} sm={4} md={3} lg={3}>
+                <Grid item xs={12} sm={6} md={6} lg={6}>
+                  <Box className="search-box">
+                    <SearchResults cartItemsData={cartList} />
+                  </Box>
+                </Grid>
+                <Grid
+                  item
+                  xs={5}
+                  sm={2}
+                  md={3}
+                  lg={2}
+                  className="notification-and-card"
+                >
                   <Box
                     display={"inline-flex"}
                     justifyContent={"flex-end"}
                     width={"100%"}
                   >
-                    {this.state.matches ? (
-                      <Button
-                        variant="outlined"
-                        className="search-icon"
-                        startIcon={<img src={searchIcon} alt="" />}
-                        onClick={this.searchToggle}
-                      ></Button>
-                    ) : (
-                      ""
-                    )}
                     {login?.userId ? (
                       <>
                         <Button
@@ -686,13 +694,6 @@ class Header extends Component {
               </Grid>
             </Container>
           </Box>
-        )}
-        {this.state.matches ? (
-          <Box className={searchToggle ? "search-box active" : "search-box"}>
-            <SearchResults cartItemsData={cartList} />
-          </Box>
-        ) : (
-          ""
         )}
       </div>
     );
