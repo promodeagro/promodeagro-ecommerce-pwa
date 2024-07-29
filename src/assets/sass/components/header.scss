@@ -32,6 +32,7 @@
         font-size: 13px;
         line-height: 30px;
         color: #ffffff;
+        cursor: pointer;
 
         img {
           max-width: 30px;
@@ -47,6 +48,7 @@
         font-weight: 500;
         font-size: 13px;
         color: #ffffff;
+        cursor: pointer;
 
         img {
           max-width: 30px;
@@ -716,6 +718,7 @@
       .header-top-right {
         .support-box {
           font-size: 0px;
+          cursor: pointer;
         }
         .deliver-box {
           display: none;

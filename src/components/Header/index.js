@@ -50,7 +50,6 @@ class Header extends Component {
       pathId: null,
     };
     this.profileModalRef = React.createRef();
-
   }
   componentDidMount() {
     document.addEventListener("mousedown", this.handleClickOutside);
@@ -158,7 +157,6 @@ class Header extends Component {
       searchToggle: !this.state.searchToggle,
     });
   };
-
 
   handleClickOutside = (event) => {
     if (
@@ -291,7 +289,6 @@ class Header extends Component {
   };
 
   handleProfileModal = () => {
-    debugger;
     const { profileModal } = this.state;
     this.setState({
       profileModal: !profileModal,
@@ -358,9 +355,10 @@ class Header extends Component {
                         <span>{loginDetails()?.name}</span>
                         <KeyboardArrowDownOutlinedIcon />
                       </Box>
-                      {profileModal  && (
-                        <Box className="profile-modal"
-                        ref={this.profileModalRef}
+                      {profileModal && (
+                        <Box
+                          className="profile-modal"
+                          ref={this.profileModalRef}
                         >
                           <ul>
                             <li onClick={() => this.handleProfileModal()}>
