@@ -24,6 +24,7 @@ import status from "../../../../Redux/Constants";
 import _ from "lodash";
 import { loginDetails } from "../../../Utills/helperFunctions";
 import { Link } from "react-router-dom";
+import BookmarkOutlinedIcon from "@mui/icons-material/BookmarkOutlined";
 import {
   deleteProductWishList,
   setProductWishList,
@@ -40,10 +41,33 @@ class List extends Component {
       isUpdateIncrease: false,
       qauntityUnits: [],
       isProductSelecting: false,
+      bookMarkId: "",
     };
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.deleteBookMarkData.status !==
+        this.props.deleteBookMarkData.status &&
+      this.props.deleteBookMarkData.status === status.SUCCESS
+    ) {
+      this.getAllProduct();
+      this.setState({
+        bookMarkId: "",
+      });
+    }
+
+    if (
+      prevProps.setBookmarksData.status !==
+        this.props.setBookmarksData.status &&
+      this.props.setBookmarksData.status === status.SUCCESS
+    ) {
+      this.getAllProduct();
+      this.setState({
+        bookMarkId: "",
+      });
+    }
+
     if (
       prevProps.additems.status !== this.props.additems.status &&
       this.props.additems.status === status.SUCCESS &&
@@ -136,15 +160,34 @@ class List extends Component {
               <Box className="sale">Sale {item.savingsPercentage}%</Box>
             )}
 
-            <Box
-              className="icon"
-              onClick={(event) => {
-                event.preventDefault();
-                this.handleWishList(item?.id, false);
-              }}
-            >
-              <TurnedInNotOutlinedIcon />
-            </Box>
+            {loginDetails()?.userId ? (
+              this.state.bookMarkId == item?.id &&
+              this.props.deleteBookMarkData.status === status.IN_PROGRESS ? (
+                <Box className="icon">
+                  <CircularProgress
+                    className="common-loader plus-icon"
+                    size={24}
+                  />
+                </Box>
+              ) : (
+                <Box
+                  className="icon"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    this.handleWishList(item.id, item?.inWishlist);
+                  }}
+                >
+                  {item?.inWishlist ? (
+                    <BookmarkOutlinedIcon />
+                  ) : (
+                    <TurnedInNotOutlinedIcon />
+                  )}
+                </Box>
+              )
+            ) : (
+              <></>
+            )}
+
             <Box
               className="image"
               onClick={() => {
@@ -387,14 +430,14 @@ class List extends Component {
     }
   };
 
-  handleWishList(id, isBookMarked = false) {
+  handleWishList(id, isBookMarked) {
     const item = loginDetails();
+    this.setState({
+      bookMarkId: id,
+    });
     if (item?.userId) {
       if (isBookMarked) {
-        this.props.deleteProductWishList({
-          userId: item?.userId,
-          productId: id,
-        });
+        this.props.deleteProductWishList(id);
       } else {
         this.props.setProductWishList({
           userId: item?.userId,
@@ -471,7 +514,16 @@ class List extends Component {
 function mapStateToProps(state) {
   const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
   const { shopCategoryData } = state.allproducts;
-  return { additems, cartItems, updateItems, deleteItems, shopCategoryData };
+  const { setBookmarksData, deleteBookMarkData } = state.allproducts;
+  return {
+    additems,
+    cartItems,
+    updateItems,
+    deleteItems,
+    shopCategoryData,
+    deleteBookMarkData,
+    setBookmarksData,
+  };
 }
 
 const mapDispatchToProps = {
