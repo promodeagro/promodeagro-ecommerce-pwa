@@ -36,7 +36,7 @@ class RecentlyViewedItems extends Component {
     console.log(recentList);
     return (
       <>
-        {recentList.length > 0 ?
+        {recentList.length > 0 ? (
           <Box className="recently-container">
             <Container>
               <Box className="heading">
@@ -56,11 +56,12 @@ class RecentlyViewedItems extends Component {
                         </Grid>
                         <Grid item xs={6} sm={6} md={8}>
                           <Box className="contents">
-                            <Box className="name"
-
-                            >
-
-                              <Link to={`/product-details/${item.category}/${item.name}/${item.id}`}>{item?.name}</Link>
+                            <Box className="name">
+                              <Link
+                                to={`/product-details/${item.category}/${item.name}/${item.id}`}
+                              >
+                                {item?.name}
+                              </Link>
                             </Box>
                             <Box className="price">
                               <img src={priceIcon} alt="" /> {item?.price}
@@ -76,9 +77,9 @@ class RecentlyViewedItems extends Component {
                                 <StarIcon /> {item?.ratings}
                               </Box>
                               <Box className="buttons">
-                                <Button>
+                                {/* <Button>
                                   <TurnedInNotOutlinedIcon />
-                                </Button>
+                                </Button> */}
                                 <Button>
                                   <ShoppingCartOutlinedIcon />
                                 </Button>
@@ -95,10 +96,10 @@ class RecentlyViewedItems extends Component {
               </Box>
             </Container>
           </Box>
-
-          : <></>}
+        ) : (
+          <></>
+        )}
       </>
-
     );
   }
 }
