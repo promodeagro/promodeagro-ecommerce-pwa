@@ -615,12 +615,26 @@ class Header extends Component {
           <Box className="header-bottom-container">
             <Container>
               <Grid container spacing={2} alignItems={"center"}>
-                <Grid item xs={12} sm={6} md={6} lg={6} order={{ sm: 1, xs: 0, }}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={6}
+                  lg={6}
+                  order={{ sm: 1, xs: 0 }}
+                >
                   <Box className="search-box">
                     <SearchResults cartItemsData={cartList} />
                   </Box>
                 </Grid>
-                <Grid item xs={12} sm={4} md={3} lg={4} order={{ sm: 0, xs: 1, }}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={4}
+                  md={3}
+                  lg={4}
+                  order={{ sm: 0, xs: 1 }}
+                >
                   <Box className="categories-container">
                     <Box
                       className="categories-toggle"
@@ -650,7 +664,7 @@ class Header extends Component {
                   sm={2}
                   md={3}
                   lg={2}
-                  order={{ sm: 2, xs: 2, }}
+                  order={{ sm: 2, xs: 2 }}
                   className="notification-and-card"
                 >
                   <Box

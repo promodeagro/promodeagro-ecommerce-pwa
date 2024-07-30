@@ -343,7 +343,7 @@ const UpdatedAddress = (props) => {
                     )}
                   </Grid>
                   <>
-                    <Grid item>
+                    <Grid item xs={12} lg={12} md={12} sm={12}>
                       <FormControlLabel
                         disabled={
                           props.defaultAddressData.status == status.SUCCESS &&
@@ -357,7 +357,7 @@ const UpdatedAddress = (props) => {
                     </Grid>
                   </>
 
-                  <Grid item xs={6} lg={6} md={6} sm={6} marginTop={"25px"}>
+                  <Grid item xs={12} lg={6} md={6} sm={6}>
                     <Link>
                       <Button
                         variant="outlined"
@@ -369,7 +369,7 @@ const UpdatedAddress = (props) => {
                       </Button>
                     </Link>
                   </Grid>
-                  <Grid item xs={6} lg={6} md={6} sm={6} marginTop={"25px"}>
+                  <Grid item xs={12} lg={6} md={6} sm={6}>
                     <Button
                       variant="contained"
                       fullWidth

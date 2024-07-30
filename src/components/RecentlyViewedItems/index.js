@@ -80,11 +80,20 @@ class RecentlyViewedItems extends Component {
                                 {/* <Button>
                                   <TurnedInNotOutlinedIcon />
                                 </Button> */}
-                                <Link
-                                  to={`/product-details/${item.category}/${item.name}/${item.id}`}
-                                >
-                                  <ShoppingCartOutlinedIcon />
-                                </Link>
+                                <Button>
+                                  <Link
+                                    style={{
+                                      display: "inline-flex",
+                                      width: "100%",
+                                      height: "100%",
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                    }}
+                                    to={`/product-details/${item.category}/${item.name}/${item.id}`}
+                                  >
+                                    <ShoppingCartOutlinedIcon />
+                                  </Link>
+                                </Button>
                               </Box>
                             </Box>
                           </Box>
