@@ -41,11 +41,10 @@ const customIcons = {
 
 function CustomStepIcon(props) {
   const { icon } = props;
-
   return (
     <Box className="custom-step-icon">
-      {props.completed ? (
-        <img src={checkedIcon} alt="" />
+      {props.active ? (
+        <img src={packedIcon} alt="" />
       ) : (
         customIcons[String(icon)]
       )}
@@ -56,24 +55,6 @@ class MyOrder extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: 0,
-      orderLists: [
-        {
-          time: "2:00 PM - 5:00 PM",
-          orderStatus: "",
-          orderId: "200715DXFMW0UD",
-        },
-        {
-          time: "2:00 PM - 5:00 PM",
-          orderStatus: "Delivered",
-          orderId: "200715DXFMW0UC",
-        },
-        {
-          time: "2:00 PM - 5:00 PM",
-          orderStatus: "Cancelled",
-          orderId: "200715DXFMW0UB",
-        },
-      ],
       expandedOrderDetails: null,
       openOrderDialog: false,
       copiedOrderId: null,
@@ -83,15 +64,14 @@ class MyOrder extends Component {
   }
 
   componentDidMount() {
-    // this.setState({ expandedOrderDetails: this.state.orderLists[0] });
-    let items = loginDetails();
+    const items = loginDetails();
 
     if (items?.userId) {
       this.props.fetchAllorders(items?.userId);
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (
       prevProps.allOrdersData.status !== this.props.allOrdersData.status &&
       this.props.allOrdersData.status === status.SUCCESS &&
@@ -99,23 +79,15 @@ class MyOrder extends Component {
       this.props.allOrdersData?.data?.orders
     ) {
       this.setState({
-        myOrdersList: this.props.allOrdersData?.data?.orders,
+        myOrdersList: this.props.allOrdersData.data.orders,
       });
     }
-
-    // if (
-    //   prevProps.orderByIdData.status !== this.props.orderByIdData.status &&
-    //   this.props.orderByIdData.status === status.SUCCESS &&
-    //   this.props.orderByIdData.data
-    // ) {
-
-    // }
   }
 
   handleToggleExpand = (orderList) => {
     this.setState((prevState) => ({
       expandedOrderDetails:
-        prevState.expandedOrder === orderList ? null : orderList,
+        prevState.expandedOrderDetails === orderList ? null : orderList,
     }));
   };
 
@@ -144,18 +116,29 @@ class MyOrder extends Component {
   render() {
     const steps = [
       "Order placed",
-      "In Process ",
+      "In Process",
       "Packed",
-      "On the way ",
-      "Delivered ",
+      "On the way",
+      "Delivered",
     ];
+
     const {
-      orderLists,
       expandedOrderDetails,
       openOrderDialog,
       copiedOrderId,
       myOrdersList,
     } = this.state;
+
+    // Mapping order status to step index
+    const statusToStepIndex = {
+      "Order placed": 0,
+      "In Process": 1,
+      Packed: 2,
+      "On the way": 3,
+      Delivered: 4,
+      Cancelled: -1, // Handle cancelled orders
+    };
+
     return (
       <Container>
         {this.props.allOrdersData.status === status.IN_PROGRESS ? (
@@ -165,296 +148,202 @@ class MyOrder extends Component {
             <Box className="my-order-list">
               <Box className="d-flex align-items-center">
                 <h2>My Orders</h2>
-                <Box className="order-status">
+                {/* <Box className="order-status">
                   <span>Packing</span>
-                </Box>
+                </Box> */}
               </Box>
               <span className="d-block last-month-order">
                 Showing orders for the last 6 months{" "}
-                <strong>{myOrdersList.length}</strong>Orders
+                <strong>{myOrdersList.length}</strong> Orders
               </span>
               {myOrdersList.length > 0 ? (
-                myOrdersList.map((item) => {
-                  return (
-                    <Box key={item?.id}>
+                myOrdersList.map((item) => (
+                  <Box key={item?.id}>
+                    <Box
+                      className="order-status-collapsed"
+                      data-aos="zoom-in-right"
+                    >
+                      <Box className="inner-order">
+                        <Grid container spacing={1} alignItems={"center"}>
+                          <Grid item xs={3}>
+                            <Box className="date-time-container order-progress">
+                              <AccessTimeIcon />
+                              <Box className="d-block">
+                                <span className="d-block">
+                                  {item?.deliverySlot?.startTime}-
+                                  {item?.deliverySlot?.endTime}
+                                </span>
+                              </Box>
+                            </Box>
+                          </Grid>
+                          <Grid item xs={5}>
+                            <Box className="order-status-bar">
+                              <Stepper
+                                activeStep={
+                                  statusToStepIndex[item?.status] !== undefined
+                                    ? statusToStepIndex[item?.status]
+                                    : 0
+                                }
+                                alternativeLabel
+                              >
+                                {steps.map((label, index) => (
+                                  <Step key={label}>
+                                    <StepLabel
+                                      StepIconComponent={CustomStepIcon}
+                                      icon={index + 1}
+                                    >
+                                      {label}
+                                    </StepLabel>
+                                  </Step>
+                                ))}
+                              </Stepper>
+                            </Box>
+                          </Grid>
+                          <Grid item xs={1}>
+                            {item?.status === "Delivered" ? (
+                              <Box className="order-status-container delivered">
+                                <span className="d-block">{item?.status}</span>
+                              </Box>
+                            ) : item?.status === "Cancelled" ? (
+                              <Box className="order-status-container cancelled">
+                                <span className="d-block">{item?.status}</span>
+                              </Box>
+                            ) : null}
+                          </Grid>
+                          <Grid item xs={2}>
+                            <Box className="order-id-container order-progress">
+                              <span className="d-block title">Order ID:</span>
+                              <Box className="d-flex align-items-center">
+                                <span className="d-block number">
+                                  {item?.id}
+                                </span>
+                                <Tooltip
+                                  title={
+                                    copiedOrderId === item?.id
+                                      ? "Copied!"
+                                      : "Copy Order ID"
+                                  }
+                                  arrow
+                                  open={copiedOrderId === item?.id}
+                                >
+                                  <ContentCopyIcon
+                                    onClick={() =>
+                                      this.handleCopyOrderId(item?.id)
+                                    }
+                                  />
+                                </Tooltip>
+                              </Box>
+                            </Box>
+                          </Grid>
+                          <Grid
+                            item
+                            xs={1}
+                            display={"flex"}
+                            justifyContent={"center"}
+                          >
+                            <IconButton
+                              aria-label="arrow"
+                              onClick={() => this.handleToggleExpand(item)}
+                            >
+                              {expandedOrderDetails === item ? (
+                                <KeyboardArrowUpIcon />
+                              ) : (
+                                <KeyboardArrowDownIcon />
+                              )}
+                            </IconButton>
+                          </Grid>
+                        </Grid>
+                      </Box>
+                    </Box>
+                    {expandedOrderDetails === item && (
                       <Box
-                        className="order-status-collapsed"
+                        className="order-details-container"
                         data-aos="zoom-in-right"
                       >
-                        <Box className="inner-order">
-                          <Grid container spacing={1} alignItems={"center"}>
-                            <Grid item xs={3} lg={3} md={3} sm={3}>
-                              <Box className="date-time-container order-progress">
-                                <AccessTimeIcon />
-                                <Box className="d-block">
-                                  <span className="d-block">
-                                    {/* Today, */}
-                                  </span>
-                                  <span className="d-block">
-                                    {item?.deliverySlot?.startTime}-
-                                    {item?.deliverySlot?.endTime}
-                                  </span>
-                                </Box>
-                              </Box>
-                            </Grid>
-                            <Grid item xs={5} lg={5} md={5} sm={5}>
-                              <Box className="order-status-bar">
-                                <Stepper activeStep={item?.status} alternativeLabel>
-                                  {steps.map((label, index) => {
-                                    return (
-                                      <Step key={label}>
-                                        <StepLabel
-                                          StepIconComponent={CustomStepIcon}
-                                          icon={index + 1}
-                                        >
-                                          {label}
-                                        </StepLabel>
-                                      </Step>
-                                    );
-                                  })}
-                                </Stepper>
-                              </Box>
-                            </Grid>
-                            <Grid item xs={1} lg={1} md={1} sm={1}>
-                              {item?.orderStatus === "Delivered" ? (
-                                <Box className="order-status-container delivered">
-                                  <span className="d-block">
-                                    {item?.orderStatus}
-                                  </span>
-                                </Box>
-                              ) : item?.orderStatus === "Cancelled" ? (
-                                <Box className="order-status-container cancelled">
-                                  <span className="d-block">
-                                    {item?.orderStatus}
-                                  </span>
-                                </Box>
-                              ) : (
-                                <></>
-                              )}
-                            </Grid>
-                            <Grid item xs={2} lg={2} md={2} sm={2}>
-                              <Box className="order-id-container order-progress">
-                                <span className="d-block title">
-                                  Order ID :
-                                </span>
-                                <Box className="d-flex align-items-center">
-                                  <span className="d-block number">
-                                    {item?.id}
-                                  </span>
-                                  <Tooltip
-                                    title={
-                                      copiedOrderId === item?.id
-                                        ? "Copied!"
-                                        : "Copy Order ID"
-                                    }
-                                    arrow
-                                    open={copiedOrderId === item?.id}
-                                  >
-                                    <ContentCopyIcon
-                                      onClick={() =>
-                                        this.handleCopyOrderId(item?.id)
-                                      }
-                                    />
-                                  </Tooltip>
-                                </Box>
-                              </Box>
-                            </Grid>
-                            <Grid
-                              item
-                              xs={1}
-                              lg={1}
-                              md={1}
-                              sm={1}
-                              display={"flex"}
-                              justifyContent={"center"}
-                            >
-                              <Box
-                                className="collapsed-arrow"
-                                onClick={() => this.handleToggleExpand(item)}
-                              >
-                                <IconButton aria-label="arrow">
-                                  {expandedOrderDetails === item &&
-                                  this.state.expandedOrderId ? (
-                                    <KeyboardArrowUpIcon
-                                      onClick={() => {
-                                        this.setState({
-                                          expandedOrderId: "",
-                                        });
-                                      }}
-                                    />
-                                  ) : (
-                                    <KeyboardArrowDownIcon
-                                      onClick={() => {
-                                        this.setState({
-                                          expandedOrderId: item?.id,
-                                        });
-                                      }}
-                                    />
-                                  )}
-                                </IconButton>
-                              </Box>
-                            </Grid>
-                          </Grid>
-                        </Box>
-                      </Box>
-                      {expandedOrderDetails === item &&
-                        this.state.expandedOrderId && (
-                          <Box
-                            className="order-details-container"
-                            data-aos="zoom-in-right"
-                          >
-                            <span className="d-block order-place-time">
-                              Ordered 2hrs ago
-                            </span>
-                            <Grid
-                              container
-                              spacing={{ lg: 12, md: 4, sm: 4, xs: 4 }}
-                            >
-                              <Grid item xs={12} lg={4} md={4} sm={6}>
-                                <Box className="delivery-address">
-                                  <h3 className="d-block">Delivery Address</h3>
-                                  <span className="d-block info">
-                                    {" "}
-                                    {expandedOrderDetails?.address?.name}
-                                  </span>
-                                  <address className="info">
-                                    {expandedOrderDetails?.address?.address}
-                                  </address>
-                                  <span className="d-block info">
-                                    Ph:{" "}
-                                    {expandedOrderDetails?.address?.phoneNumber}
-                                  </span>
-                                </Box>
-                              </Grid>
-                              <Grid item xs={12} lg={4} md={4} sm={6}>
-                                <Box className="delivery-address">
-                                  <h3 className="d-block">
-                                    Payment Information
-                                  </h3>
-                                  <span className="d-block info">
-                                    Payment Status :{" "}
-                                    <strong className="payment-status">
-                                      Due
-                                    </strong>
-                                  </span>
-                                  <span className="d-block info">
-                                    Mode of Payment :{" "}
-                                    <strong className="payment-type">
-                                      {
-                                        expandedOrderDetails?.paymentDetails
-                                          ?.method
-                                      }
-                                    </strong>
-                                  </span>
-                                </Box>
-                              </Grid>
-                              <Grid item xs={12} lg={4} md={4} sm={12}>
-                                <Box className="order-summary-container">
-                                  <span className="d-block title">
-                                    Order Summary
-                                  </span>
-                                  <Box className="d-flex justify-content-between">
-                                    <span className="d-block summary-title">
-                                      Order Amount
-                                    </span>
-                                    <span className="d-block order-amount">
-                                      Rs. {expandedOrderDetails?.totalPrice}
-                                    </span>
-                                  </Box>
-                                  <Box className="d-flex justify-content-between">
-                                    <span className="d-block summary-title">
-                                      Savings
-                                    </span>
-                                    <span className="d-block saving-amount">
-                                      RS. {expandedOrderDetails?.totalSavings}
-                                    </span>
-                                  </Box>
-                                  <Box className="top-cricle circle-1">
-                                    <span className="d-block cricle"></span>
-                                  </Box>
-                                  <Box className="top-cricle circle-2">
-                                    <span className="d-block cricle"></span>
-                                  </Box>
-                                  <Box className="top-cricle circle-3">
-                                    <span className="d-block cricle"></span>
-                                  </Box>
-                                  <Box className="top-cricle circle-4">
-                                    <span className="d-block cricle"></span>
-                                  </Box>
-                                  <Box className="bottom-cricle circle-1">
-                                    <span className="d-block cricle"></span>
-                                  </Box>
-                                  <Box className="bottom-cricle circle-2">
-                                    <span className="d-block cricle"></span>
-                                  </Box>
-                                  <Box className="bottom-cricle circle-3">
-                                    <span className="d-block cricle"></span>
-                                  </Box>
-                                  <Box className="bottom-cricle circle-4">
-                                    <span className="d-block cricle"></span>
-                                  </Box>
-                                </Box>
-                              </Grid>
-                            </Grid>
-                            <Box className="more-order-details">
-                              <span className="d-block text">
-                                More with this order
+                        <span className="d-block order-place-time">
+                          Ordered 2hrs ago
+                        </span>
+                        <Grid container spacing={4}>
+                          <Grid item xs={12} md={4}>
+                            <Box className="delivery-address">
+                              <h3 className="d-block">Delivery Address</h3>
+                              <span className="d-block info">
+                                {item?.address?.name}
                               </span>
-                              <Button
-                                variant="outlined"
-                                className="d-block"
-                                onClick={() => this.handleClickOpen()}
-                              >
-                                <span className="d-block title">
-                                  Cancel Order
-                                </span>
-                                <span className="d-block sub-title">
-                                  Cancel This Order
-                                </span>
-                              </Button>
+                              <address className="info">
+                                {item?.address?.address}
+                              </address>
+                              <span className="d-block info">
+                                Ph: {item?.address?.phoneNumber}
+                              </span>
                             </Box>
-                          </Box>
-                        )}
-                    </Box>
-                  );
-                })
-              ) : this.props.allOrdersData.status === status.IN_PROGRESS ? (
-                <></>
+                          </Grid>
+                          <Grid item xs={12} md={4}>
+                            <Box className="delivery-address">
+                              <h3 className="d-block">Payment Information</h3>
+                              <span className="d-block info">
+                                Payment Status:{" "}
+                                <strong className="payment-status">Due</strong>
+                              </span>
+                              <span className="d-block info">
+                                Mode of Payment:{" "}
+                                <strong className="payment-type">
+                                  {item?.paymentDetails?.method}
+                                </strong>
+                              </span>
+                            </Box>
+                          </Grid>
+                          <Grid item xs={12} md={4}>
+                            <Box className="order-summary-container">
+                              <span className="d-block title">
+                                Order Summary
+                              </span>
+                              <Box className="d-flex justify-content-between">
+                                <span className="d-block summary-title">
+                                  Order Amount
+                                </span>
+                                <span className="d-block order-amount">
+                                  Rs. {item?.totalPrice}
+                                </span>
+                              </Box>
+                              <Box className="d-flex justify-content-between">
+                                <span className="d-block summary-title">
+                                  Discount
+                                </span>
+                                <span className="d-block order-amount">
+                                  Rs. {item?.discount || 0}
+                                </span>
+                              </Box>
+                              <Box className="d-flex justify-content-between">
+                                <span className="d-block summary-title">
+                                  Final Amount
+                                </span>
+                                <span className="d-block order-amount">
+                                  Rs. {item?.totalPrice - (item?.discount || 0)}
+                                </span>
+                              </Box>
+                            </Box>
+                          </Grid>
+                        </Grid>
+                      </Box>
+                    )}
+                  </Box>
+                ))
               ) : (
                 <Box>No Order History</Box>
               )}
             </Box>
           </Box>
         )}
-
-        <Dialog
-          open={openOrderDialog}
-          onClose={() => this.handleClickClose()}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
+        <Dialog open={openOrderDialog} onClose={this.handleClickClose}>
           <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              Are you sure you want to delete this order?
+            <DialogContentText>
+              Order has been cancelled successfully!
             </DialogContentText>
           </DialogContent>
-          <DialogActions
-            style={{ justifyContent: "center", paddingBottom: "24px" }}
-          >
-            <Button
-              variant="outlined"
-              className="outline-common-btn"
-              onClick={() => this.handleClickClose()}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="outlined"
-              className="outline-common-btn"
-              color="error"
-              onClick={() => this.handleClickClose()}
-            >
-              Delete
+          <DialogActions>
+            <Button onClick={this.handleClickClose} color="primary">
+              Close
             </Button>
           </DialogActions>
         </Dialog>
