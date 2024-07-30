@@ -343,24 +343,18 @@ const UpdatedAddress = (props) => {
                     )}
                   </Grid>
                   <>
-                    {props.defaultAddressData.status == status.SUCCESS ? (
-                      <>
-                        {props.defaultAddressData?.data?.addressId === id ? (
-                          <></>
-                        ) : (
-                          <Grid item>
-                            <FormControlLabel
-                              value={isChecked}
-                              onChange={handleValueChange}
-                              control={<Checkbox />}
-                              label="Make This Default Address"
-                            />
-                          </Grid>
-                        )}
-                      </>
-                    ) : (
-                      <></>
-                    )}
+                    <Grid item>
+                      <FormControlLabel
+                        disabled={
+                          props.defaultAddressData.status == status.SUCCESS &&
+                          props.defaultAddressData?.data?.addressId === id
+                        }
+                        value={isChecked}
+                        onChange={handleValueChange}
+                        control={<Checkbox />}
+                        label="Make This Default Address"
+                      />
+                    </Grid>
                   </>
 
                   <Grid item xs={6} lg={6} md={6} sm={6} marginTop={"25px"}>
