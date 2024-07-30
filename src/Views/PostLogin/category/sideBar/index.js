@@ -74,7 +74,6 @@ class SideBar extends Component {
     };
     this.debouncedFilter = _.debounce((params) => {
       this.props.handleFilterApiLoader(true);
-      debugger
       this.props.fetchFilteredProducts(params);
     }, 1000);
   }
@@ -158,12 +157,12 @@ class SideBar extends Component {
     let rating = "";
     let discounts = "";
     if (selectedRatings.length > 0) {
-      selectedRatings.forEach((item) => {
+      selectedRatings.forEach((item,index) => {
         const ratingValue = parseFloat(item); // Convert item to a floating point number
 
         if (ratingValue >= 2 && ratingValue < 5) {
-          rating += ratingValue + ".0" + " &" + " up,";
-        } else {
+          rating += ratingValue + ".0" + "to" + "up,";
+        } else if(ratingValue==5){
           rating += ratingValue + ".0" + ",";
         }
       });
