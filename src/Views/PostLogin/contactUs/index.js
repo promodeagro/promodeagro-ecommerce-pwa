@@ -151,8 +151,8 @@ class ContactUs extends Component {
                       <h4>Online Customer Support</h4>
                       <p>
                         Customer Care Team Email :{" "}
-                        <a href="mailto:support@agrofarm.com">
-                          support@agrofarm.com
+                        <a href="mailto:support@promodeagro.com">
+                          support@promodeagro.com
                         </a>
                       </p>
                     </Box>
@@ -165,6 +165,10 @@ class ContactUs extends Component {
                       <p>
                         Store customer Care Team Phone No :{" "}
                         <a href="tel:+91 8522829922">+91 8522829922</a>
+                      </p>
+                      <p>
+                        Farm CEO(Tina) Phone No:{" "}
+                        <a href="tel:+91 8897399587">+91 8897399587</a>
                       </p>
                     </Box>
                     <Box className="support-box">
