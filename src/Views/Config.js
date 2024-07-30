@@ -18,7 +18,7 @@ const Config = {
   DELETE_ADDRESS: `${BASE_URL}/deleteAddress`,
   UPDATE_ADDRESS: `${BASE_URL}/updateAddress`,
   PLACE_ORDER: `${BASE_URL}/order`,
-  FORGOT_PASSWORD: `${BASE_URL}/changePassword`,
+  FORGOT_PASSWORD: `${BASE_URL}/forgetPassword`,
   GLOBAL_SEARCH: `${BASE_URL}/products/search`,
   CATEGOREIS: `${BASE_URL}/category`,
   SET_DEFAULT_ADDRESS: `${BASE_URL}/setDefaultAddress`,
@@ -29,7 +29,8 @@ const Config = {
   ADD_PRODUCT_WISHLIST: `${BASE_URL}/addProductInWishList` ,
   DELETE_PRODUCT_WISHLIST:`${BASE_URL}/removeProductInWishList` ,
   GET_PRODUCT_WISHLIST:`${BASE_URL}/getUserWishList`, 
-  GET_PRODUCT_REIVEW:`${BASE_URL}/getProductReview` 
+  GET_PRODUCT_REIVEW:`${BASE_URL}/getProductReview` ,
+  CHANGE_PASSWORD:`${BASE_URL}/changePassword` ,
 };
 
 export default Config;

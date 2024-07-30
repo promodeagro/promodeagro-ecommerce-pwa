@@ -36,12 +36,7 @@ const validationSchema = {
       regex: ValidationEngine.MOBILE_NUMBER_REGEX,
     },
   ],
-  password: [
-    {
-      message: "Please enter Password",
-      type: ValidationEngine.type.MANDATORY,
-    },
-  ],
+
   newPassword: [
     {
       message: "Please enter new password",
@@ -67,34 +62,28 @@ class ForgotPassword extends Component {
     if (
       prevProps.forgotPassData.status !== this.props.forgotPassData.status &&
       this.props.forgotPassData.status === status.SUCCESS &&
-      this.props.forgotPassData.data
+      this.props.forgotPassData?.data
     ) {
-
-      if ( this.props.forgotPassData.data.statusCode == 401) {
+      if (this.props.forgotPassData.data.statusCode == 401) {
         ErrorMessages.error(this.props.forgotPassData.data.message);
         return;
       } else if (this.props.forgotPassData.data.statusCode == 200) {
         this.setState({
           mobileNumber: "",
-          password: "",
           newPassword: "",
           isSubmit: false,
         });
-
+        localStorage.removeItem("login");
         ErrorMessages.success(this.props.forgotPassData.data?.message);
         this.props.navigate("/signin");
-
       }
-
-
     }
   }
 
   validateForm = () => {
-    const { mobileNumber, password, newPassword } = this.state;
+    const { mobileNumber, newPassword } = this.state;
     const error = ValidationEngine.validate(validationSchema, {
       mobileNumber,
-      password,
       newPassword,
     });
     return error;
@@ -111,7 +100,7 @@ class ForgotPassword extends Component {
   };
 
   handleSignIn = () => {
-    const { mobileNumber, password, newPassword } = this.state;
+    const { mobileNumber, newPassword } = this.state;
 
     const errorData = this.validateForm();
     this.setState({
@@ -120,7 +109,6 @@ class ForgotPassword extends Component {
     if (errorData.isValid) {
       this.props.forgotPassword({
         mobileNumber: mobileNumber,
-        oldPassword: password,
         newPassword: newPassword,
       });
     }
@@ -183,27 +171,6 @@ class ForgotPassword extends Component {
                     {errorData?.mobileNumber?.message}
                   </FormHelperText>
                 )}
-                <Box className="number-input">
-                  <label className="d-block">
-                    Password <span className="validate-icon">*</span>
-                  </label>
-                  <TextField
-                    className="number-textfield"
-                    id="outlined-basic"
-                    variant="outlined"
-                    fullWidth
-                    name="password"
-                    value={password}
-                    type="password"
-                    onChange={this.handleValueChange}
-                    error={!errorData.password.isValid && isSubmit}
-                  />
-                </Box>
-                {isSubmit && (
-                  <FormHelperText error>
-                    {errorData?.password?.message}
-                  </FormHelperText>
-                )}
 
                 <Box className="number-input">
                   <label className="d-block">
@@ -243,7 +210,7 @@ class ForgotPassword extends Component {
                     )
                   }
                 >
-                  Change Password
+                  Forget Password
                 </Button>
                 <Box marginTop={"15px"}>
                   <Link to={"/signin"}>
