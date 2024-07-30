@@ -498,26 +498,19 @@
     }
     .products {
       .product-box {
-        width: 100%;
-        margin-right: 0px;
-
-        &:nth-child(3n + 3) {
-          margin-right: 0px;
-        }
-
+        width: calc(52.2% - 15px);
+        margin-bottom: 15px;
         &:nth-child(2n + 2) {
           margin-right: 0px;
         }
         &.hide-filter-box {
-          width: 100%;
-
-          &:nth-child(3n + 3) {
-            margin-right: 0px;
-          }
-
+          width: calc(52.2% - 15px);
           &:nth-child(2n + 2) {
             margin-right: 0px;
           }
+        }
+        .image {
+          height: 140px;
         }
       }
     }

@@ -20,6 +20,7 @@ import supportIcon from "../../assets/img/support-icon.png";
 import deliverIcon from "../../assets/img/deliver-icon.png";
 import notificationIcon from "../../assets/img/notification-icon.png";
 import cardIcon from "../../assets/img/card-icon.png";
+import shoppingCartIcon from "../../assets/img/shopping-cart.png";
 import searchIcon from "../../assets/img/search-icon.png";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -33,6 +34,7 @@ import AccountBoxTwoToneIcon from "@mui/icons-material/AccountBoxTwoTone";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import { fetchDefaultAddress } from "../../Redux/Address/AddressThunk";
+
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -52,7 +54,7 @@ class Header extends Component {
     this.profileModalRef = React.createRef();
   }
   componentDidMount() {
-    document.addEventListener("mousedown", this.handleClickOutside);
+    // document.addEventListener("mousedown", this.handleClickOutside);
     window
       .matchMedia("(max-width: 600px)")
       .addEventListener("change", (e) => this.setState({ matches: e.matches }));
@@ -127,9 +129,9 @@ class Header extends Component {
     // }
   }
 
-  componentWillUnmount() {
-    document.removeEventListener("mousedown", this.handleClickOutside);
-  }
+  // componentWillUnmount() {
+  //   document.removeEventListener("mousedown", this.handleClickOutside);
+  // }
 
   extractIdFromPath = (path) => {
     // Example: Assuming URL path format is '/mycart/address/updated-address/:id'
@@ -158,16 +160,16 @@ class Header extends Component {
     });
   };
 
-  handleClickOutside = (event) => {
-    if (
-      this.profileModalRef.current &&
-      !this.profileModalRef.current.contains(event.target)
-    ) {
-      this.setState({
-        profileModal: false,
-      });
-    }
-  };
+  // handleClickOutside = (event) => {
+  //   if (
+  //     this.profileModalRef.current &&
+  //     !this.profileModalRef.current.contains(event.target)
+  //   ) {
+  //     this.setState({
+  //       profileModal: false,
+  //     });
+  //   }
+  // };
 
   renderCategories = () => {
     return (
@@ -289,9 +291,8 @@ class Header extends Component {
   };
 
   handleProfileModal = () => {
-    const { profileModal } = this.state;
     this.setState({
-      profileModal: !profileModal,
+      profileModal: !this.state.profileModal,
     });
   };
 
@@ -345,6 +346,26 @@ class Header extends Component {
                       <span>{currentAddress?.name}</span>
                     </Box>
                   )}
+                  {matches && (
+                    <Link to={"/mycart"} style={{ display: "inline-flex" }}>
+                      <Button
+                        variant="outlined"
+                        className="card"
+                        startIcon={<img src={shoppingCartIcon} alt="" />}
+                      >
+                        {this.props?.cartData?.length ? (
+                          <p>{this.props.cartData.length}</p>
+                        ) : (
+                          <></>
+                        )}
+                        {this.state.cartList?.length ? (
+                          <p>{this.state.cartList.length}</p>
+                        ) : (
+                          <></>
+                        )}
+                      </Button>
+                    </Link>
+                  )}
                   {loginDetails()?.name ? (
                     <Box className="profile-box">
                       <Box
@@ -352,53 +373,63 @@ class Header extends Component {
                         onClick={() => this.handleProfileModal()}
                       >
                         <AccountBoxTwoToneIcon />
-                        <span>{loginDetails()?.name}</span>
-                        <KeyboardArrowDownOutlinedIcon />
+                        {!matches && (
+                          <>
+                            <span>{loginDetails()?.name}</span>
+                            <KeyboardArrowDownOutlinedIcon />
+                          </>
+                        )}
                       </Box>
                       {profileModal && (
-                        <Box
-                          className="profile-modal"
-                          ref={this.profileModalRef}
-                        >
-                          <ul>
-                            <li onClick={() => this.handleProfileModal()}>
-                              <Link to="/my-profile/personal-information">
-                                <PermIdentityOutlinedIcon /> My Profile
-                              </Link>
-                            </li>
-                            <li onClick={() => this.handleProfileModal()}>
-                              <Link to="/my-order">
-                                <PermIdentityOutlinedIcon /> Orders
-                              </Link>
-                            </li>
-                            <li onClick={() => this.handleProfileModal()}>
-                              <Link to="/my-profile/wish-list">
-                                <PermIdentityOutlinedIcon /> Wish list
-                              </Link>
-                            </li>
-                            <li onClick={() => this.handleProfileModal()}>
-                              <Link to="/contact-us">
-                                <PermIdentityOutlinedIcon /> Contact Us
-                              </Link>
-                            </li>
-                            <li onClick={() => this.handleProfileModal()}>
-                              <Link to="/my-profile/notification">
-                                <PermIdentityOutlinedIcon /> Notification
-                              </Link>
-                            </li>
-                            <li
-                              onClick={() => {
-                                this.handleProfileModal();
-                                localStorage.removeItem("login");
-                                this.props.navigate("/signin");
-                              }}
-                            >
-                              <Link>
-                                <PermIdentityOutlinedIcon /> Logout
-                              </Link>
-                            </li>
-                          </ul>
-                        </Box>
+                        <>
+                          <Box
+                            className="profile-modal"
+                            ref={this.profileModalRef}
+                          >
+                            <ul>
+                              <li onClick={() => this.handleProfileModal()}>
+                                <Link to="/my-profile/personal-information">
+                                  <PermIdentityOutlinedIcon /> My Profile
+                                </Link>
+                              </li>
+                              <li onClick={() => this.handleProfileModal()}>
+                                <Link to="/my-order">
+                                  <PermIdentityOutlinedIcon /> Orders
+                                </Link>
+                              </li>
+                              <li onClick={() => this.handleProfileModal()}>
+                                <Link to="/my-profile/wish-list">
+                                  <PermIdentityOutlinedIcon /> Wish list
+                                </Link>
+                              </li>
+                              <li onClick={() => this.handleProfileModal()}>
+                                <Link to="/contact-us">
+                                  <PermIdentityOutlinedIcon /> Contact Us
+                                </Link>
+                              </li>
+                              <li onClick={() => this.handleProfileModal()}>
+                                <Link to="/my-profile/notification">
+                                  <PermIdentityOutlinedIcon /> Notification
+                                </Link>
+                              </li>
+                              <li
+                                onClick={() => {
+                                  this.handleProfileModal();
+                                  localStorage.removeItem("login");
+                                  this.props.navigate("/signin");
+                                }}
+                              >
+                                <Link>
+                                  <PermIdentityOutlinedIcon /> Logout
+                                </Link>
+                              </li>
+                            </ul>
+                          </Box>
+                          <Box
+                            className="profile-modal-bg"
+                            onClick={() => this.handleProfileModal()}
+                          ></Box>
+                        </>
                       )}
                     </Box>
                   ) : (
@@ -515,9 +546,9 @@ class Header extends Component {
                   ].includes(path) ? (
                     <Box className="categories" justifyContent={"flex-end"}>
                       <ul>
-                        <li className="quick">
+                        {/* <li className="quick">
                           <Link to="/category">Quick Links</Link>
-                        </li>
+                        </li> */}
                         <li
                           onClick={() => {
                             this.handleFruitsandVeg([
