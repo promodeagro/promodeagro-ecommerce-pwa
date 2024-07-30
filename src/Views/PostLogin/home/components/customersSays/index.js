@@ -3,6 +3,10 @@ import { Box, Container } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import personImg from "../../../../../assets/img/person.png";
 import customerBg from "../../../../../assets/img/customer-bg.png";
+import saysReviewImg1 from "../../../../../assets/img/says-review-img1.png";
+import saysReviewImg2 from "../../../../../assets/img/says-review-img2.png";
+import saysReviewImg3 from "../../../../../assets/img/says-review-img3.png";
+
 import Slider from "react-slick";
 
 class CustomersSays extends Component {
@@ -59,13 +63,15 @@ class CustomersSays extends Component {
                     <StarIcon />
                     <StarIcon />
                     <StarIcon />
-                    <StarIcon className="gray" />
+                    <StarIcon />
                   </Box>
                   <Box className="name">On Time Delivery</Box>
                   <Box className="text">
-                    “Aenean et nisl eget eros consectetur vestibulum vel id
-                    erat. Aliquam feugiat massa dui. Sed sagittis diam sit amet
-                    ante sodales semper. ”
+                    “The home delivery of fruits and vegetables along with other
+                    Kolkata specific products from Promode Agro has been a
+                    blessing for me, I rarely need to go out these days. Their
+                    products are fresh,very fair pricing and delivery is always
+                    on time. Keep up the good work !”
                   </Box>
                   <Box className="customer-bg">
                     <img src={customerBg} alt="" />
@@ -73,11 +79,11 @@ class CustomersSays extends Component {
                 </Box>
                 <Box className="customers-person">
                   <Box className="icon">
-                    <img src={personImg} alt="" />
+                    <img src={saysReviewImg1} alt="" />
                   </Box>
                   <Box className="info">
-                    <Box className="name">Jenny Wilson</Box>
-                    <Box className="customer">Customer</Box>
+                    <Box className="name">Indrani Patro</Box>
+                    <Box className="customer">PBEL City</Box>
                   </Box>
                 </Box>
               </Box>
@@ -88,13 +94,15 @@ class CustomersSays extends Component {
                     <StarIcon />
                     <StarIcon />
                     <StarIcon />
-                    <StarIcon className="gray" />
+                    <StarIcon />
                   </Box>
                   <Box className="name">On Time Delivery</Box>
                   <Box className="text">
-                    “Aenean et nisl eget eros consectetur vestibulum vel id
-                    erat. Aliquam feugiat massa dui. Sed sagittis diam sit amet
-                    ante sodales semper. ”
+                    “The vegetables and fruits are fresh and handpicked as well
+                    as reasonably priced, the variety usually includes from all
+                    regions, specially north Indian winter vegetables two
+                    delivery slots makes it easier to plan, just in case the
+                    morning slot is missed.”
                   </Box>
                   <Box className="customer-bg">
                     <img src={customerBg} alt="" />
@@ -102,11 +110,11 @@ class CustomersSays extends Component {
                 </Box>
                 <Box className="customers-person">
                   <Box className="icon">
-                    <img src={personImg} alt="" />
+                    <img src={saysReviewImg2} alt="" />
                   </Box>
                   <Box className="info">
-                    <Box className="name">Jenny Wilson</Box>
-                    <Box className="customer">Customer</Box>
+                    <Box className="name">Shweta Saxena</Box>
+                    <Box className="customer">PBEL CITY</Box>
                   </Box>
                 </Box>
               </Box>
@@ -117,13 +125,16 @@ class CustomersSays extends Component {
                     <StarIcon />
                     <StarIcon />
                     <StarIcon />
-                    <StarIcon className="gray" />
+                    <StarIcon />
                   </Box>
                   <Box className="name">On Time Delivery</Box>
                   <Box className="text">
-                    “Aenean et nisl eget eros consectetur vestibulum vel id
-                    erat. Aliquam feugiat massa dui. Sed sagittis diam sit amet
-                    ante sodales semper. ”
+                    “Have been using Promote Agro' produces from the last 6
+                    months. FIRST thing: The produces are of very high quality &
+                    tastes differently than that available in another shops.
+                    Secondly, the purpose of starting Promode Agro farm makes me
+                    to stay connected with them in order to help underprivileged
+                    youngsters. My take: With PROMODE AGRO, you ALWAYS GROW”
                   </Box>
                   <Box className="customer-bg">
                     <img src={customerBg} alt="" />
@@ -131,98 +142,11 @@ class CustomersSays extends Component {
                 </Box>
                 <Box className="customers-person">
                   <Box className="icon">
-                    <img src={personImg} alt="" />
+                    <img src={saysReviewImg3} alt="" />
                   </Box>
                   <Box className="info">
-                    <Box className="name">Jenny Wilson</Box>
-                    <Box className="customer">Customer</Box>
-                  </Box>
-                </Box>
-              </Box>
-              <Box className="customers-says">
-                <Box className="customers-info">
-                  <Box className="ratting">
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon className="gray" />
-                  </Box>
-                  <Box className="name">On Time Delivery</Box>
-                  <Box className="text">
-                    “Aenean et nisl eget eros consectetur vestibulum vel id
-                    erat. Aliquam feugiat massa dui. Sed sagittis diam sit amet
-                    ante sodales semper. ”
-                  </Box>
-                  <Box className="customer-bg">
-                    <img src={customerBg} alt="" />
-                  </Box>
-                </Box>
-                <Box className="customers-person">
-                  <Box className="icon">
-                    <img src={personImg} alt="" />
-                  </Box>
-                  <Box className="info">
-                    <Box className="name">Jenny Wilson</Box>
-                    <Box className="customer">Customer</Box>
-                  </Box>
-                </Box>
-              </Box>
-              <Box className="customers-says">
-                <Box className="customers-info">
-                  <Box className="ratting">
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon className="gray" />
-                  </Box>
-                  <Box className="name">On Time Delivery</Box>
-                  <Box className="text">
-                    “Aenean et nisl eget eros consectetur vestibulum vel id
-                    erat. Aliquam feugiat massa dui. Sed sagittis diam sit amet
-                    ante sodales semper. ”
-                  </Box>
-                  <Box className="customer-bg">
-                    <img src={customerBg} alt="" />
-                  </Box>
-                </Box>
-                <Box className="customers-person">
-                  <Box className="icon">
-                    <img src={personImg} alt="" />
-                  </Box>
-                  <Box className="info">
-                    <Box className="name">Jenny Wilson</Box>
-                    <Box className="customer">Customer</Box>
-                  </Box>
-                </Box>
-              </Box>
-              <Box className="customers-says">
-                <Box className="customers-info">
-                  <Box className="ratting">
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon className="gray" />
-                  </Box>
-                  <Box className="name">On Time Delivery</Box>
-                  <Box className="text">
-                    “Aenean et nisl eget eros consectetur vestibulum vel id
-                    erat. Aliquam feugiat massa dui. Sed sagittis diam sit amet
-                    ante sodales semper. ”
-                  </Box>
-                  <Box className="customer-bg">
-                    <img src={customerBg} alt="" />
-                  </Box>
-                </Box>
-                <Box className="customers-person">
-                  <Box className="icon">
-                    <img src={personImg} alt="" />
-                  </Box>
-                  <Box className="info">
-                    <Box className="name">Jenny Wilson</Box>
-                    <Box className="customer">Customer</Box>
+                    <Box className="name">Md Juber Khan</Box>
+                    <Box className="customer">PBEL City, Hyderabad</Box>
                   </Box>
                 </Box>
               </Box>

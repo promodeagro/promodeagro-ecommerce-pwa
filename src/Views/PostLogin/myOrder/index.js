@@ -33,18 +33,19 @@ import status from "../../../Redux/Constants";
 
 const customIcons = {
   1: <img src={deliverdIcon} alt="" />,
-  2: <img src={onTheWayIcon} alt="" />,
+  2: <img src={checkedIcon} alt="" />,
   3: <img src={packedIcon} alt="" />,
   4: <img src={onTheWayIcon} alt="" />,
   5: <img src={deliverdIcon} alt="" />,
 };
 
 function CustomStepIcon(props) {
+  console.log("satish", props);
   const { icon } = props;
   return (
     <Box className="custom-step-icon">
       {props.active ? (
-        <img src={packedIcon} alt="" />
+        <img src={checkedIcon} alt="" />
       ) : (
         customIcons[String(icon)]
       )}

@@ -312,7 +312,6 @@ class Header extends Component {
     let login = loginDetails();
 
     const path = window.location.pathname;
-
     return (
       <div className="header">
         <Box className="header-top-container">
@@ -456,7 +455,7 @@ class Header extends Component {
             </Grid>
           </Container>
         </Box>
-        {currentAddress?.name && loginDetails()?.userId && (
+        {currentAddress?.address && loginDetails()?.userId && (
           <Container>
             <Box
               className="mobile-deliver-box"
@@ -464,7 +463,7 @@ class Header extends Component {
                 this.props.navigate("/my-profile/manage-addresses")
               }
             >
-              {currentAddress?.name}
+              <span>{currentAddress?.address}</span>
               <KeyboardArrowDownOutlinedIcon />
             </Box>
           </Container>

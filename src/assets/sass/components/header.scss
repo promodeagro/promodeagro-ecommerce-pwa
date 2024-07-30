@@ -66,11 +66,11 @@
         border: none;
         position: relative;
         min-width: 24px;
-  
+
         span {
           margin: 0;
         }
-  
+
         p {
           position: absolute;
           right: -5px;
@@ -792,6 +792,13 @@
       padding-top: 10px;
       align-items: center;
       justify-content: flex-start;
+      span {
+        width: auto;
+        display: inline-block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
       svg {
         cursor: pointer;
       }
@@ -805,6 +812,5 @@
         display: none;
       }
     }
-
   }
 }
