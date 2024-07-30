@@ -17,7 +17,7 @@ class Service extends Component {
         <Container>
           <Box className="services">
             <Grid container spacing={2}>
-              <Grid item xs={12} lg={3} md={6} sm={6}>
+              <Grid item xs={6} lg={3} md={3} sm={3}>
                 <Box className="service-box">
                   <Box className="icon">
                     <img src={deliveryTruck} alt="" />
@@ -28,7 +28,7 @@ class Service extends Component {
                   </Box>
                 </Box>
               </Grid>
-              <Grid item xs={12} lg={3} md={6} sm={6}>
+              <Grid item xs={6} lg={3} md={3} sm={3}>
                 <Box className="service-box">
                   <Box className="icon">
                     <img src={customerSupport} alt="" />
@@ -39,7 +39,7 @@ class Service extends Component {
                   </Box>
                 </Box>
               </Grid>
-              <Grid item xs={12} lg={3} md={6} sm={6}>
+              <Grid item xs={6} lg={3} md={3} sm={3}>
                 <Box className="service-box">
                   <Box className="icon">
                     <img src={lockSync} alt="" />
@@ -50,7 +50,7 @@ class Service extends Component {
                   </Box>
                 </Box>
               </Grid>
-              <Grid item xs={12} lg={3} md={6} sm={6}>
+              <Grid item xs={6} lg={3} md={3} sm={3}>
                 <Box className="service-box">
                   <Box className="icon">
                     <img src={securityCheck} alt="" />
