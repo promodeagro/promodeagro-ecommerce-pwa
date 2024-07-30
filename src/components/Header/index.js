@@ -512,7 +512,7 @@ class Header extends Component {
                     "/terms-condition",
                     "/privacy-policy",
                     "/return-refund",
-                  ] ? (
+                  ].includes(path) ? (
                     <Box className="categories" justifyContent={"flex-end"}>
                       <ul>
                         <li className="quick">

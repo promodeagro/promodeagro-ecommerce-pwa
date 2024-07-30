@@ -23,7 +23,10 @@ const Footer = () => {
             <Box className="footer-about-text">
               <h3>About Promode Agro farms </h3>
               <p>
-                We are growing vegetables, fruits in most natural way and delivering at optimal price. We make regional (Bengali/Odisha/North Indian) fruit and vegetables items available to Hyderabad customers.
+                We are growing vegetables, fruits in most natural way and
+                delivering at optimal price. We make regional
+                (Bengali/Odisha/North Indian) fruit and vegetables items
+                available to Hyderabad customers.
               </p>
             </Box>
           </Grid>
@@ -40,16 +43,16 @@ const Footer = () => {
                         </Link>
                       </li>
                       <li>
-                        <a href="#">Order History</a>
+                        <Link to="/my-order">Order History</Link>
                       </li>
                       <li>
                         <Link to="/mycart">Shoping Cart</Link>
                       </li>
                       <li>
-                        <a href="#">Wishlist</a>
+                        <Link to="/my-profile/wish-list">Wishlist</Link>
                       </li>
                       <li>
-                        <a href="#">Settings</a>
+                        <Link>Settings</Link>
                       </li>
                     </ul>
                   </Box>
@@ -83,10 +86,10 @@ const Footer = () => {
                       <Link to={"/about-us"}>About Us</Link>
                     </li>
                     <li>
-                      <a href="#">Product</a>
+                      <Link to="/category">Product</Link>
                     </li>
                     <li>
-                      <a href="#">Track Order</a>
+                      <Link to="/my-order">Track Order</Link>
                     </li>
                   </ul>
                 </Box>
@@ -96,18 +99,34 @@ const Footer = () => {
                   <h3>Social</h3>
                   <ul>
                     <li>
-                      <a href="#">
+                      <a
+                        href={
+                          "https://www.instagram.com/promodeagrofarms?igsh=YzYzYTVhMmQ3Z2M5"
+                        }
+                        target="_blank"
+                      >
                         <img src={instagramIcon} alt="" /> Promode agro farms
                       </a>
                     </li>
                     <li>
-                      <a href="#">
+                      <Link>
                         <img src={whatsappIcon} alt="" /> +91 9929929292
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a href="#">
+                      <Link>
                         <img src={linkedinIcon} alt="" /> Promode agro farms
+                      </Link>
+                    </li>
+
+                    <li>
+                      <a
+                        href={
+                          "https://www.facebook.com/profile.php?id=61559714217010&mibextid=ZbWKwL"
+                        }
+                        target="_blank"
+                      >
+                        <img src={instagramIcon} alt="" /> Promode agro farms
                       </a>
                     </li>
                   </ul>
