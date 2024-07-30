@@ -316,7 +316,7 @@ class FeaturedProducts extends Component {
                           </FormControl>
                         </Box>
                       ) : (
-                        <Box className="select">{item.unit} dsfsfjh</Box> // or any other placeholder or message you want to show
+                        <Box className="select">{item.unit} </Box> // or any other placeholder or message you want to show
                       )}
                     </>
 
