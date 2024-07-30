@@ -10,11 +10,12 @@ import {
 import ProfileSideBar from "../profileSideBar";
 import {
   ErrorMessages,
+  loginDetails,
   ValidationEngine,
 } from "../../../Utills/helperFunctions";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import { connect } from "react-redux";
-import { forgotPassword } from "../../../../Redux/ForgotPassword/ForgotPasswordThunk";
+import { changePassword } from "../../../../Redux/Signin/SigninThunk";
 import status from "../../../../Redux/Constants";
 const validationSchema = {
   currentPassword: [
@@ -43,17 +44,24 @@ class ChangePassword extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (
-      prevProps.forgotPassData.status !== this.props.forgotPassData.status &&
-      this.props.forgotPassData.status === status.SUCCESS &&
-      this.props.forgotPassData.data
+      prevProps.changePassData.status !== this.props.changePassData.status &&
+      this.props.changePassData.status === status.SUCCESS &&
+      this.props.changePassData.data
     ) {
-      if (this.props.forgotPassData.data.statusCode == 401) {
-        ErrorMessages.error(this.props.forgotPassData.data.message);
+      if (this.props.changePassData.data.statusCode == 401) {
+        ErrorMessages.error(this.props.changePassData.data.message);
         return;
-      } else if (this.props.forgotPassData.data.statusCode == 200) {
-        ErrorMessages.success(this.props.forgotPassData.data?.message);
-        this.props.navigate("/signin");
+      } else if (this.props.changePassData.data.statusCode == 200) {
+        ErrorMessages.success(this.props.changePassData.data?.message);
+        this.setState({
+          currentPassword:"",
+          newPassword:"",
+          isSubmit:false
+        })
+        this.props.navigate("/");
+        
       }
+      
     }
   }
 
@@ -79,6 +87,11 @@ class ChangePassword extends Component {
       isSubmit: true,
     });
     if (errorData.isValid) {
+      this.props.changePassword({
+        userId: loginDetails()?.userId,
+        oldPassword: this.state.currentPassword,
+        newPassword: this.state.newPassword,
+      });
     }
   };
 
@@ -142,17 +155,17 @@ class ChangePassword extends Component {
                 <Button
                   className="common-btn change-password-btn"
                   variant="contained"
-                  // disabled={
-                  //   this.props.forgotPassData.status === status.IN_PROGRESS
-                  // }
+                  disabled={
+                    this.props.changePassData.status === status.IN_PROGRESS
+                  }
                   onClick={() => this.handleChangePassword()}
-                  // endIcon={
-                  //   this.props.forgotPassData.status === status.IN_PROGRESS ? (
-                  //     <CircularProgress className="common-loader" />
-                  //   ) : (
-                  //     <></>
-                  //   )
-                  // }
+                  endIcon={
+                    this.props.changePassData.status === status.IN_PROGRESS ? (
+                      <CircularProgress className="common-loader" />
+                    ) : (
+                      <></>
+                    )
+                  }
                 >
                   Change Password
                 </Button>
@@ -166,12 +179,12 @@ class ChangePassword extends Component {
 }
 
 function mapStateToProps(state) {
-  const { forgotPassData } = state.forgotpassword;
+  const { changePassData } = state.login;
 
-  return { forgotPassData };
+  return { changePassData };
 }
 
-const mapDispatchToProps = { forgotPassword };
+const mapDispatchToProps = { changePassword };
 
 export default connect(
   mapStateToProps,

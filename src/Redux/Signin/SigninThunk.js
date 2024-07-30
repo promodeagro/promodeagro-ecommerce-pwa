@@ -11,3 +11,14 @@ export const signIn = createAsyncThunk("login", async (params) => {
         return error;
     }
 });
+// changePassword
+
+export const changePassword = createAsyncThunk("changepassword", async (params) => {
+    try {
+        let url = config.CHANGE_PASSWORD;
+        const response = await preLoginService.post(url, params);
+        return response.data;
+    } catch (error) {
+        return error;
+    }
+});
