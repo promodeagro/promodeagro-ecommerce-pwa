@@ -234,8 +234,8 @@ class Signin extends Component {
                     name="isPolicyAccepted"
                   />
                   <span className="agree-text">
-                    I agree to the <Link to="#">Terms & Conditions</Link> and{" "}
-                    <Link to="#">Privacy Policy.</Link>
+                    I agree to the <Link to="/terms-condition">Terms & Conditions</Link> and{" "}
+                    <Link to="/privacy-policy">Privacy Policy.</Link>
                   </span>
                 </Box>
                 {isSubmit && (

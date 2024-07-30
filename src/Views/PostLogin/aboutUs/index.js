@@ -25,7 +25,7 @@ class AboutUs extends Component {
           <Container>
             <Box className="contents">
               <h2>
-                Welcome to{" "}<span>Promode Agro Farms !</span>
+                Welcome to&nbsp;<span> Promode Agro Farms !</span>
               </h2>
               <p>
                 At Promode Agro Farms, we are passionate about sustainable

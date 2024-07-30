@@ -52,9 +52,9 @@ const Footer = () => {
                       <li>
                         <Link to="/my-profile/wish-list">Wishlist</Link>
                       </li>
-                      <li>
+                      {/* <li>
                         <Link>Settings</Link>
-                      </li>
+                      </li> */}
                     </ul>
                   </Box>
                 </Grid>
