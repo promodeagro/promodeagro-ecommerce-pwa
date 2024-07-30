@@ -5,6 +5,7 @@ import Grid from "@mui/material/Grid";
 import instagramIcon from "../../assets/img/instagram-icon.svg";
 import whatsappIcon from "../../assets/img/whatsapp-icon.svg";
 import linkedinIcon from "../../assets/img/linkedin-icon.svg";
+import facebookIcon from "../../assets/img/facebook-icon.png";
 import { useLocation } from "react-router-dom"; // Import useLocation hook
 import { loginDetails } from "Views/Utills/helperFunctions";
 import { Link } from "react-router-dom";
@@ -126,7 +127,7 @@ const Footer = () => {
                         }
                         target="_blank"
                       >
-                        <img src={instagramIcon} alt="" /> Promode agro farms
+                        <img src={facebookIcon} alt="" /> Promode agro facebook
                       </a>
                     </li>
                   </ul>

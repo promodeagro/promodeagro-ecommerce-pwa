@@ -247,7 +247,7 @@ class ManageAddresses extends Component {
                           );
                         })
                       ) : (
-                        <p>There Is No Address Found</p>
+                        <Box className="no-data">There Is No Address Found</Box>
                       )}
                     </Grid>
                   </Box>

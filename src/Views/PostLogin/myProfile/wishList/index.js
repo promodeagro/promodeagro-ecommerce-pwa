@@ -425,7 +425,7 @@ class WishList extends Component {
                     );
                   })
                 ) : (
-                  <p>No Data In Wishlist</p>
+                  <Box className="no-data">No Data In Wishlist</Box>
                 )}
 
                 {/* <Box className="product-box">
