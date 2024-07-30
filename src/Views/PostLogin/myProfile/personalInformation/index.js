@@ -61,7 +61,6 @@ class PersonalInformation extends Component {
     this.setState({
       name: items?.name,
     });
-    debugger;
   }
 
   validateForm = () => {
@@ -96,7 +95,7 @@ class PersonalInformation extends Component {
       isSubmit: false,
       name: loginDetails()?.name,
       email: loginDetails()?.email,
-      mobileNumber: loginDetails()?.mobileNumber,
+      mobileNumber: loginDetails()?.contact,
     });
   };
 
