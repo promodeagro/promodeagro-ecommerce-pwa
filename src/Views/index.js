@@ -8,6 +8,7 @@ const ContactUs = lazy(() => import("./../Views/PostLogin/contactUs"));
 const TermsCondition = lazy(() =>
   import("./../Views/PostLogin/termsCondition")
 );
+const PageNotFound = lazy(() => import("../components/PageNotFound"));
 const PrivacyPolicy = lazy(() => import("./../Views/PostLogin/privacyPolicy"));
 const ReturnRefund = lazy(() => import("./../Views/PostLogin/returnRefund"));
 
@@ -74,6 +75,7 @@ const Views = () => {
         {/* Redirect to Home if user is not logged in and tries to access mycart related pages */}
         {!isLoggedIn && (
           <>
+            <Route path={`/my-order`} element={<Navigate to="/" replace />} />
             <Route path={`/mycart`} element={<Navigate to="/" replace />} />
             <Route
               path={`/mycart/address`}
@@ -91,6 +93,12 @@ const Views = () => {
               path={`/mycart/address/add-new-address`}
               element={<Navigate to="/" replace />}
             />
+
+            <Route
+              path={`/my-profile/manage-addresses/add-new-address`}
+              element={<Navigate to="/" replace />}
+            />
+
             <Route
               path={`/mycart/address/updated-address/:id`}
               element={<Navigate to="/" replace />}
@@ -180,20 +188,27 @@ const Views = () => {
         />
 
         <Route path={`/product-details/:id`} element={<ProductDetails />} />
-        <Route path={`/mycart`} element={<MyCart />} />
-        <Route path={`/signin`} element={<SignIn />} />
-        <Route path={`/signup`} element={<SignUp />} />
+        <Route path={`/mycart`} element={<MyCart />} exact />
+        <Route path={`/signin`} element={<SignIn />} exact />
+        <Route path={`/signup`} element={<SignUp />} exact />
         <Route path={`/mycart/address`} element={<Address />} />
         <Route
+          exact
           path={`/mycart/address/order-details`}
           element={<OrderDetails />}
         />
-        <Route path={`/mycart/payment-details`} element={<PaymentOption />} />
         <Route
+          path={`/mycart/payment-details`}
+          exact
+          element={<PaymentOption />}
+        />
+        <Route
+          exact
           path={`/mycart/address/add-new-address`}
           element={<AddNewAddress />}
         />
         <Route
+          exact
           path={`/my-profile/manage-addresses/add-new-address`}
           element={<AddNewAddress />}
         />
@@ -207,10 +222,12 @@ const Views = () => {
           element={<UpdatedAddress />}
         />
         <Route
+          exact
           path={`/mycart/address/order-placed/:id`}
           element={<OrderPlaced />}
         />
-        <Route path={`/my-order`} element={<MyOrder />} />
+        <Route path={`/my-order`} exact element={<MyOrder />} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </Suspense>
   );
