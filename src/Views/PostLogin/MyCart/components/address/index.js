@@ -168,6 +168,7 @@ class Address extends Component {
     ) {
       if (this.props.placeOrderData.data.orderId) {
         localStorage.removeItem("selectedTab");
+        localStorage.removeItem("address");
         ErrorMessages.success(this.props.placeOrderData.data.message);
 
         this.props.navigate(
@@ -201,7 +202,6 @@ class Address extends Component {
       items: itemList,
       userId: login.userId,
     };
-
     this.props.placeOrder(data);
   };
 
@@ -433,7 +433,7 @@ class Address extends Component {
                         onClick={() => {
                           localStorage.setItem("selectedTab", 2);
                           this.props.navigate("/mycart/payment-details");
-
+ 
                           this.setState({
                             activeStep: 2,
                           });

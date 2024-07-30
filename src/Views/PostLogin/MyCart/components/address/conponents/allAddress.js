@@ -57,14 +57,12 @@ const AllAddress = (props) => {
       })
     );
   }, []);
-  
-  useEffect(()=>{
-    if(props.defaultSelectedAddress.addressId){
-      setSelectedAddressId(props.defaultSelectedAddress.addressId)
+
+  useEffect(() => {
+    if (props.defaultSelectedAddress.addressId) {
+      setSelectedAddressId(props.defaultSelectedAddress.addressId);
     }
-  },[props.defaultSelectedAddress])
-
-
+  }, [props.defaultSelectedAddress]);
 
   useEffect(() => {
     if (
@@ -72,6 +70,8 @@ const AllAddress = (props) => {
       allAddressState.data.addresses &&
       allAddressApiLoader
     ) {
+      localStorage.removeItem("address");
+
       setAllAddresApiLoader(true);
       setAllAddress(allAddressState.data.addresses);
       if (allAddressState.data.addresses.length == 0) {
