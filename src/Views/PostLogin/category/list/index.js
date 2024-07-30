@@ -161,29 +161,19 @@ class List extends Component {
             )}
 
             {loginDetails()?.userId ? (
-              this.state.bookMarkId == item?.id &&
-              this.props.deleteBookMarkData.status === status.IN_PROGRESS ? (
-                <Box className="icon">
-                  <CircularProgress
-                    className="common-loader plus-icon"
-                    size={24}
-                  />
-                </Box>
-              ) : (
-                <Box
-                  className="icon"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    this.handleWishList(item.id, item?.inWishlist);
-                  }}
-                >
-                  {item?.inWishlist ? (
-                    <BookmarkOutlinedIcon />
-                  ) : (
-                    <TurnedInNotOutlinedIcon />
-                  )}
-                </Box>
-              )
+              <Box
+                className="icon"
+                onClick={(event) => {
+                  event.preventDefault();
+                  this.handleWishList(item.id, item?.inWishlist);
+                }}
+              >
+                {item?.inWishlist ? (
+                  <BookmarkOutlinedIcon />
+                ) : (
+                  <TurnedInNotOutlinedIcon />
+                )}
+              </Box>
             ) : (
               <></>
             )}
