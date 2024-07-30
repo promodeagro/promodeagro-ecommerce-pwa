@@ -102,7 +102,12 @@ class ManageAddresses extends Component {
     }
   }
   handleAddAddress = () => {
-    this.props.navigate("/my-profile/manage-addresses/add-new-address");
+    const { addAddressModal, isSubmit } = this.state;
+    this.setState({
+      addAddressModal: !addAddressModal,
+      isSubmit: false,
+    });
+    // this.props.navigate("/my-profile/manage-addresses/add-new-address");
   };
 
   handleModal = (status, defualtApisStatus) => {
@@ -141,6 +146,8 @@ class ManageAddresses extends Component {
     });
   };
 
+
+
   render() {
     const { addAddressModal, defaultAddressId, loaderStatus } = this.state;
     return (
@@ -155,93 +162,96 @@ class ManageAddresses extends Component {
               </Box>
               <Box className="profile-right">
                 <Box className="heading">
-                  <h2>Manage Addresses</h2>
+                  <h2>{addAddressModal?"Add Address":"Manage Addresses"}</h2>
                   <Button
-                    className="common-btn address-btn"
-                    // className={
-                    //   addAddressModal === true
-                    //     ? "common-btn address-cancel-btn"
-                    //     : "common-btn address-btn"
-                    // }
+                    className={
+                      addAddressModal
+                        ? "common-btn address-cancel-btn"
+                        : "common-btn address-btn"
+                    }
                     variant="contained"
                     onClick={() => this.handleAddAddress()}
                   >
-                    Add Address
+                    {addAddressModal ? <>Cancel</> : <>Add Address</>}
                   </Button>
                 </Box>
-                <Box className="address-container">
-                  <Grid container spacing={4} alignItems={"center"}>
-                    {this.state.allAddresses?.length > 0 ? (
-                      this.state.allAddresses?.map((item) => {
-                        return (
-                          <Grid item xs={12} lg={4} md={6} sm={6}>
-                            <Box className="address-card-container">
-                              <Box className="d-flex align-items-center">
-                                <IconButton
-                                  aria-label="edit"
-                                  className="address-btn"
-                                  onClick={(event) =>
-                                    this.handleEdit(event, item)
-                                  }
-                                >
-                                  <BorderColorIcon />
-                                </IconButton>
-                                <IconButton
-                                  aria-label="delete"
-                                  className="address-btn"
-                                  onClick={(event) => {
-                                    event.stopPropagation();
-                                    this.handleClickOpen(item);
-                                  }}
-                                  // onClick={() => {
+                {addAddressModal ? (
+                  <AddNewAddress   handleModal={this.handleModal}/>
+                ) : (
+                  <Box className="address-container">
+                    <Grid container spacing={4} alignItems={"center"}>
+                      {this.state.allAddresses?.length > 0 ? (
+                        this.state.allAddresses?.map((item) => {
+                          return (
+                            <Grid item xs={12} lg={4} md={6} sm={6}>
+                              <Box className="address-card-container">
+                                <Box className="d-flex align-items-center">
+                                  <IconButton
+                                    aria-label="edit"
+                                    className="address-btn"
+                                    onClick={(event) =>
+                                      this.handleEdit(event, item)
+                                    }
+                                  >
+                                    <BorderColorIcon />
+                                  </IconButton>
+                                  <IconButton
+                                    aria-label="delete"
+                                    className="address-btn"
+                                    onClick={(event) => {
+                                      event.stopPropagation();
+                                      this.handleClickOpen(item);
+                                    }}
+                                    // onClick={() => {
 
-                                  //   this.setState({
-                                  //     deleteId: item?.addressId,
-                                  //   });
-                                  //   this.props.deleteAddress({
-                                  //     userId: loginDetails()?.userId,
-                                  //     addressId: item?.addressId,
-                                  //   });
-                                  // }}
-                                >
-                                  <DeleteIcon />
-                                </IconButton>
-                              </Box>
-                              <h3 className="person-name">
-                                {item?.name}{" "}
-                                {item.addressId === defaultAddressId ? (
-                                  <span>Default</span>
-                                ) : (
-                                  <></>
-                                )}
-                              </h3>
-                              <address>{item?.address}</address>
-                              <Box className="d-block contact-number">
-                                <span className="d-block contact-heading">
-                                  Contact
-                                </span>
-                                <Box className="d-flex align-items-center">
-                                  <span className="d-block title">Phone</span>
-                                  <span className="d-block details">
-                                    {item?.phoneNumber}
-                                  </span>
+                                    //   this.setState({
+                                    //     deleteId: item?.addressId,
+                                    //   });
+                                    //   this.props.deleteAddress({
+                                    //     userId: loginDetails()?.userId,
+                                    //     addressId: item?.addressId,
+                                    //   });
+                                    // }}
+                                  >
+                                    <DeleteIcon />
+                                  </IconButton>
                                 </Box>
-                                <Box className="d-flex align-items-center">
-                                  <span className="d-block title">Email</span>
-                                  <span className="d-block details">
-                                    {item?.email}
+                                <h3 className="person-name">
+                                  {item?.name}{" "}
+                                  {item.addressId === defaultAddressId ? (
+                                    <span>Default</span>
+                                  ) : (
+                                    <></>
+                                  )}
+                                </h3>
+                                <address>{item?.address}</address>
+                                <Box className="d-block contact-number">
+                                  <span className="d-block contact-heading">
+                                    Contact
                                   </span>
+                                  <Box className="d-flex align-items-center">
+                                    <span className="d-block title">Phone</span>
+                                    <span className="d-block details">
+                                      {item?.phoneNumber}
+                                    </span>
+                                  </Box>
+                                  <Box className="d-flex align-items-center">
+                                    <span className="d-block title">Email</span>
+                                    <span className="d-block details">
+                                      {item?.email}
+                                    </span>
+                                  </Box>
                                 </Box>
                               </Box>
-                            </Box>
-                          </Grid>
-                        );
-                      })
-                    ) : (
-                      <p>There Is No Address Found</p>
-                    )}
-                  </Grid>
-                </Box>
+                            </Grid>
+                          );
+                        })
+                      ) : (
+                        <p>There Is No Address Found</p>
+                      )}
+                    </Grid>
+                  </Box>
+                )}
               </Box>
             </Box>
 
