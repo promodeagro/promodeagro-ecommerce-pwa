@@ -9,7 +9,7 @@ import {
   setProductWishList,
   deleteProductWishList,
   fetchProductWishList,
-  // fetchProductReview,
+  fetchProducReview,
   fetchTopSellingProducts,
   fetchToSellingCategories,
   fetchAllOffers
@@ -407,6 +407,34 @@ const AllProductsSlice = createSlice({
         return {
           ...state,
           allOffersData: {
+            status: status.FAILURE,
+          },
+        };
+      })
+      .addCase(fetchProducReview.pending.toString(), (state, action) => {
+        return {
+          ...state,
+          productReviewData: {
+            status: status.IN_PROGRESS,
+          },
+        };
+      })
+      .addCase(
+        fetchProducReview.fulfilled.toString(),
+        (state, { payload }) => {
+          return {
+            ...state,
+            productReviewData: {
+              status: status.SUCCESS,
+              data: payload,
+            },
+          };
+        }
+      )
+      .addCase(fetchProducReview.rejected.toString(), (state, action) => {
+        return {
+          ...state,
+          productReviewData: {
             status: status.FAILURE,
           },
         };

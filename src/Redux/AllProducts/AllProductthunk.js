@@ -135,7 +135,21 @@ export const fetchProductWishList = createAsyncThunk(
     }
   }
 );
-// getProductReview
+//
+
+export const fetchProducReview = createAsyncThunk(
+  "productreview",
+  async (productId) => {
+    try {
+      let url = config.GET_PRODUCT_REIVEW + `/${productId}`;
+
+      const response = await postLoginService.get(url);
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
 
 export const fetchToSellingCategories = createAsyncThunk(
   "topsellingcategories",
@@ -170,20 +184,16 @@ export const fetchTopSellingProducts = createAsyncThunk(
     }
   }
 );
-// 
+//
 
-export const fetchAllOffers = createAsyncThunk(
-  "alloffers",
-  async (params) => {
-    try {
-      const userId = loginDetails()?.userId;
-      let url =
-        config.GET_ALL_OFFERS 
+export const fetchAllOffers = createAsyncThunk("alloffers", async (params) => {
+  try {
+    const userId = loginDetails()?.userId;
+    let url = config.GET_ALL_OFFERS;
 
-      const response = await postLoginService.get(url);
-      return response.data;
-    } catch (error) {
-      return error;
-    }
+    const response = await postLoginService.get(url);
+    return response.data;
+  } catch (error) {
+    return error;
   }
-);
+});

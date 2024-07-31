@@ -41,6 +41,7 @@ import {
   productDetails,
   deleteProductWishList,
   setProductWishList,
+  fetchProducReview,
 } from "../../../Redux/AllProducts/AllProductthunk";
 import { setShopByCategory } from "../../../Redux/AllProducts/AllProductSlice";
 import {
@@ -77,6 +78,7 @@ class ProductDetails extends Component {
       pathName: "",
       qauntityUnits: "",
       isDeleting: false,
+      productReviewData: {},
     };
   }
   componentDidMount() {
@@ -88,6 +90,7 @@ class ProductDetails extends Component {
       productId: this.props.params.id,
       userId: items?.userId ? items?.userId : "",
     });
+    this.props.fetchProducReview(this.props.params.id);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -101,6 +104,17 @@ class ProductDetails extends Component {
       this.props.productDetails({
         productId: this.props.params.id,
         userId: items?.userId ? items?.userId : "",
+      });
+    }
+
+    if (
+      prevProps.productReviewData.status !==
+        this.props.productReviewData.status &&
+      this.props.productReviewData.status === status.SUCCESS &&
+      this.props.productReviewData.data
+    ) {
+      this.setState({
+        productReviewData: this.props.productReviewData.data,
       });
     }
 
@@ -822,17 +836,29 @@ class ProductDetails extends Component {
                       <Box sx={{ ml: 1 }}>{labels[value]}</Box>
                     </Box>
                     <Box className="star-lines">
-                      <Box className="line">
-                        <span>5 Star</span>
-                        <Box className="percent-line">
-                          <Box
-                            className="percent"
-                            style={{ width: "67%" }}
-                          ></Box>
-                        </Box>
-                        <p>67%</p>
-                      </Box>
-                      <Box className="line">
+                      {this.state.productReviewData?.ratingDistribution
+                        ?.length > 0 ? (
+                        this.state.productReviewData?.ratingDistribution.map(
+                          (item) => {
+                            return (
+                              <Box className="line">
+                                <span>{item?.rating} Star</span>
+                                <Box className="percent-line">
+                                  <Box
+                                    className="percent"
+                                    style={{ width: `${item?.percentage}%` }}
+                                  ></Box>
+                                </Box>
+                                <p>{item?.percentage}%</p>
+                              </Box>
+                            );
+                          }
+                        )
+                      ) : (
+                        <></>
+                      )}
+
+                      {/* <Box className="line">
                         <span>4 Star</span>
                         <Box className="percent-line">
                           <Box
@@ -871,7 +897,7 @@ class ProductDetails extends Component {
                           ></Box>
                         </Box>
                         <p>4%</p>
-                      </Box>
+                      </Box> */}
                     </Box>
                     <Box className="write-review">
                       <strong>Review this product</strong>
@@ -897,7 +923,36 @@ class ProductDetails extends Component {
                         />
                       </Box>
                       <Box className="review-boxes">
-                        <Box className="review-box">
+                        {this.state.productReviewData?.reviews?.length ? (
+                          this.state.productReviewData?.reviews?.map((item) => {
+                            return (
+                              <Box className="review-box">
+                                <Grid container spacing={2}>
+                                  <Grid item xs={2} sm={2} md={1} lg={1}>
+                                    <Box className="image">
+                                      <img src={reviewImg} alt="" />
+                                    </Box>
+                                  </Grid>
+                                  <Grid item xs={10} sm={10} md={11} lg={11}>
+                                    <Box className="contents">
+                                      <Rating
+                                        defaultValue={item?.rating}
+                                        readOnly
+                                        className="rating"
+                                      />
+                                      <p>{item.review}</p>
+                                      <strong>{item?.username}</strong>
+                                    </Box>
+                                  </Grid>
+                                </Grid>
+                              </Box>
+                            );
+                          })
+                        ) : (
+                          <p>No Reviews For This Product</p>
+                        )}
+
+                        {/* <Box className="review-box">
                           <Grid container spacing={2}>
                             <Grid item xs={2} sm={2} md={1} lg={1}>
                               <Box className="image">
@@ -920,31 +975,7 @@ class ProductDetails extends Component {
                               </Box>
                             </Grid>
                           </Grid>
-                        </Box>
-                        <Box className="review-box">
-                          <Grid container spacing={2}>
-                            <Grid item xs={2} sm={2} md={1} lg={1}>
-                              <Box className="image">
-                                <img src={reviewImg} alt="" />
-                              </Box>
-                            </Grid>
-                            <Grid item xs={10} sm={10} md={11} lg={11}>
-                              <Box className="contents">
-                                <Rating
-                                  defaultValue={5}
-                                  readOnly
-                                  className="rating"
-                                />
-                                <p>
-                                  "We love Landingfolio! Our designers were
-                                  using it for their projects, so we already
-                                  knew what kind of design they want."
-                                </p>
-                                <strong>Devon Lane</strong>
-                              </Box>
-                            </Grid>
-                          </Grid>
-                        </Box>
+                        </Box> */}
                       </Box>
                     </Box>
                   </Grid>
@@ -969,6 +1000,7 @@ function mapStateToProps(state) {
     productDetailsData,
     setBookmarksData,
     deleteBookMarkData,
+    productReviewData,
   } = state.allproducts;
   const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
   return {
@@ -983,6 +1015,7 @@ function mapStateToProps(state) {
     productDetailsData,
     setBookmarksData,
     deleteBookMarkData,
+    productReviewData,
   };
 }
 
@@ -996,6 +1029,7 @@ const mapDispatchToProps = {
   setShopByCategory,
   setProductWishList,
   deleteProductWishList,
+  fetchProducReview,
 };
 
 export default connect(
