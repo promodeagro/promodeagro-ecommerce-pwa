@@ -51,7 +51,7 @@ class All extends Component {
       prevProps.updateItems.status !== this.props.updateItems.status &&
       this.props.updateItems.status === status.SUCCESS
     ) {
-      this.setState({ isUpdateIncrease: null });
+      // this.setState({ isUpdateIncrease: null });
 
       this.props.apiCalls();
     }
