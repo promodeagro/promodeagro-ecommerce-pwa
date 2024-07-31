@@ -170,3 +170,20 @@ export const fetchTopSellingProducts = createAsyncThunk(
     }
   }
 );
+// 
+
+export const fetchAllOffers = createAsyncThunk(
+  "alloffers",
+  async (params) => {
+    try {
+      const userId = loginDetails()?.userId;
+      let url =
+        config.GET_ALL_OFFERS 
+
+      const response = await postLoginService.get(url);
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);

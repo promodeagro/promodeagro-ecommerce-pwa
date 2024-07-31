@@ -11,6 +11,7 @@ import { fetchCartItems } from "../../../Redux/Cart/CartThunk";
 import {
   fetchTopSellingProducts,
   fetchToSellingCategories,
+  fetchAllOffers,
 } from "../../../Redux/AllProducts/AllProductthunk";
 import status from "../../../Redux/Constants";
 import { connect } from "react-redux";
@@ -34,6 +35,7 @@ class Home extends Component {
       loaderCount: 0,
       topSellingProductsList: [],
       topSellCategoriesList: [],
+      allOffersList:[]
     };
   }
   componentDidMount() {
@@ -42,6 +44,7 @@ class Home extends Component {
       topSellingApiLoader: true,
     });
     this.props.fetchToSellingCategories();
+    this.props.fetchAllOffers();
     if (items?.userId) {
       this.props.fetchHome(items?.userId);
 
@@ -58,6 +61,16 @@ class Home extends Component {
     }
   }
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.allOffersData.status !== this.props.allOffersData.status &&
+      this.props.allOffersData.status === status.SUCCESS &&
+      this.props.allOffersData?.data
+    ) {
+      this.setState({
+        allOffersList: this.props.allOffersData?.data,
+      });
+    }
+
     if (
       prevProps.topSellingCategoriesData.status !==
         this.props.topSellingCategoriesData.status &&
@@ -179,7 +192,7 @@ class Home extends Component {
   };
 
   render() {
-    const { data, cartList, topSellingProductsList, topSellCategoriesList } =
+    const { data, cartList, topSellingProductsList, topSellCategoriesList ,allOffersList} =
       this.state;
     return (
       <Box className="main-container">
@@ -195,7 +208,7 @@ class Home extends Component {
               fetchHome={this.fetchHome}
             />
             <Service />
-            <OffersYouMightLike />
+            <OffersYouMightLike  allOffersList={allOffersList}/>
 
             <TopSellingCategories
               topSellingApiLoader={this.state.topSellingApiLoader}
@@ -216,7 +229,7 @@ function mapStateToProps(state) {
   const { homeData } = state.home;
   const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
   const { allAddress, selectedAddressData } = state.alladdress;
-  const { topSellingProductsData, topSellingCategoriesData } =
+  const { topSellingProductsData, topSellingCategoriesData, allOffersData } =
     state.allproducts;
   return {
     homeData,
@@ -225,6 +238,7 @@ function mapStateToProps(state) {
     selectedAddressData,
     topSellingProductsData,
     topSellingCategoriesData,
+    allOffersData,
   };
 }
 
@@ -238,6 +252,7 @@ const mapDispatchToProps = {
   fetchDefaultAddress,
   fetchTopSellingProducts,
   fetchToSellingCategories,
+  fetchAllOffers,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
