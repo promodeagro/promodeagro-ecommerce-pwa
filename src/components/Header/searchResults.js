@@ -411,11 +411,7 @@ class SearchResults extends Component {
     if (searchTerm.trim() !== "") {
       this.setState({ searchLoader: true });
       const items = loginDetails();
-      if (items?.userId) {
-        this.debouncedSearch({ query: searchTerm, userId: items?.userId });
-      } else {
-        this.props.navigate("/signin");
-      }
+      this.debouncedSearch({ query: searchTerm, userId: items?.userId });
     }
   };
 
