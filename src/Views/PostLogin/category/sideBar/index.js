@@ -73,11 +73,18 @@ class SideBar extends Component {
       selectedProductTypes: [],
       selectedPackSizes: [],
       currentPathName: "",
+      matches: window.matchMedia("(max-width: 900px)").matches,
     };
     this.debouncedFilter = _.debounce((params) => {
       this.props.handleFilterApiLoader(true);
       this.props.fetchFilteredProducts(params);
     }, 1000);
+  }
+
+  componentDidMount() {
+    window
+      .matchMedia("(max-width: 900px)")
+      .addEventListener("change", (e) => this.setState({ matches: e.matches }));
   }
 
   componentDidUpdate() {
@@ -96,16 +103,17 @@ class SideBar extends Component {
   }
 
   handlePriceChange = (field, value) => {
-    const { minPrice, maxPrice } = this.state;
+    const { minPrice, maxPrice, matches } = this.state;
     this.setState({ [field]: value }, () => {
       this.applyFilters();
-      if (minPrice > 0 && maxPrice > 0) {
+      if (minPrice > 0 && maxPrice > 0 && matches) {
         this.props.toggleFilter();
       }
     });
   };
 
   handleCheckboxChange = (field, value) => {
+    const { matches } = this.state;
     this.setState((prevState) => {
       const selectedValues = prevState[field] || [];
       if (selectedValues.includes(value)) {
@@ -114,7 +122,9 @@ class SideBar extends Component {
         return { [field]: [...selectedValues, value] };
       }
     }, this.applyFilters);
-    this.props.toggleFilter();
+    if (matches) {
+      this.props.toggleFilter();
+    }
   };
 
   handleRadioChange = (field, value) => {

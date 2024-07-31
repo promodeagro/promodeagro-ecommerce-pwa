@@ -195,8 +195,6 @@ class All extends Component {
           settings: {
             slidesToShow: 3,
             slidesToScroll: 1,
-            infinite: true,
-            dots: true,
           },
         },
         {
@@ -441,7 +439,7 @@ class All extends Component {
                 );
               })
             ) : (
-              <h4>No products available</h4>
+              <Box className="no-data">No products available</Box>
             )}
           </Slider>
         )}

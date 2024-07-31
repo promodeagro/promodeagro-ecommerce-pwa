@@ -754,6 +754,12 @@
     margin-bottom: 30px;
   }
 
+  .slick-slider {
+    .slick-track {
+      margin: 0;
+    }
+  }
+
   .slick-prev,
   .slick-next {
     width: 32px;
@@ -863,10 +869,12 @@
       justify-content: center;
       align-items: center;
       width: 100%;
-      margin-bottom: 10px;
+      height: 200px;
+      margin: 0px;
+      cursor: pointer;
 
       img {
-        max-height: 200px;
+        max-height: 150px;
       }
     }
 
@@ -932,6 +940,7 @@
     .select {
       display: flex;
       width: 100%;
+      line-height: 30px;
       > div {
         > div {
           border: 1px solid #a8a8a833;
@@ -972,6 +981,44 @@
           color: rgba(0, 0, 0, 0.26) !important;
           border: 1px solid rgba(0, 0, 0, 0.12) !important;
         }
+      }
+    }
+
+    .number-input-container {
+      display: flex;
+      width: 100%;
+      margin-top: 10px;
+
+      .symbol {
+        width: 33.33%;
+        border: 1px solid #1f9151;
+        background-color: #1f9151;
+        height: 36px;
+        cursor: pointer;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        border-radius: 4px 0px 0px 4px;
+
+        &:last-child {
+          border-radius: 0px 4px 4px 0px;
+        }
+      }
+
+      .Number {
+        width: 33.33%;
+        height: 36px;
+        border: 1px solid #1f9151;
+        background-color: #ffffff;
+        font-size: 16px;
+        line-height: 24px;
+        color: #1f9151;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 500;
       }
     }
   }
@@ -1033,7 +1080,6 @@
       font-size: 20px;
       line-height: 24px;
     }
-    
   }
   .offers-banners-container {
     .heading {
@@ -1074,8 +1120,6 @@
   }
 }
 
-
-
 @media only screen and (max-width: 600px) {
   .main-banner-container {
     .banner-contents {
@@ -1107,7 +1151,6 @@
       font-size: 16px;
       line-height: 20px;
     }
-    
   }
 
   .service-container {
@@ -1163,6 +1206,7 @@
           .text {
             font-size: 12px;
             line-height: 18px;
+            min-height: auto;
           }
         }
         .customers-person {

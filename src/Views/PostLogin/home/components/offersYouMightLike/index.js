@@ -6,6 +6,7 @@ import offersBanner3 from "../../../../../assets/img/offers-banner3.png";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
+
 const styles = {
   card: {
     backgroundColor: "#ffffff",
@@ -67,7 +68,7 @@ class OffersYouMightLike extends Component {
         <Container>
           <Box className="heading">Offers You Might Like</Box>
 
-          {allOffersList?.length > 0 ? (
+          {/* {allOffersList?.length > 0 ? (
             allOffersList?.map((item) => {
               return (
                 <div style={styles.card}>
@@ -101,8 +102,8 @@ class OffersYouMightLike extends Component {
             })
           ) : (
             <p>There no offers </p>
-          )}
-          {/* <Box className="banners">
+          )} */}
+          <Box className="banners">
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6} md={6}>
                 <Box className="image">
@@ -128,7 +129,7 @@ class OffersYouMightLike extends Component {
                 </Box>
               </Grid>
             </Grid>
-          </Box> */}
+          </Box>
         </Container>
       </Box>
     );
