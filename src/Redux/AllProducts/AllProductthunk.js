@@ -128,7 +128,7 @@ export const fetchProductWishList = createAsyncThunk(
 
       let url = config.GET_PRODUCT_WISHLIST + `?userId=${userId}`;
 
-      const response = await postLoginService.get(url, { userId });
+      const response = await postLoginService.get(url);
       return response.data;
     } catch (error) {
       return error;
@@ -137,13 +137,31 @@ export const fetchProductWishList = createAsyncThunk(
 );
 // getProductReview
 
-export const fetchProductReview = createAsyncThunk(
-  "getProductReview",
+export const fetchToSellingCategories = createAsyncThunk(
+  "topsellingcategories",
   async (productId) => {
     try {
       const userId = loginDetails()?.userId;
 
-      let url = config.GET_PRODUCT_REIVEW + `/${productId}`;
+      let url = config.GET_TOP_SELLING_CATEGOREIS;
+
+      const response = await postLoginService.get(url);
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+// TOP_SELLING_PRODUCTS
+
+export const fetchTopSellingProducts = createAsyncThunk(
+  "topsellingproducts",
+  async (params) => {
+    try {
+      const userId = loginDetails()?.userId;
+      let url =
+        config.TOP_SELLING_PRODUCTS +
+        `?subcategory=${params?.subcategory}&userId=${params?.userId}`;
 
       const response = await postLoginService.get(url);
       return response.data;

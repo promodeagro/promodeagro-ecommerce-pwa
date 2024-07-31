@@ -26,43 +26,94 @@ class TopSellingCategories extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: "1",
+      value: "",
     };
   }
 
   handleChange = (event, newValue) => {
+    console.log(newValue);
     this.setState({
       value: newValue,
     });
+    this.props.fetchTopSellings(newValue);
+  };
+
+  apiCalls = () => {
+    this.props.apiCalls(this.state.value);
   };
 
   render() {
+    const {
+      topSellingProductsList,
+      topSellingApiLoader,
+      value,
+      topSellCategoriesList,
+    } = this.props;
+
     return (
       <Box className="top-selling-categories-container">
         <Container>
           <Box className="heading">Top Selling Categories</Box>
-          <TabContext value={this.state.value}>
+          <TabContext
+            value={
+              this.state.value ? this.state.value : topSellCategoriesList?.[0]
+            }
+          >
             <TabList
               onChange={this.handleChange}
               aria-label="lab API tabs example"
             >
-              <Tab label="All" value="1" />
-              <Tab label="Leafy Vegetables" value="2" />
-              <Tab label="Exotic Fruit" value="3" />
-              <Tab label="Seasonal Fruits" value="4" />
+              {topSellCategoriesList.length > 0 ? (
+                topSellCategoriesList?.map((item) => {
+                  return <Tab label={item} value={item} />;
+                })
+              ) : (
+                <></>
+              )}
+              {/* <Tab label="All" value="All" />
+              <Tab label="Leafy Vegetables" value="Leafy Vegetables" />
+              <Tab label="Exotic Fruit" value="Exotic Fruit" />
+              <Tab label="Seasonal Fruits" value="Seasonal Fruits" /> */}
             </TabList>
-            <TabPanel value="1" className="">
-              <All productImg={productImg} priceIcon={priceIcon} />
+            {topSellCategoriesList.length > 0 ? (
+              <TabPanel
+                value={
+                  this.state.value
+                    ? this.state.value
+                    : topSellCategoriesList?.[0]
+                }
+                className=""
+              >
+                <All
+                  productImg={productImg}
+                  priceIcon={priceIcon}
+                  topSellingProductsList={topSellingProductsList}
+                  topSellingApiLoader={topSellingApiLoader}
+                  apiCalls={this.apiCalls}
+                />
+              </TabPanel>
+            ) : (
+              <></>
+            )}
+
+            {/* <TabPanel value="Leafy Vegetables">
+              <LeafyVejetable productImg={productImg} priceIcon={priceIcon} 
+               topSellingProductsList={topSellingProductsList}
+               topSellingApiLoader={topSellingApiLoader}
+              />
             </TabPanel>
-            <TabPanel value="2">
-              <LeafyVejetable productImg={productImg} priceIcon={priceIcon} />
+            <TabPanel value="Exotic Fruit">
+              <ExoticFruits productImg={productImg} priceIcon={priceIcon} 
+               topSellingProductsList={topSellingProductsList}
+               topSellingApiLoader={topSellingApiLoader}
+              />
             </TabPanel>
-            <TabPanel value="3">
-              <ExoticFruits productImg={productImg} priceIcon={priceIcon} />
-            </TabPanel>
-            <TabPanel value="4">
-              <SeasonalFruits productImg={productImg} priceIcon={priceIcon} />
-            </TabPanel>
+            <TabPanel value="Exotic Fruit">
+              <SeasonalFruits productImg={productImg} priceIcon={priceIcon} 
+               topSellingProductsList={topSellingProductsList}
+               topSellingApiLoader={topSellingApiLoader}
+              />
+            </TabPanel> */}
           </TabContext>
         </Container>
       </Box>
@@ -70,4 +121,4 @@ class TopSellingCategories extends Component {
   }
 }
 
-export default TopSellingCategories;
+export default React.memo(TopSellingCategories);

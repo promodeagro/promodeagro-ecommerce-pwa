@@ -8,6 +8,10 @@ import TopSellingCategories from "./components/topSellingCategories";
 import CustomersSays from "./components/customersSays";
 import { fetchHome } from "../../../Redux/Home/HomeThunk";
 import { fetchCartItems } from "../../../Redux/Cart/CartThunk";
+import {
+  fetchTopSellingProducts,
+  fetchToSellingCategories,
+} from "../../../Redux/AllProducts/AllProductthunk";
 import status from "../../../Redux/Constants";
 import { connect } from "react-redux";
 import { Loader, loginDetails } from "Views/Utills/helperFunctions";
@@ -28,13 +32,19 @@ class Home extends Component {
       data: [],
       cartList: [],
       loaderCount: 0,
+      topSellingProductsList: [],
+      topSellCategoriesList: [],
     };
   }
   componentDidMount() {
     const items = loginDetails();
-
+    this.setState({
+      topSellingApiLoader: true,
+    });
+    this.props.fetchToSellingCategories();
     if (items?.userId) {
       this.props.fetchHome(items?.userId);
+
       this.props.fetchCartItems({
         userId: items?.userId,
       });
@@ -48,6 +58,32 @@ class Home extends Component {
     }
   }
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.topSellingCategoriesData.status !==
+        this.props.topSellingCategoriesData.status &&
+      this.props.topSellingCategoriesData.status === status.SUCCESS &&
+      this.props.topSellingCategoriesData?.data?.topSellingSubcategories
+    ) {
+      this.setState({
+        topSellCategoriesList:
+          this.props.topSellingCategoriesData?.data?.topSellingSubcategories,
+      });
+      if (
+        this.props.topSellingCategoriesData?.data?.topSellingSubcategories
+          ?.length > 0
+      ) {
+        this.props.fetchTopSellingProducts({
+          userId: loginDetails()?.userId,
+          subcategory:
+            this.props.topSellingCategoriesData?.data
+              ?.topSellingSubcategories[0] == "ALL"
+              ? ""
+              : this.props.topSellingCategoriesData?.data
+                  ?.topSellingSubcategories[0],
+        });
+      }
+    }
+
     if (
       prevProps.homeData.status !== this.props.homeData.status &&
       this.props.homeData.status === status.SUCCESS &&
@@ -91,6 +127,19 @@ class Home extends Component {
     ) {
       this.props.setSelectedAdd(this.props.allAddress.data.addresses[0]);
     }
+
+    if (
+      prevProps.topSellingProductsData.status !==
+        this.props.topSellingProductsData.status &&
+      this.props.topSellingProductsData.status === status.SUCCESS &&
+      this.props.topSellingProductsData?.data?.topSellingProducts
+    ) {
+      this.setState({
+        topSellingProductsList:
+          this.props.topSellingProductsData.data?.topSellingProducts,
+        topSellingApiLoader: false,
+      });
+    }
   }
 
   fetchHome = () => {
@@ -104,8 +153,34 @@ class Home extends Component {
     }
   };
 
+  apiCalls = (subcategory) => {
+    const items = loginDetails();
+    this.props.fetchHome(items?.userId);
+    this.props.fetchTopSellingProducts({
+      userId: loginDetails()?.userId,
+      subcategory: subcategory == "ALL" ? "" : subcategory,
+    });
+    if (items?.userId) {
+      this.props.fetchCartItems({
+        userId: items?.userId,
+      });
+    }
+  };
+
+  topSellingApiFromChild = (subcategory) => {
+    this.setState({
+      topSellingApiLoader: true,
+    });
+
+    this.props.fetchTopSellingProducts({
+      userId: loginDetails()?.userId,
+      subcategory: subcategory == "ALL" ? "" : subcategory,
+    });
+  };
+
   render() {
-    const { data, cartList } = this.state;
+    const { data, cartList, topSellingProductsList, topSellCategoriesList } =
+      this.state;
     return (
       <Box className="main-container">
         {this.props.homeData.status === status.IN_PROGRESS &&
@@ -121,7 +196,14 @@ class Home extends Component {
             />
             <Service />
             <OffersYouMightLike />
-            <TopSellingCategories />
+
+            <TopSellingCategories
+              topSellingApiLoader={this.state.topSellingApiLoader}
+              topSellingProductsList={topSellingProductsList}
+              fetchTopSellings={this.topSellingApiFromChild}
+              topSellCategoriesList={topSellCategoriesList}
+              apiCalls={this.apiCalls}
+            />
             <CustomersSays />
           </>
         )}
@@ -134,7 +216,16 @@ function mapStateToProps(state) {
   const { homeData } = state.home;
   const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
   const { allAddress, selectedAddressData } = state.alladdress;
-  return { homeData, cartItems, allAddress, selectedAddressData };
+  const { topSellingProductsData, topSellingCategoriesData } =
+    state.allproducts;
+  return {
+    homeData,
+    cartItems,
+    allAddress,
+    selectedAddressData,
+    topSellingProductsData,
+    topSellingCategoriesData,
+  };
 }
 
 const mapDispatchToProps = {
@@ -145,6 +236,8 @@ const mapDispatchToProps = {
   productCategories,
   setShopByCategory,
   fetchDefaultAddress,
+  fetchTopSellingProducts,
+  fetchToSellingCategories,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

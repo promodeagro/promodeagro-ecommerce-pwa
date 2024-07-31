@@ -9,7 +9,9 @@ import {
   setProductWishList,
   deleteProductWishList,
   fetchProductWishList,
-  fetchProductReview
+  // fetchProductReview,
+  fetchTopSellingProducts,
+  fetchToSellingCategories,
 } from "./AllProductthunk";
 import status from "./../Constants";
 
@@ -45,7 +47,13 @@ const AllProductsSlice = createSlice({
     bookMarksData: {
       status: null,
     },
-    productReviewData:{
+    productReviewData: {
+      status: null,
+    },
+    topSellingProductsData: {
+      status: null,
+    },
+    topSellingCategoriesData:{
       status:null
     }
   },
@@ -312,7 +320,64 @@ const AllProductsSlice = createSlice({
             status: status.FAILURE,
           },
         };
-      });
+      })
+      .addCase(fetchTopSellingProducts.pending.toString(), (state, action) => {
+        return {
+          ...state,
+          topSellingProductsData: {
+            status: status.IN_PROGRESS,
+          },
+        };
+      })
+      .addCase(
+        fetchTopSellingProducts.fulfilled.toString(),
+        (state, { payload }) => {
+          return {
+            ...state,
+            topSellingProductsData: {
+              status: status.SUCCESS,
+              data: payload,
+            },
+          };
+        }
+      )
+      .addCase(fetchTopSellingProducts.rejected.toString(), (state, action) => {
+        return {
+          ...state,
+          topSellingProductsData: {
+            status: status.FAILURE,
+          },
+        };
+      })
+
+      .addCase(fetchToSellingCategories.pending.toString(), (state, action) => {
+        return {
+          ...state,
+          topSellingCategoriesData: {
+            status: status.IN_PROGRESS,
+          },
+        };
+      })
+      .addCase(
+        fetchToSellingCategories.fulfilled.toString(),
+        (state, { payload }) => {
+          return {
+            ...state,
+            topSellingCategoriesData: {
+              status: status.SUCCESS,
+              data: payload,
+            },
+          };
+        }
+      )
+      .addCase(fetchToSellingCategories.rejected.toString(), (state, action) => {
+        return {
+          ...state,
+          topSellingCategoriesData: {
+            status: status.FAILURE,
+          },
+        };
+      })
   },
 });
 

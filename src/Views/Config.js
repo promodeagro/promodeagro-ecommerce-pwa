@@ -31,6 +31,8 @@ const Config = {
   GET_PRODUCT_WISHLIST:`${BASE_URL}/getUserWishList`, 
   GET_PRODUCT_REIVEW:`${BASE_URL}/getProductReview` ,
   CHANGE_PASSWORD:`${BASE_URL}/changePassword` ,
+  TOP_SELLING_PRODUCTS:`${BASE_URL}/getTopSellingProducts`,
+  GET_TOP_SELLING_CATEGOREIS:`${BASE_URL}/getTopSellingCategories`
 };
 
 export default Config;
