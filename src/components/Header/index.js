@@ -205,7 +205,6 @@ class Header extends Component {
                       <></>
                     )}
                   </ul>
-                  <ul></ul>
                 </Box>
               );
             } else {

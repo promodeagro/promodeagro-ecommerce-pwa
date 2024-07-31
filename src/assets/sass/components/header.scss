@@ -811,6 +811,25 @@
       .notification-and-card {
         display: none;
       }
+      .categories-container {
+        .categories-box {
+          width: 230px;
+          flex-wrap: wrap;
+          .categories {
+            border-radius: 0;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+          }
+          .sub-categories {
+            width: 230px;
+            position: relative;
+            left: 0;
+            border-radius: 0;
+            border-bottom-right-radius: 10px;
+            border-bottom-left-radius: 10px;
+          }
+        }
+      }
     }
   }
 }

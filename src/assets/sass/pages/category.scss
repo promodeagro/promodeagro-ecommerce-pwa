@@ -19,10 +19,13 @@
   }
 
   .filters-boxs {
-    display: flex;
+    display: none;
     width: 100%;
     flex-wrap: wrap;
     margin-top: 30px;
+    &.active {
+      display: flex;
+    }
 
     h2 {
       display: flex;
@@ -32,6 +35,10 @@
       color: #2a3a31;
       font-weight: 600;
       margin-bottom: 15px;
+      justify-content: space-between;
+      svg {
+        display: none;
+      }
     }
 
     .filter {
@@ -470,6 +477,48 @@
 }
 
 @media only screen and (max-width: 992px) {
+  .sidebar {
+    .filters-boxs {
+      display: flex;
+      width: 75%;
+      height: 100%;
+      position: fixed;
+      left: -100%;
+      top: 0px;
+      margin-top: 0;
+      z-index: 10000;
+      padding-left: 15px;
+      padding-right: 15px;
+      padding-top: 15px;
+      padding-bottom: 15px;
+      transition: left 0.5s;
+      flex-direction: column;
+      align-items: flex-start;
+      background-color: #ffffff;
+      &.active {
+        left: 0;
+        transition: left 0.5s;
+      }
+      h2 {
+        svg {
+          display: inline-flex;
+          cursor: pointer;
+        }
+      }
+    }
+    .filters-bg {
+      position: fixed;
+      left: -100%;
+      top: 0px;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+      background-color: rgba(0, 0, 0, 0.2);
+      &.active {
+        left: 0;
+      }
+    }
+  }
   .listing-container {
     .products {
       .product-box {
@@ -479,7 +528,7 @@
           margin-right: 15px;
         }
         &.hide-filter-box {
-          width: calc(25% - 12px);
+          width: calc(33.33% - 15px);
           &:nth-child(3n + 3) {
             margin-right: 15px;
           }
@@ -498,19 +547,22 @@
     }
     .products {
       .product-box {
-        width: calc(52.2% - 15px);
+        width: calc(50% - 15px);
         margin-bottom: 15px;
         &:nth-child(2n + 2) {
           margin-right: 0px;
         }
         &.hide-filter-box {
-          width: calc(52.2% - 15px);
+          width: calc(51% - 15px);
           &:nth-child(2n + 2) {
             margin-right: 0px;
           }
         }
         .image {
           height: 140px;
+          img {
+            max-height: 100%;
+          }
         }
       }
     }

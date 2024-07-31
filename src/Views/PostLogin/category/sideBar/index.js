@@ -15,6 +15,8 @@ import { fetchFilteredProducts } from "../../../../Redux/AllProducts/AllProductt
 import { connect } from "react-redux";
 import _ from "lodash";
 import { loginDetails } from "Views/Utills/helperFunctions";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 40,
   height: 20,
@@ -94,7 +96,13 @@ class SideBar extends Component {
   }
 
   handlePriceChange = (field, value) => {
-    this.setState({ [field]: value }, this.applyFilters);
+    const { minPrice, maxPrice } = this.state;
+    this.setState({ [field]: value }, () => {
+      this.applyFilters();
+      if (minPrice > 0 && maxPrice > 0) {
+        this.props.toggleFilter();
+      }
+    });
   };
 
   handleCheckboxChange = (field, value) => {
@@ -106,6 +114,7 @@ class SideBar extends Component {
         return { [field]: [...selectedValues, value] };
       }
     }, this.applyFilters);
+    this.props.toggleFilter();
   };
 
   handleRadioChange = (field, value) => {
@@ -157,12 +166,12 @@ class SideBar extends Component {
     let rating = "";
     let discounts = "";
     if (selectedRatings.length > 0) {
-      selectedRatings.forEach((item,index) => {
+      selectedRatings.forEach((item, index) => {
         const ratingValue = parseFloat(item); // Convert item to a floating point number
 
         if (ratingValue >= 2 && ratingValue < 5) {
           rating += ratingValue + ".0" + "to" + "up,";
-        } else if(ratingValue==5){
+        } else if (ratingValue == 5) {
           rating += ratingValue + ".0" + ",";
         }
       });
@@ -214,139 +223,148 @@ class SideBar extends Component {
             onChange={() => this.props.toggleFilter()}
           />
         </Box>
-        {!this.props.hideFilter && (
-          <Box className="filters-boxs">
-            <h2>Filters</h2>
-            <Box className="filter">
-              <h3>Price</h3>
-              <Box className="min-max-price">
-                <TextField
-                  value={minPrice}
-                  onChange={(e) =>
-                    this.handlePriceChange("minPrice", e.target.value)
+
+        <Box
+          className={
+            !this.props.hideFilter ? "filters-boxs active" : "filters-boxs"
+          }
+        >
+          <h2>
+            Filters{" "}
+            {!this.props.hideFilter && (
+              <CloseOutlinedIcon onClick={() => this.props.toggleFilter()} />
+            )}
+          </h2>
+          <Box className="filter">
+            <h3>Price</h3>
+            <Box className="min-max-price">
+              <TextField
+                value={minPrice}
+                onChange={(e) =>
+                  this.handlePriceChange("minPrice", e.target.value)
+                }
+                placeholder="Min"
+              />
+              <TextField
+                value={maxPrice}
+                onChange={(e) =>
+                  this.handlePriceChange("maxPrice", e.target.value)
+                }
+                placeholder="Max"
+              />
+            </Box>
+          </Box>
+          <Box className="filter">
+            <h3>Rating </h3>
+            <ul className="checkbox">
+              <li>
+                <Checkbox
+                  checked={selectedRatings.includes(5)}
+                  onChange={() =>
+                    this.handleCheckboxChange("selectedRatings", 5)
                   }
-                  placeholder="Min"
                 />
-                <TextField
-                  value={maxPrice}
-                  onChange={(e) =>
-                    this.handlePriceChange("maxPrice", e.target.value)
+                <Box className="star">
+                  <StarIcon />
+                  <StarIcon />
+                  <StarIcon />
+                  <StarIcon />
+                  <StarIcon />
+                </Box>{" "}
+                5.0
+              </li>
+              <li>
+                <Checkbox
+                  checked={selectedRatings.includes(4)}
+                  onChange={() =>
+                    this.handleCheckboxChange("selectedRatings", 4)
                   }
-                  placeholder="Max"
                 />
-              </Box>
-            </Box>
-            <Box className="filter">
-              <h3>Rating </h3>
-              <ul className="checkbox">
-                <li>
-                  <Checkbox
-                    checked={selectedRatings.includes(5)}
-                    onChange={() =>
-                      this.handleCheckboxChange("selectedRatings", 5)
-                    }
-                  />
-                  <Box className="star">
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon />
-                  </Box>{" "}
-                  5.0
-                </li>
-                <li>
-                  <Checkbox
-                    checked={selectedRatings.includes(4)}
-                    onChange={() =>
-                      this.handleCheckboxChange("selectedRatings", 4)
-                    }
-                  />
-                  <Box className="star">
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon className="gray" />
-                  </Box>{" "}
-                  4.0 & up
-                </li>
-                <li>
-                  <Checkbox
-                    checked={selectedRatings.includes(3)}
-                    onChange={() =>
-                      this.handleCheckboxChange("selectedRatings", 3)
-                    }
-                  />
-                  <Box className="star">
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon className="gray" />
-                    <StarIcon className="gray" />
-                  </Box>{" "}
-                  3.0 & up
-                </li>
-                <li>
-                  <Checkbox
-                    checked={selectedRatings.includes(2)}
-                    onChange={() =>
-                      this.handleCheckboxChange("selectedRatings", 2)
-                    }
-                  />
-                  <Box className="star">
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon className="gray" />
-                    <StarIcon className="gray" />
-                    <StarIcon className="gray" />
-                  </Box>{" "}
-                  2.0 & up
-                </li>
-              </ul>
-            </Box>
-            <Box className="filter">
-              <h3>Discount</h3>
-              <ul className="checkbox">
-                <li>
-                  <Checkbox
-                    checked={selectedDiscounts.includes("upto5")}
-                    onChange={() =>
-                      this.handleCheckboxChange("selectedDiscounts", "upto5")
-                    }
-                  />
-                  Upto 5%
-                </li>
-                <li>
-                  <Checkbox
-                    checked={selectedDiscounts.includes("10to15")}
-                    onChange={() =>
-                      this.handleCheckboxChange("selectedDiscounts", "10to15")
-                    }
-                  />
-                  10% - 15%
-                </li>
-                <li>
-                  <Checkbox
-                    checked={selectedDiscounts.includes("15to25")}
-                    onChange={() =>
-                      this.handleCheckboxChange("selectedDiscounts", "15to25")
-                    }
-                  />
-                  15% - 25%
-                </li>
-                <li>
-                  <Checkbox
-                    checked={selectedDiscounts.includes("more25")}
-                    onChange={() =>
-                      this.handleCheckboxChange("selectedDiscounts", "more25")
-                    }
-                  />
-                  More than 25%
-                </li>
-              </ul>
-            </Box>
-            {/* <Box className="filter">
+                <Box className="star">
+                  <StarIcon />
+                  <StarIcon />
+                  <StarIcon />
+                  <StarIcon />
+                  <StarIcon className="gray" />
+                </Box>{" "}
+                4.0 & up
+              </li>
+              <li>
+                <Checkbox
+                  checked={selectedRatings.includes(3)}
+                  onChange={() =>
+                    this.handleCheckboxChange("selectedRatings", 3)
+                  }
+                />
+                <Box className="star">
+                  <StarIcon />
+                  <StarIcon />
+                  <StarIcon />
+                  <StarIcon className="gray" />
+                  <StarIcon className="gray" />
+                </Box>{" "}
+                3.0 & up
+              </li>
+              <li>
+                <Checkbox
+                  checked={selectedRatings.includes(2)}
+                  onChange={() =>
+                    this.handleCheckboxChange("selectedRatings", 2)
+                  }
+                />
+                <Box className="star">
+                  <StarIcon />
+                  <StarIcon />
+                  <StarIcon className="gray" />
+                  <StarIcon className="gray" />
+                  <StarIcon className="gray" />
+                </Box>{" "}
+                2.0 & up
+              </li>
+            </ul>
+          </Box>
+          <Box className="filter">
+            <h3>Discount</h3>
+            <ul className="checkbox">
+              <li>
+                <Checkbox
+                  checked={selectedDiscounts.includes("upto5")}
+                  onChange={() =>
+                    this.handleCheckboxChange("selectedDiscounts", "upto5")
+                  }
+                />
+                Upto 5%
+              </li>
+              <li>
+                <Checkbox
+                  checked={selectedDiscounts.includes("10to15")}
+                  onChange={() =>
+                    this.handleCheckboxChange("selectedDiscounts", "10to15")
+                  }
+                />
+                10% - 15%
+              </li>
+              <li>
+                <Checkbox
+                  checked={selectedDiscounts.includes("15to25")}
+                  onChange={() =>
+                    this.handleCheckboxChange("selectedDiscounts", "15to25")
+                  }
+                />
+                15% - 25%
+              </li>
+              <li>
+                <Checkbox
+                  checked={selectedDiscounts.includes("more25")}
+                  onChange={() =>
+                    this.handleCheckboxChange("selectedDiscounts", "more25")
+                  }
+                />
+                More than 25%
+              </li>
+            </ul>
+          </Box>
+          {/* <Box className="filter">
             <h3>Country of Origin</h3>
             <RadioGroup
               aria-labelledby="country-origin-radio-group-label"
@@ -450,8 +468,13 @@ class SideBar extends Component {
               </li>
             </ul>
           </Box> */}
-          </Box>
-        )}
+        </Box>
+        <Box
+          className={
+            !this.props.hideFilter ? "filters-bg active" : "filters-bg"
+          }
+          onClick={() => this.props.toggleFilter()}
+        ></Box>
       </Box>
     );
   }
