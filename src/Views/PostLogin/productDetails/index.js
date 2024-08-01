@@ -804,20 +804,35 @@ class ProductDetails extends Component {
               <Box className="reviews-container">
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={12} md={4} lg={4}>
-                    <Box className="heading">Customer Reviews</Box>
+                    {this.state.productReviewData?.reviews?.length ? (
+                      <Box className="heading">Customer Reviews</Box>
+                    ) : (
+                      <></>
+                    )}
+
                     <Box className="rating">
-                      <Rating
-                        name="text-feedback"
-                        value={this.state.productReviewData?.averageRating?.toString()}
-                        readOnly
-                        precision={0.5}
-                        emptyIcon={
-                          <StarIcon style={{ opacity: 0 }} fontSize="inherit" />
-                        }
-                      />
-                      <Box sx={{ ml: 1 }}>
-                        {this.state.productReviewData?.averageRating} out of 5
-                      </Box>
+                      {this.state.productReviewData?.averageRating ? (
+                        <>
+                          <Rating
+                            name="text-feedback"
+                            value={this.state.productReviewData?.averageRating?.toString()}
+                            readOnly
+                            precision={0.5}
+                            emptyIcon={
+                              <StarIcon
+                                style={{ opacity: 0 }}
+                                fontSize="inherit"
+                              />
+                            }
+                          />
+                          <Box sx={{ ml: 1 }}>
+                            {this.state.productReviewData?.averageRating} out of
+                            5
+                          </Box>
+                        </>
+                      ) : (
+                        <></>
+                      )}
                     </Box>
                     <Box className="star-lines">
                       {this.state.productReviewData?.ratingDistribution
@@ -897,21 +912,26 @@ class ProductDetails extends Component {
                   </Grid>
                   <Grid item xs={12} sm={12} md={8} lg={8}>
                     <Box className="reviews">
-                      <Box className="search-box">
-                        <TextField
-                          id="outlined-search"
-                          className="search"
-                          variant="outlined"
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                <img src={searchIcon} alt="" />
-                              </InputAdornment>
-                            ),
-                          }}
-                          defaultValue="Search in reviews"
-                        />
-                      </Box>
+                      {this.state.productReviewData?.reviews?.length ? (
+                        <Box className="search-box">
+                          <TextField
+                            id="outlined-search"
+                            className="search"
+                            variant="outlined"
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <img src={searchIcon} alt="" />
+                                </InputAdornment>
+                              ),
+                            }}
+                            defaultValue="Search in reviews"
+                          />
+                        </Box>
+                      ) : (
+                        <></>
+                      )}
+
                       <Box className="review-boxes">
                         {this.state.productReviewData?.reviews?.length ? (
                           this.state.productReviewData?.reviews?.map((item) => {
@@ -939,7 +959,8 @@ class ProductDetails extends Component {
                             );
                           })
                         ) : (
-                          <p>No Reviews For This Product</p>
+                          // <p>No Reviews For This Product</p>
+                          <></>
                         )}
 
                         {/* <Box className="review-box">
