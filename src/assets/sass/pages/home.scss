@@ -524,7 +524,22 @@
     justify-content: center;
 
     .image {
-      display: inline-flex;
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      border-radius: 15px;
+      overflow: hidden;
+      a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+      }
+      img {
+        display: inline-flex;
+        height: 320px;
+      }
     }
   }
 }

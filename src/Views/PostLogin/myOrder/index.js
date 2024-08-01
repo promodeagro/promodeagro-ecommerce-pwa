@@ -14,11 +14,8 @@ import {
   DialogActions,
   Tooltip,
 } from "@mui/material";
+import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import checkedIcon from "../../../assets/img/checked.png";
-import packedIcon from "../../../assets/img/packed.png";
-import onTheWayIcon from "../../../assets/img/on-the-way.png";
-import deliverdIcon from "../../../assets/img/delivered.png";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -32,26 +29,30 @@ import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import status from "../../../Redux/Constants";
 
 const customIcons = {
-  1: <img src={deliverdIcon} alt="" />,
-  2: <img src={checkedIcon} alt="" />,
-  3: <img src={packedIcon} alt="" />,
-  4: <img src={onTheWayIcon} alt="" />,
-  5: <img src={deliverdIcon} alt="" />,
+  0: <Box className="icon order-placed"></Box>,
+  1: <Box className="icon in-process"></Box>,
+  2: <Box className="icon packed"></Box>,
+  3: <Box className="icon on-the-way"></Box>,
+  4: <Box className="icon delivered"></Box>,
 };
 
 function CustomStepIcon(props) {
-  console.log("satish", props);
-  const { icon } = props;
+  const { icon, completed, active } = props;
   return (
     <Box className="custom-step-icon">
-      {props.active ? (
-        <img src={checkedIcon} alt="" />
+      {completed ? (
+        <Box className="icon completed">
+          <CheckOutlinedIcon />
+        </Box>
+      ) : active ? (
+        <Box className="icon in-process active"></Box>
       ) : (
-        customIcons[String(icon)]
+        customIcons[icon]
       )}
     </Box>
   );
 }
+
 class MyOrder extends Component {
   constructor(props) {
     super(props);
@@ -191,7 +192,7 @@ class MyOrder extends Component {
                                   <Step key={label}>
                                     <StepLabel
                                       StepIconComponent={CustomStepIcon}
-                                      icon={index + 1}
+                                      icon={index}
                                     >
                                       {label}
                                     </StepLabel>

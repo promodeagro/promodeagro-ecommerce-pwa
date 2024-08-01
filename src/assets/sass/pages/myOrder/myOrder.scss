@@ -76,9 +76,50 @@
 
       .order-status-bar {
         .custom-step-icon {
-          img {
-            width: 42px;
-            height: 42px;
+          .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 50px;
+            border: 3px solid #1f9151;
+            &.order-placed {
+              background-position: center center;
+              background-repeat: no-repeat;
+              background-image: url(../../../img/order-placed.png);
+            }
+            &.in-process {
+              background-position: center center;
+              background-repeat: no-repeat;
+              background-image: url(../../../img/in-process.png);
+            }
+            &.packed {
+              background-position: center center;
+              background-repeat: no-repeat;
+              background-image: url(../../../img/packed.png);
+            }
+            &.on-the-way {
+              background-position: center center;
+              background-repeat: no-repeat;
+              background-image: url(../../../img/on-the-way.png);
+            }
+            &.delivered {
+              background-position: center center;
+              background-repeat: no-repeat;
+              background-image: url(../../../img/delivered.png);
+            }
+            &.completed {
+              background-color: #1f9151;
+              svg {
+                width: 32px;
+                height: 32px;
+                color: #ffffff;
+              }
+            }
+            &.active {
+              border-style: dashed;
+            }
           }
         }
 
