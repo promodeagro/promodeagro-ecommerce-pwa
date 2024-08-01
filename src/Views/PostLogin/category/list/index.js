@@ -144,7 +144,7 @@ class List extends Component {
     qauntityUnits
   ) {
     let returnData =
-      sortedData.length > 0 &&
+      sortedData?.length > 0 &&
       sortedData.map((item) => {
         return (
           <Box
@@ -153,11 +153,11 @@ class List extends Component {
                 ? "product-box hide-filter-box"
                 : "product-box"
             }
-            key={item.id}
+            key={item?.id}
             onContextMenu={this.handleContextMenu}
           >
-            {item.savingsPercentage && (
-              <Box className="sale">Sale {item.savingsPercentage}%</Box>
+            {item?.savingsPercentage != 0 && (
+              <Box className="sale">Sale {item?.savingsPercentage}%</Box>
             )}
 
             {loginDetails()?.userId ? (
@@ -165,7 +165,7 @@ class List extends Component {
                 className="icon"
                 onClick={(event) => {
                   event.preventDefault();
-                  this.handleWishList(item.id, item?.inWishlist);
+                  this.handleWishList(item?.id, item?.inWishlist);
                 }}
               >
                 {item?.inWishlist ? (
@@ -182,32 +182,32 @@ class List extends Component {
               className="image"
               onClick={() => {
                 this.props.navigate(
-                  `/product-details/${item.category}/${item.name}/${item.id}`
+                  `/product-details/${item?.category}/${item?.name}/${item?.id}`
                 );
               }}
             >
               {/* <Link to={`/product-details/${item.id}`}> */}
-              <img src={item.image ? item.image : noImage} alt="" />
+              <img src={item?.image ? item?.image : noImage} alt="" />
               {/* </Link> */}
             </Box>
             <Box
               className="name"
               onClick={() => {
                 this.props.navigate(
-                  `/product-details/${item.category}/${item.name}/${item.id}`
+                  `/product-details/${item?.category}/${item?.name}/${item?.id}`
                 );
               }}
             >
-              <Link>{item.name}</Link>
+              <Link>{item?.name}</Link>
             </Box>
             <Box className="price-ratting">
               <Box className="price">
-                <img src={priceIcon} alt="" /> {item.price}
-                <span>{item.mrp}</span>
+                <img src={priceIcon} alt="" /> {item?.price}
+                <span>{item?.mrp}</span>
               </Box>
-              {item.ratings && (
+              {item?.ratings && (
                 <Box className="ratting">
-                  <StarIcon /> {item.ratings}
+                  <StarIcon /> {item?.ratings}
                 </Box>
               )}
             </Box>
@@ -217,22 +217,22 @@ class List extends Component {
                   <FormControl fullWidth>
                     <NativeSelect
                       value={
-                        qauntityUnits[item.id] ||
+                        qauntityUnits[item?.id] ||
                         item?.cartItem?.QuantityUnits ||
                         ""
                       }
                       onChange={(event) =>
                         this.handleQuantity(
                           event,
-                          item.id,
+                          item?.id,
                           item?.cartItem?.Quantity
                         )
                       }
                     >
-                      {item.unitPrices.map((unitItem, index) => {
+                      {item?.unitPrices.map((unitItem, index) => {
                         return (
                           <option key={index} value={unitItem.qty}>
-                            {unitItem.qty} {item.unit}
+                            {unitItem.qty} {item?.unit}
                           </option>
                         );
                       })}
@@ -240,13 +240,13 @@ class List extends Component {
                   </FormControl>
                 </Box>
               ) : (
-                <Box className="select">{item.unit}</Box>
+                <Box className="select">{item?.unit}</Box>
               )}
             </>
 
-            {addedProducts.includes(item.id) || item?.inCart ? (
+            {addedProducts.includes(item?.id) || item?.inCart ? (
               <Box className="number-input-container">
-                {item?.inCart && item.cartItem?.Quantity !== 0 ? (
+                {item?.inCart && item?.cartItem?.Quantity !== 0 ? (
                   <Box
                     className="symbol"
                     onClick={() => {
@@ -258,7 +258,7 @@ class List extends Component {
                       }
 
                       if (item?.cartItem?.ProductId) {
-                        let d = item.cartItem?.Quantity;
+                        let d = item?.cartItem?.Quantity;
                         this.handleQuantityChange(
                           item?.cartItem?.ProductId,
                           -1,
@@ -266,7 +266,7 @@ class List extends Component {
                           unitqty
                         );
                       } else {
-                        this.handleQuantityChange(item.id, -1, "", unitqty);
+                        this.handleQuantityChange(item?.id, -1, "", unitqty);
                       }
                     }}
                   >
@@ -274,7 +274,7 @@ class List extends Component {
                       this.state?.isProductSelecting ||
                       this.props.cartItems.status === status.IN_PROGRESS ||
                       this.props.updateItems.status === status.IN_PROGRESS) &&
-                    item.id === dataId &&
+                    item?.id === dataId &&
                     !isUpdateIncrease ? (
                       <CircularProgress
                         className="common-loader plus-icon"
@@ -309,14 +309,14 @@ class List extends Component {
                         unitqty
                       );
                     } else {
-                      this.handleQuantityChange(item.id, 1, "", unitqty);
+                      this.handleQuantityChange(item?.id, 1, "", unitqty);
                     }
                   }}
                 >
                   {(this.props.updateItems.status === status.IN_PROGRESS ||
                     this.state?.isProductSelecting ||
                     this.props.cartItems.status === status.IN_PROGRESS) &&
-                  item.id === dataId &&
+                  item?.id === dataId &&
                   isUpdateIncrease ? (
                     <CircularProgress className="common-loader plus-icon" />
                   ) : (
@@ -336,15 +336,15 @@ class List extends Component {
                       unitqty = 1;
                     }
 
-                    this.handleAddToCart(item.id, unitqty);
+                    this.handleAddToCart(item?.id, unitqty);
                   }}
                   disabled={
                     this.props.additems.status === status.IN_PROGRESS &&
-                    item.id === this.state.dataId
+                    item?.id === this.state.dataId
                   }
                   endIcon={
                     this.props.additems.status == status.IN_PROGRESS &&
-                    item.id == this.state.dataId ? (
+                    item?.id == this.state?.dataId ? (
                       <CircularProgress className="common-loader" />
                     ) : (
                       <></>

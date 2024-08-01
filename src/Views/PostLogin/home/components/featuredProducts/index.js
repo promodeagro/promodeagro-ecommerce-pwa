@@ -225,7 +225,11 @@ class FeaturedProducts extends Component {
               data.slice(0, 5).map((item, index) => {
                 return (
                   <Box className="product-box" key={index}>
-                    <Box className="sale">Sale {item.savingsPercentage}%</Box>
+                    {item.savingsPercentage != 0 ? (
+                      <Box className="sale">Sale {item.savingsPercentage}%</Box>
+                    ) : (
+                      <></>
+                    )}
 
                     {loginDetails()?.userId ? (
                       <Box

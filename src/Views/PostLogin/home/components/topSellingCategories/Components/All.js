@@ -225,7 +225,10 @@ class All extends Component {
               topSellingProductsList?.map((item) => {
                 return (
                   <Box className="product-box" key={item.id}>
+                    {item?.savingsPercentage!=0?
                     <Box className="sale">Sale {item?.savingsPercentage}%</Box>
+                    
+                    :<></>}
 
                     {loginDetails()?.userId ? (
                       <Box

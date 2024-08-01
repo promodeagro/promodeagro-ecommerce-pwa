@@ -216,9 +216,14 @@ class WishList extends Component {
                   this.state.wistListData?.map((item) => {
                     return (
                       <Box className="product-box">
-                        <Box className="sale">
-                          Sale {item?.savingsPercentage}%
-                        </Box>
+                        {item?.savingsPercentage != 0 ? (
+                          <Box className="sale">
+                            Sale {item?.savingsPercentage}%
+                          </Box>
+                        ) : (
+                          <></>
+                        )}
+
                         <Box
                           className="icon"
                           onClick={(event) => {

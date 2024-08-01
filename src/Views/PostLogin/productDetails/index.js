@@ -430,9 +430,14 @@ class ProductDetails extends Component {
                           {/* <span>230 / Kg</span> */}
                         </Box>
                       </Box>
-                      <Box className="product-save">
-                        You save <span>{productItem?.savingsPercentage} %</span>
-                      </Box>
+                      {productItem?.savingsPercentage != 0 ? (
+                        <Box className="product-save">
+                          You save{" "}
+                          <span>{productItem?.savingsPercentage} %</span>
+                        </Box>
+                      ) : (
+                        <></>
+                      )}
 
                       <>
                         {productItem?.unitPrices?.length > 0 ? (
