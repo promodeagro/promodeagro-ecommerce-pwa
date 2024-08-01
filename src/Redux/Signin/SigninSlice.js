@@ -2,7 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
     signIn,
     changePassword,
-    deleteUser
+    deleteUser,
+    updatePersonalDetails,
+    fetchPersonalDetails
 } from "./SigninThunk";
 import status from "./../Constants";
 
@@ -17,6 +19,12 @@ const SigninSlice = createSlice({
         },
         deleteUserData:{
             status:null
+        },
+        personalDetailsData:{
+            status:false
+        },
+        updatePersonalDetailsData:{
+            status:false
         }
 
     },
@@ -96,6 +104,56 @@ const SigninSlice = createSlice({
                 return {
                     ...state,
                     deleteUserData: {
+                        status: status.FAILURE,
+                    },
+                };
+            })
+            .addCase(updatePersonalDetails.pending.toString(), (state, action) => {
+                return {
+                    ...state,
+                    updatePersonalDetailsData: {
+                        status: status.IN_PROGRESS,
+                    },
+                };
+            })
+            .addCase(updatePersonalDetails.fulfilled.toString(), (state, { payload }) => {
+                return {
+                    ...state,
+                    updatePersonalDetailsData: {
+                        status: status.SUCCESS,
+                        data: payload,
+                    },
+                };
+            })
+            .addCase(updatePersonalDetails.rejected.toString(), (state, action) => {
+                return {
+                    ...state,
+                    updatePersonalDetailsData: {
+                        status: status.FAILURE,
+                    },
+                };
+            })
+            .addCase(fetchPersonalDetails.pending.toString(), (state, action) => {
+                return {
+                    ...state,
+                    personalDetailsData: {
+                        status: status.IN_PROGRESS,
+                    },
+                };
+            })
+            .addCase(fetchPersonalDetails.fulfilled.toString(), (state, { payload }) => {
+                return {
+                    ...state,
+                    personalDetailsData: {
+                        status: status.SUCCESS,
+                        data: payload,
+                    },
+                };
+            })
+            .addCase(fetchPersonalDetails.rejected.toString(), (state, action) => {
+                return {
+                    ...state,
+                    personalDetailsData: {
                         status: status.FAILURE,
                     },
                 };
