@@ -856,14 +856,16 @@ class ProductDetails extends Component {
                     <Box className="rating">
                       <Rating
                         name="text-feedback"
-                        value={value}
+                        value={this.state.productReviewData?.averageRating}
                         readOnly
                         precision={0.5}
                         emptyIcon={
                           <StarIcon style={{ opacity: 0 }} fontSize="inherit" />
                         }
                       />
-                      <Box sx={{ ml: 1 }}>{labels[value]}</Box>
+                      <Box sx={{ ml: 1 }}>
+                        {this.state.productReviewData?.averageRating} out of 5
+                      </Box>
                     </Box>
                     <Box className="star-lines">
                       {this.state.productReviewData?.ratingDistribution
