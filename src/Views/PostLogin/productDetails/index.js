@@ -9,6 +9,8 @@ import {
   InputAdornment,
   FormControl,
   NativeSelect,
+  Modal,
+  TextareaAutosize,
 } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import BookmarkOutlinedIcon from "@mui/icons-material/BookmarkOutlined";
@@ -36,12 +38,14 @@ import reviewImg from "../../../assets/img/review-img.png";
 import { connect } from "react-redux";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import status from "../../../Redux/Constants";
+
 import {
   allProducts,
   productDetails,
   deleteProductWishList,
   setProductWishList,
   fetchProducReview,
+  addProductReview,
 } from "../../../Redux/AllProducts/AllProductthunk";
 import { setShopByCategory } from "../../../Redux/AllProducts/AllProductSlice";
 import {
@@ -65,6 +69,20 @@ const labels = {
   5: "5 out of 5",
 };
 
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  pt: 2,
+  px: 4,
+  pb: 3,
+};
+
 class ProductDetails extends Component {
   constructor(props) {
     super(props);
@@ -79,6 +97,9 @@ class ProductDetails extends Component {
       qauntityUnits: "",
       isDeleting: false,
       productReviewData: {},
+      open: false,
+      review: "",
+      rating: "",
     };
   }
   componentDidMount() {
@@ -96,6 +117,16 @@ class ProductDetails extends Component {
   componentDidUpdate(prevProps, prevState) {
     const items = loginDetails();
 
+    if (
+      prevProps.addProductReviewData.status !==
+        this.props.addProductReviewData.status &&
+      this.props.addProductReviewData.status === status.SUCCESS
+    ) {
+      this.setState({
+        open: false,
+      });
+      this.props.fetchProducReview(this.props.params.id);
+    }
     if (
       prevProps.deleteBookMarkData.status !==
         this.props.deleteBookMarkData.status &&
@@ -293,6 +324,31 @@ class ProductDetails extends Component {
       }
     }
   }
+
+  handleOpen = () => {
+    this.setState({ open: true });
+  };
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
+  handleValueChange = (event) => {
+    const { name, value, type, checked } = event.target;
+    const val = type === "checkbox" ? checked : value;
+    this.setState({ [name]: val });
+  };
+
+  handleWriteReview = () => {
+    const items = loginDetails();
+    if (items?.userId) {
+      this.props.addProductReview({
+        productId: this.props.params.id,
+        userId: items?.userId,
+        rating: this.state.rating,
+        review: this.state.review,
+      });
+    }
+  };
   render() {
     const {
       productItem,
@@ -795,20 +851,7 @@ class ProductDetails extends Component {
               </Box>
               <Box className="product-contents">
                 <h3>About the Product</h3>
-                <p>
-                  Granny Smith apples are light green in colour. They are
-                  popularly used in manyapple dishes, such asapple pie,
-                  applecobbler,apple crisp, andapple cake. They are also
-                  commonly eaten raw astable apples. Granny Smith are high in
-                  antioxidant activity, and they boast the highest concentration
-                  of phenols amongst the apple breeds, efficient source of
-                  antioxidants, particularly the flavonoids cyanidin and
-                  epicatechin, especially if eaten with the skin intact. Granny
-                  Smiths are also naturally low in calories and high in dietary
-                  fiber and potassium, making them commonly recommended as a
-                  component of healthy and weight-loss diets. Click here for
-                  delicious fruit recipes
-                </p>
+                <p>{productItem?.about}</p>
                 <Box className="other-info">
                   <h4>
                     Other Product Info <ExpandCircleDownOutlinedIcon />
@@ -899,11 +942,17 @@ class ProductDetails extends Component {
                         <p>4%</p>
                       </Box> */}
                     </Box>
-                    <Box className="write-review">
-                      <strong>Review this product</strong>
-                      <p>Share your thoughts with other customers</p>
-                      <Button>Write a product Review</Button>
-                    </Box>
+                    {loginDetails()?.userId ? (
+                      <Box className="write-review">
+                        <strong>Review this product</strong>
+                        <p>Share your thoughts with other customers</p>
+                        <Button onClick={this.handleOpen}>
+                          Write a product Review
+                        </Button>
+                      </Box>
+                    ) : (
+                      <></>
+                    )}
                   </Grid>
                   <Grid item xs={12} sm={12} md={8} lg={8}>
                     <Box className="reviews">
@@ -986,6 +1035,51 @@ class ProductDetails extends Component {
 
           <RecentlyViewedItems />
         </>
+        <Modal
+          open={this.state.open}
+          onClose={this.handleClose}
+          aria-labelledby="parent-modal-title"
+          aria-describedby="parent-modal-description"
+        >
+          <Box sx={{ ...style, width: 350, height: 350 }}>
+            <h2 id="parent-modal-title">Write your review</h2>
+            <Box>
+              <Rating
+                required
+                name="rating"
+                value={this.state.rating}
+                className="rating"
+                precision={0.5}
+                onChange={this.handleValueChange}
+              />
+              <TextareaAutosize
+                placeholder="Type in here…"
+                onChange={this.handleValueChange}
+                name="review"
+                value={this.state.review}
+                variant="plain"
+              />
+            </Box>
+            <Button
+              className="add-cart-btn"
+              variant="contained"
+              onClick={() => this.handleWriteReview()}
+              disabled={
+                this.props.addProductReviewData.status === status.IN_PROGRESS
+              }
+              endIcon={
+                this.props.addProductReviewData.status ===
+                status.IN_PROGRESS ? (
+                  <CircularProgress className="common-loader " />
+                ) : (
+                  <></>
+                )
+              }
+            >
+              Add Review
+            </Button>
+          </Box>
+        </Modal>
       </Box>
     );
   }
@@ -1001,6 +1095,7 @@ function mapStateToProps(state) {
     setBookmarksData,
     deleteBookMarkData,
     productReviewData,
+    addProductReviewData,
   } = state.allproducts;
   const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
   return {
@@ -1016,6 +1111,7 @@ function mapStateToProps(state) {
     setBookmarksData,
     deleteBookMarkData,
     productReviewData,
+    addProductReviewData,
   };
 }
 
@@ -1030,6 +1126,7 @@ const mapDispatchToProps = {
   setProductWishList,
   deleteProductWishList,
   fetchProducReview,
+  addProductReview,
 };
 
 export default connect(

@@ -197,3 +197,15 @@ export const fetchAllOffers = createAsyncThunk("alloffers", async (params) => {
     return error;
   }
 });
+
+
+export const addProductReview = createAsyncThunk("addreview", async (params) => {
+  try {
+    let url = config.ADD_PRODUCT_REVIEW;
+
+    const response = await postLoginService.post(url,params);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+});

@@ -12,7 +12,8 @@ import {
   fetchProducReview,
   fetchTopSellingProducts,
   fetchToSellingCategories,
-  fetchAllOffers
+  fetchAllOffers,
+  addProductReview
 } from "./AllProductthunk";
 import status from "./../Constants";
 
@@ -58,6 +59,9 @@ const AllProductsSlice = createSlice({
       status:null
     },
     allOffersData:{
+      status:null
+    },
+    addProductReviewData:{
       status:null
     }
   },
@@ -435,6 +439,34 @@ const AllProductsSlice = createSlice({
         return {
           ...state,
           productReviewData: {
+            status: status.FAILURE,
+          },
+        };
+      })
+      .addCase(addProductReview.pending.toString(), (state, action) => {
+        return {
+          ...state,
+          addProductReviewData: {
+            status: status.IN_PROGRESS,
+          },
+        };
+      })
+      .addCase(
+        addProductReview.fulfilled.toString(),
+        (state, { payload }) => {
+          return {
+            ...state,
+            addProductReviewData: {
+              status: status.SUCCESS,
+              data: payload,
+            },
+          };
+        }
+      )
+      .addCase(addProductReview.rejected.toString(), (state, action) => {
+        return {
+          ...state,
+          addProductReviewData: {
             status: status.FAILURE,
           },
         };
