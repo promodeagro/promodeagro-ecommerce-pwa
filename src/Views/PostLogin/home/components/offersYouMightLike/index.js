@@ -63,56 +63,36 @@ class OffersYouMightLike extends Component {
 
   render() {
     const { allOffersList } = this.props;
+
     return (
       <Box className="offers-banners-container">
         <Container>
           <Box className="heading">Offers You Might Like</Box>
 
-          {/* {allOffersList?.length > 0 ? (
-            allOffersList?.map((item) => {
-              return (
-                <div style={styles.card}>
-                  <div style={styles.content}>
-                    <h2 style={styles.title}>{item?.offerName}</h2>
-                    <h1 style={styles.discount}>
-                      {item?.offerPercentage}% OFF
-                    </h1>
-                    <button
-                      style={styles.button}
-                      onMouseOver={(e) =>
-                        (e.currentTarget.style.backgroundColor =
-                          styles.buttonHover.backgroundColor)
-                      }
-                      onMouseOut={(e) =>
-                        (e.currentTarget.style.backgroundColor =
-                          styles.button.backgroundColor)
-                      }
-                      onClick={() => {
-                        this.props.navigate(`/category`);
-                      }}
-                    >
-                      Grab the Deal
-                    </button>
-                  </div>
-                  <div style={styles.imageContainer}>
-                    <img alt={"Healthy veges"} style={styles.image} />
-                  </div>
-                </div>
-              );
-            })
-          ) : (
-            <p>There no offers </p>
-          )} */}
           <Box className="banners">
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6} md={6}>
-                <Box className="image">
-                  <Link to="/category">
-                    <img src={offersBanner1} alt="" />
-                  </Link>
-                </Box>
-              </Grid>
-              <Grid item xs={12} sm={6} md={6}>
+              {allOffersList?.length > 0 ? (
+                allOffersList?.map((item) => {
+                  return (
+                    <Grid item xs={12} sm={6} md={6}>
+                      <Box
+                        className="image"
+                        onClick={() =>
+                          this.props.navigate(`/category/offers/${item?.id}`)
+                        }
+                      >
+                        <Link>
+                          <img src={item.imageUrl} alt="" />
+                        </Link>
+                      </Box>
+                    </Grid>
+                  );
+                })
+              ) : (
+                <p>No Active Offers</p>
+              )}
+
+              {/* <Grid item xs={12} sm={6} md={6}>
                 <Box className="image">
                   <Link to="/category">
                     <img src={offersBanner2} alt="" />
@@ -127,7 +107,7 @@ class OffersYouMightLike extends Component {
                     </Link>
                   </Box>
                 </Box>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Box>
         </Container>

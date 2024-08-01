@@ -264,18 +264,25 @@ class Header extends Component {
                   <li>/</li>
                   <li
                     onClick={() => {
-                      this.props.navigate(
-                        `/category/${pathArr?.[2]?.toUpperCase()}`
-                      );
+                      if (
+                        !window.location.pathname.includes("/category/offers")
+                      ) {
+                        this.props.navigate(
+                          `/category/${pathArr?.[2]?.toUpperCase()}`
+                        );
+                      }
                     }}
                   >
                     <Link>{pathArr?.[2]?.toUpperCase()}</Link>
                   </li>
                   {pathArr?.[3] ? <li>/</li> : <></>}
-
-                  <li className="active">
-                    <Link>{pathArr?.[3]?.replaceAll("%20", " ")} </Link>
-                  </li>
+                  {!window.location.pathname.includes("/category/offers") ? (
+                    <li className="active">
+                      <Link>{pathArr?.[3]?.replaceAll("%20", " ")} </Link>
+                    </li>
+                  ) : (
+                    <></>
+                  )}
                 </>
               ) : (
                 <></>
