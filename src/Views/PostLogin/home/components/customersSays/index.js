@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Box, Container } from "@mui/material";
+import { Box, Container, Tooltip, Rating } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import personImg from "../../../../../assets/img/person.png";
 import customerBg from "../../../../../assets/img/customer-bg.png";
@@ -12,10 +12,41 @@ import Slider from "react-slick";
 class CustomersSays extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      customersReviews: [
+        {
+          rating: 5,
+          heading: "On Time Delivery",
+          content:
+            "The home delivery of fruits and vegetables along with other Kolkata specific products from Promode Agro has been a blessing for me, I rarely need to go out these days. Their products are fresh,very fair pricing and delivery is always on time. Keep up the good work !",
+          image: saysReviewImg1,
+          name: "Indrani Patro",
+          customer: "PBEL City",
+        },
+        {
+          rating: 5,
+          heading: "On Time Delivery",
+          content:
+            "The vegetables and fruits are fresh and handpicked as well as reasonably priced, the variety usually includes from all regions, specially north Indian winter vegetables two delivery slots makes it easier to plan, just in case the morning slot is missed.",
+          image: saysReviewImg2,
+          name: "Indrani Patro",
+          customer: "PBEL City",
+        },
+        {
+          rating: 5,
+          heading: "On Time Delivery",
+          content:
+            "Have been using Promote Agro' produces from the last 6 months. FIRST thing: The produces are of very high quality & tastes differently than that available in another shops. Secondly, the purpose of starting Promode Agro farm makes me to stay connected with them in order to help underprivileged youngsters. My take: With PROMODE AGRO, you ALWAYS GROW",
+          image: saysReviewImg3,
+          name: "Md Juber Khan",
+          customer: "PBEL City, Hyderabad",
+        },
+      ],
+    };
   }
 
   render() {
+    const { customersReviews } = this.state;
     var settings = {
       dots: true,
       infinite: false,
@@ -56,100 +87,37 @@ class CustomersSays extends Component {
           <Box className="heading">What our Customers Says</Box>
           <Box className="customers-container">
             <Slider {...settings}>
-              <Box className="customers-says">
-                <Box className="customers-info">
-                  <Box className="ratting">
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon />
+              {customersReviews.map((item) => {
+                return (
+                  <Box className="customers-says">
+                    <Box className="customers-info">
+                      <Box className="ratting">
+                        <Rating
+                          defaultValue={item.rating}
+                          readOnly
+                          className="rating"
+                        />
+                      </Box>
+                      <Box className="name">{item.heading}</Box>
+                      <Tooltip arrow title={item.content}>
+                        <Box className="text">{item.content}</Box>
+                      </Tooltip>
+                      <Box className="customer-bg">
+                        <img src={customerBg} alt="" />
+                      </Box>
+                    </Box>
+                    <Box className="customers-person">
+                      <Box className="icon">
+                        <img src={item.image} alt="" />
+                      </Box>
+                      <Box className="info">
+                        <Box className="name">{item.name}</Box>
+                        <Box className="customer">{item.customer}</Box>
+                      </Box>
+                    </Box>
                   </Box>
-                  <Box className="name">On Time Delivery</Box>
-                  <Box className="text">
-                    “The home delivery of fruits and vegetables along with other
-                    Kolkata specific products from Promode Agro has been a
-                    blessing for me, I rarely need to go out these days. Their
-                    products are fresh,very fair pricing and delivery is always
-                    on time. Keep up the good work !”
-                  </Box>
-                  <Box className="customer-bg">
-                    <img src={customerBg} alt="" />
-                  </Box>
-                </Box>
-                <Box className="customers-person">
-                  <Box className="icon">
-                    <img src={saysReviewImg1} alt="" />
-                  </Box>
-                  <Box className="info">
-                    <Box className="name">Indrani Patro</Box>
-                    <Box className="customer">PBEL City</Box>
-                  </Box>
-                </Box>
-              </Box>
-              <Box className="customers-says">
-                <Box className="customers-info">
-                  <Box className="ratting">
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon />
-                  </Box>
-                  <Box className="name">On Time Delivery</Box>
-                  <Box className="text">
-                    “The vegetables and fruits are fresh and handpicked as well
-                    as reasonably priced, the variety usually includes from all
-                    regions, specially north Indian winter vegetables two
-                    delivery slots makes it easier to plan, just in case the
-                    morning slot is missed.”
-                  </Box>
-                  <Box className="customer-bg">
-                    <img src={customerBg} alt="" />
-                  </Box>
-                </Box>
-                <Box className="customers-person">
-                  <Box className="icon">
-                    <img src={saysReviewImg2} alt="" />
-                  </Box>
-                  <Box className="info">
-                    <Box className="name">Shweta Saxena</Box>
-                    <Box className="customer">PBEL CITY</Box>
-                  </Box>
-                </Box>
-              </Box>
-              <Box className="customers-says">
-                <Box className="customers-info">
-                  <Box className="ratting">
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon />
-                  </Box>
-                  <Box className="name">On Time Delivery</Box>
-                  <Box className="text">
-                    “Have been using Promote Agro' produces from the last 6
-                    months. FIRST thing: The produces are of very high quality &
-                    tastes differently than that available in another shops.
-                    Secondly, the purpose of starting Promode Agro farm makes me
-                    to stay connected with them in order to help underprivileged
-                    youngsters. My take: With PROMODE AGRO, you ALWAYS GROW”
-                  </Box>
-                  <Box className="customer-bg">
-                    <img src={customerBg} alt="" />
-                  </Box>
-                </Box>
-                <Box className="customers-person">
-                  <Box className="icon">
-                    <img src={saysReviewImg3} alt="" />
-                  </Box>
-                  <Box className="info">
-                    <Box className="name">Md Juber Khan</Box>
-                    <Box className="customer">PBEL City, Hyderabad</Box>
-                  </Box>
-                </Box>
-              </Box>
+                );
+              })}
             </Slider>
           </Box>
         </Container>

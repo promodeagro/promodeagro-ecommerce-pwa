@@ -663,7 +663,7 @@
 
       .percent-line {
         display: inline-flex;
-        width: 60%;
+        width: 55%;
         height: 8px;
         border-radius: 5px;
         margin-left: 2%;
@@ -681,7 +681,7 @@
       p {
         display: inline-flex;
         justify-content: flex-end;
-        width: 15%;
+        width: 25%;
         color: #1f9151;
         font-size: 13px;
         line-height: 16px;
@@ -812,6 +812,55 @@
   }
 }
 
+.write-review-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .review-modal {
+    padding: 30px;
+    width: 600px;
+    height: auto;
+    border-radius: 10px;
+    background-color: #ffffff;
+    strong {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 18px;
+      line-height: 30px;
+      font-weight: 600;
+      color: #090914;
+      svg {
+        cursor: pointer;
+      }
+    }
+    .write-review-message {
+      width: 100%;
+      input {
+        font-size: 14px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
+
+      .MuiInputBase-root {
+        &.Mui-focused {
+          .MuiOutlinedInput-notchedOutline {
+            border-color: #1f9151;
+          }
+        }
+      }
+    }
+    button {
+      padding-left: 30px;
+      padding-right: 30px;
+      color: #1f9151;
+      text-transform: capitalize;
+      border: 1px solid #1f9151;
+    }
+  }
+}
+
 @media only screen and (max-width: 1150px) {
   .choose-container {
     padding-left: 0px;
@@ -830,6 +879,7 @@
     padding-left: 0px;
     padding-right: 0px;
   }
+
   .reviews-container {
     .review-box {
       .contents {
@@ -837,6 +887,13 @@
           width: 100% !important;
         }
       }
+    }
+  }
+  
+  .write-review-modal {
+    .review-modal {
+      width: 90%;
+      padding: 20px 15px;
     }
   }
 }
@@ -869,4 +926,5 @@
       line-height: 30px;
     }
   }
+  
 }

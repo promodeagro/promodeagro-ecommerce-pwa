@@ -10,8 +10,8 @@ import {
   FormControl,
   NativeSelect,
   Modal,
-  TextareaAutosize,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import CircularProgress from "@mui/material/CircularProgress";
 import BookmarkOutlinedIcon from "@mui/icons-material/BookmarkOutlined";
 // import RecentlyViewedItems from "./recentlyViewedItems";
@@ -56,6 +56,7 @@ import {
 } from "../../../Redux/Cart/CartThunk";
 import { Loader, loginDetails } from "Views/Utills/helperFunctions";
 import { TheatersSharp } from "@mui/icons-material";
+
 const labels = {
   0.5: "0.5 out of 5",
   1: "1 out of 5",
@@ -67,20 +68,6 @@ const labels = {
   4: "4 out of 5",
   4.5: "4.5 out of 5",
   5: "5 out of 5",
-};
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  pt: 2,
-  px: 4,
-  pb: 3,
 };
 
 class ProductDetails extends Component {
@@ -361,10 +348,10 @@ class ProductDetails extends Component {
     const value = 4.5;
     return (
       <Box className="main-container">
-        <>
-          {loaderCount == 0 ? (
-            Loader.commonLoader()
-          ) : (
+        {loaderCount == 0 ? (
+          Loader.commonLoader()
+        ) : (
+          <>
             <Container>
               <Box className="share-icons-container">
                 <span>Share on</span>
@@ -1031,19 +1018,22 @@ class ProductDetails extends Component {
                 </Grid>
               </Box>
             </Container>
-          )}
-
-          <RecentlyViewedItems />
-        </>
+            <RecentlyViewedItems />
+          </>
+        )}
         <Modal
           open={this.state.open}
           onClose={this.handleClose}
-          aria-labelledby="parent-modal-title"
-          aria-describedby="parent-modal-description"
+          className="write-review-modal"
         >
-          <Box sx={{ ...style, width: 350, height: 350 }}>
-            <h2 id="parent-modal-title">Write your review</h2>
-            <Box>
+          <Box className="review-modal">
+            <Box display={"block"} width={"100%"} marginBottom={"10px"}>
+              <strong>
+                Write your review{" "}
+                <CloseIcon onClick={() => this.handleClose()} />
+              </strong>
+            </Box>
+            <Box display={"block"} width={"100%"} marginBottom={"10px"}>
               <Rating
                 required
                 name="rating"
@@ -1052,32 +1042,36 @@ class ProductDetails extends Component {
                 precision={0.5}
                 onChange={this.handleValueChange}
               />
-              <TextareaAutosize
+            </Box>
+            <Box display={"block"} width={"100%"} marginBottom={"20px"}>
+              <TextField
+                className="write-review-message"
+                multiline
+                rows={4}
                 placeholder="Type in here…"
                 onChange={this.handleValueChange}
                 name="review"
                 value={this.state.review}
-                variant="plain"
               />
             </Box>
-            <Button
-              className="add-cart-btn"
-              variant="contained"
-              onClick={() => this.handleWriteReview()}
-              disabled={
-                this.props.addProductReviewData.status === status.IN_PROGRESS
-              }
-              endIcon={
-                this.props.addProductReviewData.status ===
-                status.IN_PROGRESS ? (
-                  <CircularProgress className="common-loader " />
-                ) : (
-                  <></>
-                )
-              }
-            >
-              Add Review
-            </Button>
+            <Box display={"block"} width={"100%"} textAlign={"right"}>
+              <Button
+                onClick={() => this.handleWriteReview()}
+                disabled={
+                  this.props.addProductReviewData.status === status.IN_PROGRESS
+                }
+                endIcon={
+                  this.props.addProductReviewData.status ===
+                  status.IN_PROGRESS ? (
+                    <CircularProgress className="common-loader " />
+                  ) : (
+                    <></>
+                  )
+                }
+              >
+                Add Review
+              </Button>
+            </Box>
           </Box>
         </Modal>
       </Box>

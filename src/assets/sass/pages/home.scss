@@ -593,13 +593,15 @@
         }
 
         .text {
-          display: flex;
+          display: -webkit-box;
           width: 100%;
           font-size: 15px;
           line-height: 24px;
           font-weight: 400;
           color: #406b41;
-          min-height: 265px;
+          overflow: hidden;
+          -webkit-line-clamp: 4;
+          -webkit-box-orient: vertical;
         }
 
         .customer-bg {
