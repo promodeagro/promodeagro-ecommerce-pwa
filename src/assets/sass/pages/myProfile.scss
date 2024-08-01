@@ -14,12 +14,21 @@
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      padding: 15px 15px;
-      font-size: 20px;
-      line-height: 24px;
-      font-weight: 600;
-      color: #000000;
       border-bottom: 1px solid #bfbfbf;
+      a {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 20px;
+        line-height: 24px;
+        font-weight: 600;
+        color: #000000;
+        padding: 15px 15px;
+        &:hover {
+          color: #1f9151;
+        }
+      }
     }
     .profile-links {
       display: block;
@@ -441,7 +450,7 @@
           display: flex;
           width: 100%;
           margin-top: 10px;
-  
+
           .symbol {
             width: 33.33%;
             border: 1px solid #1f9151;
@@ -454,12 +463,12 @@
             justify-content: center;
             color: #ffffff;
             border-radius: 4px 0px 0px 4px;
-  
+
             &:last-child {
               border-radius: 0px 4px 4px 0px;
             }
           }
-  
+
           .Number {
             width: 33.33%;
             height: 36px;

@@ -1119,6 +1119,20 @@
       font-size: 20px;
       line-height: 24px;
     }
+    .customers-container {
+      .customers-says {
+        .customers-person {
+          .info {
+            .name {
+              min-height: 44px;
+            }
+            .customer {
+              min-height: 36px;
+            }
+          }
+        }
+      }
+    }
   }
 }
 

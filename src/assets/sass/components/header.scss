@@ -144,7 +144,8 @@
                   margin-right: 5px;
                 }
                 &:hover {
-                  background-color: #fcfcfc;
+                  color: #1f9151;
+                  background-color: #1f915133;
                 }
               }
             }
@@ -767,6 +768,34 @@
             span {
               display: none;
             }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 600px) and (max-width: 768px) { 
+  .header {
+    .header-categories-container {
+      .categories {
+        ul {
+          li {
+            padding-right: 10px;
+            a {
+              font-size: 11px;
+            }
+          }
+        }
+      }
+    }
+    .header-bottom-container {
+      .categories-container {
+        .categories-toggle {
+          font-size: 12px;
+          padding: 0 10px;
+          span {
+            margin-left: 0;
           }
         }
       }

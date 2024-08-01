@@ -49,10 +49,8 @@ class ProfileSideBar extends Component {
 
     return (
       <Box className="profile-sidebar">
-        <Box className="heading"
-
-        >
-          <Link to={"/my-order"} className="heading">
+        <Box className="heading">
+          <Link to={"/my-order"}>
             My Orders <ChevronRightOutlinedIcon />
           </Link>
         </Box>
