@@ -2,6 +2,7 @@ import React, { lazy, Suspense, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { loginDetails } from "./Utills/helperFunctions";
+import CommonLoader from "../components/CommonLoader";
 const Home = lazy(() => import("./../Views/PostLogin/home"));
 const AboutUs = lazy(() => import("./../Views/PostLogin/aboutUs"));
 const ContactUs = lazy(() => import("./../Views/PostLogin/contactUs"));
@@ -62,7 +63,7 @@ const Views = () => {
   const isLoggedIn = !!loginDetails()?.token; // Check if user is logged in
 
   return (
-    <Suspense fallback={<></>}>
+    <Suspense fallback={CommonLoader}>
       <Routes location={location}>
         {/* Redirect to Home if user is logged in and tries to access signin or signup */}
         {isLoggedIn && (
