@@ -22,3 +22,14 @@ export const changePassword = createAsyncThunk("changepassword", async (params) 
         return error;
     }
 });
+
+
+export const deleteUser = createAsyncThunk("deleteUser", async (params) => {
+    try {
+        let url = config.DELETE_USER+`/${params?.userId}`;
+        const response = await preLoginService.delete(url);
+        return response.data;
+    } catch (error) {
+        return error;
+    }
+});

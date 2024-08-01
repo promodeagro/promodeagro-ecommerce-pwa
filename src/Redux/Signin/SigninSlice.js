@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
     signIn,
-    changePassword
+    changePassword,
+    deleteUser
 } from "./SigninThunk";
 import status from "./../Constants";
 
@@ -13,6 +14,9 @@ const SigninSlice = createSlice({
         },
         changePassData:{
             status: null, 
+        },
+        deleteUserData:{
+            status:null
         }
 
     },
@@ -67,6 +71,31 @@ const SigninSlice = createSlice({
                 return {
                     ...state,
                     changePassData: {
+                        status: status.FAILURE,
+                    },
+                };
+            })
+            .addCase(deleteUser.pending.toString(), (state, action) => {
+                return {
+                    ...state,
+                    deleteUserData: {
+                        status: status.IN_PROGRESS,
+                    },
+                };
+            })
+            .addCase(deleteUser.fulfilled.toString(), (state, { payload }) => {
+                return {
+                    ...state,
+                    deleteUserData: {
+                        status: status.SUCCESS,
+                        data: payload,
+                    },
+                };
+            })
+            .addCase(deleteUser.rejected.toString(), (state, action) => {
+                return {
+                    ...state,
+                    deleteUserData: {
                         status: status.FAILURE,
                     },
                 };

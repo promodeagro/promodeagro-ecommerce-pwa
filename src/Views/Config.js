@@ -35,6 +35,7 @@ const Config = {
   GET_TOP_SELLING_CATEGOREIS:`${BASE_URL}/getTopSellingCategories`,
   GET_ALL_OFFERS:`${BASE_URL}/getAllOffers`,
   ADD_PRODUCT_REVIEW:`${BASE_URL}/addProductReview`,
+  DELETE_USER:`${BASE_URL}/deleteUser`,
 };
 
 export default Config;
