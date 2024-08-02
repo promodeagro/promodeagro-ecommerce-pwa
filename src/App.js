@@ -1,8 +1,7 @@
-
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import Header from "./components/Header";
+import CommonLoader from "./components/CommonLoader";
 import Views from "./Views/index";
 import { useLocation } from "react-router-dom";
 import { pathFile } from "Views/Utills/helperFunctions";
@@ -13,33 +12,28 @@ import { connect } from "react-redux";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
-
 function App(props) {
-
   return (
     <Router>
-      <div className="app">
-        <Header />
-
-        <MainContent />
-        <Footer />
-
-
-
-
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
-      </div>
+      <Suspense fallback={CommonLoader}>
+        <div className="app">
+          <Header />
+          <MainContent />
+          <Footer />
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+        </div>
+      </Suspense>
     </Router>
   );
 }
@@ -69,11 +63,10 @@ function MainContent() {
   );
 }
 function mapStateToProps(state) {
-  const { } = state;
+  const {} = state;
   return {};
 }
 
 const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
-
