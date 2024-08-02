@@ -227,13 +227,17 @@ class SideBar extends Component {
     return (
       <Box className="sidebar">
         {/* <FilterAltIcon/> */}
-        <Box className="hide-filter">
-          <p>Hide Filter</p>{" "}
-          <AntSwitch
-            checked={this.props.hideFilter}
-            onChange={() => this.props.toggleFilter()}
-          />
-        </Box>
+        {!window.location.pathname.includes("/category/offers") ? (
+          <Box className="hide-filter">
+            <p>Hide Filter</p>{" "}
+            <AntSwitch
+              checked={this.props.hideFilter}
+              onChange={() => this.props.toggleFilter()}
+            />
+          </Box>
+        ) : (
+          <></>
+        )}
 
         <Box
           className={
