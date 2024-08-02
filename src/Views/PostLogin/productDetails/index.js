@@ -84,6 +84,11 @@ class ProductDetails extends Component {
       productId: this.props.params.id,
       userId: items?.userId ? items?.userId : "",
     });
+    if (items?.userId) {
+      this.props.fetchCartItems({
+        userId: items?.userId,
+      });
+    }
     this.props.fetchProducReview(this.props.params.id);
   }
 
@@ -216,6 +221,11 @@ class ProductDetails extends Component {
       productId: this.props.params.id,
       userId: items?.userId ? items?.userId : "",
     });
+    if (items?.userId) {
+      this.props.fetchCartItems({
+        userId: items?.userId,
+      });
+    }
   }
 
   handleAddToCart(id, qty) {
