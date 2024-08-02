@@ -448,7 +448,10 @@ class Address extends Component {
                             onClick={() => this.handlePlaceOrder()}
                             disabled={
                               this.props.placeOrderData.status ===
-                              status.IN_PROGRESS
+                                status.IN_PROGRESS ||
+                              (this.props?.deliverySlotData?.status ===
+                                status.SUCCESS &&
+                                !this.props?.deliverySlotData?.data?.[0])
                             }
                             endIcon={
                               this.props.placeOrderData.status ===
