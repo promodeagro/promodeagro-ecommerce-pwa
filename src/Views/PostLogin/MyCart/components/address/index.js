@@ -40,6 +40,18 @@ import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 const steps = ["Delivery Address", "Delivery Options"];
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
+const futureDate = () => {
+  let currentDate = new Date();
+
+  currentDate.setDate(currentDate.getDate() + 2);
+
+  let year = currentDate.getFullYear();
+  let month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+  let day = currentDate.getDate().toString().padStart(2, "0");
+
+  let futureDate = `${year}-${month}-${day}`;
+  return futureDate;
+};
 class Address extends Component {
   constructor(props) {
     super(props);
@@ -723,7 +735,7 @@ class Address extends Component {
                 >
                   <Tab label="Today" />
                   <Tab label="Tomorrow " />
-                  <Tab label="30-05-2024" />
+                  <Tab label={futureDate()} />
                 </Tabs>
               </Box>
               <Divider />
