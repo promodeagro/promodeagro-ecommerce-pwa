@@ -11,7 +11,8 @@ import {
   fetchProductByCategory,
   fetchFilteredProducts,
 } from "../../../Redux/AllProducts/AllProductthunk";
-
+import { fetchPersonalDetails } from "../../../Redux/Signin/SigninThunk";
+import { ErrorMessages } from "Views/Utills/helperFunctions";
 import { fetchCartItems } from "../../../Redux/Cart/CartThunk";
 import status from "../../../Redux/Constants";
 import { Loader, loginDetails } from "Views/Utills/helperFunctions";
@@ -43,14 +44,19 @@ function Category(props) {
   });
   const [APIDataLoaded, setAPIDataLoaded] = useState(false);
   const [currentPath, setCurrentPath] = useState("");
-  const [userId, setUserId] = useState(loginDetails()?.userId);
 
+  const [personalDetailsLoader, setPersonalDetailsLoader] = useState(false);
+  const [profileName,setProfileName]=useState(null)
   useEffect(() => {
     // setCurrentPath(window.location.pathname);
-    if (userId) {
+    if (loginDetails()?.userId) {
       setCartApiLoader(true);
+      setPersonalDetailsLoader(true);
       props.fetchCartItems({
-        userId: userId,
+        userId: loginDetails()?.userId ? loginDetails()?.userId : "",
+      });
+      props.fetchPersonalDetails({
+        userId: loginDetails()?.userId ? loginDetails()?.userId : "",
       });
     }
   }, []);
@@ -62,19 +68,21 @@ function Category(props) {
 
       props.fetchProductBySubCategory(
         subcategory.replaceAll("%20", ""),
-        userId ? userId : ""
+        loginDetails()?.userId ? loginDetails()?.userId : ""
       );
     } else if (category) {
       setAPIDataLoaded(true);
       setCatergoryLoader(true);
 
-      props.fetchProductByCategory(category, userId ? userId : "");
+      props.fetchProductByCategory(
+        category,
+        loginDetails()?.userId ? loginDetails()?.userId : ""
+      );
     } else if (id) {
-      debugger;
       setAPIDataLoaded(true);
       setFilteredProductApiLoader(true);
       props.fetchFilteredProducts({
-        userId: userId,
+        userId: loginDetails()?.userId ? loginDetails()?.userId : "",
         offerId: id,
         minPrice: "",
         maxPrice: "",
@@ -83,12 +91,10 @@ function Category(props) {
         category: "",
         discounts: "",
       });
-
-      // props.allProducts(userId);
     } else {
       setAPIDataLoaded(true);
       setProdductApiLoader(true);
-      props.allProducts(userId);
+      props.allProducts(loginDetails()?.userId ? loginDetails()?.userId : "");
     }
   }, [subcategory, category, id, window.location.pathname]);
 
@@ -106,6 +112,33 @@ function Category(props) {
       filteredProductApiLoader
     ) {
       setFilteredProductApiLoader(false);
+    }
+  }, [props.filteredProductData.status]);
+
+  useEffect(() => {
+    if (
+      props.personalDetailsData?.status == status?.SUCCESS &&
+      filteredProductApiLoader &&
+      props.personalDetailsData?.data &&
+      personalDetailsLoader
+    ) {
+      setPersonalDetailsLoader(false);
+      if (props.personalDetailsData?.data?.statusCode == 200) {
+        setProfileName( this.props.personalDetailsData?.data?.user?.Name)
+      } else if (props.personalDetailsData?.data?.statusCode == 404) {
+        ErrorMessages.error(props.personalDetailsData?.data?.message);
+        localStorage.removeItem("login");
+        setProfileName("")
+      } else {
+        setProfileName("")
+        // ErrorMessages.error(this.props.personalDetailsData?.data?.message);
+        localStorage.removeItem("login");
+      }
+    } else if (
+      props.personalDetailsData?.status == status?.FAILURE &&
+      personalDetailsLoader
+    ) {
+      setPersonalDetailsLoader(false);
     }
   }, [props.filteredProductData.status]);
 
@@ -252,10 +285,10 @@ function Category(props) {
   };
 
   const allproducts = () => {
-    if (userId) {
+    if (loginDetails()?.userId) {
       setCartApiLoader(true);
       props.fetchCartItems({
-        userId: userId,
+        userId: loginDetails()?.userId,
       });
     }
 
@@ -267,14 +300,17 @@ function Category(props) {
       setSubCatergoryLoader(true);
       props.fetchProductBySubCategory(
         subcategory.replaceAll("%20", ""),
-        userId
+        loginDetails()?.userId ? loginDetails()?.userId : ""
       );
     } else if (category) {
       setCatergoryLoader(true);
-      props.fetchProductByCategory(category, userId);
+      props.fetchProductByCategory(
+        category,
+        loginDetails()?.userId ? loginDetails()?.userId : ""
+      );
     } else {
       setProdductApiLoader(true);
-      props.allProducts(userId);
+      props.allProducts(loginDetails()?.userId ? loginDetails()?.userId : "");
     }
   };
 
@@ -316,6 +352,7 @@ function Category(props) {
                 cartItemsData={cartList}
                 hideFilter={hideFilter}
                 allproducts={allproducts}
+                profileName={profileName}
               />
             )}
           </Grid>
@@ -335,6 +372,7 @@ function mapStateToProps(state) {
     productBySubCategoryData,
   } = state.allproducts;
   const { cartItems } = state.cartitem;
+  const { personalDetailsData } = state.login;
   return {
     allProductsData,
     cartItems,
@@ -342,6 +380,7 @@ function mapStateToProps(state) {
     filteredProductData,
     productByCategoryData,
     productBySubCategoryData,
+    personalDetailsData,
   };
 }
 
@@ -352,6 +391,7 @@ const mapDispatchToProps = {
   fetchProductBySubCategory,
   fetchProductByCategory,
   fetchFilteredProducts,
+  fetchPersonalDetails,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Category);

@@ -6,6 +6,7 @@ import FormControl from "@mui/material/FormControl";
 import NativeSelect from "@mui/material/NativeSelect";
 import { setShopByCategory } from "../../Redux/AllProducts/AllProductSlice";
 import { fetchCategories } from "../../Redux/AllProducts/AllProductthunk";
+import { fetchPersonalDetails } from "../../Redux/Signin/SigninThunk";
 import {
   KeyboardArrowDown as KeyboardArrowDownIcon,
   KeyboardArrowUp as KeyboardArrowUpIcon,
@@ -50,6 +51,7 @@ class Header extends Component {
       currentName: "",
       currentPathName: "",
       pathId: null,
+      profileName: "",
     };
     this.profileModalRef = React.createRef();
   }
@@ -62,11 +64,21 @@ class Header extends Component {
     if (items?.userId) {
       this.props.fetchDefaultAddress(items?.userId);
     }
-    
+    if (loginDetails()?.userId) {
+      this.props.fetchPersonalDetails({
+        userId: loginDetails()?.userId,
+      });
+    }
     this.props.fetchCategories();
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (this.state.profileName && !loginDetails()?.userId) {
+      this.setState({
+        profileName: "",
+      });
+    }
+
     let path = window.location.pathname;
     if (
       this.state.currentPathName != window.location.pathname &&
@@ -84,6 +96,29 @@ class Header extends Component {
         });
       }
     }
+
+    if (
+      prevProps.personalDetailsData.status !==
+        this.props.personalDetailsData.status &&
+      this.props.personalDetailsData.status === status.SUCCESS &&
+      this.props.personalDetailsData?.data
+    ) {
+   
+      if (this.props.personalDetailsData?.data?.statusCode == 200) {
+        this.setState({
+          profileName: this.props.personalDetailsData?.data?.user?.Name,
+        });
+      } else {
+        this.setState({
+          profileName: "",
+        });
+      }
+    } else if (this.props.personalDetailsData.status === status.FAILURE) {
+      this.setState({
+        profileName: "",
+      });
+    }
+
     if (
       prevProps.defaultAddressData.status !==
         this.props.defaultAddressData.status &&
@@ -372,7 +407,7 @@ class Header extends Component {
                       </Button>
                     </Link>
                   )}
-                  {loginDetails()?.name ? (
+                  {this.state.profileName ? (
                     <Box className="profile-box">
                       <Box
                         className="profile"
@@ -381,7 +416,7 @@ class Header extends Component {
                         <AccountBoxTwoToneIcon />
                         {!matches && (
                           <>
-                            <span>{loginDetails()?.name}</span>
+                            <span>{this.state.profileName}</span>
                             <KeyboardArrowDownOutlinedIcon />
                           </>
                         )}
@@ -758,6 +793,7 @@ class Header extends Component {
 function mapStateToProps(state) {
   const { cartData } = state.home;
   const { cartItems } = state.cartitem;
+  const { personalDetailsData } = state.login;
   const {
     shopCategoryData,
     productCategoryData,
@@ -777,6 +813,7 @@ function mapStateToProps(state) {
     allProductsData,
     allCategories,
     defaultAddressData,
+    personalDetailsData,
   };
 }
 
@@ -785,6 +822,7 @@ const mapDispatchToProps = {
   setShopByCategory,
   fetchCategories,
   fetchDefaultAddress,
+  fetchPersonalDetails,
 };
 
 export default connect(
