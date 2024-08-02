@@ -184,6 +184,7 @@ class All extends Component {
 
     const settings = {
       dots: false,
+      arrows: topSellingProductsList?.length > 5 ? true : false,
       infinite: false,
       speed: 500,
       slidesToShow: 5,

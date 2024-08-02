@@ -1,15 +1,5 @@
 import React, { Component } from "react";
-import {
-  Box,
-  Container,
-  FormControl,
-  NativeSelect,
-  Button,
-  Tab,
-} from "@mui/material";
-import Carousel from "react-multi-carousel";
-import StarIcon from "@mui/icons-material/Star";
-import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
+import { Box, Container, Tab } from "@mui/material";
 import productImg from "../../../../../assets/img/product-img.png";
 import priceIcon from "../../../../../assets/img/price-icon.png";
 import "react-multi-carousel/lib/styles.css";
@@ -18,9 +8,6 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import All from "./Components/All";
-import LeafyVejetable from "./Components/LeafyVejetable";
-import ExoticFruits from "./Components/ExoticFruits";
-import SeasonalFruits from "./Components/SeasonalFruits";
 
 class TopSellingCategories extends Component {
   constructor(props) {
@@ -70,10 +57,6 @@ class TopSellingCategories extends Component {
               ) : (
                 <></>
               )}
-              {/* <Tab label="All" value="All" />
-              <Tab label="Leafy Vegetables" value="Leafy Vegetables" />
-              <Tab label="Exotic Fruit" value="Exotic Fruit" />
-              <Tab label="Seasonal Fruits" value="Seasonal Fruits" /> */}
             </TabList>
             {topSellCategoriesList.length > 0 ? (
               <TabPanel
@@ -82,7 +65,6 @@ class TopSellingCategories extends Component {
                     ? this.state.value
                     : topSellCategoriesList?.[0]
                 }
-                className=""
               >
                 <All
                   productImg={productImg}
@@ -95,25 +77,6 @@ class TopSellingCategories extends Component {
             ) : (
               <></>
             )}
-
-            {/* <TabPanel value="Leafy Vegetables">
-              <LeafyVejetable productImg={productImg} priceIcon={priceIcon} 
-               topSellingProductsList={topSellingProductsList}
-               topSellingApiLoader={topSellingApiLoader}
-              />
-            </TabPanel>
-            <TabPanel value="Exotic Fruit">
-              <ExoticFruits productImg={productImg} priceIcon={priceIcon} 
-               topSellingProductsList={topSellingProductsList}
-               topSellingApiLoader={topSellingApiLoader}
-              />
-            </TabPanel>
-            <TabPanel value="Exotic Fruit">
-              <SeasonalFruits productImg={productImg} priceIcon={priceIcon} 
-               topSellingProductsList={topSellingProductsList}
-               topSellingApiLoader={topSellingApiLoader}
-              />
-            </TabPanel> */}
           </TabContext>
         </Container>
       </Box>

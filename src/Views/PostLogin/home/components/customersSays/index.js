@@ -13,6 +13,7 @@ class CustomersSays extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      matches: window.matchMedia("(max-width: 900px)").matches,
       customersReviews: [
         {
           rating: 5,
@@ -44,11 +45,21 @@ class CustomersSays extends Component {
       ],
     };
   }
+  componentDidMount() {
+    window
+      .matchMedia("(max-width: 900px)")
+      .addEventListener("change", (e) => this.setState({ matches: e.matches }));
+  }
 
   render() {
     const { customersReviews } = this.state;
     var settings = {
-      dots: true,
+      dots: false,
+      arrows: this.state.matches
+        ? true
+        : customersReviews?.length > 3
+        ? true
+        : false,
       infinite: false,
       speed: 500,
       slidesToShow: 3,
