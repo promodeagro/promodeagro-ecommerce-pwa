@@ -15,7 +15,11 @@ import {
 } from "../../../Redux/AllProducts/AllProductthunk";
 import status from "../../../Redux/Constants";
 import { connect } from "react-redux";
-import { Loader, loginDetails } from "Views/Utills/helperFunctions";
+import {
+  ErrorMessages,
+  Loader,
+  loginDetails,
+} from "Views/Utills/helperFunctions";
 import {
   getAllAddress,
   fetchDefaultAddress,
@@ -25,6 +29,7 @@ import {
   productCategories,
   setShopByCategory,
 } from "../../../Redux/AllProducts/AllProductSlice";
+import { fetchPersonalDetails } from "../../../Redux/Signin/SigninThunk";
 
 class Home extends Component {
   constructor(props) {
@@ -35,7 +40,7 @@ class Home extends Component {
       loaderCount: 0,
       topSellingProductsList: [],
       topSellCategoriesList: [],
-      allOffersList:[]
+      allOffersList: [],
     };
   }
   componentDidMount() {
@@ -46,6 +51,10 @@ class Home extends Component {
     this.props.fetchToSellingCategories();
     this.props.fetchAllOffers();
     if (items?.userId) {
+      this.props.fetchPersonalDetails({
+        userId: loginDetails()?.userId,
+      });
+
       this.props.fetchHome(items?.userId);
 
       this.props.fetchCartItems({
@@ -61,6 +70,27 @@ class Home extends Component {
     }
   }
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.personalDetailsData.status !==
+        this.props.personalDetailsData.status &&
+      this.props.personalDetailsData.status === status.SUCCESS &&
+      this.props.personalDetailsData?.data
+    ) {
+      if (this.props.personalDetailsData?.data?.statusCode == 200) {
+        this.setState({
+          name: this.props.personalDetailsData?.data?.user?.Name,
+          email: this.props.personalDetailsData?.data?.user?.email,
+          mobileNumber:
+            this.props.personalDetailsData?.data?.user?.MobileNumber,
+        });
+      } else if (this.props.personalDetailsData?.data?.statusCode == 404) {
+        ErrorMessages.error(this.props.personalDetailsData?.data?.message);
+        localStorage.removeItem("login");
+      } else {
+        ErrorMessages.error(this.props.personalDetailsData?.data?.message);
+        localStorage.removeItem("login");
+      }
+    }
     if (
       prevProps.allOffersData.status !== this.props.allOffersData.status &&
       this.props.allOffersData.status === status.SUCCESS &&
@@ -192,8 +222,13 @@ class Home extends Component {
   };
 
   render() {
-    const { data, cartList, topSellingProductsList, topSellCategoriesList ,allOffersList} =
-      this.state;
+    const {
+      data,
+      cartList,
+      topSellingProductsList,
+      topSellCategoriesList,
+      allOffersList,
+    } = this.state;
     return (
       <Box className="main-container">
         {this.props.homeData.status === status.IN_PROGRESS &&
@@ -208,7 +243,7 @@ class Home extends Component {
               fetchHome={this.fetchHome}
             />
             <Service />
-            <OffersYouMightLike  allOffersList={allOffersList}/>
+            <OffersYouMightLike allOffersList={allOffersList} />
 
             <TopSellingCategories
               topSellingApiLoader={this.state.topSellingApiLoader}
@@ -231,6 +266,7 @@ function mapStateToProps(state) {
   const { allAddress, selectedAddressData } = state.alladdress;
   const { topSellingProductsData, topSellingCategoriesData, allOffersData } =
     state.allproducts;
+  const { personalDetailsData } = state.login;
   return {
     homeData,
     cartItems,
@@ -239,6 +275,7 @@ function mapStateToProps(state) {
     topSellingProductsData,
     topSellingCategoriesData,
     allOffersData,
+    personalDetailsData,
   };
 }
 
@@ -253,6 +290,7 @@ const mapDispatchToProps = {
   fetchTopSellingProducts,
   fetchToSellingCategories,
   fetchAllOffers,
+  fetchPersonalDetails,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

@@ -71,8 +71,10 @@ class ProductDetails extends Component {
       isDeleting: false,
       productReviewData: {},
       open: false,
+      openReviews: false,
       review: "",
       rating: "",
+      visibleReviews: 3,
     };
   }
   componentDidMount() {
@@ -84,12 +86,12 @@ class ProductDetails extends Component {
       productId: this.props.params.id,
       userId: items?.userId ? items?.userId : "",
     });
+    this.props.fetchProducReview(this.props.params.id);
     if (items?.userId) {
       this.props.fetchCartItems({
         userId: items?.userId,
       });
     }
-    this.props.fetchProducReview(this.props.params.id);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -329,6 +331,18 @@ class ProductDetails extends Component {
       });
     }
   };
+
+  loadMoreReviews = () => {
+    this.setState({
+      openReviews: true,
+    });
+  };
+  closeReviews = () => {
+    this.setState({
+      openReviews: false,
+    });
+  };
+
   render() {
     const {
       productItem,
@@ -336,6 +350,7 @@ class ProductDetails extends Component {
       isUpdateIncrease,
       loaderCount,
       isDeleting,
+      visibleReviews,
     } = this.state;
 
     const value = 4.5;
@@ -816,10 +831,7 @@ class ProductDetails extends Component {
                   <Grid item xs={12} sm={12} md={4} lg={4}>
                     {this.state.productReviewData?.reviews?.length ? (
                       <Box className="heading">Customer Reviews</Box>
-                    ) : (
-                      <></>
-                    )}
-
+                    ) : null}
                     <Box className="rating">
                       {this.state.productReviewData?.averageRating ? (
                         <>
@@ -866,47 +878,6 @@ class ProductDetails extends Component {
                       ) : (
                         <></>
                       )}
-
-                      {/* <Box className="line">
-                        <span>4 Star</span>
-                        <Box className="percent-line">
-                          <Box
-                            className="percent"
-                            style={{ width: "13%" }}
-                          ></Box>
-                        </Box>
-                        <p>13%</p>
-                      </Box>
-                      <Box className="line">
-                        <span>3 Star</span>
-                        <Box className="percent-line">
-                          <Box
-                            className="percent"
-                            style={{ width: "10%" }}
-                          ></Box>
-                        </Box>
-                        <p>10%</p>
-                      </Box>
-                      <Box className="line">
-                        <span>2 Star</span>
-                        <Box className="percent-line">
-                          <Box
-                            className="percent"
-                            style={{ width: "6%" }}
-                          ></Box>
-                        </Box>
-                        <p>6%</p>
-                      </Box>
-                      <Box className="line">
-                        <span>1 Star</span>
-                        <Box className="percent-line">
-                          <Box
-                            className="percent"
-                            style={{ width: "4%" }}
-                          ></Box>
-                        </Box>
-                        <p>4%</p>
-                      </Box> */}
                     </Box>
                     {loginDetails()?.userId ? (
                       <Box className="write-review">
@@ -916,87 +887,106 @@ class ProductDetails extends Component {
                           Write a product Review
                         </Button>
                       </Box>
-                    ) : (
-                      <></>
-                    )}
+                    ) : null}
                   </Grid>
                   <Grid item xs={12} sm={12} md={8} lg={8}>
                     <Box className="reviews">
-                      {this.state.productReviewData?.reviews?.length ? (
-                        <Box className="search-box">
-                          <TextField
-                            id="outlined-search"
-                            className="search"
-                            variant="outlined"
-                            InputProps={{
-                              startAdornment: (
-                                <InputAdornment position="start">
-                                  <img src={searchIcon} alt="" />
-                                </InputAdornment>
-                              ),
-                            }}
-                            defaultValue="Search in reviews"
-                          />
-                        </Box>
-                      ) : (
-                        <></>
-                      )}
-
                       <Box className="review-boxes">
-                        {this.state.productReviewData?.reviews?.length ? (
-                          this.state.productReviewData?.reviews?.map((item) => {
-                            return (
-                              <Box className="review-box">
-                                <Grid container spacing={2}>
-                                  <Grid item xs={2} sm={2} md={1} lg={1}>
-                                    <Box className="image">
-                                      <img src={reviewImg} alt="" />
-                                    </Box>
-                                  </Grid>
-                                  <Grid item xs={10} sm={10} md={11} lg={11}>
-                                    <Box className="contents">
-                                      <Rating
-                                        defaultValue={item?.rating}
-                                        readOnly
-                                        className="rating"
-                                      />
-                                      <p>{item.review}</p>
-                                      <strong>{item?.username}</strong>
-                                    </Box>
-                                  </Grid>
-                                </Grid>
-                              </Box>
-                            );
-                          })
-                        ) : (
-                          // <p>No Reviews For This Product</p>
-                          <></>
-                        )}
-
-                        {/* <Box className="review-box">
-                          <Grid container spacing={2}>
-                            <Grid item xs={2} sm={2} md={1} lg={1}>
-                              <Box className="image">
-                                <img src={reviewImg} alt="" />
-                              </Box>
-                            </Grid>
-                            <Grid item xs={10} sm={10} md={11} lg={11}>
-                              <Box className="contents">
-                                <Rating
-                                  defaultValue={5}
-                                  readOnly
-                                  className="rating"
-                                />
-                                <p>
-                                  "We love Landingfolio! Our designers were
-                                  using it for their projects, so we already
-                                  knew what kind of design they want."
-                                </p>
-                                <strong>Devon Lane</strong>
-                              </Box>
-                            </Grid>
-                          </Grid>
-                        </Box> */}
+                        {this.state.productReviewData?.reviews?.length
+                          ? this.state.productReviewData?.reviews
+                              ?.slice(0, visibleReviews)
+                              .map((item) => {
+                                return (
+                                  <Box className="review-box">
+                                    <Grid container spacing={2}>
+                                      <Grid item xs={2} sm={2} md={1} lg={1}>
+                                        <Box className="image">
+                                          <img src={reviewImg} alt="" />
+                                        </Box>
+                                      </Grid>
+                                      <Grid
+                                        item
+                                        xs={10}
+                                        sm={10}
+                                        md={11}
+                                        lg={11}
+                                      >
+                                        <Box className="contents">
+                                          <Rating
+                                            defaultValue={item?.rating}
+                                            readOnly
+                                            className="rating"
+                                          />
+                                          <p>{item.review}</p>
+                                          <strong>{item?.username}</strong>
+                                        </Box>
+                                      </Grid>
+                                    </Grid>
+                                  </Box>
+                                );
+                              })
+                          : null}
+                        <Box className="load-more">
+                          <Button onClick={this.loadMoreReviews}>
+                            Load More
+                          </Button>
+                        </Box>
+                        <Modal
+                          open={this.state.openReviews}
+                          onClose={this.closeReviews}
+                          className="product-reviews-modal"
+                        >
+                          <Box className="reviews-modal">
+                            <Box className="reviews-modal-header">
+                              Product All Reviews
+                              <CloseIcon onClick={this.closeReviews} />
+                            </Box>
+                            <Box className="review-boxes">
+                              {this.state.productReviewData?.reviews?.length
+                                ? this.state.productReviewData?.reviews?.map(
+                                    (item) => {
+                                      return (
+                                        <Box className="review-box">
+                                          <Grid container spacing={2}>
+                                            <Grid
+                                              item
+                                              xs={2}
+                                              sm={2}
+                                              md={1}
+                                              lg={1}
+                                            >
+                                              <Box className="image">
+                                                <img src={reviewImg} alt="" />
+                                              </Box>
+                                            </Grid>
+                                            <Grid
+                                              item
+                                              xs={10}
+                                              sm={10}
+                                              md={11}
+                                              lg={11}
+                                            >
+                                              <Box className="contents">
+                                                <Rating
+                                                  defaultValue={item?.rating}
+                                                  readOnly
+                                                  className="rating"
+                                                />
+                                                <p>{item.review}</p>
+                                                <strong>
+                                                  {item?.username}
+                                                </strong>
+                                              </Box>
+                                            </Grid>
+                                          </Grid>
+                                        </Box>
+                                      );
+                                    }
+                                  )
+                                : null}
+                            </Box>
+                          </Box>
+                        </Modal>
                       </Box>
                     </Box>
                   </Grid>
