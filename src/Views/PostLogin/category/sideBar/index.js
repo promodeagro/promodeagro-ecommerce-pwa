@@ -202,6 +202,7 @@ class SideBar extends Component {
         subcategory: this.props?.subcategory,
         minPrice: minPrice,
         maxPrice: maxPrice,
+
         discounts: discounts,
         ratingFilter: rating,
         userId: loginDetails()?.userId,

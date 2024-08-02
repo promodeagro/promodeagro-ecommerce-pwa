@@ -20,9 +20,8 @@ import _ from "lodash";
 import { useParams, useLocation } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 function Category(props) {
-  const { category, subcategory } = useParams();
-  const data = useParams();
-  console.log("data", data);
+  const { category, subcategory, id } = useParams();
+  console.log("data", id);
   const [hideFilter, setHideFilter] = useState(true);
   const [products, setProducts] = useState([]);
   const [productsData, setProductsData] = useState([]);
@@ -70,12 +69,28 @@ function Category(props) {
       setCatergoryLoader(true);
 
       props.fetchProductByCategory(category, userId ? userId : "");
+    } else if (id) {
+      debugger;
+      setAPIDataLoaded(true);
+      setFilteredProductApiLoader(true);
+      props.fetchFilteredProducts({
+        userId: userId,
+        offerId: id,
+        minPrice: "",
+        maxPrice: "",
+        subcategory: "",
+        ratingFilter: "",
+        category: "",
+        discounts: "",
+      });
+
+      // props.allProducts(userId);
     } else {
       setAPIDataLoaded(true);
       setProdductApiLoader(true);
       props.allProducts(userId);
     }
-  }, [subcategory, category, window.location.pathname]);
+  }, [subcategory, category, id, window.location.pathname]);
 
   useEffect(() => {
     if (
@@ -279,6 +294,7 @@ function Category(props) {
               hideFilter={hideFilter}
               category={category}
               subcategory={subcategory}
+              offerId={id}
               handleFilterApiLoader={handleFilterApiLoader}
               allproducts={allproducts}
             />

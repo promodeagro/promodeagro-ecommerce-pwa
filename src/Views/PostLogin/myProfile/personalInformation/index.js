@@ -104,6 +104,15 @@ class PersonalInformation extends Component {
         this.props.fetchPersonalDetails({
           userId: loginDetails()?.userId,
         });
+      } else if (
+        this.props.updatePersonalDetailsData?.data?.statusCode == 401
+      ) {
+        ErrorMessages.error(
+          this.props.updatePersonalDetailsData?.data?.message
+        );
+        this.setState({
+          editInformation: false,
+        });
       }
     }
   }
@@ -177,11 +186,10 @@ class PersonalInformation extends Component {
       ) {
         data.name = name;
       }
-      if (email && email != this.props.personalDetailsData?.data?.user?.email) {
+      if (email != this.props.personalDetailsData?.data?.user?.email) {
         data.email = email;
       }
       if (
-        mobileNumber &&
         mobileNumber != this.props.personalDetailsData?.data?.user?.MobileNumber
       ) {
         data.mobileNumber = mobileNumber;

@@ -76,13 +76,15 @@ export const fetchFilteredProducts = createAsyncThunk(
       let url =
         config.FILTERED_PRODUCTS +
         `?minPrice=${params?.minPrice}&maxPrice=${params?.maxPrice}&discounts=${
-          params?.discounts
+          params?.discounts?params?.discounts:""
         }&subcategory=${
           params?.subcategory ? params?.subcategory : ""
         }&ratingFilter=${params?.ratingFilter}&category=${
           params?.category ? params?.category : ""
-        }&userId=${params?.userId}`;
-      const response = await postLoginService.get(url);
+        }&userId=${params?.userId ? params?.userId : ""}&offerId=${
+          params?.offerId ? params?.offerId : ""
+        }`;
+      const response = await postLoginService.get(url, params);
       return response.data;
     } catch (error) {
       return error;
@@ -198,14 +200,16 @@ export const fetchAllOffers = createAsyncThunk("alloffers", async (params) => {
   }
 });
 
+export const addProductReview = createAsyncThunk(
+  "addreview",
+  async (params) => {
+    try {
+      let url = config.ADD_PRODUCT_REVIEW;
 
-export const addProductReview = createAsyncThunk("addreview", async (params) => {
-  try {
-    let url = config.ADD_PRODUCT_REVIEW;
-
-    const response = await postLoginService.post(url,params);
-    return response.data;
-  } catch (error) {
-    return error;
+      const response = await postLoginService.post(url, params);
+      return response.data;
+    } catch (error) {
+      return error;
+    }
   }
-});
+);
