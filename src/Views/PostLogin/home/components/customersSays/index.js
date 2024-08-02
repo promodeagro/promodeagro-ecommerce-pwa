@@ -119,7 +119,7 @@ class CustomersSays extends Component {
                     </Box>
                     <Box className="customers-person">
                       <Box className="icon">
-                        <img src={item.image} alt="" />
+                        <img src={item.image} alt={item.name} />
                       </Box>
                       <Box className="info">
                         <Box className="name">{item.name}</Box>

@@ -82,17 +82,28 @@ class MainBanner extends Component {
                   <Grid item sm={6}>
                     <Box className="images">
                       <Box className="upto-off-img">
-                        <img src={uptoOffImg} alt="" />
+                        <img
+                          src={uptoOffImg}
+                          alt="Mostly Organic Fresh & Healthy Organic Food"
+                        />
                       </Box>
                       <Box className="image">
-                        <img src={bannerImg} alt="" />
+                        <img
+                          src={bannerImg}
+                          alt="Mostly Organic Fresh & Healthy Organic Food"
+                        />
                       </Box>
                     </Box>
                   </Grid>
                 </Grid>
               </Box>
               <Box className="mobile-banner">
-                <img src={mobileBannerImg} alt="" />
+                <Link to="/category">
+                  <img
+                    src={mobileBannerImg}
+                    alt="Mostly Organic Fresh & Healthy Organic Food"
+                  />
+                </Link>
               </Box>
             </Box>
             <Box className="banner-contents">
@@ -123,17 +134,28 @@ class MainBanner extends Component {
                   <Grid item sm={6}>
                     <Box className="images">
                       <Box className="upto-off-img">
-                        <img src={uptoOffImg} alt="" />
+                        <img
+                          src={uptoOffImg}
+                          alt="Mostly Organic Fresh & Healthy Organic Food"
+                        />
                       </Box>
                       <Box className="image">
-                        <img src={bannerImg} alt="" />
+                        <img
+                          src={bannerImg}
+                          alt="Mostly Organic Fresh & Healthy Organic Food"
+                        />
                       </Box>
                     </Box>
                   </Grid>
                 </Grid>
               </Box>
               <Box className="mobile-banner">
-                <img src={mobileBannerImg} alt="" />
+                <Link to="/category">
+                  <img
+                    src={mobileBannerImg}
+                    alt="Mostly Organic Fresh & Healthy Organic Food"
+                  />
+                </Link>
               </Box>
             </Box>
             <Box className="banner-contents">
@@ -164,17 +186,28 @@ class MainBanner extends Component {
                   <Grid item sm={6}>
                     <Box className="images">
                       <Box className="upto-off-img">
-                        <img src={uptoOffImg} alt="" />
+                        <img
+                          src={uptoOffImg}
+                          alt="Mostly Organic Fresh & Healthy Organic Food"
+                        />
                       </Box>
                       <Box className="image">
-                        <img src={bannerImg} alt="" />
+                        <img
+                          src={bannerImg}
+                          alt="Mostly Organic Fresh & Healthy Organic Food"
+                        />
                       </Box>
                     </Box>
                   </Grid>
                 </Grid>
               </Box>
               <Box className="mobile-banner">
-                <img src={mobileBannerImg} alt="" />
+                <Link to="/category">
+                  <img
+                    src={mobileBannerImg}
+                    alt="Mostly Organic Fresh & Healthy Organic Food"
+                  />
+                </Link>
               </Box>
             </Box>
           </Slider>

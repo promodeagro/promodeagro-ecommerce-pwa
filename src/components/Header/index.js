@@ -362,7 +362,7 @@ class Header extends Component {
               <Grid item xs={6} sm={4} md={4}>
                 <Box className="logo">
                   <Link to={"/"}>
-                    <img src={Logo} alt="" />
+                    <img src={Logo} alt="Promode Agro Farms" />
                   </Link>
                 </Box>
               </Grid>
@@ -374,7 +374,7 @@ class Header extends Component {
                       this.props.navigate("/contact-us");
                     }}
                   >
-                    <img src={supportIcon} alt="" /> Customer Support 24/7
+                    <img src={supportIcon} alt="Customer Support 24/7" /> Customer Support 24/7
                   </Box>
                   {currentAddress?.name && loginDetails()?.userId && (
                     <Box
@@ -383,7 +383,7 @@ class Header extends Component {
                         this.props.navigate("/my-profile/manage-addresses")
                       }
                     >
-                      Deliver to <img src={deliverIcon} alt="Deliver Icon" />
+                      Deliver to <img src={deliverIcon} alt="Deliver" />
                       <span>{currentAddress?.name}</span>
                     </Box>
                   )}
@@ -392,7 +392,7 @@ class Header extends Component {
                       <Button
                         variant="outlined"
                         className="card"
-                        startIcon={<img src={shoppingCartIcon} alt="" />}
+                        startIcon={<img src={shoppingCartIcon} alt="Shopping" />}
                       >
                         {this.props?.cartData?.length ? (
                           <p>{this.props.cartData.length}</p>
@@ -749,7 +749,7 @@ class Header extends Component {
                         <Button
                           variant="outlined"
                           className="notification"
-                          startIcon={<img src={notificationIcon} alt="" />}
+                          startIcon={<img src={notificationIcon} alt="Notification" />}
                           onClick={() =>
                             this.props.navigate("/my-profile/notification")
                           }
@@ -761,7 +761,7 @@ class Header extends Component {
                           <Button
                             variant="outlined"
                             className="card"
-                            startIcon={<img src={cardIcon} alt="" />}
+                            startIcon={<img src={cardIcon} alt="Shopping" />}
                           >
                             {this.props?.cartData?.length ? (
                               <p>{this.props.cartData.length}</p>
