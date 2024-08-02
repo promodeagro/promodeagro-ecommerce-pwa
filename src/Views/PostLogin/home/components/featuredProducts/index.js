@@ -258,7 +258,7 @@ class FeaturedProducts extends Component {
                       }}
                     >
                       {/* <Link to={`/product-details/${item.id}`}> */}
-                      <img src={item?.image ? item?.image : noImage} alt="" />
+                      <img src={item?.image ? item?.image : noImage} alt={item?.name} />
                       {/* </Link> */}
                     </Box>
                     <Box

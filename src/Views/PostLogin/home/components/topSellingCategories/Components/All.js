@@ -260,7 +260,7 @@ class All extends Component {
                         );
                       }}
                     >
-                      <img src={item?.image} alt="" />
+                      <img src={item?.image} alt={item?.name} />
                     </Box>
                     <Box
                       className="name"

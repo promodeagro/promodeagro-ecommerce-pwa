@@ -31,6 +31,11 @@ class RecentlyViewedItems extends Component {
     });
   };
 
+  // Function to scroll to top
+  scrollToTop = () => {
+    window.scrollTo(0, 0);
+  };
+
   render() {
     const { recentList, showAllItems } = this.state;
     console.log(recentList);
@@ -51,7 +56,12 @@ class RecentlyViewedItems extends Component {
                       <Grid container spacing={2} alignItems={"center"}>
                         <Grid item xs={6} sm={6} md={4}>
                           <Box className="image">
-                            <img src={item?.image} alt="" />
+                            <Link
+                              to={`/product-details/${item.category}/${item.name}/${item.id}`}
+                              onClick={this.scrollToTop}
+                            >
+                              <img src={item?.image} alt={item?.name} />
+                            </Link>
                           </Box>
                         </Grid>
                         <Grid item xs={6} sm={6} md={8}>
@@ -59,6 +69,7 @@ class RecentlyViewedItems extends Component {
                             <Box className="name">
                               <Link
                                 to={`/product-details/${item.category}/${item.name}/${item.id}`}
+                                onClick={this.scrollToTop}
                               >
                                 {item?.name}
                               </Link>
