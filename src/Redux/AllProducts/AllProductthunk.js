@@ -72,7 +72,6 @@ export const fetchFilteredProducts = createAsyncThunk(
   "filteredproducts",
   async (params) => {
     try {
-      console.log("pamr", params);
       let url =
         config.FILTERED_PRODUCTS +
         `?minPrice=${params?.minPrice}&maxPrice=${params?.maxPrice}&discounts=${
