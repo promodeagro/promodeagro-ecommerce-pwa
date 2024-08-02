@@ -62,6 +62,7 @@ class Header extends Component {
     if (items?.userId) {
       this.props.fetchDefaultAddress(items?.userId);
     }
+    
     this.props.fetchCategories();
   }
 
@@ -714,6 +715,9 @@ class Header extends Component {
                           variant="outlined"
                           className="notification"
                           startIcon={<img src={notificationIcon} alt="" />}
+                          onClick={() =>
+                            this.props.navigate("/my-profile/notification")
+                          }
                         >
                           <p></p>
                         </Button>
