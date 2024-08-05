@@ -460,12 +460,7 @@ class ProductDetails extends Component {
                             />
                           }
                         />
-                        {/* <StarIcon />
-                        <StarIcon />
-                        <StarIcon />
-                        <StarIcon />
-                        <StarIcon className="gray" /> */}
-                        <span>{productItem?.ratings} Review</span>
+                        <span className="text">{productItem?.ratings} Review</span>
                       </Box>
                       <Box className="product-price">
                         <Box className="mrp">

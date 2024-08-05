@@ -45,7 +45,21 @@ function CustomStepIcon(props) {
           <CheckOutlinedIcon />
         </Box>
       ) : active ? (
-        <Box className="icon in-process active"></Box>
+        <Box
+          className={
+            icon === 1
+              ? "icon order-placed active"
+              : icon === 2
+              ? "icon in-process active"
+              : icon === 3
+              ? "icon packed active"
+              : icon === 4
+              ? "icon on-the-way active"
+              : icon === 5
+              ? "icon delivered active"
+              : "icon"
+          }
+        ></Box>
       ) : (
         customIcons[icon]
       )}

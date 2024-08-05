@@ -16,6 +16,10 @@ const Footer = () => {
 
   useEffect(() => {}, [location.pathname]);
 
+  // Function to scroll to top
+  const scrollToTop = () => {
+    window.scrollTo(0, 0);
+  };
   return (
     <div className="footer">
       <Container>
@@ -39,18 +43,27 @@ const Footer = () => {
                     <h3>My Account</h3>
                     <ul>
                       <li>
-                        <Link to="/my-profile/personal-information">
+                        <Link
+                          to="/my-profile/personal-information"
+                          onClick={scrollToTop}
+                        >
                           My Account
                         </Link>
                       </li>
                       <li>
-                        <Link to="/my-order">Order History</Link>
+                        <Link to="/my-order" onClick={scrollToTop}>
+                          Order History
+                        </Link>
                       </li>
                       <li>
-                        <Link to="/mycart">Shoping Cart</Link>
+                        <Link to="/mycart" onClick={scrollToTop}>
+                          Shoping Cart
+                        </Link>
                       </li>
                       <li>
-                        <Link to="/my-profile/wish-list">Wishlist</Link>
+                        <Link to="/my-profile/wish-list" onClick={scrollToTop}>
+                          Wishlist
+                        </Link>
                       </li>
                       {/* <li>
                         <Link>Settings</Link>
@@ -65,16 +78,24 @@ const Footer = () => {
                   <h3>Helps</h3>
                   <ul>
                     <li>
-                      <Link to={"/contact-us"}>Contact Us</Link>
+                      <Link to={"/contact-us"} onClick={scrollToTop}>
+                        Contact Us
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/return-refund">Faqs</Link>
+                      <Link to="/return-refund" onClick={scrollToTop}>
+                        Faqs
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/terms-condition">Terms & Condition</Link>
+                      <Link to="/terms-condition" onClick={scrollToTop}>
+                        Terms & Condition
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/privacy-policy">Privacy Policy</Link>
+                      <Link to="/privacy-policy" onClick={scrollToTop}>
+                        Privacy Policy
+                      </Link>
                     </li>
                   </ul>
                 </Box>
@@ -84,13 +105,19 @@ const Footer = () => {
                   <h3>Proxy</h3>
                   <ul>
                     <li>
-                      <Link to={"/about-us"}>About Us</Link>
+                      <Link to={"/about-us"} onClick={scrollToTop}>
+                        About Us
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/category">Product</Link>
+                      <Link to="/category" onClick={scrollToTop}>
+                        Product
+                      </Link>
                     </li>
                     <li>
-                      <Link to="/my-order">Track Order</Link>
+                      <Link to="/my-order" onClick={scrollToTop}>
+                        Track Order
+                      </Link>
                     </li>
                   </ul>
                 </Box>
