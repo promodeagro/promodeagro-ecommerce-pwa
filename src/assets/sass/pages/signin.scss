@@ -170,21 +170,30 @@
   }
 }
 
-@media only screen and (max-width: 600px) {
-  .signin-container {
-    .signin-form-container {
-      .signin-form-details {
-        width: 100% !important;
-        display: block;
-      }
-    }
-  }
-}
 @media only screen and (max-width: 1150px) {
   .signin-container {
     .signin-form-container {
       .signin-form-details {
         width: 50%;
+      }
+    }
+  }
+}
+@media only screen and (max-width: 950px) {
+  .signin-container {
+    .signin-form-container {
+      .signin-form-details {
+        width: 80%;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .signin-container {
+    .signin-form-container {
+      .signin-form-details {
+        width: 100%;
       }
     }
   }
