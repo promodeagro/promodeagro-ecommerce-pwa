@@ -260,7 +260,7 @@ class Signin extends Component {
                   Login
                 </Button>
                 <Grid container spacing={2} alignItems={"flex-start"}>
-                  <Grid item xs={6} sm={16} md={6} lg={6}>
+                  <Grid item xs={6} sm={6} md={6} lg={6}>
                     <Box marginTop={"15px"}>
                       New User? <Link to={"/signup"}>Sign up</Link>
                     </Box>
