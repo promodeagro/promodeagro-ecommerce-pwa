@@ -19,30 +19,35 @@ import { Link } from "react-router-dom";
 const validationSchema = {
   mobileNumber: [
     {
-      message: "Please enter Mobile number",
+      message: "Please Enter Mobile number",
       type: ValidationEngine.type.MANDATORY,
     },
     {
-      message: "Please valid Mobile Number",
+      message: "Please Enter Valid Mobile Number",
       type: ValidationEngine.type.REGEX,
       regex: ValidationEngine.MOBILE_NUMBER_REGEX,
     },
   ],
   password: [
     {
-      message: "Please enter Password",
+      message: "Please Enter Password",
       type: ValidationEngine.type.MANDATORY,
+    },
+    {
+      message: "Please Enter Strong Password",
+      type: ValidationEngine.type.REGEX,
+      regex: ValidationEngine.PASSWORD_REGEX,
     },
   ],
   cnfPassword: [
     {
-      message: "Please enter Password",
+      message: "Please Enter Password",
       type: ValidationEngine.type.MANDATORY,
     },
   ],
   name: [
     {
-      message: "Please enter Name",
+      message: "Please Enter Name",
       type: ValidationEngine.type.MANDATORY,
     },
   ],
@@ -56,16 +61,13 @@ const SignUp = ({ signUp, signupData }) => {
     mobileNumber: "",
     isSubmit: false,
   });
-  const [apiLoader, setApiLoader] = useState(false)
+  const [apiLoader, setApiLoader] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (
-      signupData.status === status.SUCCESS &&
-      signupData.data && apiLoader
-    ) {
-      setApiLoader(false)
+    if (signupData.status === status.SUCCESS && signupData.data && apiLoader) {
+      setApiLoader(false);
       if (signupData.data.statusCode == 401) {
         ErrorMessages.error(signupData.data.message);
         return;
@@ -81,10 +83,6 @@ const SignUp = ({ signUp, signupData }) => {
         });
         navigate("/signin");
       }
-
-
-
-
     }
   }, [signupData.status]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -113,7 +111,7 @@ const SignUp = ({ signUp, signupData }) => {
     const { mobileNumber, password, name } = formData;
 
     const errorData = validateForm();
-    setApiLoader(true)
+    setApiLoader(true);
     setFormData({
       ...formData,
       isSubmit: true,
