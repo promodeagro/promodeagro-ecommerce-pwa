@@ -99,6 +99,7 @@ class ProductDetails extends Component {
     if (this.state.pathName != window.location.pathname) {
       this.setState({
         pathName: window.location.pathname,
+        loaderCount: 0,
       });
       this.props.fetchProducReview(this.props.params.id);
     }
@@ -111,6 +112,10 @@ class ProductDetails extends Component {
         open: false,
       });
       this.props.fetchProducReview(this.props.params.id);
+    } else if (this.props.addProductReviewData.status === status.FAILURE) {
+      this.setState({
+        open: false,
+      });
     }
     if (
       prevProps.deleteBookMarkData.status !==
