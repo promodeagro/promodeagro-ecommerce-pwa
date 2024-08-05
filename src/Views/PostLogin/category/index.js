@@ -124,14 +124,13 @@ function Category(props) {
     ) {
       setPersonalDetailsLoader(false);
       if (props.personalDetailsData?.data?.statusCode == 200) {
-        setProfileName( this.props.personalDetailsData?.data?.user?.Name)
+        setProfileName(props.personalDetailsData?.data?.user?.Name)
       } else if (props.personalDetailsData?.data?.statusCode == 404) {
         ErrorMessages.error(props.personalDetailsData?.data?.message);
         localStorage.removeItem("login");
         setProfileName("")
       } else {
         setProfileName("")
-        // ErrorMessages.error(this.props.personalDetailsData?.data?.message);
         localStorage.removeItem("login");
       }
     } else if (
