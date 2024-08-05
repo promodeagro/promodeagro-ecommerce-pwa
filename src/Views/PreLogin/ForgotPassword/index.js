@@ -42,6 +42,11 @@ const validationSchema = {
       message: "Please enter new password",
       type: ValidationEngine.type.MANDATORY,
     },
+    {
+      message: "Please Enter Strong Password",
+      type: ValidationEngine.type.REGEX,
+      regex: ValidationEngine.PASSWORD_REGEX,
+    },
   ],
 };
 

@@ -29,6 +29,11 @@ const validationSchema = {
       message: "Please enter new password",
       type: ValidationEngine.type.MANDATORY,
     },
+    {
+      message: "Please Enter Strong Password",
+      type: ValidationEngine.type.REGEX,
+      regex: ValidationEngine.PASSWORD_REGEX,
+    },
   ],
 };
 
@@ -54,14 +59,12 @@ class ChangePassword extends Component {
       } else if (this.props.changePassData.data.statusCode == 200) {
         ErrorMessages.success(this.props.changePassData.data?.message);
         this.setState({
-          currentPassword:"",
-          newPassword:"",
-          isSubmit:false
-        })
+          currentPassword: "",
+          newPassword: "",
+          isSubmit: false,
+        });
         this.props.navigate("/");
-        
       }
-      
     }
   }
 
