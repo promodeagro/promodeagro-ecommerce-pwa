@@ -11,6 +11,7 @@ import {
   NativeSelect,
   Modal,
 } from "@mui/material";
+import ReactImageMagnify from "react-image-magnify";
 import CloseIcon from "@mui/icons-material/Close";
 import CircularProgress from "@mui/material/CircularProgress";
 import BookmarkOutlinedIcon from "@mui/icons-material/BookmarkOutlined";
@@ -55,6 +56,7 @@ import {
   deleteItemToCart,
 } from "../../../Redux/Cart/CartThunk";
 import { Loader, loginDetails } from "Views/Utills/helperFunctions";
+import { yellow } from "@mui/material/colors";
 
 class ProductDetails extends Component {
   constructor(props) {
@@ -416,7 +418,39 @@ class ProductDetails extends Component {
                             <TurnedInNotOutlinedIcon />
                           )}
                         </Box>
-                        <img src={productItem?.image} alt={productItem?.name} />
+
+
+                        <ReactImageMagnify
+                          {...{
+                            smallImage: {
+                              alt: productItem?.name,
+                              isFluidWidth: true,
+                              src: productItem?.image,
+                              pressMoveThreshold: 3,
+                              isActivatedOnTouch: true,
+                              hoverOffDelayInMs: 150,
+                              fadeDurationInMs: 200,
+                              enlargedImageContainerDimensions: {
+                                width: "140%",
+                                height: "140%",
+                              },
+                            },
+                            largeImage: {
+                              src: productItem?.image,
+                              hoverOffDelayInMs: 150,
+                              width: 800,
+                              height: 600,
+                              pressMoveThreshold: 1,
+                              isActivatedOnTouch: true,
+                              fadeDurationInMs: 200,
+                              enlargedImageContainerDimensions: {
+                                width: "140%",
+                                height: "140%",
+                              },
+                              enlargedImagePosition:"over"
+                            },
+                          }}
+                        />
                       </Box>
                       {/* <Box className="thumbnail-images">
                   <ul>
@@ -460,7 +494,9 @@ class ProductDetails extends Component {
                             />
                           }
                         />
-                        <span className="text">{productItem?.ratings} Review</span>
+                        <span className="text">
+                          {productItem?.ratings} Review
+                        </span>
                       </Box>
                       <Box className="product-price">
                         <Box className="mrp">
@@ -583,7 +619,8 @@ class ProductDetails extends Component {
                                   variant="contained"
                                   disabled={
                                     this.props.additems.status ===
-                                    status.IN_PROGRESS
+                                      status.IN_PROGRESS ||
+                                    !productItem?.availability
                                   }
                                   onClick={() => {
                                     let unitqty = "";

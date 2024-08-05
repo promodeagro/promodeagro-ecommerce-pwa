@@ -51,17 +51,19 @@
     width: 100%;
     flex-wrap: wrap;
 
+
+    
+
     .big-image {
       display: flex;
       width: 100%;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
       height: 450px;
       border-radius: 10px;
       position: relative;
       border: 1px solid #b9b9b9;
-
+      z-index: 1000;
       .icon {
         position: absolute;
         right: 15px;
