@@ -448,11 +448,23 @@ class ProductDetails extends Component {
                     <Box className="product-info">
                       <Box className="product-name">{productItem?.name}</Box>
                       <Box className="product-review">
+                        <Rating
+                          name="text-feedback"
+                          value={productItem?.ratings?.toString()}
+                          readOnly
+                          precision={0.5}
+                          emptyIcon={
+                            <StarIcon
+                              style={{ opacity: 0 }}
+                              fontSize="inherit"
+                            />
+                          }
+                        />
+                        {/* <StarIcon />
                         <StarIcon />
                         <StarIcon />
                         <StarIcon />
-                        <StarIcon />
-                        <StarIcon className="gray" />
+                        <StarIcon className="gray" /> */}
                         <span>{productItem?.ratings} Review</span>
                       </Box>
                       <Box className="product-price">
