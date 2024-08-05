@@ -496,6 +496,9 @@ class List extends Component {
             qauntityUnits
           )}
         </Box>
+        <Box className="load-more-btn">
+          <Link>Load More</Link>
+        </Box>
       </Box>
     );
   }

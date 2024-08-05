@@ -178,6 +178,27 @@
   width: 100%;
   flex-wrap: wrap;
 
+
+  .load-more-btn {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+
+    a {
+      display: inline-flex;
+      padding: 5px 15px;
+      border-radius: 4px;
+      border: 1px solid #1f9151;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 24px;
+      color: #1f9151;
+      text-transform: capitalize;
+    }
+  }
+
   .heading {
     display: flex;
     width: 100%;
