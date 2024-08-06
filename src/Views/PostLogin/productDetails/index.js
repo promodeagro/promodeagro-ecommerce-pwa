@@ -439,7 +439,14 @@ class ProductDetails extends Component {
                               <></>
                             )}
 
-                            <ReactImageMagnify
+<Zoom>
+    <img
+      alt={productItem?.name}
+      src={currentSelectedImage}
+      width="500"
+    />
+  </Zoom>
+                            {/* <ReactImageMagnify
                               {...{
                                 smallImage: {
                                   alt: productItem?.name,
@@ -479,7 +486,7 @@ class ProductDetails extends Component {
                                   background: "hsla(0, 0%, 100%, .3)",
                                 },
                               }}
-                            />
+                            /> */}
                           </Box>
                           <Box className="thumbnail-images">
                             <ul>
