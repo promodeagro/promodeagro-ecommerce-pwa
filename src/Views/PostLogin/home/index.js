@@ -137,17 +137,7 @@ class Home extends Component {
         loaderCount: 1,
       });
 
-      let fruits = [];
-      let vegetables = [];
-
-      this.props.homeData?.data.forEach((product) => {
-        if (product.category === "FRUITS") {
-          fruits.push(product);
-        } else if (product.category === "VEGETABLES") {
-          vegetables.push(product);
-        }
-      });
-      this.props.productCategories([fruits, vegetables]);
+     
     }
 
     if (

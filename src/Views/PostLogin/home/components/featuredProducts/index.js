@@ -451,12 +451,15 @@ class FeaturedProducts extends Component {
                 );
               })}
           </Box>
-          <Box
-            className="load-more-btn"
-            onClick={() => this.props.setShopByCategory([])}
-          >
-            <Link to="/category">Load More</Link>
-          </Box>
+          {data?.length?
+           <Box
+           className="load-more-btn"
+           onClick={() => this.props.setShopByCategory([])}
+         >
+           <Link to="/category">Load More</Link>
+         </Box>
+          :<></>}
+         
         </Container>
       </Box>
     );

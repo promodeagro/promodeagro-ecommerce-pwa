@@ -339,8 +339,8 @@ class List extends Component {
                     this.handleAddToCart(item?.id, unitqty);
                   }}
                   disabled={
-                    this.props.additems.status === status.IN_PROGRESS &&
-                    item?.id === this.state.dataId ||
+                    (this.props.additems.status === status.IN_PROGRESS &&
+                      item?.id === this.state.dataId) ||
                     !item?.availability
                   }
                   endIcon={
@@ -497,9 +497,13 @@ class List extends Component {
             qauntityUnits
           )}
         </Box>
-        <Box className="load-more-btn">
-          <Link>Load More</Link>
-        </Box>
+        {sortedData?.length ? (
+          <Box className="load-more-btn">
+            <Link>Load More</Link>
+          </Box>
+        ) : (
+          <></>
+        )}
       </Box>
     );
   }
