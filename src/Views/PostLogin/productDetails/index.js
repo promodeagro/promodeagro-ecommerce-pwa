@@ -39,7 +39,8 @@ import reviewImg from "../../../assets/img/review-img.png";
 import { connect } from "react-redux";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import status from "../../../Redux/Constants";
-
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 import {
   allProducts,
   productDetails,
@@ -175,6 +176,7 @@ class ProductDetails extends Component {
         qauntityUnits:
           this.props.productDetailsData?.data?.cartItem?.QuantityUnits,
         isDeleting: false,
+        currentSelectedImage: this.props?.productDetailsData?.data?.image,
       });
       setTimeout(() => {
         this.setState({
@@ -204,6 +206,16 @@ class ProductDetails extends Component {
           JSON.stringify([this.props.productDetailsData?.data])
         );
       }
+    } else if (this.props.productDetailsData.status === status.FAILURE) {
+      this.setState({
+        productItem: {},
+        itemQuantity: null,
+        loaderCount: 1,
+        qauntityUnits: null,
+        isDeleting: false,
+        currentSelectedImage: "",
+        isUpdateIncrease: null,
+      });
     }
 
     if (
@@ -364,6 +376,7 @@ class ProductDetails extends Component {
       loaderCount,
       isDeleting,
       visibleReviews,
+      currentSelectedImage,
     } = this.state;
 
     const value = 4.5;
@@ -373,549 +386,140 @@ class ProductDetails extends Component {
           Loader.commonLoader()
         ) : (
           <>
-            <Container>
-              <Box className="share-icons-container">
-                <span>Share on</span>
-                <ul>
-                  <li>
-                    <a>
-                      <FacebookOutlinedIcon />
-                    </a>
-                  </li>
-                  <li>
-                    <a>
-                      <TwitterIcon />
-                    </a>
-                  </li>
-                  <li>
-                    <a>
-                      <InstagramIcon />
-                    </a>
-                  </li>
-                  <li>
-                    <a>
-                      <AttachmentIcon />
-                    </a>
-                  </li>
-                </ul>
-              </Box>
-              <Box className="details-container">
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={12} md={5} lg={5}>
-                    <Box className="product-images">
-                      <Box className="big-image">
-                        {loginDetails()?.userId ? (
-                          <Box
-                            className="icon"
-                            onClick={() =>
-                              this.handleWishList(
-                                productItem?.id,
-                                productItem?.inWishlist
-                              )
-                            }
-                          >
-                            {productItem?.inWishlist ? (
-                              <BookmarkOutlinedIcon />
-                            ) : (
-                              <TurnedInNotOutlinedIcon />
-                            )}
-                          </Box>
-                        ) : (
-                          <></>
-                        )}
-
-                        <ReactImageMagnify
-                          {...{
-                            smallImage: {
-                              alt: productItem?.name,
-                              isFluidWidth: true,
-                              src: productItem?.image,
-                              pressMoveThreshold: 3,
-                              isActivatedOnTouch: true,
-                              hoverOffDelayInMs: 150,
-                              fadeDurationInMs: 200,
-                              enlargedImageContainerDimensions: {
-                                width: "100%",
-                                height: "100%",
-                              },
-                            },
-                            largeImage: {
-                              src: productItem?.image,
-                              alt: productItem?.name,
-                              hoverOffDelayInMs: 150,
-                              pressMoveThreshold: 1,
-                              isActivatedOnTouch: true,
-                              fadeDurationInMs: 200,
-                              enlargedImageContainerDimensions: {
-                                width: "100%",
-                                height: "100%",
-                              },
-                              enlargedImagePosition: "over",
-                            },
-                          }}
-                        />
-                      </Box>
-                      {/* <Box className="thumbnail-images">
-                  <ul>
-                    <li className="active">
-                      <a href="#">
-                        <img src={productThumbnailImage} alt="" />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <img src={productThumbnailImage} alt="" />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <img src={productThumbnailImage} alt="" />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <img src={productThumbnailImage} alt="" />
-                      </a>
-                    </li>
-                  </ul>
-                </Box> */}
-                    </Box>
-                  </Grid>
-                  <Grid item xs={12} sm={12} md={7} lg={7}>
-                    <Box className="product-info">
-                      <Box className="product-name">{productItem?.name}</Box>
-                      <Box className="product-review">
-                        <Rating
-                          name="text-feedback"
-                          value={productItem?.ratings?.toString()}
-                          readOnly
-                          precision={0.5}
-                          emptyIcon={
-                            <StarIcon
-                              style={{ opacity: 0 }}
-                              fontSize="inherit"
-                            />
-                          }
-                        />
-                        <span className="text">
-                          {productItem?.ratings} Review
-                        </span>
-                      </Box>
-                      <Box className="product-price">
-                        <Box className="mrp">
-                          MRP <img src={mdiRupee} alt="" />{" "}
-                          <span>{productItem?.mrp}</span>
-                        </Box>
-                        <Box className="price">
-                          <img src={rupeeIcon} alt="" /> {productItem?.price}
-                          {/* <span>230 / Kg</span> */}
-                        </Box>
-                      </Box>
-                      {productItem?.savingsPercentage != 0 ? (
-                        <Box className="product-save">
-                          You save{" "}
-                          <span>{productItem?.savingsPercentage} %</span>
-                        </Box>
-                      ) : (
-                        <></>
-                      )}
-
-                      <>
-                        {productItem?.unitPrices?.length > 0 ? (
-                          <Box className="select">
-                            <FormControl fullWidth>
-                              <NativeSelect
-                                value={this.state.qauntityUnits}
-                                onChange={(event) =>
-                                  this.handleQuantity(
-                                    event,
-                                    productItem?.cartItem?.Quantity
+            {productItem?.id ? (
+              <>
+                <Container>
+                  <Box className="share-icons-container">
+                    <span>Share on</span>
+                    <ul>
+                      <li>
+                        <a>
+                          <FacebookOutlinedIcon />
+                        </a>
+                      </li>
+                      <li>
+                        <a>
+                          <TwitterIcon />
+                        </a>
+                      </li>
+                      <li>
+                        <a>
+                          <InstagramIcon />
+                        </a>
+                      </li>
+                      <li>
+                        <a>
+                          <AttachmentIcon />
+                        </a>
+                      </li>
+                    </ul>
+                  </Box>
+                  <Box className="details-container">
+                    <Grid container spacing={2}>
+                      <Grid item xs={12} sm={12} md={5} lg={5}>
+                        <Box className="product-images">
+                          <Box className="big-image">
+                            {loginDetails()?.userId ? (
+                              <Box
+                                className="icon"
+                                onClick={() =>
+                                  this.handleWishList(
+                                    productItem?.id,
+                                    productItem?.inWishlist
                                   )
                                 }
                               >
-                                {productItem?.unitPrices?.map(
-                                  (unitItem, index) => {
-                                    return (
-                                      <option key={index} value={unitItem?.qty}>
-                                        {unitItem?.qty} {productItem?.unit}
-                                      </option>
-                                    );
-                                  }
-                                )}
-                              </NativeSelect>
-                            </FormControl>
-                          </Box>
-                        ) : (
-                          <Box className="select">{productItem?.unit}</Box> // or any other placeholder or message you want to show
-                        )}
-                      </>
-                      <Box className="product-cart-buttons">
-                        <Grid container spacing={2}>
-                          <Grid item xs={12} sm={6} md={6} lg={8}>
-                            {productItem?.availability ? (
-                              <>
-                                {parseInt(itemQuantity) != 0 ? (
-                                  <Box className="number-input-container">
-                                    <Box
-                                      className="symbol"
-                                      onClick={() => {
-                                        let unitqty = "";
-                                        if (
-                                          productItem?.unitPrices?.length > 0
-                                        ) {
-                                          unitqty =
-                                            productItem?.unitPrices[0]?.qty;
-                                        } else {
-                                          unitqty = 1;
-                                        }
-                                        this.handleQuantityChange(
-                                          this.props.params.id,
-                                          -1,
-                                          Number(itemQuantity),
-                                          unitqty
-                                        );
-                                      }}
-                                    >
-                                      {(this.props.deleteItems.status ===
-                                        status.IN_PROGRESS &&
-                                        !isUpdateIncrease) ||
-                                      (this.props.updateItems.status ===
-                                        status.IN_PROGRESS &&
-                                        !isUpdateIncrease) ? (
-                                        <CircularProgress
-                                          className="common-loader plus-icon"
-                                          size={24}
-                                        />
-                                      ) : (
-                                        "-"
-                                      )}
-                                    </Box>
-
-                                    <Box className="Number">{itemQuantity}</Box>
-                                    <Box
-                                      className="symbol"
-                                      onClick={() => {
-                                        let unitqty = "";
-                                        if (
-                                          productItem?.unitPrices?.length > 0
-                                        ) {
-                                          unitqty =
-                                            productItem?.unitPrices[0]?.qty;
-                                        } else {
-                                          unitqty = 1;
-                                        }
-                                        this.handleQuantityChange(
-                                          this.props.params.id,
-                                          1,
-                                          Number(itemQuantity),
-                                          unitqty
-                                        );
-                                      }}
-                                    >
-                                      {this.props.updateItems.status ===
-                                        status.IN_PROGRESS &&
-                                      this.state.isUpdateIncrease ? (
-                                        <CircularProgress className="common-loader plus-icon" />
-                                      ) : (
-                                        "+"
-                                      )}
-                                    </Box>
-                                  </Box>
+                                {productItem?.inWishlist ? (
+                                  <BookmarkOutlinedIcon />
                                 ) : (
-                                  <Button
-                                    className="add-cart-btn"
-                                    variant="contained"
-                                    disabled={
-                                      this.props.additems.status ===
-                                        status.IN_PROGRESS ||
-                                      !productItem?.availability
-                                    }
-                                    onClick={() => {
-                                      let unitqty = "";
-                                      if (productItem?.unitPrices?.length > 0) {
-                                        unitqty =
-                                          productItem?.unitPrices[0]?.qty;
-                                      } else {
-                                        unitqty = 1;
-                                      }
-                                      this.handleAddToCart(
-                                        productItem?.id,
-                                        unitqty
-                                      );
-                                    }}
-                                    endIcon={
-                                      this.props.additems.status ===
-                                      status.IN_PROGRESS ? (
-                                        <CircularProgress className="common-loader " />
-                                      ) : (
-                                        <></>
-                                      )
-                                    }
-                                  >
-                                    {productItem?.availability
-                                      ? "Add to Cart"
-                                      : "Out Of Stock"}
-                                    <ShoppingCartOutlinedIcon
-                                      style={{ marginLeft: "10px" }}
-                                    />
-                                  </Button>
+                                  <TurnedInNotOutlinedIcon />
                                 )}
-                              </>
+                              </Box>
                             ) : (
-                              <Button
-                                className="add-cart-btn"
-                                variant="contained"
-                                disabled={!productItem?.availability}
-                              >
-                                Out Of Stock
-                                <ShoppingCartOutlinedIcon
-                                  style={{ marginLeft: "10px" }}
-                                />
-                              </Button>
+                              <></>
                             )}
-                          </Grid>
-                          <Grid item xs={12} sm={6} md={6} lg={4}>
-                            <Button
-                              className="view-cart-btn"
-                              variant="outlined"
-                              onClick={() => {
-                                const items = loginDetails();
-                                if (items?.userId) {
-                                  this.props.navigate("/mycart");
-                                } else {
-                                  this.props.navigate("/signin");
-                                }
+
+                            <ReactImageMagnify
+                              {...{
+                                smallImage: {
+                                  alt: productItem?.name,
+                                  isFluidWidth: true,
+                                  src: currentSelectedImage,
+                                },
+                                largeImage: {
+                                  src: currentSelectedImage,
+                                  // hoverOffDelayInMs: 150,
+                                  width: 800,
+                                  height: 600,
+                                  // pressMoveThreshold: 1,
+                                  // isActivatedOnTouch: true,
+                                  // fadeDurationInMs: 200,
+
+                                  // enlargedImageContainerDimensions: {
+                                  //   width: "200%",
+                                  //   height: "100%",
+                                  // },
+                                  // enlargedImagePortalId: "portal",
+                                },
+                                enlargedImageContainerStyle: {
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  top: "10%",
+                                  left: "110%",
+                                  zIndex: 1000,
+                                  backgroundColor: "white",
+                                  border: "1px solid #ddd",
+                                  padding: "50px",
+                                  width: "1000px",
+                                  height: "1200px",
+                                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+                                },
+                                lensStyle: {
+                                  background: "hsla(0, 0%, 100%, .3)",
+                                },
                               }}
-                            >
-                              View Cart Items
-                            </Button>
-                          </Grid>
-                        </Grid>
-                      </Box>
-                      {/* <Box className="pack-size">
-                        <h3>Pack Size</h3>
-                        <Box
-                          display={"flex"}
-                          alignItems={"flex-start"}
-                          justifyContent={"space-between"}
-                          width={"100%"}
-                          flexWrap={"wrap"}
-                        >
-                          <Grid container spacing={2}>
-                            <Grid item xs={12} sm={6} md={12} lg={6}>
-                              <Box className="pack-box active">
-                                <Box className="check">
-                                  <CheckCircleOutlinedIcon />
-                                </Box>
-                                <Grid container spacing={0}>
-                                  <Grid item xs={5} sm={5} md={5} lg={5}>
-                                    <Box className="left-contents">
-                                      <strong>2x4 pcs</strong>
-                                      <span>Multipack</span>
-                                    </Box>
-                                  </Grid>
-                                  <Grid item xs={7} sm={7} md={7} lg={7}>
-                                    <Box className="right-contents">
-                                      <Box className="product-price">
-                                        <Box className="price">
-                                          <img src={rupeeIcon} alt="" /> 200.12
-                                          <span>
-                                            <img src={mdiRupee} alt="" />
-                                            30.12 / pc
-                                          </span>
-                                        </Box>
-                                      </Box>
-                                      <Box className="product-save">
-                                        <p>
-                                          <img src={mdiRupee} alt="" /> 320.99
-                                        </p>
-                                        <span>20% OFF</span>
-                                      </Box>
-                                    </Box>
-                                  </Grid>
-                                </Grid>
-                              </Box>
-                            </Grid>
-                            <Grid item xs={12} sm={6} md={12} lg={6}>
-                              <Box className="pack-box">
-                                <Grid container spacing={0}>
-                                  <Grid item xs={5} sm={5} md={5} lg={5}>
-                                    <Box className="left-contents">
-                                      <strong>4 pcs</strong>
-                                      <span>Approx. 500-600gm</span>
-                                    </Box>
-                                  </Grid>
-                                  <Grid item xs={7} sm={7} md={7} lg={7}>
-                                    <Box className="right-contents">
-                                      <Box className="product-price">
-                                        <Box className="price">
-                                          <img src={rupeeIcon} alt="" /> 200.12
-                                          <span>
-                                            <img src={mdiRupee} alt="" />
-                                            30.12 / pc
-                                          </span>
-                                        </Box>
-                                      </Box>
-                                      <Box className="product-save">
-                                        <p>
-                                          <img src={mdiRupee} alt="" /> 320.99
-                                        </p>
-                                        <span>20% OFF</span>
-                                      </Box>
-                                    </Box>
-                                  </Grid>
-                                </Grid>
-                              </Box>
-                            </Grid>
-                            <Grid item xs={12} sm={6} md={12} lg={6}>
-                              <Box className="pack-box">
-                                <Box className="check">
-                                  <CheckCircleOutlinedIcon />
-                                </Box>
-                                <Grid container spacing={0}>
-                                  <Grid item xs={5} sm={5} md={5} lg={5}>
-                                    <Box className="left-contents">
-                                      <strong>4 pcs</strong>
-                                      <span>Multipack</span>
-                                    </Box>
-                                  </Grid>
-                                  <Grid item xs={7} sm={7} md={7} lg={7}>
-                                    <Box className="right-contents">
-                                      <Box className="product-price">
-                                        <Box className="price">
-                                          <img src={rupeeIcon} alt="" /> 200.12
-                                          <span>
-                                            <img src={mdiRupee} alt="" />
-                                            30.12 / pc
-                                          </span>
-                                        </Box>
-                                      </Box>
-                                      <Box className="product-save">
-                                        <p>
-                                          <img src={mdiRupee} alt="" /> 320.99
-                                        </p>
-                                        <span>20% OFF</span>
-                                      </Box>
-                                    </Box>
-                                  </Grid>
-                                </Grid>
-                              </Box>
-                            </Grid>
-                            <Grid item xs={12} sm={6} md={12} lg={6}>
-                              <Box className="pack-box">
-                                <Grid container spacing={0}>
-                                  <Grid item xs={5} sm={5} md={5} lg={5}>
-                                    <Box className="left-contents">
-                                      <strong>4 pcs</strong>
-                                      <span>Approx. 500-600gm</span>
-                                    </Box>
-                                  </Grid>
-                                  <Grid item xs={7} sm={7} md={7} lg={7}>
-                                    <Box className="right-contents">
-                                      <Box className="product-price">
-                                        <Box className="price">
-                                          <img src={rupeeIcon} alt="" /> 200.12
-                                          <span>
-                                            <img src={mdiRupee} alt="" />
-                                            30.12 / pc
-                                          </span>
-                                        </Box>
-                                      </Box>
-                                      <Box className="product-save">
-                                        <p>
-                                          <img src={mdiRupee} alt="" /> 320.99
-                                        </p>
-                                        <span>20% OFF</span>
-                                      </Box>
-                                    </Box>
-                                  </Grid>
-                                </Grid>
-                              </Box>
-                            </Grid>
-                          </Grid>
+                            />
+                          </Box>
+                          <Box className="thumbnail-images">
+                            <ul>
+                              {productItem?.images?.length > 0 ? (
+                                productItem?.images?.map((image) => {
+                                  return (
+                                    <li
+                                      className={`${
+                                        currentSelectedImage === image
+                                          ? "active"
+                                          : ""
+                                      }`}
+                                      onClick={() => {
+                                        this.setState({
+                                          currentSelectedImage: image,
+                                        });
+                                      }}
+                                    >
+                                      <a>
+                                        <img src={image} alt="" />
+                                      </a>
+                                    </li>
+                                  );
+                                })
+                              ) : (
+                                <></>
+                              )}
+                            </ul>
+                          </Box>
                         </Box>
-                        <Box className="combos-btn">
-                          <Button>
-                            <p>+2</p> More Combos
-                          </Button>
-                        </Box>
-                      </Box> */}
-                    </Box>
-                  </Grid>
-                </Grid>
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"center"}
-                width={"100%"}
-                className="choose-container"
-              >
-                <Box className="heading">Why Choose us ?</Box>
-                <Grid container spacing={3} justifyContent={"center"}>
-                  <Grid item xs={12} sm={6} md={3} lg={3}>
-                    <Box className="choose-box">
-                      <Box className="box">
-                        <img src={deliveryTruck} alt="" />
-                      </Box>
-                      <span>Free Shipping</span>
-                      <p>Delivery at your door step</p>
-                    </Box>
-                  </Grid>
-                  <Grid item xs={12} sm={6} md={3} lg={3}>
-                    <Box className="choose-box">
-                      <Box className="box">
-                        <img src={timeIcon} alt="" />
-                      </Box>
-                      <span>On Time</span>
-                      <p>Guarantee</p>
-                    </Box>
-                  </Grid>
-                  <Grid item xs={12} sm={6} md={3} lg={3}>
-                    <Box className="choose-box">
-                      <Box className="box">
-                        <img src={returnIcon} alt="" />
-                      </Box>
-                      <span>Easy Return</span>
-                      <p>No Questions Asked</p>
-                    </Box>
-                  </Grid>
-                  <Grid item xs={12} sm={6} md={3} lg={3}>
-                    <Box className="choose-box">
-                      <Box className="box">
-                        <img src={organicIcon} alt="" />
-                      </Box>
-                      <span>100% Organic</span>
-                      <p>You can Trust</p>
-                    </Box>
-                  </Grid>
-                </Grid>
-              </Box>
-              <Box className="product-contents">
-                <h3>About the Product</h3>
-                <p>{productItem?.about}</p>
-                <Box className="other-info">
-                  <h4>
-                    Other Product Info <ExpandCircleDownOutlinedIcon />
-                  </h4>
-                  <ul>
-                    <li>EAN Code: 1203789</li>
-                    <li>Country of origin: India</li>
-                  </ul>
-                </Box>
-              </Box>
-              {this.state.productReviewData?.reviews?.length > 0 && (
-                <Box className="reviews-container">
-                  <Grid container spacing={2}>
-                    <Grid item xs={12} sm={12} md={4} lg={4}>
-                      {this.state.productReviewData?.reviews?.length ? (
-                        <Box className="heading">Customer Reviews</Box>
-                      ) : null}
-                      <Box className="rating">
-                        {this.state.productReviewData?.averageRating ? (
-                          <>
+                      </Grid>
+                      <Grid item xs={12} sm={12} md={7} lg={7}>
+                        <Box className="product-info">
+                          <Box className="product-name">
+                            {productItem?.name}
+                          </Box>
+                          <Box className="product-review">
                             <Rating
                               name="text-feedback"
-                              value={this.state.productReviewData?.averageRating?.toString()}
+                              value={productItem?.ratings?.toString()}
                               readOnly
                               precision={0.5}
                               emptyIcon={
@@ -925,158 +529,616 @@ class ProductDetails extends Component {
                                 />
                               }
                             />
-                            <Box sx={{ ml: 1 }}>
-                              {this.state.productReviewData?.averageRating} out
-                              of 5
+                            <span className="text">
+                              {productItem?.ratings} Review
+                            </span>
+                          </Box>
+                          <Box className="product-price">
+                            <Box className="mrp">
+                              MRP <img src={mdiRupee} alt="" />{" "}
+                              <span>{productItem?.mrp}</span>
                             </Box>
-                          </>
-                        ) : (
-                          <></>
-                        )}
-                      </Box>
-                      <Box className="star-lines">
-                        {this.state.productReviewData?.ratingDistribution
-                          ?.length > 0 ? (
-                          this.state.productReviewData?.ratingDistribution.map(
-                            (item) => {
-                              return (
-                                <Box className="line">
-                                  <span>{item?.rating} Star</span>
-                                  <Box className="percent-line">
-                                    <Box
-                                      className="percent"
-                                      style={{ width: `${item?.percentage}%` }}
-                                    ></Box>
-                                  </Box>
-                                  <p>{item?.percentage}%</p>
-                                </Box>
-                              );
-                            }
-                          )
-                        ) : (
-                          <></>
-                        )}
-                      </Box>
-                      {loginDetails()?.userId ? (
-                        <Box className="write-review">
-                          <strong>Review this product</strong>
-                          <p>Share your thoughts with other customers</p>
-                          <Button onClick={this.handleOpen}>
-                            Write a product Review
-                          </Button>
-                        </Box>
-                      ) : null}
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={8} lg={8}>
-                      <Box className="reviews">
-                        <Box className="review-boxes">
-                          {this.state.productReviewData?.reviews?.length
-                            ? this.state.productReviewData?.reviews
-                                ?.slice(0, visibleReviews)
-                                .map((item) => {
-                                  return (
-                                    <Box className="review-box">
-                                      <Grid container spacing={2}>
-                                        <Grid item xs={2} sm={2} md={1} lg={1}>
-                                          <Box className="image">
-                                            <img src={reviewImg} alt="" />
-                                          </Box>
-                                        </Grid>
-                                        <Grid
-                                          item
-                                          xs={10}
-                                          sm={10}
-                                          md={11}
-                                          lg={11}
-                                        >
-                                          <Box className="contents">
-                                            <Rating
-                                              defaultValue={item?.rating}
-                                              readOnly
-                                              className="rating"
-                                            />
-                                            <p>{item.review}</p>
-                                            <strong>{item?.username}</strong>
-                                          </Box>
-                                        </Grid>
-                                      </Grid>
-                                    </Box>
-                                  );
-                                })
-                            : null}
-                          {this.state.productReviewData?.reviews?.length >
-                            3 && (
-                            <Box className="load-more">
-                              <Button onClick={this.loadMoreReviews}>
-                                Load More
-                              </Button>
+                            <Box className="price">
+                              <img src={rupeeIcon} alt="" />{" "}
+                              {productItem?.price}
+                              {/* <span>230 / Kg</span> */}
                             </Box>
+                          </Box>
+                          {productItem?.savingsPercentage != 0 ? (
+                            <Box className="product-save">
+                              You save{" "}
+                              <span>{productItem?.savingsPercentage} %</span>
+                            </Box>
+                          ) : (
+                            <></>
                           )}
 
-                          <Modal
-                            open={this.state.openReviews}
-                            onClose={this.closeReviews}
-                            className="product-reviews-modal"
-                          >
-                            <Box className="reviews-modal">
-                              <Box className="reviews-modal-header">
-                                Product All Reviews
-                                <CloseIcon onClick={this.closeReviews} />
-                              </Box>
-                              <Box className="review-boxes">
-                                {this.state.productReviewData?.reviews?.length
-                                  ? this.state.productReviewData?.reviews?.map(
-                                      (item) => {
+                          <>
+                            {productItem?.unitPrices?.length > 0 ? (
+                              <Box className="select">
+                                <FormControl fullWidth>
+                                  <NativeSelect
+                                    value={this.state.qauntityUnits}
+                                    onChange={(event) =>
+                                      this.handleQuantity(
+                                        event,
+                                        productItem?.cartItem?.Quantity
+                                      )
+                                    }
+                                  >
+                                    {productItem?.unitPrices?.map(
+                                      (unitItem, index) => {
                                         return (
-                                          <Box className="review-box">
-                                            <Grid container spacing={2}>
-                                              <Grid
-                                                item
-                                                xs={2}
-                                                sm={2}
-                                                md={1}
-                                                lg={1}
-                                              >
-                                                <Box className="image">
-                                                  <img src={reviewImg} alt="" />
-                                                </Box>
-                                              </Grid>
-                                              <Grid
-                                                item
-                                                xs={10}
-                                                sm={10}
-                                                md={11}
-                                                lg={11}
-                                              >
-                                                <Box className="contents">
-                                                  <Rating
-                                                    defaultValue={item?.rating}
-                                                    readOnly
-                                                    className="rating"
-                                                  />
-                                                  <p>{item.review}</p>
-                                                  <strong>
-                                                    {item?.username}
-                                                  </strong>
-                                                </Box>
-                                              </Grid>
-                                            </Grid>
-                                          </Box>
+                                          <option
+                                            key={index}
+                                            value={unitItem?.qty}
+                                          >
+                                            {unitItem?.qty} {productItem?.unit}
+                                          </option>
                                         );
                                       }
-                                    )
-                                  : null}
+                                    )}
+                                  </NativeSelect>
+                                </FormControl>
                               </Box>
-                            </Box>
-                          </Modal>
+                            ) : (
+                              <Box className="select">{productItem?.unit}</Box> // or any other placeholder or message you want to show
+                            )}
+                          </>
+                          <Box className="product-cart-buttons">
+                            <Grid container spacing={2}>
+                              <Grid item xs={12} sm={6} md={6} lg={8}>
+                                {productItem?.availability ? (
+                                  <>
+                                    {parseInt(itemQuantity) != 0 ? (
+                                      <Box className="number-input-container">
+                                        <Box
+                                          className="symbol"
+                                          onClick={() => {
+                                            let unitqty = "";
+                                            if (
+                                              productItem?.unitPrices?.length >
+                                              0
+                                            ) {
+                                              unitqty =
+                                                productItem?.unitPrices[0]?.qty;
+                                            } else {
+                                              unitqty = 1;
+                                            }
+                                            this.handleQuantityChange(
+                                              this.props.params.id,
+                                              -1,
+                                              Number(itemQuantity),
+                                              unitqty
+                                            );
+                                          }}
+                                        >
+                                          {(this.props.deleteItems.status ===
+                                            status.IN_PROGRESS &&
+                                            !isUpdateIncrease) ||
+                                          (this.props.updateItems.status ===
+                                            status.IN_PROGRESS &&
+                                            !isUpdateIncrease) ? (
+                                            <CircularProgress
+                                              className="common-loader plus-icon"
+                                              size={24}
+                                            />
+                                          ) : (
+                                            "-"
+                                          )}
+                                        </Box>
+
+                                        <Box className="Number">
+                                          {itemQuantity}
+                                        </Box>
+                                        <Box
+                                          className="symbol"
+                                          onClick={() => {
+                                            let unitqty = "";
+                                            if (
+                                              productItem?.unitPrices?.length >
+                                              0
+                                            ) {
+                                              unitqty =
+                                                productItem?.unitPrices[0]?.qty;
+                                            } else {
+                                              unitqty = 1;
+                                            }
+                                            this.handleQuantityChange(
+                                              this.props.params.id,
+                                              1,
+                                              Number(itemQuantity),
+                                              unitqty
+                                            );
+                                          }}
+                                        >
+                                          {this.props.updateItems.status ===
+                                            status.IN_PROGRESS &&
+                                          this.state.isUpdateIncrease ? (
+                                            <CircularProgress className="common-loader plus-icon" />
+                                          ) : (
+                                            "+"
+                                          )}
+                                        </Box>
+                                      </Box>
+                                    ) : (
+                                      <Button
+                                        className="add-cart-btn"
+                                        variant="contained"
+                                        disabled={
+                                          this.props.additems.status ===
+                                            status.IN_PROGRESS ||
+                                          !productItem?.availability
+                                        }
+                                        onClick={() => {
+                                          let unitqty = "";
+                                          if (
+                                            productItem?.unitPrices?.length > 0
+                                          ) {
+                                            unitqty =
+                                              productItem?.unitPrices[0]?.qty;
+                                          } else {
+                                            unitqty = 1;
+                                          }
+                                          this.handleAddToCart(
+                                            productItem?.id,
+                                            unitqty
+                                          );
+                                        }}
+                                        endIcon={
+                                          this.props.additems.status ===
+                                          status.IN_PROGRESS ? (
+                                            <CircularProgress className="common-loader " />
+                                          ) : (
+                                            <></>
+                                          )
+                                        }
+                                      >
+                                        {productItem?.availability
+                                          ? "Add to Cart"
+                                          : "Out Of Stock"}
+                                        <ShoppingCartOutlinedIcon
+                                          style={{ marginLeft: "10px" }}
+                                        />
+                                      </Button>
+                                    )}
+                                  </>
+                                ) : (
+                                  <Button
+                                    className="add-cart-btn"
+                                    variant="contained"
+                                    disabled={!productItem?.availability}
+                                  >
+                                    Out Of Stock
+                                    <ShoppingCartOutlinedIcon
+                                      style={{ marginLeft: "10px" }}
+                                    />
+                                  </Button>
+                                )}
+                              </Grid>
+                              <Grid item xs={12} sm={6} md={6} lg={4}>
+                                <Button
+                                  className="view-cart-btn"
+                                  variant="outlined"
+                                  onClick={() => {
+                                    const items = loginDetails();
+                                    if (items?.userId) {
+                                      this.props.navigate("/mycart");
+                                    } else {
+                                      this.props.navigate("/signin");
+                                    }
+                                  }}
+                                >
+                                  View Cart Items
+                                </Button>
+                              </Grid>
+                            </Grid>
+                          </Box>
+                          {/* <Box className="pack-size">
+                     <h3>Pack Size</h3>
+                     <Box
+                       display={"flex"}
+                       alignItems={"flex-start"}
+                       justifyContent={"space-between"}
+                       width={"100%"}
+                       flexWrap={"wrap"}
+                     >
+                       <Grid container spacing={2}>
+                         <Grid item xs={12} sm={6} md={12} lg={6}>
+                           <Box className="pack-box active">
+                             <Box className="check">
+                               <CheckCircleOutlinedIcon />
+                             </Box>
+                             <Grid container spacing={0}>
+                               <Grid item xs={5} sm={5} md={5} lg={5}>
+                                 <Box className="left-contents">
+                                   <strong>2x4 pcs</strong>
+                                   <span>Multipack</span>
+                                 </Box>
+                               </Grid>
+                               <Grid item xs={7} sm={7} md={7} lg={7}>
+                                 <Box className="right-contents">
+                                   <Box className="product-price">
+                                     <Box className="price">
+                                       <img src={rupeeIcon} alt="" /> 200.12
+                                       <span>
+                                         <img src={mdiRupee} alt="" />
+                                         30.12 / pc
+                                       </span>
+                                     </Box>
+                                   </Box>
+                                   <Box className="product-save">
+                                     <p>
+                                       <img src={mdiRupee} alt="" /> 320.99
+                                     </p>
+                                     <span>20% OFF</span>
+                                   </Box>
+                                 </Box>
+                               </Grid>
+                             </Grid>
+                           </Box>
+                         </Grid>
+                         <Grid item xs={12} sm={6} md={12} lg={6}>
+                           <Box className="pack-box">
+                             <Grid container spacing={0}>
+                               <Grid item xs={5} sm={5} md={5} lg={5}>
+                                 <Box className="left-contents">
+                                   <strong>4 pcs</strong>
+                                   <span>Approx. 500-600gm</span>
+                                 </Box>
+                               </Grid>
+                               <Grid item xs={7} sm={7} md={7} lg={7}>
+                                 <Box className="right-contents">
+                                   <Box className="product-price">
+                                     <Box className="price">
+                                       <img src={rupeeIcon} alt="" /> 200.12
+                                       <span>
+                                         <img src={mdiRupee} alt="" />
+                                         30.12 / pc
+                                       </span>
+                                     </Box>
+                                   </Box>
+                                   <Box className="product-save">
+                                     <p>
+                                       <img src={mdiRupee} alt="" /> 320.99
+                                     </p>
+                                     <span>20% OFF</span>
+                                   </Box>
+                                 </Box>
+                               </Grid>
+                             </Grid>
+                           </Box>
+                         </Grid>
+                         <Grid item xs={12} sm={6} md={12} lg={6}>
+                           <Box className="pack-box">
+                             <Box className="check">
+                               <CheckCircleOutlinedIcon />
+                             </Box>
+                             <Grid container spacing={0}>
+                               <Grid item xs={5} sm={5} md={5} lg={5}>
+                                 <Box className="left-contents">
+                                   <strong>4 pcs</strong>
+                                   <span>Multipack</span>
+                                 </Box>
+                               </Grid>
+                               <Grid item xs={7} sm={7} md={7} lg={7}>
+                                 <Box className="right-contents">
+                                   <Box className="product-price">
+                                     <Box className="price">
+                                       <img src={rupeeIcon} alt="" /> 200.12
+                                       <span>
+                                         <img src={mdiRupee} alt="" />
+                                         30.12 / pc
+                                       </span>
+                                     </Box>
+                                   </Box>
+                                   <Box className="product-save">
+                                     <p>
+                                       <img src={mdiRupee} alt="" /> 320.99
+                                     </p>
+                                     <span>20% OFF</span>
+                                   </Box>
+                                 </Box>
+                               </Grid>
+                             </Grid>
+                           </Box>
+                         </Grid>
+                         <Grid item xs={12} sm={6} md={12} lg={6}>
+                           <Box className="pack-box">
+                             <Grid container spacing={0}>
+                               <Grid item xs={5} sm={5} md={5} lg={5}>
+                                 <Box className="left-contents">
+                                   <strong>4 pcs</strong>
+                                   <span>Approx. 500-600gm</span>
+                                 </Box>
+                               </Grid>
+                               <Grid item xs={7} sm={7} md={7} lg={7}>
+                                 <Box className="right-contents">
+                                   <Box className="product-price">
+                                     <Box className="price">
+                                       <img src={rupeeIcon} alt="" /> 200.12
+                                       <span>
+                                         <img src={mdiRupee} alt="" />
+                                         30.12 / pc
+                                       </span>
+                                     </Box>
+                                   </Box>
+                                   <Box className="product-save">
+                                     <p>
+                                       <img src={mdiRupee} alt="" /> 320.99
+                                     </p>
+                                     <span>20% OFF</span>
+                                   </Box>
+                                 </Box>
+                               </Grid>
+                             </Grid>
+                           </Box>
+                         </Grid>
+                       </Grid>
+                     </Box>
+                     <Box className="combos-btn">
+                       <Button>
+                         <p>+2</p> More Combos
+                       </Button>
+                     </Box>
+                   </Box> */}
                         </Box>
-                      </Box>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </Box>
-              )}
-            </Container>
-            <RecentlyViewedItems />
+                  </Box>
+                  <Box
+                    display={"flex"}
+                    justifyContent={"center"}
+                    width={"100%"}
+                    className="choose-container"
+                  >
+                    <Box className="heading">Why Choose us ?</Box>
+                    <Grid container spacing={3} justifyContent={"center"}>
+                      <Grid item xs={12} sm={6} md={3} lg={3}>
+                        <Box className="choose-box">
+                          <Box className="box">
+                            <img src={deliveryTruck} alt="" />
+                          </Box>
+                          <span>Free Shipping</span>
+                          <p>Delivery at your door step</p>
+                        </Box>
+                      </Grid>
+                      <Grid item xs={12} sm={6} md={3} lg={3}>
+                        <Box className="choose-box">
+                          <Box className="box">
+                            <img src={timeIcon} alt="" />
+                          </Box>
+                          <span>On Time</span>
+                          <p>Guarantee</p>
+                        </Box>
+                      </Grid>
+                      <Grid item xs={12} sm={6} md={3} lg={3}>
+                        <Box className="choose-box">
+                          <Box className="box">
+                            <img src={returnIcon} alt="" />
+                          </Box>
+                          <span>Easy Return</span>
+                          <p>No Questions Asked</p>
+                        </Box>
+                      </Grid>
+                      <Grid item xs={12} sm={6} md={3} lg={3}>
+                        <Box className="choose-box">
+                          <Box className="box">
+                            <img src={organicIcon} alt="" />
+                          </Box>
+                          <span>100% Organic</span>
+                          <p>You can Trust</p>
+                        </Box>
+                      </Grid>
+                    </Grid>
+                  </Box>
+                  <Box className="product-contents">
+                    <h3>About the Product</h3>
+                    <p>{productItem?.about}</p>
+                    <Box className="other-info">
+                      <h4>
+                        Other Product Info <ExpandCircleDownOutlinedIcon />
+                      </h4>
+                      <ul>
+                        <li>EAN Code: 1203789</li>
+                        <li>Country of origin: India</li>
+                      </ul>
+                    </Box>
+                  </Box>
+                  {this.state.productReviewData?.reviews?.length > 0 && (
+                    <Box className="reviews-container">
+                      <Grid container spacing={2}>
+                        <Grid item xs={12} sm={12} md={4} lg={4}>
+                          {this.state.productReviewData?.reviews?.length ? (
+                            <Box className="heading">Customer Reviews</Box>
+                          ) : null}
+                          <Box className="rating">
+                            {this.state.productReviewData?.averageRating ? (
+                              <>
+                                <Rating
+                                  name="text-feedback"
+                                  value={this.state.productReviewData?.averageRating?.toString()}
+                                  readOnly
+                                  precision={0.5}
+                                  emptyIcon={
+                                    <StarIcon
+                                      style={{ opacity: 0 }}
+                                      fontSize="inherit"
+                                    />
+                                  }
+                                />
+                                <Box sx={{ ml: 1 }}>
+                                  {this.state.productReviewData?.averageRating}{" "}
+                                  out of 5
+                                </Box>
+                              </>
+                            ) : (
+                              <></>
+                            )}
+                          </Box>
+                          <Box className="star-lines">
+                            {this.state.productReviewData?.ratingDistribution
+                              ?.length > 0 ? (
+                              this.state.productReviewData?.ratingDistribution.map(
+                                (item) => {
+                                  return (
+                                    <Box className="line">
+                                      <span>{item?.rating} Star</span>
+                                      <Box className="percent-line">
+                                        <Box
+                                          className="percent"
+                                          style={{
+                                            width: `${item?.percentage}%`,
+                                          }}
+                                        ></Box>
+                                      </Box>
+                                      <p>{item?.percentage}%</p>
+                                    </Box>
+                                  );
+                                }
+                              )
+                            ) : (
+                              <></>
+                            )}
+                          </Box>
+                          {loginDetails()?.userId ? (
+                            <Box className="write-review">
+                              <strong>Review this product</strong>
+                              <p>Share your thoughts with other customers</p>
+                              <Button onClick={this.handleOpen}>
+                                Write a product Review
+                              </Button>
+                            </Box>
+                          ) : null}
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={8} lg={8}>
+                          <Box className="reviews">
+                            <Box className="review-boxes">
+                              {this.state.productReviewData?.reviews?.length
+                                ? this.state.productReviewData?.reviews
+                                    ?.slice(0, visibleReviews)
+                                    .map((item) => {
+                                      return (
+                                        <Box className="review-box">
+                                          <Grid container spacing={2}>
+                                            <Grid
+                                              item
+                                              xs={2}
+                                              sm={2}
+                                              md={1}
+                                              lg={1}
+                                            >
+                                              <Box className="image">
+                                                <img src={reviewImg} alt="" />
+                                              </Box>
+                                            </Grid>
+                                            <Grid
+                                              item
+                                              xs={10}
+                                              sm={10}
+                                              md={11}
+                                              lg={11}
+                                            >
+                                              <Box className="contents">
+                                                <Rating
+                                                  defaultValue={item?.rating}
+                                                  readOnly
+                                                  className="rating"
+                                                />
+                                                <p>{item.review}</p>
+                                                <strong>
+                                                  {item?.username}
+                                                </strong>
+                                              </Box>
+                                            </Grid>
+                                          </Grid>
+                                        </Box>
+                                      );
+                                    })
+                                : null}
+                              {this.state.productReviewData?.reviews?.length >
+                                3 && (
+                                <Box className="load-more">
+                                  <Button onClick={this.loadMoreReviews}>
+                                    Load More
+                                  </Button>
+                                </Box>
+                              )}
+
+                              <Modal
+                                open={this.state.openReviews}
+                                onClose={this.closeReviews}
+                                className="product-reviews-modal"
+                              >
+                                <Box className="reviews-modal">
+                                  <Box className="reviews-modal-header">
+                                    Product All Reviews
+                                    <CloseIcon onClick={this.closeReviews} />
+                                  </Box>
+                                  <Box className="review-boxes">
+                                    {this.state.productReviewData?.reviews
+                                      ?.length
+                                      ? this.state.productReviewData?.reviews?.map(
+                                          (item) => {
+                                            return (
+                                              <Box className="review-box">
+                                                <Grid container spacing={2}>
+                                                  <Grid
+                                                    item
+                                                    xs={2}
+                                                    sm={2}
+                                                    md={1}
+                                                    lg={1}
+                                                  >
+                                                    <Box className="image">
+                                                      <img
+                                                        src={reviewImg}
+                                                        alt=""
+                                                      />
+                                                    </Box>
+                                                  </Grid>
+                                                  <Grid
+                                                    item
+                                                    xs={10}
+                                                    sm={10}
+                                                    md={11}
+                                                    lg={11}
+                                                  >
+                                                    <Box className="contents">
+                                                      <Rating
+                                                        defaultValue={
+                                                          item?.rating
+                                                        }
+                                                        readOnly
+                                                        className="rating"
+                                                      />
+                                                      <p>{item.review}</p>
+                                                      <strong>
+                                                        {item?.username}
+                                                      </strong>
+                                                    </Box>
+                                                  </Grid>
+                                                </Grid>
+                                              </Box>
+                                            );
+                                          }
+                                        )
+                                      : null}
+                                  </Box>
+                                </Box>
+                              </Modal>
+                            </Box>
+                          </Box>
+                        </Grid>
+                      </Grid>
+                    </Box>
+                  )}
+                </Container>
+                <RecentlyViewedItems />
+              </>
+            ) : (
+              <p>No Item Found</p>
+            )}
           </>
         )}
         <Modal
