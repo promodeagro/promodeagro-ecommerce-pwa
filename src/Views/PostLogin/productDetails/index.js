@@ -378,12 +378,12 @@ class ProductDetails extends Component {
                 <span>Share on</span>
                 <ul>
                   <li>
-                    <a >
+                    <a>
                       <FacebookOutlinedIcon />
                     </a>
                   </li>
                   <li>
-                    <a >
+                    <a>
                       <TwitterIcon />
                     </a>
                   </li>
@@ -404,25 +404,26 @@ class ProductDetails extends Component {
                   <Grid item xs={12} sm={12} md={5} lg={5}>
                     <Box className="product-images">
                       <Box className="big-image">
-                        {loginDetails()?.userId?
-                         <Box
-                         className="icon"
-                         onClick={() =>
-                           this.handleWishList(
-                             productItem?.id,
-                             productItem?.inWishlist
-                           )
-                         }
-                       >
-                         {productItem?.inWishlist ? (
-                           <BookmarkOutlinedIcon />
-                         ) : (
-                           <TurnedInNotOutlinedIcon />
-                         )}
-                       </Box>
+                        {loginDetails()?.userId ? (
+                          <Box
+                            className="icon"
+                            onClick={() =>
+                              this.handleWishList(
+                                productItem?.id,
+                                productItem?.inWishlist
+                              )
+                            }
+                          >
+                            {productItem?.inWishlist ? (
+                              <BookmarkOutlinedIcon />
+                            ) : (
+                              <TurnedInNotOutlinedIcon />
+                            )}
+                          </Box>
+                        ) : (
+                          <></>
+                        )}
 
-                        :<></>}
-                       
                         <ReactImageMagnify
                           {...{
                             smallImage: {
