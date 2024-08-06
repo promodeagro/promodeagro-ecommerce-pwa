@@ -418,12 +418,13 @@ class All extends Component {
                             this.handleAddToCart(item.id, unitqty);
                           }}
                           disabled={
-                            (this.props?.deleteItems?.status ==
+                            ((this.props?.deleteItems?.status ==
                               status?.IN_PROGRESS ||
                               this.props.cartItems.status ===
                                 status.IN_PROGRESS ||
                               this.state?.isProductSelecting) &&
-                            item?.id == this.state?.dataId
+                              item?.id == this.state?.dataId) ||
+                            !item?.availability
                           }
                           endIcon={
                             (this.props?.deleteItems?.status ==
@@ -438,7 +439,7 @@ class All extends Component {
                             )
                           }
                         >
-                          Add to cart
+                          {item?.availability ? "Add to Cart" : "Out Of Stock"}
                         </Button>
                       </Box>
                     )}

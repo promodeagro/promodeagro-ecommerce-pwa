@@ -64,15 +64,29 @@
       position: relative;
       border: 1px solid #b9b9b9;
       z-index: 1000;
+      padding: 15px;
+
+      img {
+        max-height: 420px;
+      }
       .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
         position: absolute;
         right: 15px;
         top: 15px;
         cursor: pointer;
+        z-index: 10;
+        background-color: #fff;
+        border-radius: 3px;
+        border: 1px solid #e5e5e5;
 
         svg {
-          width: 32px;
-          height: 32px;
+          width: 28px;
+          height: 28px;
           color: #141b34;
         }
       }
@@ -320,8 +334,9 @@
         background-color: #1f9151;
         border: 1px solid #1f9151;
         &.Mui-disabled {
+          border-color: rgba(0, 0, 0, 0.26);
           background-color: #ffffff;
-          color: rgba(0, 0, 0, 0.6) !important;
+          color: rgba(0, 0, 0, 0.26) !important;
         }
       }
 

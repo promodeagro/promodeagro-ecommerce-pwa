@@ -340,7 +340,8 @@ class List extends Component {
                   }}
                   disabled={
                     this.props.additems.status === status.IN_PROGRESS &&
-                    item?.id === this.state.dataId
+                    item?.id === this.state.dataId ||
+                    !item?.availability
                   }
                   endIcon={
                     this.props.additems.status == status.IN_PROGRESS &&
@@ -351,7 +352,7 @@ class List extends Component {
                     )
                   }
                 >
-                  Add to cart
+                  {item?.availability ? "Add to Cart" : "Out Of Stock"}
                 </Button>
               </Box>
             )}
