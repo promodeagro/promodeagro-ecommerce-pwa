@@ -194,17 +194,21 @@ class ProductDetails extends Component {
         );
 
         if (!isItemInList) {
-          recentViewList.unshift(this.props.productDetailsData?.data);
-          localStorage.setItem(
-            "recentviewitems",
-            JSON.stringify(recentViewList.slice(0, 3))
-          );
+          if (this.props.productDetailsData?.data?.id) {
+            recentViewList.unshift(this.props.productDetailsData?.data);
+            localStorage.setItem(
+              "recentviewitems",
+              JSON.stringify(recentViewList.slice(0, 3))
+            );
+          }
         }
       } else {
-        localStorage.setItem(
-          "recentviewitems",
-          JSON.stringify([this.props.productDetailsData?.data])
-        );
+        if (this.props.productDetailsData?.data?.id) {
+          localStorage.setItem(
+            "recentviewitems",
+            JSON.stringify([this.props.productDetailsData?.data])
+          );
+        }
       }
     } else if (this.props.productDetailsData.status === status.FAILURE) {
       this.setState({
@@ -439,13 +443,13 @@ class ProductDetails extends Component {
                               <></>
                             )}
 
-<Zoom>
-    <img
-      alt={productItem?.name}
-      src={currentSelectedImage}
-      width="500"
-    />
-  </Zoom>
+                            <Zoom>
+                              <img
+                                alt={productItem?.name}
+                                src={currentSelectedImage}
+                                width="500"
+                              />
+                            </Zoom>
                             {/* <ReactImageMagnify
                               {...{
                                 smallImage: {
