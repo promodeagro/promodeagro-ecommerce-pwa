@@ -215,7 +215,7 @@ class ForgotPassword extends Component {
                     )
                   }
                 >
-                  Forget Password
+                  Update Password
                 </Button>
                 <Box marginTop={"15px"}>
                   <Link to={"/signin"}>

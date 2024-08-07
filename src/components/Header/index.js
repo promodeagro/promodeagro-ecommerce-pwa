@@ -103,7 +103,6 @@ class Header extends Component {
       this.props.personalDetailsData.status === status.SUCCESS &&
       this.props.personalDetailsData?.data
     ) {
-   
       if (this.props.personalDetailsData?.data?.statusCode == 200) {
         this.setState({
           profileName: this.props.personalDetailsData?.data?.user?.Name,
@@ -374,7 +373,8 @@ class Header extends Component {
                       this.props.navigate("/contact-us");
                     }}
                   >
-                    <img src={supportIcon} alt="Customer Support 24/7" /> Customer Support 24/7
+                    <img src={supportIcon} alt="Customer Support 24/7" />{" "}
+                    Customer Support 24/7
                   </Box>
                   {currentAddress?.name && loginDetails()?.userId && (
                     <Box
@@ -387,12 +387,25 @@ class Header extends Component {
                       <span>{currentAddress?.name}</span>
                     </Box>
                   )}
+                  {!loginDetails()?.userId ? (
+                    <Box
+                      className="deliver-box"
+                      onClick={() => this.props.navigate("/signin")}
+                    >
+                      Login
+                      <span>{currentAddress?.name}</span>
+                    </Box>
+                  ) : (
+                    <></>
+                  )}
                   {matches && (
                     <Link to={"/mycart"} style={{ display: "inline-flex" }}>
                       <Button
                         variant="outlined"
                         className="card"
-                        startIcon={<img src={shoppingCartIcon} alt="Shopping" />}
+                        startIcon={
+                          <img src={shoppingCartIcon} alt="Shopping" />
+                        }
                       >
                         {this.props?.cartData?.length ? (
                           <p>{this.props.cartData.length}</p>
@@ -749,7 +762,9 @@ class Header extends Component {
                         <Button
                           variant="outlined"
                           className="notification"
-                          startIcon={<img src={notificationIcon} alt="Notification" />}
+                          startIcon={
+                            <img src={notificationIcon} alt="Notification" />
+                          }
                           onClick={() =>
                             this.props.navigate("/my-profile/notification")
                           }
