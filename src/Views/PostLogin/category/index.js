@@ -437,7 +437,7 @@ function Category(props) {
                 />
 
                 {totalPages ? (
-                  <Stack spacing={2}>
+                  <Stack spacing={2} direction="row" justifyContent="flex-end">
                     <Pagination
                       count={totalPages}
                       showFirstButton
