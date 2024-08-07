@@ -178,11 +178,11 @@ export const fetchTopSellingProducts = createAsyncThunk(
   async (params) => {
     try {
       const userId = loginDetails()?.userId;
-      let url =
-        config.TOP_SELLING_PRODUCTS +
-        `?subcategory=${params?.subcategory}&userId=${params?.userId}`;
+      let url = config.TOP_SELLING_PRODUCTS;
+      //  +
+      // `?subcategory=${params?.subcategory}&userId=${params?.userId}`;
 
-      const response = await postLoginService.get(url);
+      const response = await postLoginService.get(url, { params });
       return response.data;
     } catch (error) {
       return error;

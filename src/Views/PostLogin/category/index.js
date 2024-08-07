@@ -5,6 +5,8 @@ import SideBar from "./sideBar";
 import List from "./list";
 // import RecentlyViewedItems from "./recentlyViewedItems";
 import RecentlyViewedItems from "components/RecentlyViewedItems";
+import Pagination from "@mui/material/Pagination";
+
 import {
   allProducts,
   fetchProductBySubCategory,
@@ -20,6 +22,7 @@ import { setShopByCategory } from "../../../Redux/AllProducts/AllProductSlice";
 import _ from "lodash";
 import { useParams, useLocation } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
+import Stack from "@mui/material/Stack";
 function Category(props) {
   const { category, subcategory, id } = useParams();
   console.log("data", id);
@@ -45,10 +48,11 @@ function Category(props) {
   const [APIDataLoaded, setAPIDataLoaded] = useState(false);
   const [currentPath, setCurrentPath] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(2);
+  const [pageSize, setPageSize] = useState(5);
   const [lastEvaluatedKey, setLastEvaluatedKey] = useState(null);
   const [personalDetailsLoader, setPersonalDetailsLoader] = useState(false);
   const [profileName, setProfileName] = useState(null);
+
   useEffect(() => {
     // setCurrentPath(window.location.pathname);
     if (loginDetails()?.userId) {
@@ -102,7 +106,6 @@ function Category(props) {
         pageSize: pageSize,
         pageNumber: currentPage,
         exclusiveStartKey: lastEvaluatedKey,
-        
       };
       props.allProducts(data);
     }
@@ -127,36 +130,12 @@ function Category(props) {
 
   useEffect(() => {
     if (
-      props.personalDetailsData?.status == status?.SUCCESS &&
-      filteredProductApiLoader &&
-      props.personalDetailsData?.data &&
-      personalDetailsLoader
-    ) {
-      setPersonalDetailsLoader(false);
-      if (props.personalDetailsData?.data?.statusCode == 200) {
-        setProfileName(props.personalDetailsData?.data?.user?.Name);
-      } else if (props.personalDetailsData?.data?.statusCode == 404) {
-        ErrorMessages.error(props.personalDetailsData?.data?.message);
-        localStorage.removeItem("login");
-        setProfileName("");
-      } else {
-        setProfileName("");
-        localStorage.removeItem("login");
-      }
-    } else if (
-      props.personalDetailsData?.status == status?.FAILURE &&
-      personalDetailsLoader
-    ) {
-      setPersonalDetailsLoader(false);
-    }
-  }, [props.filteredProductData.status]);
-
-  useEffect(() => {
-    if (
       props.allProductsData?.status == status?.SUCCESS &&
       productApiLoader &&
       props.allProductsData?.data
     ) {
+      debugger;
+
       setProdductApiLoader(false);
       setAPIDataLoaded(false);
       if (
@@ -170,10 +149,7 @@ function Category(props) {
           props.allProductsData?.data?.pagination?.lastEvaluatedKey
         );
         setCurrentPage(props.allProductsData?.data?.pagination?.currentPage);
-        setProductsData([
-          ...productsData,
-          ...props.allProductsData?.data?.products,
-        ]);
+        setProductsData(props.allProductsData?.data?.products);
       }
     } else if (
       props.allProductsData?.status == status?.FAILURE &&
@@ -235,6 +211,18 @@ function Category(props) {
       // applyFilters();
     }
   }, [filters]);
+
+  const handleChange = (event, value) => {
+    setCurrentPage(value);
+    setProdductApiLoader(true);
+    const data = {
+      userId: loginDetails()?.userId,
+      pageSize: pageSize,
+      pageNumber: value,
+      exclusiveStartKey: lastEvaluatedKey,
+    };
+    props.allProducts(data);
+  };
 
   const handleFilterChange = (filters) => {
     setFilters(filters);
@@ -307,7 +295,7 @@ function Category(props) {
     setCartApiLoader(apiLoader);
   };
 
-  const allproducts = () => {
+  const allproducts = (nextPageStatus) => {
     if (loginDetails()?.userId) {
       setCartApiLoader(true);
       props.fetchCartItems({
@@ -336,7 +324,7 @@ function Category(props) {
       const data = {
         userId: loginDetails()?.userId,
         pageSize: pageSize,
-        pageNumber: currentPage + 1,
+        pageNumber: nextPageStatus ? currentPage + 1 : currentPage,
         exclusiveStartKey: lastEvaluatedKey,
       };
       props.allProducts(data);
@@ -374,17 +362,31 @@ function Category(props) {
             {APIDataLoaded ? (
               Loader.commonLoader()
             ) : (
-              <List
-                handleCartApiLoader={handleCartApiLoader}
-                currentCategory={subcategory ? subcategory : category}
-                data={productsData ? productsData : []}
-                cartItemsData={cartList}
-                hideFilter={hideFilter}
-                allproducts={allproducts}
-                profileName={profileName}
-                currentPage={currentPage}
-                lastEvaluatedKey={lastEvaluatedKey}
-              />
+              <>
+                <List
+                  handleCartApiLoader={handleCartApiLoader}
+                  currentCategory={subcategory ? subcategory : category}
+                  data={productsData ? productsData : []}
+                  cartItemsData={cartList}
+                  hideFilter={hideFilter}
+                  allproducts={allproducts}
+                />
+
+                {lastEvaluatedKey ? (
+                  <Stack spacing={2}>
+                    <div>Content for currentPage {currentPage}</div>
+                    <Pagination
+                      count={10}
+                      showFirstButton
+                      showLastButton
+                      page={currentPage}
+                      onChange={handleChange}
+                    />
+                  </Stack>
+                ) : (
+                  <></>
+                )}
+              </>
             )}
           </Grid>
         </Grid>

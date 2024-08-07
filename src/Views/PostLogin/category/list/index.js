@@ -108,9 +108,10 @@ class List extends Component {
     }
   }
 
-  getAllProduct() {
-    this.props.allproducts();
+  getAllProduct(nextPage) {
+    this.props.allproducts(nextPage);
   }
+
 
   handleAddToCart(id, qty) {
     const items = loginDetails();
@@ -497,22 +498,7 @@ class List extends Component {
             qauntityUnits
           )}
         </Box>
-        {this.props.lastEvaluatedKey ? (
-          <Box
-            className="load-more-btn"
-            disabled={this.props.allProductsData.status === status.IN_PROGRESS}
-            onClick={() => this.getAllProduct()}
-          >
-            <Link>
-              {" "}
-              {this.props.allProductsData.status === status.IN_PROGRESS
-                ? "Loading..."
-                : "Load More"}
-            </Link>
-          </Box>
-        ) : (
-          <></>
-        )}
+     
       </Box>
     );
   }
