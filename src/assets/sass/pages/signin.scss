@@ -37,8 +37,13 @@
 
       .number-input {
         margin-top: 24px;
-        .css-md26zr-MuiInputBase-root-MuiOutlinedInput-root {
+        .MuiInputBase-root {
           height: 40px;
+          &.Mui-focused {
+            .MuiOutlinedInput-notchedOutline {
+              border-color: #1f9151;
+            }
+          }
         }
 
         label {
@@ -55,12 +60,7 @@
         }
 
         .number-textfield {
-          .css-8j6b76-MuiInputBase-root-MuiOutlinedInput-root {
-            height: 40px;
-            border-radius: 4px;
-          }
-
-          .css-1pnmrwp-MuiTypography-root {
+          .MuiTypography-root {
             color: #868c98;
             font-size: 14px;
             line-height: 20px;
