@@ -44,9 +44,11 @@ function Category(props) {
   });
   const [APIDataLoaded, setAPIDataLoaded] = useState(false);
   const [currentPath, setCurrentPath] = useState("");
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(2);
+  const [lastEvaluatedKey, setLastEvaluatedKey] = useState(null);
   const [personalDetailsLoader, setPersonalDetailsLoader] = useState(false);
-  const [profileName,setProfileName]=useState(null)
+  const [profileName, setProfileName] = useState(null);
   useEffect(() => {
     // setCurrentPath(window.location.pathname);
     if (loginDetails()?.userId) {
@@ -94,7 +96,15 @@ function Category(props) {
     } else {
       setAPIDataLoaded(true);
       setProdductApiLoader(true);
-      props.allProducts(loginDetails()?.userId ? loginDetails()?.userId : "");
+
+      const data = {
+        userId: loginDetails()?.userId,
+        pageSize: pageSize,
+        pageNumber: currentPage,
+        exclusiveStartKey: lastEvaluatedKey,
+        
+      };
+      props.allProducts(data);
     }
   }, [subcategory, category, id, window.location.pathname]);
 
@@ -124,13 +134,13 @@ function Category(props) {
     ) {
       setPersonalDetailsLoader(false);
       if (props.personalDetailsData?.data?.statusCode == 200) {
-        setProfileName(props.personalDetailsData?.data?.user?.Name)
+        setProfileName(props.personalDetailsData?.data?.user?.Name);
       } else if (props.personalDetailsData?.data?.statusCode == 404) {
         ErrorMessages.error(props.personalDetailsData?.data?.message);
         localStorage.removeItem("login");
-        setProfileName("")
+        setProfileName("");
       } else {
-        setProfileName("")
+        setProfileName("");
         localStorage.removeItem("login");
       }
     } else if (
@@ -149,14 +159,28 @@ function Category(props) {
     ) {
       setProdductApiLoader(false);
       setAPIDataLoaded(false);
-      if (props.allProductsData?.data?.response?.status == 500) {
+      if (
+        props.allProductsData?.data?.response?.status == 500 ||
+        props.allProductsData?.data?.response?.status == 401
+      ) {
+        setProductsData([]);
+        setCurrentPage(1);
       } else {
-        setProductsData(props.allProductsData?.data);
+        setLastEvaluatedKey(
+          props.allProductsData?.data?.pagination?.lastEvaluatedKey
+        );
+        setCurrentPage(props.allProductsData?.data?.pagination?.currentPage);
+        setProductsData([
+          ...productsData,
+          ...props.allProductsData?.data?.products,
+        ]);
       }
     } else if (
       props.allProductsData?.status == status?.FAILURE &&
       productApiLoader
     ) {
+      setProductsData([]);
+      setCurrentPage(1);
       setProdductApiLoader(false);
     }
   }, [props.allProductsData.status]);
@@ -309,7 +333,13 @@ function Category(props) {
       );
     } else {
       setProdductApiLoader(true);
-      props.allProducts(loginDetails()?.userId ? loginDetails()?.userId : "");
+      const data = {
+        userId: loginDetails()?.userId,
+        pageSize: pageSize,
+        pageNumber: currentPage + 1,
+        exclusiveStartKey: lastEvaluatedKey,
+      };
+      props.allProducts(data);
     }
   };
 
@@ -352,6 +382,8 @@ function Category(props) {
                 hideFilter={hideFilter}
                 allproducts={allproducts}
                 profileName={profileName}
+                currentPage={currentPage}
+                lastEvaluatedKey={lastEvaluatedKey}
               />
             )}
           </Grid>

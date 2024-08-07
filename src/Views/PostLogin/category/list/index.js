@@ -497,9 +497,18 @@ class List extends Component {
             qauntityUnits
           )}
         </Box>
-        {sortedData?.length ? (
-          <Box className="load-more-btn">
-            <Link>Load More</Link>
+        {this.props.lastEvaluatedKey ? (
+          <Box
+            className="load-more-btn"
+            disabled={this.props.allProductsData.status === status.IN_PROGRESS}
+            onClick={() => this.getAllProduct()}
+          >
+            <Link>
+              {" "}
+              {this.props.allProductsData.status === status.IN_PROGRESS
+                ? "Loading..."
+                : "Load More"}
+            </Link>
           </Box>
         ) : (
           <></>
@@ -511,7 +520,7 @@ class List extends Component {
 
 function mapStateToProps(state) {
   const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
-  const { shopCategoryData } = state.allproducts;
+  const { shopCategoryData, allProductsData } = state.allproducts;
   const { setBookmarksData, deleteBookMarkData } = state.allproducts;
   return {
     additems,
@@ -521,6 +530,7 @@ function mapStateToProps(state) {
     shopCategoryData,
     deleteBookMarkData,
     setBookmarksData,
+    allProductsData,
   };
 }
 

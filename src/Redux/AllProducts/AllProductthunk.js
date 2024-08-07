@@ -2,10 +2,14 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import config from "../../Views/Config";
 import { postLoginService } from ".././../Services";
 import { loginDetails } from "Views/Utills/helperFunctions";
-export const allProducts = createAsyncThunk("products", async (userId) => {
+export const allProducts = createAsyncThunk("products", async (params) => {
   try {
-    let url = config.ALL_PRODUCTS + `?userId=${userId}`;
-    const response = await postLoginService.get(url);
+    let url = config.ALL_PRODUCTS;
+    //  +
+    // `?userId=${userId}&pageNumber=${currentPage}&pageSize=${pageSize}&exclusiveStartKey=${lastEvaluatedKey}`;
+    const response = await postLoginService.get(url, {
+      params,
+    });
     return response.data;
   } catch (error) {
     return error;
@@ -75,7 +79,7 @@ export const fetchFilteredProducts = createAsyncThunk(
       let url =
         config.FILTERED_PRODUCTS +
         `?minPrice=${params?.minPrice}&maxPrice=${params?.maxPrice}&discounts=${
-          params?.discounts?params?.discounts:""
+          params?.discounts ? params?.discounts : ""
         }&subcategory=${
           params?.subcategory ? params?.subcategory : ""
         }&ratingFilter=${params?.ratingFilter}&category=${
