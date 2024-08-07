@@ -162,6 +162,10 @@ class MyCart extends Component {
                   </Box>
                   <Link to={"/mycart/address"} className="checkout-btn">
                     <Button
+                      disabled={
+                        this.props.setBookmarksData.status ===
+                        status.IN_PROGRESS
+                      }
                       variant="contained"
                       fullWidth
                       className="common-btn"
