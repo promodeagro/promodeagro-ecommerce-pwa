@@ -132,12 +132,25 @@ class Home extends Component {
       this.props.homeData.status === status.SUCCESS &&
       this.props.homeData?.data
     ) {
+      if (
+        this.props.homeData?.data?.response?.status == 500 ||
+        this.props.homeData?.data?.response?.status == 401
+      ) {
+        this.setState({
+          data: [],
+          loaderCount: 1,
+        });
+      } else if (this.props?.homeData?.data?.products) {
+        this.setState({
+          data: this.props?.homeData?.data?.products,
+          loaderCount: 1,
+        });
+      }
+    } else if (this.props.homeData.status === status.FAILURE) {
       this.setState({
-        data: this.props.homeData?.data,
+        data: [],
         loaderCount: 1,
       });
-
-     
     }
 
     if (

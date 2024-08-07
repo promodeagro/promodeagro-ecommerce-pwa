@@ -48,7 +48,7 @@ function Category(props) {
   const [APIDataLoaded, setAPIDataLoaded] = useState(false);
   const [currentPath, setCurrentPath] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [lastEvaluatedKey, setLastEvaluatedKey] = useState(null);
   const [personalDetailsLoader, setPersonalDetailsLoader] = useState(false);
   const [profileName, setProfileName] = useState(null);
