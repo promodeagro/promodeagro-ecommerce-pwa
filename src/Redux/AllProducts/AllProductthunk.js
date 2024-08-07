@@ -41,12 +41,12 @@ export const fetchCategories = createAsyncThunk("category", async () => {
 
 export const fetchProductByCategory = createAsyncThunk(
   "productcategory",
-  async (category, userId) => {
+  async (params) => {
     try {
       const userId = loginDetails()?.userId;
-      let url =
-        config.PRODUCT_BY_CATEGORY + `?category=${category}&userId=${userId}`;
-      const response = await postLoginService.get(url);
+      let url = config.PRODUCT_BY_CATEGORY;
+      // + `?category=${category}&userId=${userId}`;
+      const response = await postLoginService.get(url, { params });
       return response.data;
     } catch (error) {
       return error;
@@ -56,15 +56,15 @@ export const fetchProductByCategory = createAsyncThunk(
 
 export const fetchProductBySubCategory = createAsyncThunk(
   "subcategory",
-  async (subcategory, userId) => {
+  async (params) => {
     try {
       const userId = loginDetails()?.userId;
       console.log("userid ", userId);
 
-      let url =
-        config.PRODUCT_BY_SUBCATEGORY +
-        `?subcategory=${subcategory}&userId=${userId}`;
-      const response = await postLoginService.get(url);
+      let url = config.PRODUCT_BY_SUBCATEGORY;
+      // +
+      // `?subcategory=${subcategory}&userId=${userId}`;
+      const response = await postLoginService.get(url, { params });
       return response.data;
     } catch (error) {
       return error;
@@ -76,18 +76,18 @@ export const fetchFilteredProducts = createAsyncThunk(
   "filteredproducts",
   async (params) => {
     try {
-      let url =
-        config.FILTERED_PRODUCTS +
-        `?minPrice=${params?.minPrice}&maxPrice=${params?.maxPrice}&discounts=${
-          params?.discounts ? params?.discounts : ""
-        }&subcategory=${
-          params?.subcategory ? params?.subcategory : ""
-        }&ratingFilter=${params?.ratingFilter}&category=${
-          params?.category ? params?.category : ""
-        }&userId=${params?.userId ? params?.userId : ""}&offerId=${
-          params?.offerId ? params?.offerId : ""
-        }`;
-      const response = await postLoginService.get(url, params);
+      let url = config.FILTERED_PRODUCTS;
+      // +
+      // `?minPrice=${params?.minPrice}&maxPrice=${params?.maxPrice}&discounts=${
+      //   params?.discounts ? params?.discounts : ""
+      // }&subcategory=${
+      //   params?.subcategory ? params?.subcategory : ""
+      // }&ratingFilter=${params?.ratingFilter}&category=${
+      //   params?.category ? params?.category : ""
+      // }&userId=${params?.userId ? params?.userId : ""}&offerId=${
+      //   params?.offerId ? params?.offerId : ""
+      // }`;
+      const response = await postLoginService.get(url, { params });
       return response.data;
     } catch (error) {
       return error;
