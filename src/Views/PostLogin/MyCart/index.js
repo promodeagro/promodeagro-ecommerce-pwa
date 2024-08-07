@@ -24,6 +24,7 @@ import status from "../../../Redux/Constants";
 import { Loader, loginDetails } from "../../../Views/Utills/helperFunctions";
 import _ from "lodash";
 import RecentlyViewedItems from "components/RecentlyViewedItems";
+import { setProductWishList } from "../../../Redux/AllProducts/AllProductthunk";
 // import RelatedViewedItems from "./components/relatedViewedItems";
 class MyCart extends Component {
   constructor(props) {
@@ -32,7 +33,7 @@ class MyCart extends Component {
       cartList: [],
       dataId: "",
       isUpdateIncrease: null,
-      loaderCount: 0
+      loaderCount: 0,
     };
   }
 
@@ -43,7 +44,6 @@ class MyCart extends Component {
         userId: items.userId,
       });
     }
-
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -55,7 +55,29 @@ class MyCart extends Component {
     ) {
       this.setState({
         cartList: this.props.cartItems.data.items,
-        loaderCount: 1
+        loaderCount: 1,
+      });
+    } else if (this.props.cartItems.status === status.FAILURE) {
+      this.setState({
+        cartList: [],
+        loaderCount: 1,
+      });
+    }
+
+    if (
+      prevProps.setBookmarksData.status !==
+        this.props.setBookmarksData.status &&
+      this.props.setBookmarksData.status === status.SUCCESS
+    ) {
+      this.props.fetchCartItems({
+        userId: items.userId,
+      });
+      this.setState({
+        bookMarkId: "",
+      });
+    } else if (this.props.setBookmarksData.status === status.FAILURE) {
+      this.setState({
+        bookMarkId: "",
       });
     }
 
@@ -67,6 +89,7 @@ class MyCart extends Component {
       this.props.fetchCartItems({
         userId: items.userId,
       });
+    } else if (this.props.updateItems.status === status.FAILURE) {
     }
 
     if (
@@ -77,10 +100,9 @@ class MyCart extends Component {
       this.props.fetchCartItems({
         userId: items.userId,
       });
+    } else if (this.props.deleteItems.status === status.FAILURE) {
     }
-
   }
-
   handleQuantityChange(id, increment, productQuantity = 0, qty) {
     const items = loginDetails();
     if (increment < 0 && productQuantity != 0) {
@@ -98,7 +120,7 @@ class MyCart extends Component {
         userId: items.userId,
         productId: id,
         quantity: parseInt(productQuantity),
-        quantityUnits: qty
+        quantityUnits: qty,
       });
     } else {
       this.props.deleteItemToCart({
@@ -153,7 +175,8 @@ class MyCart extends Component {
             ) : (
               <></>
             )}
-            {this.props.cartItems.status === status.IN_PROGRESS && this.state.loaderCount == 0 ? (
+            {this.props.cartItems.status === status.IN_PROGRESS &&
+            this.state.loaderCount == 0 ? (
               Loader.commonLoader()
             ) : (
               <Box className="cart-item-list">
@@ -238,10 +261,10 @@ class MyCart extends Component {
                                   status.IN_PROGRESS &&
                                   item.ProductId === dataId &&
                                   !isUpdateIncrease) ||
-                                  (this.props.updateItems.status ===
-                                    status.IN_PROGRESS &&
-                                    item.ProductId === dataId &&
-                                    !isUpdateIncrease) ? (
+                                (this.props.updateItems.status ===
+                                  status.IN_PROGRESS &&
+                                  item.ProductId === dataId &&
+                                  !isUpdateIncrease) ? (
                                   <CircularProgress
                                     className="common-loader plus-icon"
                                     size={24}
@@ -266,8 +289,8 @@ class MyCart extends Component {
                               >
                                 {this.props.updateItems.status ===
                                   status.IN_PROGRESS &&
-                                  item.ProductId === dataId &&
-                                  isUpdateIncrease ? (
+                                item.ProductId === dataId &&
+                                isUpdateIncrease ? (
                                   <CircularProgress
                                     className="common-loader plus-icon"
                                     size={24}
@@ -279,8 +302,11 @@ class MyCart extends Component {
                             </Box>
                             <Box className="d-flex align-items-ceneter btn-group">
                               <Button
+                                disabled={
+                                  this.props.deleteItemToCart.status ===
+                                  status.IN_PROGRESS
+                                }
                                 onClick={() => {
-                                  console.log("item", item);
                                   const items = loginDetails();
                                   this.props.deleteItemToCart({
                                     userId: items.userId,
@@ -290,7 +316,20 @@ class MyCart extends Component {
                               >
                                 Delete
                               </Button>
-                              <Button>Save it for later</Button>
+                              <Button
+                                disabled={
+                                  this.props.setBookmarksData.status ===
+                                  status.IN_PROGRESS
+                                }
+                                onClick={() => {
+                                  this.props.setProductWishList({
+                                    userId: loginDetails()?.userId,
+                                    productId: item.ProductId,
+                                  });
+                                }}
+                              >
+                                Save it for later
+                              </Button>
                             </Box>
                           </Grid>
                           <Grid item xs={12} sm={6} md={3} lg={3}>
@@ -323,13 +362,15 @@ class MyCart extends Component {
 function mapStateToProps(state) {
   const { cartItems, deleteItems, updateItems } = state.cartitem;
   const { loginData } = state.login;
-  return { cartItems, loginData, deleteItems, updateItems };
+  const { setBookmarksData } = state.allproducts;
+  return { cartItems, loginData, deleteItems, updateItems, setBookmarksData };
 }
 
 const mapDispatchToProps = {
   fetchCartItems,
   deleteItemToCart,
   updateItemToCart,
+  setProductWishList,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyCart);
