@@ -12,6 +12,7 @@ import {
   deleteItemToCart,
   updateItemToCart,
 } from "../../../Redux/Cart/CartThunk";
+import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Link } from "react-router-dom";
 import realtedProdctImg1 from "../../../assets/img/realted-product-1.png";
@@ -227,13 +228,31 @@ class MyCart extends Component {
                           </Box> */}
                           <Grid item xs={12} sm={12} md={6} lg={6}>
                             <Box className="d-flex align-items-center product-cart-list">
-                              <Box className="product-cart-img">
+                              <Box
+                                className="product-cart-img"
+                                onClick={() => {
+                                  this.props.navigate(
+                                    `/product-details/${
+                                      item?.category ? item?.category : "FRUITS"
+                                    }/${item?.productName}/${item?.ProductId}`
+                                  );
+                                }}
+                              >
                                 <img
                                   src={item?.productImage}
                                   alt="product-cart-img"
                                 />
                               </Box>
-                              <Box className="d-block">
+                              <Box
+                                className="d-block"
+                                onClick={() => {
+                                  this.props.navigate(
+                                    `/product-details/${
+                                      item?.category ? item?.category : "FRUITS"
+                                    }/${item?.productName}/${item?.ProductId}`
+                                  );
+                                }}
+                              >
                                 <span className="d-block name">
                                   {item?.productName}
                                 </span>
@@ -377,4 +396,7 @@ const mapDispatchToProps = {
   setProductWishList,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyCart);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(navigateRouter(MyCart));
