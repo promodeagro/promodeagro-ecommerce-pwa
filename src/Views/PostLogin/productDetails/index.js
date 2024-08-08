@@ -17,10 +17,10 @@ import CircularProgress from "@mui/material/CircularProgress";
 import BookmarkOutlinedIcon from "@mui/icons-material/BookmarkOutlined";
 // import RecentlyViewedItems from "./recentlyViewedItems";
 import RecentlyViewedItems from "components/RecentlyViewedItems";
-import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import AttachmentIcon from "@mui/icons-material/Attachment";
+// import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
+// import TwitterIcon from "@mui/icons-material/Twitter";
+// import InstagramIcon from "@mui/icons-material/Instagram";
+// import AttachmentIcon from "@mui/icons-material/Attachment";
 import StarIcon from "@mui/icons-material/Star";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
@@ -58,7 +58,16 @@ import {
 } from "../../../Redux/Cart/CartThunk";
 import { Loader, loginDetails } from "Views/Utills/helperFunctions";
 import { yellow } from "@mui/material/colors";
-
+import {
+  FacebookShareButton,
+  WhatsappShareButton,
+  TwitterShareButton,
+  TelegramShareButton,
+  TelegramIcon,
+  TwitterIcon,
+  WhatsappIcon,
+  FacebookIcon,
+} from "react-share";
 class ProductDetails extends Component {
   constructor(props) {
     super(props);
@@ -398,22 +407,55 @@ class ProductDetails extends Component {
                     <ul>
                       <li>
                         <a>
-                          <FacebookOutlinedIcon />
+                          <FacebookShareButton
+                            url={`https://promodeagro.com`}
+                            // url={`https://promodeagro.com/product-details/${productItem?.category}/${productItem?.subCategory}/${productItem?.id}`}
+                            quote={"find best products"}
+                            hashtag={`share your thoughts about ${productItem?.subCategory}`}
+                          >
+                            <FacebookIcon size={40} round={true} />
+                          </FacebookShareButton>
                         </a>
                       </li>
                       <li>
                         <a>
-                          <TwitterIcon />
+                          <WhatsappShareButton
+                             url={`https://promodeagro.com/product-details/FRUITS/Summer%20Strawberries/1589842061624`}
+                            // url={`https://promodeagro.com/product-details/${productItem?.category.replace(
+                            //   / /g,
+                            //   "%20"
+                            // )}/${productItem?.subCategory
+                            //   .replace(/ /g, "%20")}/${productItem?.id}`}
+                            // url={`https://promodeagro.com/product-details/${productItem?.category}/${productItem?.subCategory}/${productItem?.id}`}
+                            quote={"find best products"}
+                            hashtag={`share your thoughts about ${productItem?.subCategory}`}
+                          >
+                            <WhatsappIcon size={40} round={true} />
+                          </WhatsappShareButton>
                         </a>
                       </li>
                       <li>
                         <a>
-                          <InstagramIcon />
+                          <TwitterShareButton
+                            url={`https://promodeagro.com`}
+                            // url={`https://promodeagro.com/product-details/${productItem?.category}/${productItem?.subCategory}/${productItem?.id}`}
+                            quote={"Find |Best Products"}
+                            hashtag={`Share Yours Thoughts About ${productItem?.subCategory}`}
+                          >
+                            <TwitterIcon size={40} round={true} />
+                          </TwitterShareButton>
                         </a>
                       </li>
                       <li>
                         <a>
-                          <AttachmentIcon />
+                          <TelegramShareButton
+                            url={`https://promodeagro.com`}
+                            // url={`https://promodeagro.com/product-details/${productItem?.category}/${productItem?.subCategory}/${productItem?.id}`}
+                            quote={"Find |Best Products"}
+                            hashtag={`Share Yours Thoughts About ${productItem?.subCategory}`}
+                          >
+                            <TelegramIcon size={40} round={true} />
+                          </TelegramShareButton>
                         </a>
                       </li>
                     </ul>
