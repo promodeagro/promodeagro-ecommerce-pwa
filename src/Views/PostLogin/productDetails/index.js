@@ -420,12 +420,8 @@ class ProductDetails extends Component {
                       <li>
                         <a>
                           <WhatsappShareButton
-                             url={`https://promodeagro.com/product-details/FRUITS/Summer%20Strawberries/1589842061624`}
-                            // url={`https://promodeagro.com/product-details/${productItem?.category.replace(
-                            //   / /g,
-                            //   "%20"
-                            // )}/${productItem?.subCategory
-                            //   .replace(/ /g, "%20")}/${productItem?.id}`}
+                             url={`https://promodeagro.com`}
+                      
                             // url={`https://promodeagro.com/product-details/${productItem?.category}/${productItem?.subCategory}/${productItem?.id}`}
                             quote={"find best products"}
                             hashtag={`share your thoughts about ${productItem?.subCategory}`}
