@@ -75,12 +75,13 @@ class Signin extends Component {
       this.props.loginData.status === status.SUCCESS &&
       this.props.loginData.data
     ) {
-
-
       if (this.props.loginData.data.statusCode == 401) {
         ErrorMessages.error(this.props.loginData.data.message);
         return;
-      } else if (this.props.loginData.data.statusCode == 200 && this.props.loginData.data.token) {
+      } else if (
+        this.props.loginData.data.statusCode == 200 &&
+        this.props.loginData.data.token
+      ) {
         this.setState({
           mobileNumber: "",
           password: "",
@@ -91,8 +92,7 @@ class Signin extends Component {
           JSON.stringify(this.props.loginData.data)
         );
         // ErrorMessages.success("Logged In Successfully");
-        this.props.navigate("/");
-
+        this.props.navigate(-1);
       }
       // if (this.props.loginData.data.token) {
 
@@ -234,7 +234,8 @@ class Signin extends Component {
                     name="isPolicyAccepted"
                   />
                   <span className="agree-text">
-                    I agree to the <Link to="/terms-condition">Terms & Conditions</Link> and{" "}
+                    I agree to the{" "}
+                    <Link to="/terms-condition">Terms & Conditions</Link> and{" "}
                     <Link to="/privacy-policy">Privacy Policy.</Link>
                   </span>
                 </Box>

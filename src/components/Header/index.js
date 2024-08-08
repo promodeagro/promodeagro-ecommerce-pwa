@@ -393,7 +393,13 @@ class Header extends Component {
                       onClick={() => this.props.navigate("/signin")}
                     >
                       Login
-                      <span>{currentAddress?.name}</span>
+                      <span>
+                        {loginDetails()?.userId && currentAddress?.name ? (
+                          currentAddress?.name
+                        ) : (
+                          <></>
+                        )}
+                      </span>
                     </Box>
                   ) : (
                     <></>
