@@ -232,9 +232,7 @@ class MyCart extends Component {
                                 className="product-cart-img"
                                 onClick={() => {
                                   this.props.navigate(
-                                    `/product-details/${
-                                      item?.category ? item?.category : "FRUITS"
-                                    }/${item?.productName}/${item?.ProductId}`
+                                    `/product-details/${item?.category}/${item?.subcategory}/${item?.ProductId}`
                                   );
                                 }}
                               >
