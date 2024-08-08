@@ -116,7 +116,7 @@ class MyCart extends Component {
     });
 
     productQuantity = productQuantity + increment;
-    if (productQuantity != 0) {
+    if (productQuantity > 0) {
       this.props.updateItemToCart({
         userId: items.userId,
         productId: id,
@@ -330,11 +330,17 @@ class MyCart extends Component {
                                   status.IN_PROGRESS
                                 }
                                 onClick={() => {
-                                  const items = loginDetails();
-                                  this.props.deleteItemToCart({
-                                    userId: items.userId,
-                                    productId: item.ProductId,
-                                  });
+                                  this.handleQuantityChange(
+                                    item.ProductId,
+                                    -1,
+                                    0
+                                  );
+
+                                  // const items = loginDetails();
+                                  // this.props.deleteItemToCart({
+                                  //   userId: items.userId,
+                                  //   productId: item.ProductId,
+                                  // });
                                 }}
                               >
                                 Delete
@@ -360,9 +366,13 @@ class MyCart extends Component {
                               <span className="d-block final-amount">
                                 ₹ {item?.Subtotal}
                               </span>
-                              <span className="d-block save-amount">
-                                Saved : <strong>₹ {item.Savings}</strong>
-                              </span>
+                              {item?.Savings ? (
+                                <span className="d-block save-amount">
+                                  Saved : <strong>₹ {item?.Savings}</strong>
+                                </span>
+                              ) : (
+                                <></>
+                              )}
                             </Box>
                           </Grid>
                         </Grid>
@@ -370,7 +380,7 @@ class MyCart extends Component {
                     })}
                   </>
                 ) : (
-                  <Box className="no-data"> There is no data </Box>
+                  <Box className="no-data"> No Items In Cart </Box>
                 )}
               </Box>
             )}
