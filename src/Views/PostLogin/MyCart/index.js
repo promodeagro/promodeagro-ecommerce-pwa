@@ -25,7 +25,7 @@ import status from "../../../Redux/Constants";
 import { Loader, loginDetails } from "../../../Views/Utills/helperFunctions";
 import _ from "lodash";
 import RecentlyViewedItems from "components/RecentlyViewedItems";
-import { setProductWishList } from "../../../Redux/AllProducts/AllProductthunk";
+import { saveForLater } from "../../../Redux/AllProducts/AllProductthunk";
 // import RelatedViewedItems from "./components/relatedViewedItems";
 class MyCart extends Component {
   constructor(props) {
@@ -66,9 +66,9 @@ class MyCart extends Component {
     }
 
     if (
-      prevProps.setBookmarksData.status !==
-        this.props.setBookmarksData.status &&
-      this.props.setBookmarksData.status === status.SUCCESS
+      prevProps.saveForLaterData.status !==
+        this.props.saveForLaterData.status &&
+      this.props.saveForLaterData.status === status.SUCCESS
     ) {
       this.props.fetchCartItems({
         userId: items.userId,
@@ -76,7 +76,7 @@ class MyCart extends Component {
       this.setState({
         bookMarkId: "",
       });
-    } else if (this.props.setBookmarksData.status === status.FAILURE) {
+    } else if (this.props.saveForLaterData.status === status.FAILURE) {
       this.setState({
         bookMarkId: "",
       });
@@ -164,7 +164,7 @@ class MyCart extends Component {
                   <Link to={"/mycart/address"} className="checkout-btn">
                     <Button
                       disabled={
-                        this.props.setBookmarksData.status ===
+                        this.props.saveForLaterData.status ===
                         status.IN_PROGRESS
                       }
                       variant="contained"
@@ -347,11 +347,11 @@ class MyCart extends Component {
                               </Button>
                               <Button
                                 disabled={
-                                  this.props.setBookmarksData.status ===
+                                  this.props.saveForLaterData.status ===
                                   status.IN_PROGRESS
                                 }
                                 onClick={() => {
-                                  this.props.setProductWishList({
+                                  this.props.saveForLater({
                                     userId: loginDetails()?.userId,
                                     productId: item.ProductId,
                                   });
@@ -395,15 +395,15 @@ class MyCart extends Component {
 function mapStateToProps(state) {
   const { cartItems, deleteItems, updateItems } = state.cartitem;
   const { loginData } = state.login;
-  const { setBookmarksData } = state.allproducts;
-  return { cartItems, loginData, deleteItems, updateItems, setBookmarksData };
+  const { saveForLaterData } = state.allproducts;
+  return { cartItems, loginData, deleteItems, updateItems, saveForLaterData };
 }
 
 const mapDispatchToProps = {
   fetchCartItems,
   deleteItemToCart,
   updateItemToCart,
-  setProductWishList,
+  saveForLater,
 };
 
 export default connect(

@@ -38,6 +38,7 @@ const Config = {
   DELETE_USER: `${BASE_URL}/deleteUser`,
   UPDATE_PERSONAL_DETAILS: `${BASE_URL}/updatePersnalDetail`,
   FETCH_PERSONAL_DETAILS: `${BASE_URL}/getPersnalDetails`,
+  SAVE_FOR_LATER:`${BASE_URL}/SaveForLater`,
 };
 
 export default Config;

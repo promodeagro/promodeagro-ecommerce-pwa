@@ -109,6 +109,20 @@ export const setProductWishList = createAsyncThunk(
   }
 );
 
+export const saveForLater = createAsyncThunk(
+  "saveforlater",
+  async (params) => {
+    try {
+      let url = config.SAVE_FOR_LATER;
+
+      const response = await postLoginService.post(url, params);
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
 export const deleteProductWishList = createAsyncThunk(
   "deletewishlist",
   async (productId) => {

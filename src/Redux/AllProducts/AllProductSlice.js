@@ -13,7 +13,8 @@ import {
   fetchTopSellingProducts,
   fetchToSellingCategories,
   fetchAllOffers,
-  addProductReview
+  addProductReview,
+  saveForLater,
 } from "./AllProductthunk";
 import status from "./../Constants";
 
@@ -55,15 +56,18 @@ const AllProductsSlice = createSlice({
     topSellingProductsData: {
       status: null,
     },
-    topSellingCategoriesData:{
-      status:null
+    topSellingCategoriesData: {
+      status: null,
     },
-    allOffersData:{
-      status:null
+    allOffersData: {
+      status: null,
     },
-    addProductReviewData:{
-      status:null
-    }
+    addProductReviewData: {
+      status: null,
+    },
+    saveForLaterData: {
+      status: null,
+    },
   },
   reducers: {
     productDetailsData: (state, action) => {
@@ -378,14 +382,17 @@ const AllProductsSlice = createSlice({
           };
         }
       )
-      .addCase(fetchToSellingCategories.rejected.toString(), (state, action) => {
-        return {
-          ...state,
-          topSellingCategoriesData: {
-            status: status.FAILURE,
-          },
-        };
-      })
+      .addCase(
+        fetchToSellingCategories.rejected.toString(),
+        (state, action) => {
+          return {
+            ...state,
+            topSellingCategoriesData: {
+              status: status.FAILURE,
+            },
+          };
+        }
+      )
 
       .addCase(fetchAllOffers.pending.toString(), (state, action) => {
         return {
@@ -395,18 +402,15 @@ const AllProductsSlice = createSlice({
           },
         };
       })
-      .addCase(
-        fetchAllOffers.fulfilled.toString(),
-        (state, { payload }) => {
-          return {
-            ...state,
-            allOffersData: {
-              status: status.SUCCESS,
-              data: payload,
-            },
-          };
-        }
-      )
+      .addCase(fetchAllOffers.fulfilled.toString(), (state, { payload }) => {
+        return {
+          ...state,
+          allOffersData: {
+            status: status.SUCCESS,
+            data: payload,
+          },
+        };
+      })
       .addCase(fetchAllOffers.rejected.toString(), (state, action) => {
         return {
           ...state,
@@ -423,18 +427,15 @@ const AllProductsSlice = createSlice({
           },
         };
       })
-      .addCase(
-        fetchProducReview.fulfilled.toString(),
-        (state, { payload }) => {
-          return {
-            ...state,
-            productReviewData: {
-              status: status.SUCCESS,
-              data: payload,
-            },
-          };
-        }
-      )
+      .addCase(fetchProducReview.fulfilled.toString(), (state, { payload }) => {
+        return {
+          ...state,
+          productReviewData: {
+            status: status.SUCCESS,
+            data: payload,
+          },
+        };
+      })
       .addCase(fetchProducReview.rejected.toString(), (state, action) => {
         return {
           ...state,
@@ -451,18 +452,15 @@ const AllProductsSlice = createSlice({
           },
         };
       })
-      .addCase(
-        addProductReview.fulfilled.toString(),
-        (state, { payload }) => {
-          return {
-            ...state,
-            addProductReviewData: {
-              status: status.SUCCESS,
-              data: payload,
-            },
-          };
-        }
-      )
+      .addCase(addProductReview.fulfilled.toString(), (state, { payload }) => {
+        return {
+          ...state,
+          addProductReviewData: {
+            status: status.SUCCESS,
+            data: payload,
+          },
+        };
+      })
       .addCase(addProductReview.rejected.toString(), (state, action) => {
         return {
           ...state,
@@ -471,6 +469,31 @@ const AllProductsSlice = createSlice({
           },
         };
       })
+      .addCase(saveForLater.pending.toString(), (state, action) => {
+        return {
+          ...state,
+          saveForLaterData: {
+            status: status.IN_PROGRESS,
+          },
+        };
+      })
+      .addCase(saveForLater.fulfilled.toString(), (state, { payload }) => {
+        return {
+          ...state,
+          saveForLaterData: {
+            status: status.SUCCESS,
+            data: payload,
+          },
+        };
+      })
+      .addCase(saveForLater.rejected.toString(), (state, action) => {
+        return {
+          ...state,
+          saveForLaterData: {
+            status: status.FAILURE,
+          },
+        };
+      });
   },
 });
 
