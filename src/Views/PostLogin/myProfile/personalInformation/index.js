@@ -105,14 +105,12 @@ class PersonalInformation extends Component {
           userId: loginDetails()?.userId,
         });
       } else if (
-        this.props.updatePersonalDetailsData?.data?.statusCode == 401
+        this.props.updatePersonalDetailsData?.data?.statusCode == 401 ||
+        this.props.updatePersonalDetailsData?.data?.statusCode == 500
       ) {
         ErrorMessages.error(
           this.props.updatePersonalDetailsData?.data?.message
         );
-        this.setState({
-          editInformation: false,
-        });
       }
     }
   }
