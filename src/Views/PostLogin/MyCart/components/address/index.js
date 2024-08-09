@@ -385,45 +385,64 @@ class Address extends Component {
                                       : 0;
                                     this.props.productDetailsData(cartList);
                                     this.props.navigate(
-                                      `/product-details/${item.id}`
+                                      `/product-details/${item?.id}`
                                     );
                                   }}
                                 >
-                                  <img src={item.image} alt="" />
+                                  <img src={item?.image} alt="" />
                                 </Box>
                               );
                             })}
                           <Box className="view-all-img-box">
                             <Link to={"/mycart"}>
                               <span className="d-block">
-                                View all {cartList.length} items
+                                View all {cartList?.length} items
                               </span>
                             </Link>
                           </Box>
                         </Box>
-                        <Box
-                          className="delivery-slot-select"
-                          onClick={this.handleOpen}
-                        >
-                          <span className="title">Delivery Slot </span>
-                          <Box className="d-flex align-items-center justify-content-between w-100">
-                            <Box className="d-flex align-items-center">
-                              <AccessTimeIcon className="time-icon" />
-                              {this.state.deliverySlotData?.length ? (
-                                <span className="d-block slot-time">
-                                  {this.state?.selectedDeliverySlot?.date}
-                                  {this.state?.selectedDeliverySlot?.dayOfWeek}
-                                  Beteween
-                                  {this.state?.selectedDeliverySlot?.startTime}-
-                                  {this.state?.selectedDeliverySlot?.endTime}
-                                </span>
-                              ) : (
-                                <></>
-                              )}
+                        {this.state?.slots?.length ? (
+                          <Box
+                            className="delivery-slot-select"
+                            onClick={this.handleOpen}
+                          >
+                            <span className="title">Delivery Slot </span>
+                            <Box className="d-flex align-items-center justify-content-between w-100">
+                              <Box className="d-flex align-items-center">
+                                <AccessTimeIcon className="time-icon" />
+                                {this.state.deliverySlotData?.length ? (
+                                  <span className="d-block slot-time">
+                                    {this.state?.selectedDeliverySlot?.date}
+                                    {
+                                      this.state?.selectedDeliverySlot
+                                        ?.dayOfWeek
+                                    }
+                                    Between
+                                    {
+                                      this.state?.selectedDeliverySlot
+                                        ?.startTime
+                                    }
+                                    -{this.state?.selectedDeliverySlot?.endTime}
+                                  </span>
+                                ) : (
+                                  <></>
+                                )}
+                              </Box>
+                              <KeyboardArrowDownIcon className="down-arrow-icon" />
                             </Box>
-                            <KeyboardArrowDownIcon className="down-arrow-icon" />
                           </Box>
-                        </Box>
+                        ) : (
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "flex-start",
+                            }}
+                          >
+                            <p>No Delivery Option Available</p>
+                          </div>
+                        )}
+
                         <Box className="w-100 justify-content-end d-flex">
                           {/* <Button
                         variant="contained"
@@ -764,7 +783,7 @@ class Address extends Component {
                         onChange={(event) => this.handleSlotChange(event)}
                       >
                         <Grid container spacing={2}>
-                          {this.state.slots?.length ? (
+                          {this.state?.slots?.length ? (
                             this.state?.slots?.map((item, index) => {
                               return (
                                 <Grid
@@ -786,7 +805,7 @@ class Address extends Component {
                               );
                             })
                           ) : (
-                            <></>
+                            <p>No Delivery Slot Available</p>
                           )}
 
                           {/* <Grid item xs={12} lg={4} md={4} sm={6}>
@@ -831,7 +850,7 @@ class Address extends Component {
                               );
                             })
                           ) : (
-                            <></>
+                            <p>No Delivery Slot Available</p>
                           )}
 
                           {/* <Grid item xs={12} lg={4} md={4} sm={6}>
@@ -876,7 +895,7 @@ class Address extends Component {
                               );
                             })
                           ) : (
-                            <></>
+                            <p>No Delivery Slot Available</p>
                           )}
 
                           {/* <Grid item xs={12} lg={4} md={4} sm={6}>
