@@ -364,90 +364,104 @@ class Address extends Component {
               defaultSelectedAddress={this.state.defaultSelectedAddress}
             />
           ) : activeStep === 1 ? (
-            <Box className="select-delivery-option-container">
-              {cartList.length > 0 &&
-              this.props.cartItems?.status === status?.SUCCESS ? (
-                <Grid container spacing={2} data-aos="zoom-in-down">
-                  <Grid item xs={12} lg={8} md={12} sm={12}>
-                    <Box className="delivery-option-details">
-                      <h3>Select a delivery option</h3>
-                      <Box className="delivery-inner-box">
-                        <Box className="d-flex align-items-center flex-wrap">
-                          {cartList.length &&
-                            cartList.slice(0, 4).map((item) => {
-                              let itemId = cartList?.find(
-                                (x) => x.ProductId === item.id
-                              );
-                              return (
-                                <Box
-                                  className="product-img-box"
-                                  onClick={() => {
-                                    let cartList = _.cloneDeep(item);
-                                    cartList.Quantity = itemId?.Quantity
-                                      ? itemId?.Quantity
-                                      : 0;
-                                    this.props.productDetailsData(cartList);
-                                    this.props.navigate(
-                                      `/product-details/${item?.id}`
+            <>
+              {this.props?.deliverySlotData?.status === status.IN_PROGRESS ? (
+                Loader.commonLoader()
+              ) : (
+                <>
+                  <Box className="select-delivery-option-container">
+                    {cartList.length > 0 &&
+                    this.props.cartItems?.status === status?.SUCCESS ? (
+                      <Grid container spacing={2} data-aos="zoom-in-down">
+                        <Grid item xs={12} lg={8} md={12} sm={12}>
+                          <Box className="delivery-option-details">
+                            <h3>Select a delivery option</h3>
+                            <Box className="delivery-inner-box">
+                              <Box className="d-flex align-items-center flex-wrap">
+                                {cartList.length &&
+                                  cartList.slice(0, 4).map((item) => {
+                                    let itemId = cartList?.find(
+                                      (x) => x.ProductId === item.id
                                     );
+                                    return (
+                                      <Box
+                                        className="product-img-box"
+                                        onClick={() => {
+                                          let cartList = _.cloneDeep(item);
+                                          cartList.Quantity = itemId?.Quantity
+                                            ? itemId?.Quantity
+                                            : 0;
+                                          this.props.productDetailsData(
+                                            cartList
+                                          );
+                                          this.props.navigate(
+                                            `/product-details/${item?.id}`
+                                          );
+                                        }}
+                                      >
+                                        <img src={item?.image} alt="" />
+                                      </Box>
+                                    );
+                                  })}
+                                <Box className="view-all-img-box">
+                                  <Link to={"/mycart"}>
+                                    <span className="d-block">
+                                      View all {cartList?.length} items
+                                    </span>
+                                  </Link>
+                                </Box>
+                              </Box>
+                              {this.state?.slots?.length ? (
+                                <Box
+                                  className="delivery-slot-select"
+                                  onClick={this.handleOpen}
+                                >
+                                  <span className="title">Delivery Slot </span>
+                                  <Box className="d-flex align-items-center justify-content-between w-100">
+                                    <Box className="d-flex align-items-center">
+                                      <AccessTimeIcon className="time-icon" />
+                                      {this.state.deliverySlotData?.length ? (
+                                        <span className="d-block slot-time">
+                                          {
+                                            this.state?.selectedDeliverySlot
+                                              ?.date
+                                          }
+                                          {
+                                            this.state?.selectedDeliverySlot
+                                              ?.dayOfWeek
+                                          }
+                                          Between
+                                          {
+                                            this.state?.selectedDeliverySlot
+                                              ?.startTime
+                                          }
+                                          -
+                                          {
+                                            this.state?.selectedDeliverySlot
+                                              ?.endTime
+                                          }
+                                        </span>
+                                      ) : (
+                                        <></>
+                                      )}
+                                    </Box>
+                                    <KeyboardArrowDownIcon className="down-arrow-icon" />
+                                  </Box>
+                                </Box>
+                              ) : (
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "flex-start",
                                   }}
                                 >
-                                  <img src={item?.image} alt="" />
-                                </Box>
-                              );
-                            })}
-                          <Box className="view-all-img-box">
-                            <Link to={"/mycart"}>
-                              <span className="d-block">
-                                View all {cartList?.length} items
-                              </span>
-                            </Link>
-                          </Box>
-                        </Box>
-                        {this.state?.slots?.length ? (
-                          <Box
-                            className="delivery-slot-select"
-                            onClick={this.handleOpen}
-                          >
-                            <span className="title">Delivery Slot </span>
-                            <Box className="d-flex align-items-center justify-content-between w-100">
-                              <Box className="d-flex align-items-center">
-                                <AccessTimeIcon className="time-icon" />
-                                {this.state.deliverySlotData?.length ? (
-                                  <span className="d-block slot-time">
-                                    {this.state?.selectedDeliverySlot?.date}
-                                    {
-                                      this.state?.selectedDeliverySlot
-                                        ?.dayOfWeek
-                                    }
-                                    Between
-                                    {
-                                      this.state?.selectedDeliverySlot
-                                        ?.startTime
-                                    }
-                                    -{this.state?.selectedDeliverySlot?.endTime}
-                                  </span>
-                                ) : (
-                                  <></>
-                                )}
-                              </Box>
-                              <KeyboardArrowDownIcon className="down-arrow-icon" />
-                            </Box>
-                          </Box>
-                        ) : (
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "flex-start",
-                            }}
-                          >
-                            <p>No Delivery Option Available</p>
-                          </div>
-                        )}
+                                  <p>No Delivery Option Available</p>
+                                </div>
+                              )}
 
-                        <Box className="w-100 justify-content-end d-flex">
-                          {/* <Button
+                              <Box className="w-100 justify-content-end d-flex">
+                                {/* <Button
                         variant="contained"
                         fullWidth
                         className="common-btn proceed-payment-btn"
@@ -460,7 +474,7 @@ class Address extends Component {
                         Proceed to payment
                       </Button> */}
 
-                          {/* <Button
+                                {/* <Button
                         variant="contained"
                         fullWidth
                         className="common-btn proceed-payment-btn"
@@ -475,81 +489,88 @@ class Address extends Component {
                       >
                         Place Order
                       </Button> */}
-                          <Button
-                            variant="contained"
-                            fullWidth
-                            className="common-btn proceed-payment-btn"
-                            onClick={() => this.handlePlaceOrder()}
-                            disabled={
-                              this.props.placeOrderData.status ===
-                                status.IN_PROGRESS ||
-                              (this.props?.deliverySlotData?.status ===
-                                status.SUCCESS &&
-                                !this.props?.deliverySlotData?.data?.[0])
-                            }
-                            endIcon={
-                              this.props.placeOrderData.status ===
-                              status.IN_PROGRESS ? (
-                                <CircularProgress className="common-loader" />
-                              ) : (
-                                <></>
-                              )
-                            }
-                          >
-                            Place Order
-                          </Button>
-                        </Box>
-                      </Box>
-                    </Box>
-                  </Grid>
-                  <Grid item xs={12} lg={4} md={12} sm={12}>
-                    <Box className="order-summary-container">
-                      <h3 className="order-title">Order Summary</h3>
-                      <Box className="order-summary">
-                        {cartList.length &&
-                          cartList.map((item) => {
-                            return (
-                              <Box className="product-list d-flex align-items-center justify-content-between">
-                                <span className="d-block product-name">
-                                  {item.name}
-                                </span>
-                                <span className="d-block product-weight">
-                                  x {item?.Quantity}
-                                </span>
+                                <Button
+                                  variant="contained"
+                                  fullWidth
+                                  className="common-btn proceed-payment-btn"
+                                  onClick={() => this.handlePlaceOrder()}
+                                  disabled={
+                                    this.props.placeOrderData.status ===
+                                      status.IN_PROGRESS ||
+                                    (this.props?.deliverySlotData?.status ===
+                                      status.SUCCESS &&
+                                      !this.props?.deliverySlotData?.data?.[0])
+                                  }
+                                  endIcon={
+                                    this.props.placeOrderData.status ===
+                                    status.IN_PROGRESS ? (
+                                      <CircularProgress className="common-loader" />
+                                    ) : (
+                                      <></>
+                                    )
+                                  }
+                                >
+                                  Place Order
+                                </Button>
                               </Box>
-                            );
-                          })}
-                      </Box>
-                      <Box className="total-amount d-flex align-items-center justify-content-between">
-                        <span className="d-block heading">
-                          Total Amount Payable{" "}
-                        </span>
-                        <span className="d-block amount">₹ {totalPrice}</span>
-                      </Box>
-                      <Box className="total-saving d-flex align-items-center justify-content-between">
-                        <span className="d-block heading">Total Savings </span>
-                        <span className="d-block amount">
-                          ₹ {this.state.totalSavings}
-                        </span>
-                      </Box>
-                      <Box className="information d-flex ">
-                        <InfoIcon className="info-icon" />
-                        <p className="d-block text">
-                          Select your address and delivery slot to know accurate
-                          delivery charges. You can save more by applying a
-                          voucher!
-                        </p>
-                      </Box>
-                    </Box>
-                  </Grid>
-                </Grid>
-              ) : this.props.cartItems?.status === status?.SUCCESS &&
-                cartList.length == 0 ? (
-                <Box>There is no item in cart</Box>
-              ) : (
-                <></>
+                            </Box>
+                          </Box>
+                        </Grid>
+                        <Grid item xs={12} lg={4} md={12} sm={12}>
+                          <Box className="order-summary-container">
+                            <h3 className="order-title">Order Summary</h3>
+                            <Box className="order-summary">
+                              {cartList.length &&
+                                cartList.map((item) => {
+                                  return (
+                                    <Box className="product-list d-flex align-items-center justify-content-between">
+                                      <span className="d-block product-name">
+                                        {item.name}
+                                      </span>
+                                      <span className="d-block product-weight">
+                                        x {item?.Quantity}
+                                      </span>
+                                    </Box>
+                                  );
+                                })}
+                            </Box>
+                            <Box className="total-amount d-flex align-items-center justify-content-between">
+                              <span className="d-block heading">
+                                Total Amount Payable{" "}
+                              </span>
+                              <span className="d-block amount">
+                                ₹ {totalPrice}
+                              </span>
+                            </Box>
+                            <Box className="total-saving d-flex align-items-center justify-content-between">
+                              <span className="d-block heading">
+                                Total Savings{" "}
+                              </span>
+                              <span className="d-block amount">
+                                ₹ {this.state.totalSavings}
+                              </span>
+                            </Box>
+                            <Box className="information d-flex ">
+                              <InfoIcon className="info-icon" />
+                              <p className="d-block text">
+                                Select your address and delivery slot to know
+                                accurate delivery charges. You can save more by
+                                applying a voucher!
+                              </p>
+                            </Box>
+                          </Box>
+                        </Grid>
+                      </Grid>
+                    ) : this.props.cartItems?.status === status?.SUCCESS &&
+                      cartList.length == 0 ? (
+                      <Box>There is no item in cart</Box>
+                    ) : (
+                      <></>
+                    )}
+                  </Box>
+                </>
               )}
-            </Box>
+            </>
           ) : activeStep === 2 ? (
             <></>
           ) : (
