@@ -650,6 +650,8 @@ class ProductDetails extends Component {
                                           className={
                                             this.props.updateItems.status ===
                                               status.IN_PROGRESS ||
+                                            this.props.deleteItems.status ===
+                                              status.IN_PROGRESS ||
                                             this.props.updatePriceByQtyData
                                               .status === status.IN_PROGRESS ||
                                             this.props.prodducDetailsData
@@ -697,6 +699,8 @@ class ProductDetails extends Component {
                                         <Box
                                           className={
                                             this.props.updateItems.status ===
+                                              status.IN_PROGRESS ||
+                                            this.props.deleteItems.status ===
                                               status.IN_PROGRESS ||
                                             this.props.updatePriceByQtyData
                                               .status === status.IN_PROGRESS ||
