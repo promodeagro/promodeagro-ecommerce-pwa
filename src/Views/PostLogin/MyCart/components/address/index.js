@@ -246,6 +246,7 @@ class Address extends Component {
       this.setState({
         slots: deliverySlotData,
       });
+
       // all slot
     } else if (newTimeValue == 1) {
       const afternoonSlots = deliverySlotData.filter((slot) => {
@@ -253,8 +254,10 @@ class Address extends Component {
 
         return startTime24 >= 12 && startTime24 < 16;
       });
+
       this.setState({
         slots: afternoonSlots,
+        // selectedDeliverySlot: afternoonSlots?.length ? afternoonSlots?.[0] : "",
       });
     } else if (newTimeValue == 2) {
       const eveningSlots = deliverySlotData.filter((slot) => {
@@ -262,6 +265,7 @@ class Address extends Component {
 
         return startTime24 >= 16 && startTime24 <= 19;
       });
+
       this.setState({
         slots: eveningSlots,
       });
@@ -299,7 +303,6 @@ class Address extends Component {
 
   handleSlotChange = (event, slotId) => {
     const slotIndex = event.target.value;
-
     this.setState({
       id: Number(slotIndex),
       selectedDeliverySlot: this.state.slots[Number(slotIndex)],
@@ -798,7 +801,16 @@ class Address extends Component {
                                 >
                                   <FormControlLabel
                                     value={index.toString()}
-                                    control={<Radio />}
+                                    control={
+                                      <Radio
+                                        checked={
+                                          this.state?.selectedDeliverySlot
+                                            ?.startTime === item?.startTime &&
+                                          this.state?.selectedDeliverySlot
+                                            ?.endTime === item?.endTime
+                                        }
+                                      />
+                                    }
                                     label={`${item?.startTime} - ${item?.endTime}`}
                                   />
                                 </Grid>
@@ -843,7 +855,16 @@ class Address extends Component {
                                 >
                                   <FormControlLabel
                                     value={index.toString()}
-                                    control={<Radio />}
+                                    control={
+                                      <Radio
+                                        checked={
+                                          this.state?.selectedDeliverySlot
+                                            ?.startTime === item?.startTime &&
+                                          this.state?.selectedDeliverySlot
+                                            ?.endTime === item?.endTime
+                                        }
+                                      />
+                                    }
                                     label={`${item?.startTime} - ${item?.endTime}`}
                                   />
                                 </Grid>
@@ -888,7 +909,16 @@ class Address extends Component {
                                 >
                                   <FormControlLabel
                                     value={index.toString()}
-                                    control={<Radio />}
+                                    control={
+                                      <Radio
+                                        checked={
+                                          this.state?.selectedDeliverySlot
+                                            ?.startTime === item?.startTime &&
+                                          this.state?.selectedDeliverySlot
+                                            ?.endTime === item?.endTime
+                                        }
+                                      />
+                                    }
                                     label={`${item?.startTime} - ${item?.endTime}`}
                                   />
                                 </Grid>
