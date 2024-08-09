@@ -39,6 +39,7 @@ const Config = {
   UPDATE_PERSONAL_DETAILS: `${BASE_URL}/updatePersnalDetail`,
   FETCH_PERSONAL_DETAILS: `${BASE_URL}/getPersnalDetails`,
   SAVE_FOR_LATER:`${BASE_URL}/SaveForLater`,
+  UPDATE_PRODUCT_PRICE:`${BASE_URL}/updatePriceByQty`,
 };
 
 export default Config;

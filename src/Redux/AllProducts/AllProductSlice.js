@@ -15,6 +15,7 @@ import {
   fetchAllOffers,
   addProductReview,
   saveForLater,
+  updatePriceByQty
 } from "./AllProductthunk";
 import status from "./../Constants";
 
@@ -68,6 +69,9 @@ const AllProductsSlice = createSlice({
     saveForLaterData: {
       status: null,
     },
+    updatePriceByQtyData:{
+      status:null
+    }
   },
   reducers: {
     productDetailsData: (state, action) => {
@@ -493,7 +497,32 @@ const AllProductsSlice = createSlice({
             status: status.FAILURE,
           },
         };
-      });
+      })
+      .addCase(updatePriceByQty.pending.toString(), (state, action) => {
+        return {
+          ...state,
+          updatePriceByQtyData: {
+            status: status.IN_PROGRESS,
+          },
+        };
+      })
+      .addCase(updatePriceByQty.fulfilled.toString(), (state, { payload }) => {
+        return {
+          ...state,
+          updatePriceByQtyData: {
+            status: status.SUCCESS,
+            data: payload,
+          },
+        };
+      })
+      .addCase(updatePriceByQty.rejected.toString(), (state, action) => {
+        return {
+          ...state,
+          updatePriceByQtyData: {
+            status: status.FAILURE,
+          },
+        };
+      })
   },
 });
 
