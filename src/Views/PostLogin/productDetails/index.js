@@ -328,20 +328,11 @@ class ProductDetails extends Component {
       qauntityUnits: event.target.value,
       // isDeleting: true,
     });
-    if (qty > 0) {
-      this.props.updatePriceByQty({
-        userId: items.userId,
-        productId: this.props.params.id,
-        grams: parseInt(event.target.value),
-      });
-      // this.setState({
-      //   isDeleting: true,
-      // });
-      // this.props.deleteItemToCart({
-      //   userId: items.userId,
-      //   productId: this.props.params.id,
-      // });
-    }
+    this.props.updatePriceByQty({
+      userId: items.userId,
+      productId: this.props.params.id,
+      grams: parseInt(event.target.value),
+    });
   }
   handleWishList(id, isBookMarked) {
     const item = loginDetails();
@@ -656,7 +647,16 @@ class ProductDetails extends Component {
                                     {parseInt(itemQuantity) != 0 ? (
                                       <Box className="number-input-container">
                                         <Box
-                                          className="symbol"
+                                          className={
+                                            this.props.updateItems.status ===
+                                              status.IN_PROGRESS ||
+                                            this.props.updatePriceByQtyData
+                                              .status === status.IN_PROGRESS ||
+                                            this.props.prodducDetailsData
+                                              .status === status.IN_PROGRESS
+                                              ? "disableClick"
+                                              : "symbol"
+                                          }
                                           onClick={() => {
                                             let unitqty = "";
                                             if (
@@ -695,7 +695,16 @@ class ProductDetails extends Component {
                                           {itemQuantity}
                                         </Box>
                                         <Box
-                                          className="symbol"
+                                          className={
+                                            this.props.updateItems.status ===
+                                              status.IN_PROGRESS ||
+                                            this.props.updatePriceByQtyData
+                                              .status === status.IN_PROGRESS ||
+                                            this.props.prodducDetailsData
+                                              .status === status.IN_PROGRESS
+                                              ? "disableClick"
+                                              : "symbol"
+                                          }
                                           onClick={() => {
                                             let unitqty = "";
                                             if (
@@ -731,7 +740,9 @@ class ProductDetails extends Component {
                                         disabled={
                                           this.props.additems.status ===
                                             status.IN_PROGRESS ||
-                                          !productItem?.availability
+                                          !productItem?.availability ||
+                                          this.props.updatePriceByQtyData
+                                            .status === status.IN_PROGRESS
                                         }
                                         onClick={() => {
                                           let unitqty = "";

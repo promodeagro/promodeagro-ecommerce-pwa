@@ -51,9 +51,6 @@
     width: 100%;
     flex-wrap: wrap;
 
-
-    
-
     .big-image {
       display: flex;
       width: 100%;
@@ -289,7 +286,24 @@
       .number-input-container {
         display: flex;
         width: 100%;
+        .disableClick {
+          pointer-events: "none";
+          width: 33.33%;
+          border: 1px solid #bfcac4;
+          background-color: #d3e1d9;
+          height: 40px;
+          cursor: pointer;
+          font-size: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #ffffff;
+          border-radius: 4px 0px 0px 4px;
 
+          &:last-child {
+            border-radius: 0px 4px 4px 0px;
+          }
+        }
         .symbol {
           width: 33.33%;
           border: 1px solid #1f9151;
