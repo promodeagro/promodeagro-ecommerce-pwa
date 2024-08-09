@@ -648,10 +648,12 @@ class ProductDetails extends Component {
                                       <Box className="number-input-container">
                                         <Box
                                           className={
-                                            this.props.updateItems.status ===
-                                              status.IN_PROGRESS ||
-                                            this.props.deleteItems.status ===
-                                              status.IN_PROGRESS ||
+                                            (this.props.updateItems.status ===
+                                              status.IN_PROGRESS &&
+                                              !isUpdateIncrease) ||
+                                            (this.props.deleteItems.status ===
+                                              status.IN_PROGRESS &&
+                                              !isUpdateIncrease) ||
                                             this.props.updatePriceByQtyData
                                               .status === status.IN_PROGRESS ||
                                             this.props.prodducDetailsData
@@ -698,10 +700,9 @@ class ProductDetails extends Component {
                                         </Box>
                                         <Box
                                           className={
-                                            this.props.updateItems.status ===
-                                              status.IN_PROGRESS ||
-                                            this.props.deleteItems.status ===
-                                              status.IN_PROGRESS ||
+                                            (this.props.updateItems.status ===
+                                              status.IN_PROGRESS &&
+                                              this.state.isUpdateIncrease) ||
                                             this.props.updatePriceByQtyData
                                               .status === status.IN_PROGRESS ||
                                             this.props.prodducDetailsData
