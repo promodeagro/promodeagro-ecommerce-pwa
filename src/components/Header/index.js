@@ -35,7 +35,7 @@ import AccountBoxTwoToneIcon from "@mui/icons-material/AccountBoxTwoTone";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import { fetchDefaultAddress } from "../../Redux/Address/AddressThunk";
-
+import { fetchCartItems } from "../../Redux/Cart/CartThunk";
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -95,6 +95,13 @@ class Header extends Component {
           pathId: "",
         });
       }
+    } else if (
+      this.state.currentPathName != window.location.pathname &&
+      loginDetails()?.userId
+    ) {
+      this.props.fetchCartItems({
+        userId: loginDetails()?.userId ? loginDetails()?.userId : "",
+      });
     }
 
     if (
@@ -844,6 +851,7 @@ const mapDispatchToProps = {
   fetchCategories,
   fetchDefaultAddress,
   fetchPersonalDetails,
+  fetchCartItems,
 };
 
 export default connect(

@@ -112,7 +112,6 @@ class List extends Component {
     this.props.allproducts(nextPage);
   }
 
-
   handleAddToCart(id, qty) {
     const items = loginDetails();
     this.setState({
@@ -462,29 +461,33 @@ class List extends Component {
             <Grid item xs={12} sm={12} md={6} lg={6}>
               <h2>{this.props.currentCategory}</h2>
             </Grid>
-            <Grid item xs={12} sm={12} md={6} lg={6}>
-              <Box className="d-flex w-100 justify-content-end flex-wrap">
-                <Box className="sort-by">
-                  <FormControl fullWidth>
-                    <NativeSelect
-                      value={sortOrder || ""}
-                      onChange={this.handleSortChange}
-                    >
-                      <option value="">Sort by Default</option>
-                      <option value="lowToHigh">
-                        Sort by Price - Low to High
-                      </option>
-                      <option value="highToLow">
-                        Sort by Price - High to Low
-                      </option>
-                    </NativeSelect>
-                  </FormControl>
+            {sortedData?.length ? (
+              <Grid item xs={12} sm={12} md={6} lg={6}>
+                <Box className="d-flex w-100 justify-content-end flex-wrap">
+                  <Box className="sort-by">
+                    <FormControl fullWidth>
+                      <NativeSelect
+                        value={sortOrder || ""}
+                        onChange={this.handleSortChange}
+                      >
+                        <option value="">Sort by Default</option>
+                        <option value="lowToHigh">
+                          Sort by Price - Low to High
+                        </option>
+                        <option value="highToLow">
+                          Sort by Price - High to Low
+                        </option>
+                      </NativeSelect>
+                    </FormControl>
+                  </Box>
+                  <Box className="results-text">
+                    <strong>{data.length}</strong> Results Found
+                  </Box>
                 </Box>
-                <Box className="results-text">
-                  <strong>{data.length}</strong> Results Found
-                </Box>
-              </Box>
-            </Grid>
+              </Grid>
+            ) : (
+              <></>
+            )}
           </Grid>
         </Box>
         <Box className="products">
@@ -498,7 +501,6 @@ class List extends Component {
             qauntityUnits
           )}
         </Box>
-     
       </Box>
     );
   }
