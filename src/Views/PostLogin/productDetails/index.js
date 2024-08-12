@@ -88,6 +88,7 @@ class ProductDetails extends Component {
       rating: "",
       visibleReviews: 3,
       currentSelectedImage: "",
+      quantityUnitPrice: "",
     };
   }
   componentDidMount() {
@@ -312,24 +313,18 @@ class ProductDetails extends Component {
     }
   }
 
-  handleQuantity(event, qty) {
+  handleWriteReview = () => {
     const items = loginDetails();
-    this.setState({
-      qauntityUnits: event.target.value,
-      isDeleting: true,
-    });
-
-    if (qty > 0) {
-      this.setState({
-        isDeleting: true,
-      });
-      this.props.deleteItemToCart({
-        userId: items.userId,
+    if (items?.userId) {
+      this.props.addProductReview({
         productId: this.props.params.id,
-        grams: parseInt(event.target.value),
+        userId: items?.userId,
+        rating: this.state.rating,
+        review: this.state.review,
       });
     }
-  }
+  };
+
   handleWishList(id, isBookMarked) {
     const item = loginDetails();
     this.setState({
@@ -347,11 +342,12 @@ class ProductDetails extends Component {
     }
   }
 
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
   handleClose = () => {
     this.setState({ open: false });
+  };
+
+  handleOpen = () => {
+    this.setState({ open: true });
   };
 
   handleValueChange = (event) => {
@@ -360,17 +356,29 @@ class ProductDetails extends Component {
     this.setState({ [name]: val });
   };
 
-  handleWriteReview = () => {
+  handleQuantity(event, item) {
     const items = loginDetails();
-    if (items?.userId) {
-      this.props.addProductReview({
+    //
+    let priceOfItem = item?.unitPrices?.find(
+      (d) => d.qty === parseInt(event.target.value)
+    );
+
+    this.setState({
+      qauntityUnits: event.target.value,
+      quantityUnitPrice: priceOfItem ? priceOfItem : "",
+      isDeleting: true,
+    });
+    if (item.cartItem?.Quantity > 0) {
+      this.setState({
+        isDeleting: true,
+      });
+      this.props.deleteItemToCart({
+        userId: items.userId,
         productId: this.props.params.id,
-        userId: items?.userId,
-        rating: this.state.rating,
-        review: this.state.review,
+        grams: parseInt(event.target.value),
       });
     }
-  };
+  }
 
   loadMoreReviews = () => {
     this.setState({
@@ -392,6 +400,7 @@ class ProductDetails extends Component {
       isDeleting,
       visibleReviews,
       currentSelectedImage,
+      quantityUnitPrice,
     } = this.state;
 
     const value = 4.5;
@@ -586,11 +595,23 @@ class ProductDetails extends Component {
                           <Box className="product-price">
                             <Box className="mrp">
                               MRP <img src={mdiRupee} alt="" />{" "}
-                              <span>{productItem?.mrp}</span>
+                              <span>
+                                {productItem?.cartItem?.selectedQuantityUnitMrp
+                                  ? productItem?.cartItem
+                                      ?.selectedQuantityUnitMrp
+                                  : quantityUnitPrice?.mrp
+                                  ? quantityUnitPrice?.mrp
+                                  : productItem?.mrp}
+                              </span>
                             </Box>
                             <Box className="price">
                               <img src={rupeeIcon} alt="" />{" "}
-                              {productItem?.price}
+                              {productItem?.cartItem?.selectedQuantityUnitprice
+                                ? productItem?.cartItem
+                                    ?.selectedQuantityUnitprice
+                                : quantityUnitPrice?.price
+                                ? quantityUnitPrice?.price
+                                : productItem?.price}
                               {/* <span>230 / Kg</span> */}
                             </Box>
                           </Box>
@@ -610,10 +631,7 @@ class ProductDetails extends Component {
                                   <NativeSelect
                                     value={this.state.qauntityUnits}
                                     onChange={(event) =>
-                                      this.handleQuantity(
-                                        event,
-                                        productItem?.cartItem?.Quantity
-                                      )
+                                      this.handleQuantity(event, productItem)
                                     }
                                   >
                                     {productItem?.unitPrices?.map(
