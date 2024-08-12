@@ -44,6 +44,7 @@ class WishList extends Component {
       qauntityUnits: [],
       dataId: "",
       isProductSelecting: false,
+      unitIdPrices: [],
     };
   }
 
@@ -168,6 +169,43 @@ class WishList extends Component {
     });
   };
 
+  handleQuantity = (event, item) => {
+    const items = loginDetails();
+    const { value } = event.target;
+    let dupQty = this.state.qauntityUnits;
+
+    dupQty[item?.id] = value;
+    const parsedValue = parseInt(value, 10);
+
+    this.setState((prevState) => {
+      const newPrice = item?.unitPrices?.find((d) => d?.qty === parsedValue);
+
+      const updatedPrices = prevState.unitIdPrices.map((price) =>
+        price.id === item?.id ? { ...price, price: newPrice } : price
+      );
+
+      if (!updatedPrices.some((price) => price.id === item?.id)) {
+        updatedPrices.push({ id: item?.id, price: newPrice });
+      }
+
+      return {
+        qauntityUnits: dupQty,
+        unitIdPrices: updatedPrices,
+      };
+    });
+
+    if (item?.cartItem?.Quantity > 0) {
+      this.setState({
+        isProductSelecting: true,
+        dataId: item?.id,
+      });
+      this.props.deleteItemToCart({
+        userId: items.userId,
+        productId: item?.id,
+      });
+    }
+  };
+
   handleClose = () => {
     this.setState({
       addressId: "",
@@ -175,28 +213,9 @@ class WishList extends Component {
       productId: "",
     });
   };
-
-  handleQuantity = (event, id, qty) => {
-    const items = loginDetails();
-    const { value } = event.target;
-    let dupQty = this.state.qauntityUnits;
-    dupQty[id] = value;
-    this.setState({
-      qauntityUnits: dupQty,
-    });
-    if (qty > 0) {
-      this.setState({
-        isProductSelecting: true,
-        dataId: id,
-      });
-      this.props.deleteItemToCart({
-        userId: items.userId,
-        productId: id,
-      });
-    }
-  };
   render() {
-    const { dataId, isUpdateIncrease, qauntityUnits } = this.state;
+    const { dataId, isUpdateIncrease, qauntityUnits, unitIdPrices } =
+      this.state;
     return (
       <Box className="main-container">
         <Container>
@@ -214,6 +233,7 @@ class WishList extends Component {
                   Loader.commonLoader()
                 ) : this.state.wistListData.length > 0 ? (
                   this.state.wistListData?.map((item) => {
+                    let prices = unitIdPrices.find((d) => d.id === item.id);
                     return (
                       <Box className="product-box">
                         {item?.savingsPercentage != 0 ? (
@@ -251,8 +271,16 @@ class WishList extends Component {
                         <Box className="name">{item?.productName} </Box>
                         <Box className="price-ratting">
                           <Box className="price">
-                            <img src={priceIcon} alt="" /> {item?.price}
-                            <span>{item?.mrp}</span>
+                            <img src={priceIcon} alt="" />{" "}
+                            {prices?.price?.price
+                              ? prices?.price?.price
+                              : item?.price}
+                            <span>
+                              {" "}
+                              {prices?.price?.mrp
+                                ? prices?.price?.mrp
+                                : item?.mrp}
+                            </span>
                           </Box>
                           <Box className="ratting">
                             <StarIcon /> {item?.ratings}
@@ -269,11 +297,7 @@ class WishList extends Component {
                                     ""
                                   }
                                   onChange={(event) =>
-                                    this.handleQuantity(
-                                      event,
-                                      item.id,
-                                      item?.cartItem?.Quantity
-                                    )
+                                    this.handleQuantity(event, item)
                                   }
                                 >
                                   {item.unitPrices.map((unitItem, index) => {
