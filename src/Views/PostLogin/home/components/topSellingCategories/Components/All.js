@@ -297,12 +297,17 @@ class All extends Component {
                     <Box className="price-ratting">
                       <Box className="price">
                         <img src={priceIcon} alt="" />{" "}
-                        {prices?.price?.price
+                        {item?.cartItem?.selectedQuantityUnitprice
+                          ? item?.cartItem?.selectedQuantityUnitprice
+                          : prices?.price?.price
                           ? prices?.price?.price
                           : item?.price}
                         <span>
-                          {" "}
-                          {prices?.price?.mrp ? prices?.price?.mrp : item?.mrp}
+                          {item?.cartItem?.selectedQuantityUnitMrp
+                            ? item?.cartItem?.selectedQuantityUnitMrp
+                            : prices?.price?.mrp
+                            ? prices?.price?.mrp
+                            : item?.mrp}
                         </span>
                       </Box>
                       <Box className="ratting">
