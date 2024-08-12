@@ -42,6 +42,7 @@ class SearchResults extends Component {
       qauntityUnits: [],
       searchLoader: false,
       showResult: false,
+      unitIdPrices: [],
     };
     this.searchInputRef = React.createRef();
     this.debouncedSearch = _.debounce((params) => {
@@ -136,11 +137,13 @@ class SearchResults extends Component {
     isUpdateIncrease,
     quantities,
     cartItemsData,
-    qauntityUnits
+    qauntityUnits,
+    unitIdPrices
   ) {
     let returnData =
       sortedData.length > 0 &&
       sortedData.map((item) => {
+        let prices = unitIdPrices.find((d) => d.id === item.id);
         return (
           <Box
             className="result-product"
@@ -175,8 +178,21 @@ class SearchResults extends Component {
                 </Box>
                 <Box className="price-ratting">
                   <Box className="price">
-                    <img src={priceIcon} alt="" /> {item.price}
-                    <span>{item.mrp}</span>
+                    <img src={priceIcon} alt="" />
+                    {item?.cartItem?.selectedQuantityUnitprice
+                      ? item?.cartItem?.selectedQuantityUnitprice
+                      : prices?.price?.price
+                      ? prices?.price?.price
+                      : item?.price}
+
+                    <span>
+                      {" "}
+                      {item?.cartItem?.selectedQuantityUnitMrp
+                        ? item?.cartItem?.selectedQuantityUnitMrp
+                        : prices?.price?.mrp
+                        ? prices?.price?.mrp
+                        : item?.mrp}
+                    </span>
                   </Box>
                   {item.ratings && (
                     <Box className="ratting">
@@ -193,18 +209,12 @@ class SearchResults extends Component {
                           item?.cartItem?.QuantityUnits ||
                           ""
                         }
-                        onChange={(event) =>
-                          this.handleQuantity(
-                            event,
-                            item.id,
-                            item?.cartItem?.Quantity
-                          )
-                        }
+                        onChange={(event) => this.handleQuantity(event, item)}
                       >
                         {item.unitPrices.map((unitItem, index) => {
                           return (
                             <option key={index} value={unitItem.qty}>
-                              {unitItem.qty}
+                              {unitItem?.qty} {item?.unit}
                             </option>
                           );
                         })}
@@ -426,22 +436,59 @@ class SearchResults extends Component {
     event.preventDefault();
   };
 
-  handleQuantity = (event, id, qty) => {
+  // handleQuantity = (event, id, qty) => {
+  //   const items = loginDetails();
+  //   const { value } = event.target;
+  //   let dupQty = this.state.qauntityUnits;
+  //   dupQty[id] = value;
+  //   this.setState({
+  //     qauntityUnits: dupQty,
+  //   });
+  //   if (qty > 0) {
+  //     this.setState({
+  //       isProductSelecting: true,
+  //       dataId: id,
+  //     });
+  //     this.props.deleteItemToCart({
+  //       userId: items.userId,
+  //       productId: id,
+  //     });
+  //   }
+  // };
+
+  handleQuantity = (event, item) => {
     const items = loginDetails();
     const { value } = event.target;
     let dupQty = this.state.qauntityUnits;
-    dupQty[id] = value;
-    this.setState({
-      qauntityUnits: dupQty,
+
+    dupQty[item?.id] = value;
+    const parsedValue = parseInt(value, 10);
+
+    this.setState((prevState) => {
+      const newPrice = item?.unitPrices?.find((d) => d?.qty === parsedValue);
+
+      const updatedPrices = prevState.unitIdPrices.map((price) =>
+        price.id === item?.id ? { ...price, price: newPrice } : price
+      );
+
+      if (!updatedPrices.some((price) => price.id === item?.id)) {
+        updatedPrices.push({ id: item?.id, price: newPrice });
+      }
+
+      return {
+        qauntityUnits: dupQty,
+        unitIdPrices: updatedPrices,
+      };
     });
-    if (qty > 0) {
+
+    if (item?.cartItem?.Quantity > 0) {
       this.setState({
         isProductSelecting: true,
-        dataId: id,
+        dataId: item?.id,
       });
       this.props.deleteItemToCart({
         userId: items.userId,
-        productId: id,
+        productId: item?.id,
       });
     }
   };
@@ -458,6 +505,7 @@ class SearchResults extends Component {
       qauntityUnits,
       searchLoader,
       showResult,
+      unitIdPrices,
     } = this.state;
 
     return (
@@ -498,7 +546,8 @@ class SearchResults extends Component {
                   isUpdateIncrease,
                   quantities,
                   cartItemsData,
-                  qauntityUnits
+                  qauntityUnits,
+                  unitIdPrices
                 )
               )
             ) : null}
