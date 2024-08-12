@@ -33,6 +33,7 @@ class All extends Component {
       qauntityUnits: [],
       isUpdateIncrease: null,
       dataId: "",
+      unitIdPrices: [],
     };
   }
 
@@ -108,22 +109,6 @@ class All extends Component {
     }
   };
 
-  handleWishList(id, isBookMarked) {
-    const item = loginDetails();
-    this.setState({
-      bookMarkId: id,
-    });
-    if (item?.userId) {
-      if (isBookMarked) {
-        this.props.deleteProductWishList(id);
-      } else {
-        this.props.setProductWishList({
-          userId: item?.userId,
-          productId: id,
-        });
-      }
-    }
-  }
   handleQuantityChange(id, increment, productQuantity = 0, qty) {
     const items = loginDetails();
     if (increment < 0 && productQuantity != 0) {
@@ -154,24 +139,59 @@ class All extends Component {
     }
   }
 
-  handleQuantity = (event, id, qty) => {
+  handleQuantity = (event, item) => {
     const items = loginDetails();
     const { value } = event.target;
-    this.setState((prevState) => ({
-      qauntityUnits: {
-        ...prevState.qauntityUnits,
-        [id]: value,
-      },
-      dataId: id,
-    }));
+    let dupQty = this.state.qauntityUnits;
 
-    if (qty > 0) {
+    dupQty[item?.id] = value;
+    const parsedValue = parseInt(value, 10);
+
+    this.setState((prevState) => {
+      const newPrice = item?.unitPrices?.find((d) => d?.qty === parsedValue);
+
+      const updatedPrices = prevState.unitIdPrices.map((price) =>
+        price.id === item?.id ? { ...price, price: newPrice } : price
+      );
+
+      if (!updatedPrices.some((price) => price.id === item?.id)) {
+        updatedPrices.push({ id: item?.id, price: newPrice });
+      }
+
+      return {
+        qauntityUnits: dupQty,
+        unitIdPrices: updatedPrices,
+      };
+    });
+
+    if (item?.cartItem?.Quantity > 0) {
+      this.setState({
+        isProductSelecting: true,
+        dataId: item?.id,
+      });
       this.props.deleteItemToCart({
         userId: items.userId,
-        productId: id,
+        productId: item?.id,
       });
     }
   };
+
+  handleWishList(id, isBookMarked) {
+    const item = loginDetails();
+    this.setState({
+      bookMarkId: id,
+    });
+    if (item?.userId) {
+      if (isBookMarked) {
+        this.props.deleteProductWishList(id);
+      } else {
+        this.props.setProductWishList({
+          userId: item?.userId,
+          productId: id,
+        });
+      }
+    }
+  }
 
   render() {
     const {
@@ -180,7 +200,8 @@ class All extends Component {
       productImg,
       priceIcon,
     } = this.props;
-    const { qauntityUnits, dataId, isUpdateIncrease } = this.state;
+    const { qauntityUnits, dataId, isUpdateIncrease, unitIdPrices } =
+      this.state;
 
     const settings = {
       dots: false,
@@ -224,6 +245,7 @@ class All extends Component {
           <Slider {...settings}>
             {topSellingProductsList?.length > 0 ? (
               topSellingProductsList?.map((item) => {
+                let prices = unitIdPrices.find((d) => d.id === item.id);
                 return (
                   <Box className="product-box" key={item.id}>
                     {item?.savingsPercentage != 0 ? (
@@ -274,8 +296,14 @@ class All extends Component {
                     </Box>
                     <Box className="price-ratting">
                       <Box className="price">
-                        <img src={priceIcon} alt="" /> {item?.price}{" "}
-                        <span>{item?.mrp}</span>
+                        <img src={priceIcon} alt="" />{" "}
+                        {prices?.price?.price
+                          ? prices?.price?.price
+                          : item?.price}
+                        <span>
+                          {" "}
+                          {prices?.price?.mrp ? prices?.price?.mrp : item?.mrp}
+                        </span>
                       </Box>
                       <Box className="ratting">
                         <StarIcon /> {item?.ratings}
@@ -291,11 +319,7 @@ class All extends Component {
                               ""
                             }
                             onChange={(event) =>
-                              this.handleQuantity(
-                                event,
-                                item.id,
-                                item?.cartItem?.Quantity
-                              )
+                              this.handleQuantity(event, item)
                             }
                           >
                             {item?.unitPrices.map((unitItem, index) => {
