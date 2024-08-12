@@ -43,9 +43,11 @@ class FeaturedProducts extends Component {
       dataId: "",
       isUpdateIncrease: null,
       qauntityUnits: [],
+      unitIdPrices: [],
       qauantites: [],
       isProductSelecting: false,
       bookMarkId: "",
+      productsData: [],
     };
   }
 
@@ -166,22 +168,62 @@ class FeaturedProducts extends Component {
   handleContextMenu = (event) => {
     event.preventDefault();
   };
-  handleQuantity = (event, id, qty) => {
+  // handleQuantity = (event, id, qty) => {
+  //   const items = loginDetails();
+  //   const { value } = event.target;
+  //   let dupQty = this.state.qauntityUnits;
+  //   dupQty[id] = value;
+  //   this.setState({
+  //     qauntityUnits: dupQty,
+  //   });
+  //   if (qty > 0) {
+  //     this.setState({
+  //       isProductSelecting: true,
+  //       dataId: id,
+  //     });
+  //     this.props.deleteItemToCart({
+  //       userId: items.userId,
+  //       productId: id,
+  //     });
+  //   }
+  // };
+
+  handleQuantity = (event, item) => {
     const items = loginDetails();
     const { value } = event.target;
     let dupQty = this.state.qauntityUnits;
-    dupQty[id] = value;
-    this.setState({
-      qauntityUnits: dupQty,
+
+    dupQty[item?.id] = value;
+    const parsedValue = parseInt(value, 10);
+
+    this.setState((prevState) => {
+      const newPrice = item?.unitPrices?.find((d) => d?.qty === parsedValue);
+
+      const updatedPrices = prevState.unitIdPrices.map((price) =>
+        price.id === item?.id ? { ...price, price: newPrice } : price
+      );
+
+      if (!updatedPrices.some((price) => price.id === item?.id)) {
+        updatedPrices.push({ id: item?.id, price: newPrice });
+      }
+
+      return {
+        qauntityUnits: dupQty,
+        unitIdPrices: updatedPrices,
+      };
     });
-    if (qty > 0) {
+    // this.setState({
+    //   qauntityUnits: dupQty,
+    //   unitIdPrices: [...this.state.unitIdPrices, [item?.id] = newPrice],
+    // });
+    if (item?.cartItem?.Quantity > 0) {
       this.setState({
         isProductSelecting: true,
-        dataId: id,
+        dataId: item?.id,
       });
       this.props.deleteItemToCart({
         userId: items.userId,
-        productId: id,
+        productId: item?.id,
       });
     }
   };
@@ -211,6 +253,7 @@ class FeaturedProducts extends Component {
       isUpdateIncrease,
       qauntityUnits,
       bookMarkId,
+      unitIdPrices,
     } = this.state;
 
     return (
@@ -223,6 +266,7 @@ class FeaturedProducts extends Component {
           <Box className="products">
             {data?.length &&
               data.slice(0, 5).map((item, index) => {
+                let prices = unitIdPrices.find((d) => d.id === item.id);
                 return (
                   <Box className="product-box" key={index}>
                     {item.savingsPercentage != 0 ? (
@@ -276,8 +320,13 @@ class FeaturedProducts extends Component {
                     </Box>
                     <Box className="price-ratting">
                       <Box className="price">
-                        <img src={priceIcon} alt="" /> {item?.price}
-                        <span>{item?.mrp}</span>
+                        <img src={priceIcon} alt="" />{" "}
+                        {prices?.price?.price
+                          ? prices?.price?.price
+                          : item?.price}
+                        <span>
+                          {prices?.price?.mrp ? prices?.price?.mrp : item?.mrp}
+                        </span>
                       </Box>
                       <Box className="ratting">
                         <StarIcon /> {item?.ratings}
@@ -294,11 +343,7 @@ class FeaturedProducts extends Component {
                                 ""
                               }
                               onChange={(event) =>
-                                this.handleQuantity(
-                                  event,
-                                  item.id,
-                                  item?.cartItem?.Quantity
-                                )
+                                this.handleQuantity(event, item)
                               }
                             >
                               {item.unitPrices.map((unitItem, index) => {
@@ -451,15 +496,16 @@ class FeaturedProducts extends Component {
                 );
               })}
           </Box>
-          {data?.length?
-           <Box
-           className="load-more-btn"
-           onClick={() => this.props.setShopByCategory([])}
-         >
-           <Link to="/category">Load More</Link>
-         </Box>
-          :<></>}
-         
+          {data?.length ? (
+            <Box
+              className="load-more-btn"
+              onClick={() => this.props.setShopByCategory([])}
+            >
+              <Link to="/category">Load More</Link>
+            </Box>
+          ) : (
+            <></>
+          )}
         </Container>
       </Box>
     );
