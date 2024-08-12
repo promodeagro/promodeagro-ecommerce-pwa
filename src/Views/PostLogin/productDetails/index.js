@@ -48,7 +48,6 @@ import {
   setProductWishList,
   fetchProducReview,
   addProductReview,
-  updatePriceByQty,
 } from "../../../Redux/AllProducts/AllProductthunk";
 import { setShopByCategory } from "../../../Redux/AllProducts/AllProductSlice";
 import {
@@ -122,15 +121,6 @@ class ProductDetails extends Component {
         productId: this.props.params.id,
         userId: items?.userId ? items?.userId : "",
       });
-    }
-
-    if (
-      prevProps.updatePriceByQtyData.status !==
-        this.props.updatePriceByQtyData.status &&
-      this.props.updatePriceByQtyData.status === status.SUCCESS
-    ) {
-      this.productDetails();
-    } else if (this.props.updatePriceByQtyData.status === status.FAILURE) {
     }
 
     if (
@@ -326,13 +316,19 @@ class ProductDetails extends Component {
     const items = loginDetails();
     this.setState({
       qauntityUnits: event.target.value,
-      // isDeleting: true,
+      isDeleting: true,
     });
-    this.props.updatePriceByQty({
-      userId: items.userId,
-      productId: this.props.params.id,
-      grams: parseInt(event.target.value),
-    });
+
+    if (qty > 0) {
+      this.setState({
+        isDeleting: true,
+      });
+      this.props.deleteItemToCart({
+        userId: items.userId,
+        productId: this.props.params.id,
+        grams: parseInt(event.target.value),
+      });
+    }
   }
   handleWishList(id, isBookMarked) {
     const item = loginDetails();
@@ -654,8 +650,6 @@ class ProductDetails extends Component {
                                             (this.props.deleteItems.status ===
                                               status.IN_PROGRESS &&
                                               !isUpdateIncrease) ||
-                                            this.props.updatePriceByQtyData
-                                              .status === status.IN_PROGRESS ||
                                             this.props.prodducDetailsData
                                               .status === status.IN_PROGRESS
                                               ? "disableClick"
@@ -703,8 +697,6 @@ class ProductDetails extends Component {
                                             (this.props.updateItems.status ===
                                               status.IN_PROGRESS &&
                                               this.state.isUpdateIncrease) ||
-                                            this.props.updatePriceByQtyData
-                                              .status === status.IN_PROGRESS ||
                                             this.props.prodducDetailsData
                                               .status === status.IN_PROGRESS
                                               ? "disableClick"
@@ -745,9 +737,7 @@ class ProductDetails extends Component {
                                         disabled={
                                           this.props.additems.status ===
                                             status.IN_PROGRESS ||
-                                          !productItem?.availability ||
-                                          this.props.updatePriceByQtyData
-                                            .status === status.IN_PROGRESS
+                                          !productItem?.availability
                                         }
                                         onClick={() => {
                                           let unitqty = "";
@@ -1289,7 +1279,6 @@ function mapStateToProps(state) {
     deleteBookMarkData,
     productReviewData,
     addProductReviewData,
-    updatePriceByQtyData,
   } = state.allproducts;
   const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
   return {
@@ -1306,7 +1295,6 @@ function mapStateToProps(state) {
     deleteBookMarkData,
     productReviewData,
     addProductReviewData,
-    updatePriceByQtyData,
   };
 }
 
@@ -1322,7 +1310,6 @@ const mapDispatchToProps = {
   deleteProductWishList,
   fetchProducReview,
   addProductReview,
-  updatePriceByQty,
 };
 
 export default connect(

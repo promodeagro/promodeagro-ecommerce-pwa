@@ -63,7 +63,6 @@ class OffersYouMightLike extends Component {
 
   render() {
     const { allOffersList } = this.props;
-    console.log(allOffersList);
 
     return (
       <Box className="offers-banners-container">

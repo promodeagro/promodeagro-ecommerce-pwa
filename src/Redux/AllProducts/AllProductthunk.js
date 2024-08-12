@@ -216,17 +216,4 @@ export const addProductReview = createAsyncThunk(
   }
 );
 
-export const updatePriceByQty = createAsyncThunk(
-  "updatepricebyqty",
-  async (params) => {
-    try {
-      let url = config.UPDATE_PRODUCT_PRICE;
 
-      const response = await postLoginService.put(url, params);
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      return error;
-    }
-  }
-);
