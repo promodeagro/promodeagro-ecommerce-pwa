@@ -144,8 +144,7 @@ class FeaturedProducts extends Component {
     });
 
     productQuantity = productQuantity + increment;
-
-    if (productQuantity != 0) {
+    if (productQuantity > 0) {
       this.props.updateItemToCart({
         userId: items.userId,
         productId: id,
@@ -212,10 +211,7 @@ class FeaturedProducts extends Component {
         unitIdPrices: updatedPrices,
       };
     });
-    // this.setState({
-    //   qauntityUnits: dupQty,
-    //   unitIdPrices: [...this.state.unitIdPrices, [item?.id] = newPrice],
-    // });
+
     if (item?.cartItem?.Quantity > 0) {
       this.setState({
         isProductSelecting: true,
@@ -320,12 +316,19 @@ class FeaturedProducts extends Component {
                     </Box>
                     <Box className="price-ratting">
                       <Box className="price">
-                        <img src={priceIcon} alt="" />{" "}
-                        {prices?.price?.price
+                        <img src={priceIcon} alt="" />
+
+                        {item?.cartItem?.selectedQuantityUnitprice
+                          ? item?.cartItem?.selectedQuantityUnitprice
+                          : prices?.price?.price
                           ? prices?.price?.price
                           : item?.price}
                         <span>
-                          {prices?.price?.mrp ? prices?.price?.mrp : item?.mrp}
+                          {item?.cartItem?.selectedQuantityUnitMrp
+                            ? item?.cartItem?.selectedQuantityUnitMrp
+                            : prices?.price?.mrp
+                            ? prices?.price?.mrp
+                            : item?.mrp}
                         </span>
                       </Box>
                       <Box className="ratting">
