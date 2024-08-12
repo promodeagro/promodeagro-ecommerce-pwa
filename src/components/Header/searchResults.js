@@ -234,11 +234,12 @@ class SearchResults extends Component {
                         onClick={() => {
                           let unitqty = "";
                           if (item?.unitPrices?.length > 0) {
-                            unitqty = item?.unitPrices[0]?.qty;
+                            unitqty = item?.cartItem?.QuantityUnits
+                              ? item?.cartItem?.QuantityUnits
+                              : item?.unitPrices[0]?.qty;
                           } else {
                             unitqty = 1;
                           }
-
                           if (item?.cartItem?.ProductId) {
                             let d = item.cartItem?.Quantity;
                             this.handleQuantityChange(
@@ -278,14 +279,15 @@ class SearchResults extends Component {
                       onClick={() => {
                         let unitqty = "";
                         if (item?.unitPrices?.length > 0) {
-                          unitqty = item?.unitPrices[0]?.qty;
+                          unitqty = item?.cartItem?.QuantityUnits
+                            ? item?.cartItem?.QuantityUnits
+                            : item?.unitPrices[0]?.qty;
                         } else {
                           unitqty = 1;
                         }
 
                         if (item?.cartItem?.ProductId) {
                           let d = item?.cartItem?.Quantity;
-
                           this.handleQuantityChange(
                             item?.cartItem?.ProductId,
                             1,
@@ -393,8 +395,7 @@ class SearchResults extends Component {
     });
 
     productQuantity = productQuantity + increment;
-
-    if (productQuantity != 0) {
+    if (productQuantity > 0) {
       this.props.updateItemToCart({
         userId: items.userId,
         productId: id,
