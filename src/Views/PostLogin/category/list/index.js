@@ -42,6 +42,7 @@ class List extends Component {
       qauntityUnits: [],
       isProductSelecting: false,
       bookMarkId: "",
+      unitIdPrices: [],
     };
   }
 
@@ -141,11 +142,13 @@ class List extends Component {
     isUpdateIncrease,
     quantities,
     cartItemsData,
-    qauntityUnits
+    qauntityUnits,
+    unitIdPrices
   ) {
     let returnData =
       sortedData?.length > 0 &&
       sortedData.map((item) => {
+        let prices = unitIdPrices.find((d) => d.id === item.id);
         return (
           <Box
             className={
@@ -202,8 +205,20 @@ class List extends Component {
             </Box>
             <Box className="price-ratting">
               <Box className="price">
-                <img src={priceIcon} alt="" /> {item?.price}
-                <span>{item?.mrp}</span>
+                <img src={priceIcon} alt="" />{" "}
+                {item?.cartItem?.selectedQuantityUnitprice
+                  ? item?.cartItem?.selectedQuantityUnitprice
+                  : prices?.price?.price
+                  ? prices?.price?.price
+                  : item?.price}
+                <span>
+                  {" "}
+                  {item?.cartItem?.selectedQuantityUnitMrp
+                    ? item?.cartItem?.selectedQuantityUnitMrp
+                    : prices?.price?.mrp
+                    ? prices?.price?.mrp
+                    : item?.mrp}
+                </span>
               </Box>
               {item?.ratings && (
                 <Box className="ratting">
@@ -221,13 +236,7 @@ class List extends Component {
                         item?.cartItem?.QuantityUnits ||
                         ""
                       }
-                      onChange={(event) =>
-                        this.handleQuantity(
-                          event,
-                          item?.id,
-                          item?.cartItem?.Quantity
-                        )
-                      }
+                      onChange={(event) => this.handleQuantity(event, item)}
                     >
                       {item?.unitPrices.map((unitItem, index) => {
                         return (
@@ -401,22 +410,39 @@ class List extends Component {
     this.setState({ sortOrder: event.target.value });
   };
 
-  handleQuantity = (event, id, qty) => {
+  handleQuantity = (event, item) => {
     const items = loginDetails();
     const { value } = event.target;
     let dupQty = this.state.qauntityUnits;
-    dupQty[id] = value;
-    this.setState({
-      qauntityUnits: dupQty,
+
+    dupQty[item?.id] = value;
+    const parsedValue = parseInt(value, 10);
+
+    this.setState((prevState) => {
+      const newPrice = item?.unitPrices?.find((d) => d?.qty === parsedValue);
+
+      const updatedPrices = prevState.unitIdPrices.map((price) =>
+        price.id === item?.id ? { ...price, price: newPrice } : price
+      );
+
+      if (!updatedPrices.some((price) => price.id === item?.id)) {
+        updatedPrices.push({ id: item?.id, price: newPrice });
+      }
+
+      return {
+        qauntityUnits: dupQty,
+        unitIdPrices: updatedPrices,
+      };
     });
-    if (qty > 0) {
+
+    if (item?.cartItem?.Quantity > 0) {
       this.setState({
         isProductSelecting: true,
-        dataId: id,
+        dataId: item?.id,
       });
       this.props.deleteItemToCart({
         userId: items.userId,
-        productId: id,
+        productId: item?.id,
       });
     }
   };
@@ -447,6 +473,7 @@ class List extends Component {
       dataId,
       isUpdateIncrease,
       qauntityUnits,
+      unitIdPrices,
     } = this.state;
 
     // Sort data based on sortOrder
@@ -498,7 +525,8 @@ class List extends Component {
             isUpdateIncrease,
             quantities,
             cartItemsData,
-            qauntityUnits
+            qauntityUnits,
+            unitIdPrices
           )}
         </Box>
       </Box>
