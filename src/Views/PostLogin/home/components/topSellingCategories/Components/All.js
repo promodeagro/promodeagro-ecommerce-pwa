@@ -348,8 +348,11 @@ class All extends Component {
                             className="symbol"
                             onClick={() => {
                               let unitqty = "";
+
                               if (item?.unitPrices?.length > 0) {
-                                unitqty = item?.unitPrices[0]?.qty;
+                                unitqty = item?.cartItem?.QuantityUnits
+                                  ? item?.cartItem?.QuantityUnits
+                                  : item?.unitPrices[0]?.qty;
                               } else {
                                 unitqty = 1;
                               }
@@ -398,7 +401,9 @@ class All extends Component {
                           onClick={() => {
                             let unitqty = "";
                             if (item?.unitPrices?.length > 0) {
-                              unitqty = item?.unitPrices[0]?.qty;
+                              unitqty = item?.cartItem?.QuantityUnits
+                                ? item?.cartItem?.QuantityUnits
+                                : item?.unitPrices[0]?.qty;
                             } else {
                               unitqty = 1;
                             }
