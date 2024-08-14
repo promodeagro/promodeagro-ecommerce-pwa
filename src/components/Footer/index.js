@@ -114,11 +114,15 @@ const Footer = () => {
                         Product
                       </Link>
                     </li>
-                    <li>
-                      <Link to="/my-order" onClick={scrollToTop}>
-                        Track Order
-                      </Link>
-                    </li>
+                    {loginDetails()?.userId ? (
+                      <li>
+                        <Link to="/my-order" onClick={scrollToTop}>
+                          Track Order
+                        </Link>
+                      </li>
+                    ) : (
+                      <></>
+                    )}
                   </ul>
                 </Box>
               </Grid>
