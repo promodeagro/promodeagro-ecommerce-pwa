@@ -50,7 +50,7 @@ class TopSellingCategories extends Component {
               onChange={this.handleChange}
               aria-label="lab API tabs example"
             >
-              {topSellCategoriesList.length > 0 ? (
+              {topSellCategoriesList?.length > 0 ? (
                 topSellCategoriesList?.map((item) => {
                   return <Tab label={item} value={item} />;
                 })
@@ -58,7 +58,7 @@ class TopSellingCategories extends Component {
                 <></>
               )}
             </TabList>
-            {topSellCategoriesList.length > 0 ? (
+            {topSellCategoriesList?.length > 0 ? (
               <TabPanel
                 value={
                   this.state.value

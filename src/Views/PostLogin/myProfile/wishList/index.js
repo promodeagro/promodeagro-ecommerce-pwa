@@ -231,7 +231,7 @@ class WishList extends Component {
                 {this.props.bookMarksData.status === status.IN_PROGRESS &&
                 this.state.apiLoader ? (
                   Loader.commonLoader()
-                ) : this.state.wistListData.length > 0 ? (
+                ) : this.state.wistListData?.length > 0 ? (
                   this.state.wistListData?.map((item) => {
                     let prices = unitIdPrices.find((d) => d.id === item.id);
                     return (
@@ -325,7 +325,7 @@ class WishList extends Component {
                                 className="symbol"
                                 onClick={() => {
                                   let unitqty = "";
-                                 
+
                                   if (item?.unitPrices?.length > 0) {
                                     unitqty = item?.cartItem?.QuantityUnits
                                       ? item?.cartItem?.QuantityUnits

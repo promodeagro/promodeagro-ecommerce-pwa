@@ -142,18 +142,18 @@ class SideBar extends Component {
       selectedPackSizes,
     } = this.state;
 
-    // Check if all relevant fields are empty or have a length of 0
+  
     const allFieldsEmpty =
       minPrice === "" &&
       maxPrice === "" &&
-      selectedRatings.length === 0 &&
-      selectedDiscounts.length === 0 &&
+      selectedRatings?.length === 0 &&
+      selectedDiscounts?.length === 0 &&
       selectedCountry === "" &&
-      selectedProductTypes.length === 0 &&
-      selectedPackSizes.length === 0;
+      selectedProductTypes?.length === 0 &&
+      selectedPackSizes?.length === 0;
 
     return !allFieldsEmpty;
-    // Update status based on all fields being empty
+ 
   };
 
   applyFilters = () => {
@@ -175,7 +175,7 @@ class SideBar extends Component {
     // }
     let rating = "";
     let discounts = "";
-    if (selectedRatings.length > 0) {
+    if (selectedRatings?.length > 0) {
       selectedRatings.forEach((item, index) => {
         const ratingValue = parseFloat(item); // Convert item to a floating point number
 
@@ -186,7 +186,7 @@ class SideBar extends Component {
         }
       });
     }
-    if (selectedDiscounts.length > 0) {
+    if (selectedDiscounts?.length > 0) {
       selectedDiscounts.forEach((item) => {
         if (item.includes("more25")) {
           discounts += "morethan25" + ",";

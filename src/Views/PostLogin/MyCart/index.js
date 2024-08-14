@@ -137,7 +137,7 @@ class MyCart extends Component {
       <>
         <Box className="mycart-container">
           <Container>
-            {this.state.cartList.length > 0 ? (
+            {this.state.cartList?.length > 0 ? (
               <Box className="sub-total-container d-flex justify-content-between">
                 <Box className="left-part">
                   <h1 className="d-block">My Cart</h1>
@@ -185,7 +185,7 @@ class MyCart extends Component {
               Loader.commonLoader()
             ) : (
               <Box className="cart-item-list">
-                {this.state.cartList.length > 0 ? (
+                {this.state.cartList?.length > 0 ? (
                   <>
                     <Grid
                       container
@@ -195,7 +195,7 @@ class MyCart extends Component {
                       data-aos="zoom-in-right"
                     >
                       <Grid item xs={6} md={6} lg={6} sm={6}>
-                        Items : {this.state.cartList.length}
+                        Items : {this.state.cartList?.length}
                       </Grid>
                       <Grid item xs={3} md={3} lg={3} sm={3}>
                         Quantity

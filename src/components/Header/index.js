@@ -179,7 +179,7 @@ class Header extends Component {
     // Example: Assuming URL path format is '/mycart/address/updated-address/:id'
     // Splitting the path by '/' and getting the last segment as ID
     const pathSegments = path.split("/");
-    const id = pathSegments[pathSegments.length - 1];
+    const id = pathSegments[pathSegments?.length - 1];
     return id;
   };
 
@@ -216,8 +216,8 @@ class Header extends Component {
   renderCategories = () => {
     return (
       <Box className="categories-box">
-        {this.state.categories.length ? (
-          this.state.categories.map((item, index) => {
+        {this.state.categories?.length ? (
+          this.state.categories?.map((item, index) => {
             if (index % 2 == 0) {
               return (
                 <Box className="categories">
@@ -298,7 +298,6 @@ class Header extends Component {
               <li>
                 <Link to="/">
                   <HomeOutlinedIcon /> Home
-                  {/* {pathArr?.[1]} */}
                 </Link>
               </li>
               {pathArr.length ? (

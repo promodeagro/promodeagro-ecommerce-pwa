@@ -170,9 +170,9 @@ class MyOrder extends Component {
               </Box>
               <span className="d-block last-month-order">
                 Showing orders for the last 6 months{" "}
-                <strong>{myOrdersList.length}</strong> Orders
+                <strong>{myOrdersList?.length}</strong> Orders
               </span>
-              {myOrdersList.length > 0 ? (
+              {myOrdersList?.length > 0 ? (
                 myOrdersList.map((item) => (
                   <Box key={item?.id}>
                     <Box

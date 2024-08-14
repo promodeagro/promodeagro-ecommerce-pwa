@@ -74,7 +74,7 @@ const AllAddress = (props) => {
 
       setAllAddresApiLoader(true);
       setAllAddress(allAddressState.data.addresses);
-      if (allAddressState.data.addresses.length == 0) {
+      if (allAddressState?.data?.addresses?.length == 0) {
         setSelectedAddressId("");
       }
     }
@@ -157,7 +157,7 @@ const AllAddress = (props) => {
             Loader.commonLoader()
           ) : (
             <>
-              {allAddress?.length > 0 &&
+              {allAddress?.length > 0 ? (
                 allAddress.map((item, index) => {
                   return (
                     <Grid key={index} item xs={12} lg={4} md={6} sm={6}>
@@ -246,7 +246,10 @@ const AllAddress = (props) => {
                       )}
                     </Grid>
                   );
-                })}
+                })
+              ) : (
+                <></>
+              )}
             </>
           )}
           <Grid item xs={12} lg={4} md={12} sm={12}>

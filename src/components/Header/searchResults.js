@@ -26,7 +26,6 @@ import _ from "lodash";
 import { loginDetails } from "Views/Utills/helperFunctions";
 import { Link } from "react-router-dom";
 import { fetchGlobalSearchItems } from "../../Redux/ProductFilters/ProductFiltersThunk";
-import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
 import { withRouter } from "components/withRouter";
 
 class SearchResults extends Component {
@@ -437,25 +436,7 @@ class SearchResults extends Component {
     event.preventDefault();
   };
 
-  // handleQuantity = (event, id, qty) => {
-  //   const items = loginDetails();
-  //   const { value } = event.target;
-  //   let dupQty = this.state.qauntityUnits;
-  //   dupQty[id] = value;
-  //   this.setState({
-  //     qauntityUnits: dupQty,
-  //   });
-  //   if (qty > 0) {
-  //     this.setState({
-  //       isProductSelecting: true,
-  //       dataId: id,
-  //     });
-  //     this.props.deleteItemToCart({
-  //       userId: items.userId,
-  //       productId: id,
-  //     });
-  //   }
-  // };
+
 
   handleQuantity = (event, item) => {
     const items = loginDetails();

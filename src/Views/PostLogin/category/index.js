@@ -94,7 +94,7 @@ function Category(props) {
     } else if (id) {
       setAPIDataLoaded(true);
       setFilteredProductApiLoader(true);
-      props.fetchFilteredProducts({
+      const data = {
         userId: loginDetails()?.userId ? loginDetails()?.userId : "",
         offerId: id,
         minPrice: "",
@@ -103,7 +103,11 @@ function Category(props) {
         ratingFilter: "",
         category: "",
         discounts: "",
-      });
+        pageSize: pageSize,
+        pageNumber: currentPage,
+        exclusiveStartKey: lastEvaluatedKey,
+      };
+      props.fetchFilteredProducts(data);
     } else {
       setAPIDataLoaded(true);
       setProdductApiLoader(true);
@@ -265,7 +269,7 @@ function Category(props) {
       props.fetchProductByCategory(data);
     } else if (id) {
       setFilteredProductApiLoader(true);
-      props.fetchFilteredProducts({
+      const data = {
         userId: loginDetails()?.userId ? loginDetails()?.userId : "",
         offerId: id,
         minPrice: "",
@@ -274,7 +278,11 @@ function Category(props) {
         ratingFilter: "",
         category: "",
         discounts: "",
-      });
+        // pageSize: pageSize,
+        // pageNumber: value,
+        // exclusiveStartKey: lastEvaluatedKey,
+      };
+      props.fetchFilteredProducts(data);
     } else {
       setProdductApiLoader(true);
 
@@ -294,53 +302,7 @@ function Category(props) {
   };
 
   const applyFilters = () => {
-    // const { products, filters } = this.state;
-    // let productData = [...productsData];
-    // let res = [];
-    // if (filters.minPrice || filters.maxPrice) {
-    //   res = productData?.filter((product) => {
-    //     const price = parseFloat(product.price);
-    //     debugger;
-    //     return (
-    //       (!filters.minPrice || price >= parseFloat(filters.minPrice)) &&
-    //       (!filters.maxPrice || price <= parseFloat(filters.maxPrice))
-    //     );
-    //   });
-    // }
-    // if (filters.selectedRatings.length > 0) {
-    //   res = productData?.filter((product) =>
-    //     filters.selectedRatings.some((rating) => product.ratings >= rating)
-    //   );
-    // }
-    // if (filters.selectedDiscounts.length > 0) {
-    //   res = productData?.filter((product) => {
-    //     const savingsPercentage = parseInt(product.savingsPercentage);
-    //     return filters.selectedDiscounts.some((discountRange) => {
-    //       if (discountRange === "upto5") return savingsPercentage <= 5;
-    //       if (discountRange === "10to15")
-    //         return savingsPercentage >= 10 && savingsPercentage <= 15;
-    //       if (discountRange === "15to25")
-    //         return savingsPercentage >= 15 && savingsPercentage <= 25;
-    //       if (discountRange === "more25") return savingsPercentage > 25;
-    //     });
-    //   });
-    // }
-    // if (filters.selectedCountry) {
-    //   res = productData?.filter(
-    //     (product) => product.origin === filters.selectedCountry
-    //   );
-    // }
-    // if (filters.selectedProductTypes.length > 0) {
-    //   res = productData?.filter((product) =>
-    //     filters.selectedProductTypes.includes(product.type)
-    //   );
-    // }
-    // if (filters.selectedPackSizes.length > 0) {
-    //   res = productData?.filter((product) =>
-    //     filters.selectedPackSizes.some((size) => product.packSize === size)
-    //   );
-    // }
-    // setProductsData(productData);
+    // TO DO 
   };
 
   const toggleFilter = () => {
@@ -383,7 +345,7 @@ function Category(props) {
         pageNumber: currentPage,
         exclusiveStartKey: lastEvaluatedKey,
       });
-    } else {
+    }    else {
       setProdductApiLoader(true);
       const data = {
         userId: loginDetails()?.userId,
