@@ -27,6 +27,18 @@ import { connect } from "react-redux";
 import { Loader, loginDetails } from "Views/Utills/helperFunctions";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import status from "../../../Redux/Constants";
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
+
+TimeAgo.addDefaultLocale(en);
+
+const timeAgo = new TimeAgo("en-US");
+
+const dateFormatter = (d) => {
+  const date = new Date(d);
+
+  return timeAgo.format(date);
+};
 
 const customIcons = {
   0: <Box className="icon order-placed"></Box>,
@@ -277,7 +289,7 @@ class MyOrder extends Component {
                         data-aos="zoom-in-right"
                       >
                         <span className="d-block order-place-time">
-                          Ordered 2hrs ago
+                          {dateFormatter(item?.createdAt)}
                         </span>
                         <Grid container spacing={4}>
                           <Grid item xs={12} md={4}>
@@ -326,8 +338,11 @@ class MyOrder extends Component {
                                 <span className="d-block summary-title">
                                   Discount
                                 </span>
+                                {
+                                  item?.discount
+                                }
                                 <span className="d-block order-amount">
-                                  Rs. {item?.discount || 0}
+                                  Rs. {item?.discount}
                                 </span>
                               </Box>
                               <Box className="d-flex justify-content-between">
