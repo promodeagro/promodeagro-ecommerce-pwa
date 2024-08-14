@@ -407,7 +407,7 @@ class MyOrder extends Component {
         <Dialog open={openOrderDialog} onClose={this.handleClickClose}>
           <DialogContent>
             <DialogContentText>
-              Do you want to delete this order
+              Do you want to cancel this order
             </DialogContentText>
           </DialogContent>
           <DialogActions>
