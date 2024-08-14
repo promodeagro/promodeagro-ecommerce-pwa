@@ -5,7 +5,7 @@ import StarIcon from "@mui/icons-material/Star";
 import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { Link } from "react-router-dom";
-
+import noImage from "../../assets/img/no-image.png";
 class RecentlyViewedItems extends Component {
   constructor(props) {
     super(props);
@@ -60,7 +60,10 @@ class RecentlyViewedItems extends Component {
                               to={`/product-details/${item.category}/${item.name}/${item.id}`}
                               onClick={this.scrollToTop}
                             >
-                              <img src={item?.image} alt={item?.name} />
+                              <img
+                                src={item?.image ? item?.image : noImage}
+                                alt={item?.name}
+                              />
                             </Link>
                           </Box>
                         </Grid>
