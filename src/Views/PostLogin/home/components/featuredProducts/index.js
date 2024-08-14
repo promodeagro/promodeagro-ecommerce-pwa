@@ -260,7 +260,7 @@ class FeaturedProducts extends Component {
         <Container>
           <Box className="heading">Featured Products</Box>
           <Box className="products">
-            {data?.length &&
+            {data?.length ? (
               data.slice(0, 5).map((item, index) => {
                 let prices = unitIdPrices.find((d) => d.id === item.id);
                 return (
@@ -502,7 +502,10 @@ class FeaturedProducts extends Component {
                     )}
                   </Box>
                 );
-              })}
+              })
+            ) : (
+              <></>
+            )}
           </Box>
           {data?.length ? (
             <Box
