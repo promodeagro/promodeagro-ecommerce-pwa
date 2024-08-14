@@ -334,17 +334,20 @@ class MyOrder extends Component {
                                   Rs. {item?.totalPrice}
                                 </span>
                               </Box>
-                              <Box className="d-flex justify-content-between">
-                                <span className="d-block summary-title">
-                                  Discount
-                                </span>
-                                {
-                                  item?.discount
-                                }
-                                <span className="d-block order-amount">
-                                  Rs. {item?.discount}
-                                </span>
-                              </Box>
+                              {item?.discount ? (
+                                <Box className="d-flex justify-content-between">
+                                  <span className="d-block summary-title">
+                                    Discount
+                                  </span>
+                                  {item?.discount}
+                                  <span className="d-block order-amount">
+                                    Rs. {item?.discount}
+                                  </span>
+                                </Box>
+                              ) : (
+                                <></>
+                              )}
+
                               <Box className="d-flex justify-content-between">
                                 <span className="d-block summary-title">
                                   Final Amount
