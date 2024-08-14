@@ -44,3 +44,14 @@ export const fetchAvailableDeliverySlot = createAsyncThunk(
     }
   }
 );
+
+
+export const cancleOrder = createAsyncThunk("cancleorder", async (params) => {
+  try {
+    let url = config.CANCLE_ORDER;
+    const response = await postLoginService.post(url, params);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+});

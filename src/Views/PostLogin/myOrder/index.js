@@ -22,6 +22,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import {
   fetchAllorders,
   fetchOrderById,
+  cancleOrder,
 } from "../../../Redux/Order/PlaceOrderThunk";
 import { connect } from "react-redux";
 import { Loader, loginDetails } from "Views/Utills/helperFunctions";
@@ -110,6 +111,16 @@ class MyOrder extends Component {
         myOrdersList: this.props.allOrdersData.data.orders,
       });
     }
+
+    if (
+      prevProps.cancelOrderData.status !== this.props.cancelOrderData.status &&
+      this.props.cancelOrderData.status === status.SUCCESS &&
+      this.props.cancelOrderData?.data
+    ) {
+        
+
+    } else if (this.props.cancelOrderData.status === status.FAILURE) {
+    }
   }
 
   handleToggleExpand = (orderList) => {
@@ -139,6 +150,13 @@ class MyOrder extends Component {
 
   handleClickClose = () => {
     this.setState({ openOrderDialog: false });
+  };
+
+  handleCancleOrder = (orderId) => {
+    // this.props.cancleOrder({
+    //   orderId:orderId,
+    //   userId:loginDetails()?.userId
+    // })
   };
 
   render() {
@@ -359,6 +377,23 @@ class MyOrder extends Component {
                             </Box>
                           </Grid>
                         </Grid>
+                        <Box className="more-order-details">
+                          <span className="d-block text">
+                            More with this order
+                          </span>
+                          <Button
+                            variant="outlined"
+                            className="d-block"
+                            onClick={() => {
+                              this.handleClickOpen();
+                            }}
+                          >
+                            <span className="d-block title">Cancel Order</span>
+                            <span className="d-block sub-title">
+                              Cancel This Order
+                            </span>
+                          </Button>
+                        </Box>
                       </Box>
                     )}
                   </Box>
@@ -372,11 +407,14 @@ class MyOrder extends Component {
         <Dialog open={openOrderDialog} onClose={this.handleClickClose}>
           <DialogContent>
             <DialogContentText>
-              Order has been cancelled successfully!
+              Do you want to delete this order
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClickClose} color="primary">
+            <Button color="success">Cancel Order</Button>
+          </DialogActions>
+          <DialogActions>
+            <Button onClick={this.handleClickClose} color="error">
               Close
             </Button>
           </DialogActions>
@@ -387,17 +425,19 @@ class MyOrder extends Component {
 }
 
 function mapStateToProps(state) {
-  const { allOrdersData, orderByIdData } = state.placeorder;
+  const { allOrdersData, orderByIdData, cancelOrderData } = state.placeorder;
 
   return {
     allOrdersData,
     orderByIdData,
+    cancelOrderData,
   };
 }
 
 const mapDispatchToProps = {
   fetchAllorders,
   fetchOrderById,
+  cancleOrder,
 };
 
 export default connect(
