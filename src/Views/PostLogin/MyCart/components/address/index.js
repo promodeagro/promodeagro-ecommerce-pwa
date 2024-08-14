@@ -230,13 +230,7 @@ class Address extends Component {
     } else if (newValue === 1) {
       this.props?.fetchAvailableDeliverySlot("tomorrow");
     } else {
-      let today = new Date();
-
-      let tomorrow = new Date(today);
-      tomorrow.setDate(today.getDate() + 1);
-
-      let formattedDate = tomorrow.toISOString().slice(0, 10);
-      this.props?.fetchAvailableDeliverySlot(formattedDate);
+      this.props?.fetchAvailableDeliverySlot(futureDate());
     }
   };
   timingSlotHandleChange = (event, newTimeValue) => {
