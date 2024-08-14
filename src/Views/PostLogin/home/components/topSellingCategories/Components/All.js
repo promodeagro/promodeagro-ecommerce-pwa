@@ -6,6 +6,7 @@ import {
   Button,
   CircularProgress,
 } from "@mui/material";
+import noImage from "../../../../../../assets/img/no-image.png";
 import StarIcon from "@mui/icons-material/Star";
 import BookmarkOutlinedIcon from "@mui/icons-material/BookmarkOutlined";
 import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
@@ -282,7 +283,10 @@ class All extends Component {
                         );
                       }}
                     >
-                      <img src={item?.image} alt={item?.name} />
+                      <img
+                        src={item?.image ? item?.image : noImage}
+                        alt={item?.name}
+                      />
                     </Box>
                     <Box
                       className="name"

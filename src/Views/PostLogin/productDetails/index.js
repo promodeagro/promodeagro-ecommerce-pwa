@@ -15,6 +15,7 @@ import ReactImageMagnify from "react-image-magnify";
 import CloseIcon from "@mui/icons-material/Close";
 import CircularProgress from "@mui/material/CircularProgress";
 import BookmarkOutlinedIcon from "@mui/icons-material/BookmarkOutlined";
+import noImage from "../../../assets/img/no-image.png";
 // import RecentlyViewedItems from "./recentlyViewedItems";
 import RecentlyViewedItems from "components/RecentlyViewedItems";
 // import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
@@ -494,7 +495,11 @@ class ProductDetails extends Component {
                             <Zoom>
                               <img
                                 alt={productItem?.name}
-                                src={currentSelectedImage}
+                                src={
+                                  currentSelectedImage
+                                    ? currentSelectedImage
+                                    : noImage
+                                }
                                 width="500"
                               />
                             </Zoom>
