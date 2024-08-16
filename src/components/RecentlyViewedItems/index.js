@@ -11,7 +11,7 @@ class RecentlyViewedItems extends Component {
     super(props);
     this.state = {
       recentList: [],
-      showAllItems: false, // State to track if all items should be shown
+      showAllItems: false,
     };
   }
 
@@ -24,21 +24,18 @@ class RecentlyViewedItems extends Component {
     }
   }
 
-  // Function to toggle showing all items
   handleShowAll = () => {
     this.setState({
       showAllItems: true,
     });
   };
 
-  // Function to scroll to top
   scrollToTop = () => {
     window.scrollTo(0, 0);
   };
 
   render() {
     const { recentList, showAllItems } = this.state;
-    console.log(recentList);
     return (
       <>
         {recentList.length > 0 ? (
@@ -50,7 +47,6 @@ class RecentlyViewedItems extends Component {
               </Box>
               <Box className="recently-products">
                 {recentList && recentList.length > 0 ? (
-                  // Render either all items or first 4 items based on showAllItems state
                   recentList.slice(0, 3).map((item) => (
                     <Box key={item.id} className="product-box">
                       <Grid container spacing={2} alignItems={"center"}>

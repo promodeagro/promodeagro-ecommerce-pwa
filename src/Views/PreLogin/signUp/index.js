@@ -95,6 +95,14 @@ const SignUp = ({ signUp, signupData }) => {
       cnfPassword,
     });
 
+    const TEXT_NO_SPCKEY_NUM = /^[a-zA-Z_]+$/;
+    if (error.name.isValid && !TEXT_NO_SPCKEY_NUM.test(name)) {
+      error.isValid = false;
+      error.name.isValid = false;
+      error.name.message =
+        "Name Should Not Contain Any Special Character And Numbers";
+    }
+
     if (
       error.password.isValid &&
       error.cnfPassword.isValid &&
@@ -104,6 +112,7 @@ const SignUp = ({ signUp, signupData }) => {
       error.cnfPassword.isValid = false;
       error.cnfPassword.message = "Confirm password does not match";
     }
+    debugger;
     return error;
   };
 
@@ -180,6 +189,7 @@ const SignUp = ({ signUp, signupData }) => {
                   Mobile Number <span className="validate-icon">*</span>
                 </label>
                 <TextField
+                  type="number"
                   className="number-textfield"
                   id="outlined-basic"
                   variant="outlined"
