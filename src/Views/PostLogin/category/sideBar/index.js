@@ -142,7 +142,6 @@ class SideBar extends Component {
       selectedPackSizes,
     } = this.state;
 
-  
     const allFieldsEmpty =
       minPrice === "" &&
       maxPrice === "" &&
@@ -153,7 +152,6 @@ class SideBar extends Component {
       selectedPackSizes?.length === 0;
 
     return !allFieldsEmpty;
- 
   };
 
   applyFilters = () => {
@@ -206,6 +204,9 @@ class SideBar extends Component {
         discounts: discounts,
         ratingFilter: rating,
         userId: loginDetails()?.userId,
+        pageNumber: 1,
+        pageSize: this.props?.pageSize ? this.props?.pageSize : 10,
+        
       });
     } else {
       this.props.allproducts();

@@ -48,7 +48,7 @@ function Category(props) {
   const [APIDataLoaded, setAPIDataLoaded] = useState(false);
   const [currentPath, setCurrentPath] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(5);
   const [lastEvaluatedKey, setLastEvaluatedKey] = useState(null);
   const [personalDetailsLoader, setPersonalDetailsLoader] = useState(false);
   const [profileName, setProfileName] = useState(null);
@@ -72,25 +72,32 @@ function Category(props) {
     if (subcategory) {
       setSubCatergoryLoader(true);
       setAPIDataLoaded(true);
-
-      props.fetchProductBySubCategory({
+      const data = {
         subcategory: subcategory.replaceAll("%20", ""),
         userId: loginDetails()?.userId,
         pageSize: pageSize,
         pageNumber: currentPage,
         exclusiveStartKey: lastEvaluatedKey,
-      });
+      };
+      if (data.pageNumber === 1) {
+        delete data.exclusiveStartKey;
+      }
+      props.fetchProductBySubCategory(data);
     } else if (category) {
       setAPIDataLoaded(true);
       setCatergoryLoader(true);
-
-      props.fetchProductByCategory({
+      const data = {
         category: category,
         userId: loginDetails()?.userId,
         pageSize: pageSize,
         pageNumber: currentPage,
         exclusiveStartKey: lastEvaluatedKey,
-      });
+      };
+      if (data.pageNumber === 1) {
+        delete data?.exclusiveStartKey;
+      }
+
+      props.fetchProductByCategory(data);
     } else if (id) {
       setAPIDataLoaded(true);
       setFilteredProductApiLoader(true);
@@ -107,6 +114,9 @@ function Category(props) {
         pageNumber: currentPage,
         exclusiveStartKey: lastEvaluatedKey,
       };
+      if (data.pageNumber === 1) {
+        delete data?.exclusiveStartKey;
+      }
       props.fetchFilteredProducts(data);
     } else {
       setAPIDataLoaded(true);
@@ -118,6 +128,9 @@ function Category(props) {
         pageNumber: currentPage,
         exclusiveStartKey: lastEvaluatedKey,
       };
+      if (data.pageNumber === 1) {
+        delete data?.exclusiveStartKey;
+      }
       props.allProducts(data);
     }
   }, [subcategory, category, id, window.location.pathname]);
@@ -130,12 +143,37 @@ function Category(props) {
     ) {
       setFilteredProductApiLoader(false);
       setAPIDataLoaded(false);
-      setProductsData(props.filteredProductData?.data);
+
+      if (
+        props.filteredProductData?.data?.response?.status == 500 ||
+        props.filteredProductData?.data?.response?.status == 401
+      ) {
+        setProductsData([]);
+        setCurrentPage(1);
+      } else {
+        setLastEvaluatedKey(
+          props.filteredProductData?.data?.pagination?.lastEvaluatedKey
+        );
+
+        setTotalPage(
+          Math.ceil(
+            props.allProductsData?.data?.pagination?.TotalProducts
+              ? props.allProductsData?.data?.pagination?.TotalProducts /
+                  pageSize
+              : ""
+          )
+        );
+
+        setProductsData(props.filteredProductData?.data?.products);
+      }
     } else if (
       props.filteredProductData?.status == status?.FAILURE &&
       filteredProductApiLoader
     ) {
       setFilteredProductApiLoader(false);
+    } else {
+      setTotalPage("");
+      setProductsData([]);
     }
   }, [props.filteredProductData.status]);
 
@@ -157,7 +195,12 @@ function Category(props) {
         setLastEvaluatedKey(
           props.allProductsData?.data?.pagination?.lastEvaluatedKey
         );
-        setTotalPage(props.allProductsData?.data?.pagination?.totalPages);
+        setTotalPage(
+          Math.ceil(
+            props.allProductsData?.data?.pagination?.TotalProducts / pageSize
+          )
+        );
+
         setCurrentPage(props.allProductsData?.data?.pagination?.currentPage);
         setProductsData(props.allProductsData?.data?.products);
       }
@@ -191,8 +234,12 @@ function Category(props) {
           props.productBySubCategoryData?.data?.pagination?.lastEvaluatedKey
         );
         setTotalPage(
-          props.productBySubCategoryData?.data?.pagination?.totalPages
+          Math.ceil(
+            props.productBySubCategoryData?.data?.pagination?.TotalProducts /
+              pageSize
+          )
         );
+
         setCurrentPage(
           props.productBySubCategoryData?.data?.pagination?.currentPage
         );
@@ -224,7 +271,14 @@ function Category(props) {
         setLastEvaluatedKey(
           props.productByCategoryData?.data?.pagination?.lastEvaluatedKey
         );
-        setTotalPage(props.productByCategoryData?.data?.pagination?.totalPages);
+
+        setTotalPage(
+          Math.ceil(
+            props.productByCategoryData?.data?.pagination?.TotalProducts /
+              pageSize
+          )
+        );
+
         setCurrentPage(
           props.productByCategoryData?.data?.pagination?.currentPage
         );
@@ -250,43 +304,104 @@ function Category(props) {
     }
   }, [props.cartItems.status]);
 
-  const handleChange = (event, value) => {
-    setAPIDataLoaded(true);
-    setCurrentPage(value);
-    let data = {
-      userId: loginDetails()?.userId,
-      pageSize: pageSize,
-      pageNumber: value,
-      exclusiveStartKey: lastEvaluatedKey,
-    };
-    if (subcategory) {
-      setSubCatergoryLoader(true);
-      data.subcategory = subcategory.replaceAll("%20", "");
-      props.fetchProductBySubCategory(data);
-    } else if (category) {
-      setCatergoryLoader(true);
-      data.category = category;
-      props.fetchProductByCategory(data);
-    } else if (id) {
-      setFilteredProductApiLoader(true);
-      const data = {
-        userId: loginDetails()?.userId ? loginDetails()?.userId : "",
-        offerId: id,
-        minPrice: "",
-        maxPrice: "",
-        subcategory: "",
-        ratingFilter: "",
-        category: "",
-        discounts: "",
-        // pageSize: pageSize,
-        // pageNumber: value,
-        // exclusiveStartKey: lastEvaluatedKey,
-      };
-      props.fetchFilteredProducts(data);
-    } else {
-      setProdductApiLoader(true);
+  function selectedFilters(data) {
+    const retData = {};
+    if (data.maxPrice) {
+      retData.maxPrice = data.maxPrice;
+    }
+    if (data.minPrice) {
+      retData.minPrice = data.minPrice;
+    }
+    if (data.selectedCountry) {
+      retData.selectedCountry = data.selectedCountry;
+    }
+    if (data.selectedDiscounts?.length > 0) {
+      retData.selectedDiscounts = data.selectedDiscounts;
+    }
+    if (data.selectedPackSizes?.length > 0) {
+      retData.selectedPackSizes = data.selectedPackSizes;
+    }
 
-      props.allProducts(data);
+    if (data.selectedProductTypes?.length > 0) {
+      retData.selectedProductTypes = data.selectedProductTypes;
+    }
+    if (data.selectedRatings?.length > 0) {
+      retData.selectedRatings = data.selectedRatings;
+    }
+    return retData;
+  }
+
+  const handleChange = (event, value) => {
+    setCurrentPage(value);
+
+    if (
+      !filters.maxPrice &&
+      !filters.minPrice &&
+      !filters.selectedCountry &&
+      filters.selectedDiscounts.length === 0 &&
+      filters.selectedPackSizes.length === 0 &&
+      filters.selectedProductTypes.length === 0 &&
+      filters.selectedRatings.length === 0
+    ) {
+      setAPIDataLoaded(true);
+      let data = {
+        userId: loginDetails()?.userId,
+        pageSize: pageSize,
+        pageNumber: value,
+        exclusiveStartKey: lastEvaluatedKey,
+      };
+      if(value===1){
+        delete data.exclusiveStartKey;
+      }
+      if (subcategory) {
+        setSubCatergoryLoader(true);
+        data.subcategory = subcategory.replaceAll("%20", "");
+        props.fetchProductBySubCategory(data);
+      } else if (category) {
+        setCatergoryLoader(true);
+        data.category = category;
+        props.fetchProductByCategory(data);
+      } else if (id) {
+        setFilteredProductApiLoader(true);
+        const d = {
+          userId: loginDetails()?.userId ? loginDetails()?.userId : "",
+          offerId: id,
+          minPrice: "",
+          maxPrice: "",
+          subcategory: "",
+          ratingFilter: "",
+          category: "",
+          discounts: "",
+          pageSize: pageSize,
+          pageNumber: value,
+        };
+        if (value === 1) {
+          delete d.exclusiveStartKey;
+        }
+        props.fetchFilteredProducts(d);
+      } else {
+        setProdductApiLoader(true);
+
+        props.allProducts(data);
+      }
+      // props.fetchProductBySubCategory(data);
+    } else if (Object.keys(selectedFilters(filters)).length > 0) {
+      let d = selectedFilters(filters);
+      setAPIDataLoaded(true);
+      setFilteredProductApiLoader(true);
+      props.fetchFilteredProducts({
+        category: category ? category : "",
+        subcategory: subcategory ? subcategory : "",
+        id: id ? id : "",
+        minPrice: d.minPrice ? d.minPrice : "",
+        maxPrice: d.maxPrice ? d.maxPrice : "",
+
+        discounts: d.selectedDiscounts ? d.selectedDiscounts : "",
+        ratingFilter: d.selectedRatings ? d.selectedRatings : "",
+        userId: loginDetails()?.userId,
+        pageNumber: value,
+        pageSize: pageSize,
+      });
     }
   };
 
@@ -294,6 +409,7 @@ function Category(props) {
     setFilters(filters);
     const data = { ...filters };
     data.userId = loginDetails()?.userId;
+    setCurrentPage(1);
 
     // setTimeout(() => {
     //   props.fetchFilteredProducts(data);
@@ -302,7 +418,7 @@ function Category(props) {
   };
 
   const applyFilters = () => {
-    // TO DO 
+    // TO DO
   };
 
   const toggleFilter = () => {
@@ -324,28 +440,53 @@ function Category(props) {
     }
 
     if (subcategory) {
-      // const data = {
-      //   subcategory: ,
-      //   userId: ,
-      // };
-      setSubCatergoryLoader(true);
-      props.fetchProductBySubCategory({
+      const data = {
         subcategory: subcategory.replaceAll("%20", ""),
         userId: loginDetails()?.userId,
         pageSize: pageSize,
         pageNumber: currentPage,
         exclusiveStartKey: lastEvaluatedKey,
-      });
+      };
+      setSubCatergoryLoader(true);
+      if (data.pageNumber === 1) {
+        delete data.exclusiveStartKey;
+      }
+      props.fetchProductBySubCategory(data);
     } else if (category) {
-      setCatergoryLoader(true);
-      props.fetchProductByCategory({
+      const data = {
         category: category,
         userId: loginDetails()?.userId,
         pageSize: pageSize,
         pageNumber: currentPage,
         exclusiveStartKey: lastEvaluatedKey,
-      });
-    }    else {
+      };
+      if (data.pageNumber === 1) {
+        delete data.exclusiveStartKey;
+      }
+
+      setCatergoryLoader(true);
+      props.fetchProductByCategory(data);
+    } else if (id) {
+      setAPIDataLoaded(true);
+      setFilteredProductApiLoader(true);
+      const data = {
+        userId: loginDetails()?.userId ? loginDetails()?.userId : "",
+        offerId: id,
+        minPrice: "",
+        maxPrice: "",
+        subcategory: "",
+        ratingFilter: "",
+        category: "",
+        discounts: "",
+        pageSize: pageSize,
+        pageNumber: currentPage,
+      };
+      if (data.pageNumber === 1) {
+        delete data?.exclusiveStartKey;
+      }
+
+      props.fetchFilteredProducts(data);
+    } else {
       setProdductApiLoader(true);
       const data = {
         userId: loginDetails()?.userId,
@@ -353,6 +494,10 @@ function Category(props) {
         pageNumber: nextPageStatus ? currentPage + 1 : currentPage,
         exclusiveStartKey: lastEvaluatedKey,
       };
+      if (data.pageNumber === 1) {
+        delete data.exclusiveStartKey;
+      }
+
       props.allProducts(data);
     }
   };
@@ -376,6 +521,8 @@ function Category(props) {
               offerId={id}
               handleFilterApiLoader={handleFilterApiLoader}
               allproducts={allproducts}
+              pageSize={pageSize}
+              lastEvaluatedKey={lastEvaluatedKey}
             />
           </Grid>
           <Grid
@@ -405,7 +552,9 @@ function Category(props) {
                       showFirstButton
                       showLastButton
                       page={currentPage}
-                      onChange={handleChange}
+                      onChange={(event, value) => {
+                        handleChange(event, value);
+                      }}
                     />
                   </Stack>
                 ) : (
