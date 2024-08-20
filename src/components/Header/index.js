@@ -298,7 +298,8 @@ class Header extends Component {
     let pathArr = path.split("/");
     return (
       <>
-        {!window.location.pathname.includes("updated-address") ? (
+        {!window.location.pathname.includes("updated-address") &&
+        !window.location.pathname.includes("order-placed") ? (
           <Box className="breadcrumb">
             <ul>
               <li>
