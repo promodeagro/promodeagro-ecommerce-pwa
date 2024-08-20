@@ -51,16 +51,16 @@ class Home extends Component {
     this.props.fetchToSellingCategories();
     this.props.fetchAllOffers();
     if (items?.userId) {
-      this.props.fetchPersonalDetails({
-        userId: loginDetails()?.userId,
-      });
+      // this.props.fetchPersonalDetails({
+      //   userId: loginDetails()?.userId,
+      // });
 
       this.props.fetchHome(items?.userId);
 
       this.props.fetchCartItems({
         userId: items?.userId,
       });
-      this.props.fetchDefaultAddress(items?.userId);
+      // this.props.fetchDefaultAddress(items?.userId);
 
       // this.props.getAllAddress({
       //   userId: items?.userId,
