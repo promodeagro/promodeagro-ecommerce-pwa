@@ -360,7 +360,7 @@ class FeaturedProducts extends Component {
                           </FormControl>
                         </Box>
                       ) : (
-                        <Box className="select">{item.unit} </Box> // or any other placeholder or message you want to show
+                        <Box className="select">{item.unit} </Box>
                       )}
                     </>
 
@@ -475,8 +475,10 @@ class FeaturedProducts extends Component {
                             this.handleAddToCart(item.id, unitqty);
                           }}
                           disabled={
-                            ((this.props?.deleteItems?.status ==
-                              status?.IN_PROGRESS ||
+                            ((this.props.additems.status ===
+                              status.IN_PROGRESS ||
+                              this.props?.deleteItems?.status ==
+                                status?.IN_PROGRESS ||
                               this.props.cartItems.status ===
                                 status.IN_PROGRESS ||
                               this.state?.isProductSelecting) &&

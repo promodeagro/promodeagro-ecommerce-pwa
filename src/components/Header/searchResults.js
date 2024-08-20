@@ -59,6 +59,7 @@ class SearchResults extends Component {
           dataId: "",
           searchLoader: false,
           productsFiltersData: this.props.globalSearchRes.data,
+          isUpdateIncrease: false,
         });
       }
     }
@@ -386,7 +387,7 @@ class SearchResults extends Component {
     const items = loginDetails();
     if (increment < 0 && productQuantity != 0) {
       this.setState({ isUpdateIncrease: false });
-    } else if (productQuantity != 0) {
+    } else if (productQuantity > 0) {
       this.setState({ isUpdateIncrease: true });
     }
     this.setState({
@@ -435,8 +436,6 @@ class SearchResults extends Component {
   handleContextMenu = (event) => {
     event.preventDefault();
   };
-
-
 
   handleQuantity = (event, item) => {
     const items = loginDetails();
