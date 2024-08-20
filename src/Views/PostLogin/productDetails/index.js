@@ -420,8 +420,9 @@ class ProductDetails extends Component {
                       <li>
                         <a>
                           <FacebookShareButton
-                            url={`https://promodeagro.com`}
-                            // url={`https://promodeagro.com/product-details/${productItem?.category}/${productItem?.subCategory}/${productItem?.id}`}
+                            // url={`https://promodeagro.com`}
+                            // url={window.location.href}
+                            url={`https://promodeagro.com/product-details/${productItem?.category}/${productItem?.subCategory}/${productItem?.id}`}
                             quote={"find best products"}
                             hashtag={`share your thoughts about ${productItem?.subCategory}`}
                           >
@@ -432,8 +433,15 @@ class ProductDetails extends Component {
                       <li>
                         <a>
                           <WhatsappShareButton
-                            url={`https://promodeagro.com`}
-                            // url={`https://promodeagro.com/product-details/${productItem?.category}/${productItem?.subCategory}/${productItem?.id}`}
+                            source={window.location.href}
+                            // url={window.location.href}
+                            // url={`https://promodeagro.com`}
+                            url={`https://promodeagro.com/product-details/${
+                              productItem?.category
+                            }/${productItem?.subCategory?.replace(
+                              " ",
+                              "%20"
+                            )}/${productItem?.id}`}
                             quote={"find best products"}
                             hashtag={`share your thoughts about ${productItem?.subCategory}`}
                           >
@@ -444,8 +452,9 @@ class ProductDetails extends Component {
                       <li>
                         <a>
                           <TwitterShareButton
-                            url={`https://promodeagro.com`}
-                            // url={`https://promodeagro.com/product-details/${productItem?.category}/${productItem?.subCategory}/${productItem?.id}`}
+                            // url={window.location.href}
+                            // url={`https://promodeagro.com`}
+                            url={`https://promodeagro.com/product-details/${productItem?.category}/${productItem?.subCategory}/${productItem?.id}`}
                             quote={"Find |Best Products"}
                             hashtag={`Share Yours Thoughts About ${productItem?.subCategory}`}
                           >
@@ -456,8 +465,14 @@ class ProductDetails extends Component {
                       <li>
                         <a>
                           <TelegramShareButton
-                            url={`https://promodeagro.com`}
-                            // url={`https://promodeagro.com/product-details/${productItem?.category}/${productItem?.subCategory}/${productItem?.id}`}
+                            title={productItem?.subCategory}
+                            // url={`https://promodeagro.com`}
+                            url={`https://promodeagro.com/product-details/${
+                              productItem?.category
+                            }/${productItem?.subCategory?.replace(
+                              " ",
+                              "%20"
+                            )}/${productItem?.id}`}
                             quote={"Find |Best Products"}
                             hashtag={`Share Yours Thoughts About ${productItem?.subCategory}`}
                           >
