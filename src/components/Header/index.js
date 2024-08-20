@@ -95,10 +95,16 @@ class Header extends Component {
           pathId: "",
         });
       }
+      this.setState({
+        currentPathName: window.location.pathname,
+      });
     } else if (
       this.state.currentPathName != window.location.pathname &&
       loginDetails()?.userId
     ) {
+      this.setState({
+        currentPathName: window.location.pathname,
+      });
       this.props.fetchCartItems({
         userId: loginDetails()?.userId ? loginDetails()?.userId : "",
       });
