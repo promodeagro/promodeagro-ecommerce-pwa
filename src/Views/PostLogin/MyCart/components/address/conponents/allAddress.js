@@ -59,7 +59,7 @@ const AllAddress = (props) => {
   }, []);
 
   useEffect(() => {
-    if (props.defaultSelectedAddress.addressId) {
+    if (props.defaultSelectedAddress.addressId && !selectedAddressId) {
       setSelectedAddressId(props.defaultSelectedAddress.addressId);
     }
   }, [props.defaultSelectedAddress]);
