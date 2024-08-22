@@ -334,7 +334,7 @@ class MyOrder extends Component {
                               <h3 className="d-block">Payment Information</h3>
                               <span className="d-block info">
                                 Payment Status:{" "}
-                                <strong className="payment-status">Due</strong>
+                                <strong className="payment-status">{item?.paymentDetails?.status}</strong>
                               </span>
                               <span className="d-block info">
                                 Mode of Payment:{" "}
