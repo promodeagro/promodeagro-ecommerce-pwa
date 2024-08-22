@@ -27,6 +27,7 @@ import {
 import { connect } from "react-redux";
 import { Loader, loginDetails } from "Views/Utills/helperFunctions";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
+
 import status from "../../../Redux/Constants";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
@@ -89,15 +90,22 @@ class MyOrder extends Component {
       copiedOrderId: null,
       myOrdersList: [],
       expandedOrderId: "",
+      previousPath: null,
     };
   }
 
   componentDidMount() {
+    window.history.pushState(null, null, window.location.pathname);
+    window.addEventListener("popstate", this.onBackButtonEvent);
     const items = loginDetails();
 
     if (items?.userId) {
       this.props.fetchAllorders(items?.userId);
     }
+  }
+
+  componentWillUnmount() {
+    this.props.navigate("/");
   }
 
   componentDidUpdate(prevProps) {
@@ -117,8 +125,6 @@ class MyOrder extends Component {
       this.props.cancelOrderData.status === status.SUCCESS &&
       this.props.cancelOrderData?.data
     ) {
-        
-
     } else if (this.props.cancelOrderData.status === status.FAILURE) {
     }
   }
@@ -175,7 +181,6 @@ class MyOrder extends Component {
       myOrdersList,
     } = this.state;
 
-    // Mapping order status to step index
     const statusToStepIndex = {
       "Order placed": 0,
       "In Process": 1,

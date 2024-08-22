@@ -112,7 +112,6 @@ const SignUp = ({ signUp, signupData }) => {
       error.cnfPassword.isValid = false;
       error.cnfPassword.message = "Confirm password does not match";
     }
-    debugger;
     return error;
   };
 

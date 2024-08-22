@@ -16,8 +16,16 @@ import {
   RadioGroup,
   Radio,
   CircularProgress,
+  Checkbox,
+  TextField,
 } from "@mui/material";
+
 import _ from "lodash";
+import cashOnDeliveryImg from "../../../../../assets/img/cash.png";
+// import cardTypeImg1 from "../../../../../assets/img/"
+import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { productDetailsData } from "../../../../../Redux/AllProducts/AllProductSlice";
 import { fetchAvailableDeliverySlot } from "../../../../../Redux/Order/PlaceOrderThunk";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -37,7 +45,7 @@ import {
   loginDetails,
 } from "Views/Utills/helperFunctions";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
-const steps = ["Delivery Address", "Delivery Options"];
+const steps = ["Delivery Address", "Delivery Options", "Payment options"];
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const futureDate = () => {
@@ -73,6 +81,9 @@ class Address extends Component {
       selectedDeliverySlot: "",
       slots: [],
       id: 0,
+      selectedPaymentMethod: "online",
+      paymentLink: null,
+      deliverySlotApiLoader: true,
     };
   }
 
@@ -80,6 +91,9 @@ class Address extends Component {
     this.getDefaultAddress();
 
     if (window?.location?.pathname === "/myCart/address/order-details") {
+      this.setState({
+        deliverySlotApiLoader: true,
+      });
       this.props.fetchAvailableDeliverySlot(this.state?.deliverySlot);
     }
 
@@ -119,6 +133,7 @@ class Address extends Component {
         selectedDeliverySlot: this.props?.deliverySlotData?.data[0],
         slots: this.props?.deliverySlotData?.data,
         timneValue: 0,
+        deliverySlotApiLoader: false,
       });
     }
     if (
@@ -175,19 +190,29 @@ class Address extends Component {
 
     if (
       prevProps.placeOrderData.status !== this.props.placeOrderData.status &&
-      this.props.placeOrderData.status === status.SUCCESS &&
-      this.props.placeOrderData.data
+      this.props.placeOrderData.status === status.SUCCESS
     ) {
-      if (this.props.placeOrderData.data.orderId) {
-        localStorage.removeItem("selectedTab");
-        localStorage.removeItem("address");
-        ErrorMessages.success(this.props.placeOrderData.data.message);
+      if (this.props.placeOrderData.data?.statuscode == 200) {
+        if (
+          this.props.placeOrderData.data?.orderId &&
+          !this.props.placeOrderData.data?.paymentLink
+        ) {
+          localStorage.removeItem("selectedTab");
+          localStorage.removeItem("address");
+          ErrorMessages.success(this.props.placeOrderData.data.message);
 
-        this.props.navigate(
-          `/mycart/address/order-placed/${this.props.placeOrderData.data.orderId}`
-        );
+          this.props.navigate(
+            `/mycart/address/order-placed/${this.props.placeOrderData.data.orderId}`
+          );
+        } else if (this.props.placeOrderData.data?.paymentLink) {
+          this.setState({
+            paymentLink: this.props.placeOrderData.data?.paymentLink,
+          });
+        }
       } else {
+        ErrorMessages.error(this.props?.placeOrderData?.data?.message);
       }
+    } else if (this.props.placeOrderData.status === status.FAILURE) {
     }
   }
 
@@ -200,16 +225,14 @@ class Address extends Component {
       defaultSelectedAddress,
       cartListData,
       selectedDeliverySlot,
+      selectedPaymentMethod,
     } = this.state;
     let data = {
       addressId: addressId ? addressId : defaultSelectedAddress?.addressId,
       deliverySlotId: selectedDeliverySlot?.slotId,
       // paymentMethod: "",
       paymentDetails: {
-        method: "Credit Card",
-        transactionId: "txn-12345",
-        amount: totalPrice,
-        currency: "USD",
+        method: selectedPaymentMethod,
       },
       items: itemList,
       userId: login.userId,
@@ -304,8 +327,16 @@ class Address extends Component {
   };
 
   render() {
-    const { activeStep, value, timneValue, cartList, totalPrice, skipped } =
-      this.state;
+    const {
+      activeStep,
+      value,
+      timneValue,
+      cartList,
+      totalPrice,
+      skipped,
+      selectedPaymentMethod,
+      deliverySlotApiLoader,
+    } = this.state;
     const isStepOptional = (step) => {
       return step === 0;
     };
@@ -359,7 +390,8 @@ class Address extends Component {
             />
           ) : activeStep === 1 ? (
             <>
-              {this.props?.deliverySlotData?.status === status.IN_PROGRESS ? (
+              {this.props?.deliverySlotData?.status === status.IN_PROGRESS &&
+              deliverySlotApiLoader ? (
                 Loader.commonLoader()
               ) : (
                 <>
@@ -455,18 +487,18 @@ class Address extends Component {
                               )}
 
                               <Box className="w-100 justify-content-end d-flex">
-                                {/* <Button
-                        variant="contained"
-                        fullWidth
-                        className="common-btn proceed-payment-btn"
-                        onClick={() => {
-                          this.setState({
-                            activeStep: 2
-                          })
-                        }}
-                      >
-                        Proceed to payment
-                      </Button> */}
+                                <Button
+                                  variant="contained"
+                                  fullWidth
+                                  className="common-btn proceed-payment-btn"
+                                  onClick={() => {
+                                    this.setState({
+                                      activeStep: 2,
+                                    });
+                                  }}
+                                >
+                                  Proceed to payment
+                                </Button>
 
                                 {/* <Button
                         variant="contained"
@@ -483,7 +515,7 @@ class Address extends Component {
                       >
                         Place Order
                       </Button> */}
-                                <Button
+                                {/* <Button
                                   variant="contained"
                                   fullWidth
                                   className="common-btn proceed-payment-btn"
@@ -505,7 +537,7 @@ class Address extends Component {
                                   }
                                 >
                                   Place Order
-                                </Button>
+                                </Button> */}
                               </Box>
                             </Box>
                           </Box>
@@ -566,185 +598,217 @@ class Address extends Component {
               )}
             </>
           ) : activeStep === 2 ? (
-            <></>
-          ) : (
-            // <Box
-            //   className="payment-option-container"
-            //   data-aos="fade-right"
-            //   data-aos-offset="300"
-            //   data-aos-easing="ease-in-sine"
-            // >
-            //   <Box className="payment-details">
-            //     <Box className="payment-option-box active">
-            //       <Box className="d-flex align-items-center justify-content-between">
-            //         <Box className="d-flex align-items-center">
-            //           <Checkbox
-            //             {...label}
-            //             defaultChecked
-            //             icon={<RadioButtonUncheckedIcon />}
-            //             checkedIcon={<CheckCircleIcon />}
-            //           />
-            //           <span className="d-block payment-title">
-            //             Pay with Credit Card
-            //           </span>
-            //         </Box>
-            //         <Box className="d-flex align-items-center">
-            //           <Box className="card-type-img">
-            //             <img src={cardTypeImg1} alt="cart-type" />
-            //           </Box>
-            //           <Box className="card-type-img">
-            //             <img src={cardTypeImg2} alt="cart-type" />
-            //           </Box>
-            //           <Box className="card-type-img">
-            //             <img src={cardTypeImg3} alt="cart-type" />
-            //           </Box>
-            //         </Box>
-            //       </Box>
-            //       <Grid container spacing={2} marginTop={"8px"}>
-            //         <Grid item xs={12} lg={9} md={9} sm={9}>
-            //           <label className="d-block form-field-title">
-            //             Name on card
-            //           </label>
-            //           <TextField
-            //             id="outlined-basic"
-            //             variant="outlined"
-            //             fullWidth
-            //             className="form-text-field"
-            //             placeholder="Olivia Rhye"
-            //           />
-            //         </Grid>
-            //         <Grid item xs={12} lg={3} md={3} sm={3}>
-            //           <label className="d-block form-field-title">Expiry</label>
-            //           <TextField
-            //             id="outlined-basic"
-            //             variant="outlined"
-            //             fullWidth
-            //             className="form-text-field"
-            //             placeholder="06 / 2024"
-            //           />
-            //         </Grid>
-            //         <Grid item xs={12} lg={9} md={9} sm={9}>
-            //           <label className="d-block form-field-title">
-            //             Card number
-            //           </label>
-            //           <TextField
-            //             id="outlined-basic"
-            //             variant="outlined"
-            //             fullWidth
-            //             className="form-text-field"
-            //             placeholder="Olivia Rhye"
-            //           />
-            //         </Grid>
-            //         <Grid item xs={12} lg={3} md={3} sm={3}>
-            //           <label className="d-block form-field-title">CVV</label>
-            //           <TextField
-            //             id="outlined-basic"
-            //             variant="outlined"
-            //             fullWidth
-            //             type="password"
-            //             className="form-text-field"
-            //           />
-            //         </Grid>
-            //       </Grid>
-            //     </Box>
-            //     <Box className="payment-option-box ">
-            //       <Box className="d-flex justify-content-between align-items-flex-start">
-            //         <Box className="d-flex align-items-flex-start">
-            //           <Checkbox
-            //             {...label}
-            //             icon={<RadioButtonUncheckedIcon />}
-            //             checkedIcon={<CheckCircleIcon />}
-            //           />
-            //           <Box className="d-block">
-            //             <span className="d-block payment-title">UPI</span>
-            //             <p className="d-block info">
-            //               Unlimited users and unlimited individual data.
-            //             </p>
-            //           </Box>
-            //         </Box>
-            //         <Box className="d-flex align-items-center">
-            //           <Box className="card-type-img">
-            //             <img src={upiImg1} alt="cart-type" />
-            //           </Box>
-            //           <Box className="card-type-img">
-            //             <img src={upiImg2} alt="cart-type" />
-            //           </Box>
-            //         </Box>
-            //       </Box>
-            //     </Box>
-            //     <Box className="payment-option-box ">
-            //       <Box className="d-flex justify-content-between align-items-flex-start">
-            //         <Box className="d-flex align-items-flex-start">
-            //           <Checkbox
-            //             {...label}
-            //             icon={<RadioButtonUncheckedIcon />}
-            //             checkedIcon={<CheckCircleIcon />}
-            //           />
-            //           <Box className="d-block">
-            //             <span className="d-block payment-title">Paypal</span>
-            //             <p className="d-block info">
-            //               You will be redirected to the PayPal website after
-            //               submitting your order{" "}
-            //             </p>
-            //           </Box>
-            //         </Box>
-            //         <Box className="d-flex align-items-center">
-            //           <Box className="card-type-img">
-            //             <img src={paypalImg} alt="cart-type" />
-            //           </Box>
-            //         </Box>
-            //       </Box>
-            //     </Box>
-            //     <Box className="payment-option-box ">
-            //       <Box className="d-flex justify-content-between align-items-flex-start">
-            //         <Box className="d-flex align-items-flex-start">
-            //           <Checkbox
-            //             {...label}
-            //             icon={<RadioButtonUncheckedIcon />}
-            //             checkedIcon={<CheckCircleIcon />}
-            //           />
-            //           <Box className="d-block">
-            //             <span className="d-block payment-title">
-            //               Cash on delivery
-            //             </span>
-            //             <p className="d-block info">
-            //               You will be redirected to the PayPal website after
-            //               submitting your order{" "}
-            //             </p>{" "}
-            //           </Box>
-            //         </Box>
-            //         <Box className="d-flex align-items-center">
-            //           <Box className="card-type-img">
-            //             <img src={cashOnDeliveryImg} alt="cart-type" />
-            //           </Box>
-            //         </Box>
-            //       </Box>
-            //     </Box>
-            //     <Box className="w-100 d-flex justify-content-end">
-            //       {/* <Link to={"/mycart/address/order-placed"}> */}
-            //       <Button
-            //         variant="contained"
-            //         fullWidth
-            //         className="common-btn place-order-btn"
-            //         onClick={() => this.handlePlaceOrder()}
-            //         disabled={
-            //           this.props.placeOrderData.status === status.IN_PROGRESS
-            //         }
-            //       >
-            //         {this.props.placeOrderData.status === status.IN_PROGRESS ? (
-            //           <>
-            //             <CircularProgress className="common-loader" />
-            //           </>
-            //         ) : (
-            //           "Place Order"
-            //         )}
-            //       </Button>
+            <>
+              <Box
+                className="payment-option-container"
+                data-aos="fade-right"
+                data-aos-offset="300"
+                data-aos-easing="ease-in-sine"
+              >
+                <Box className="payment-details">
+                  <Box
+                    className={`payment-option-box ${
+                      selectedPaymentMethod == "online" ? "active" : ""
+                    }`}
+                    onClick={() => {
+                      this.setState({
+                        selectedPaymentMethod: "online",
+                      });
+                    }}
+                  >
+                    <Box className="d-flex align-items-center justify-content-between">
+                      <Box className="d-flex align-items-center">
+                        <Checkbox
+                          disabled
+                          {...label}
+                          checked={selectedPaymentMethod === "online"}
+                          // value={
+                          //   selectedPaymentMethod === "online"
+                          //     ?
+                          //     : ""
+                          // }
+                        />
+                        <span className="d-block payment-title">
+                          Online Payment Options
+                        </span>
+                      </Box>
+                      {/* <Box className="d-flex align-items-center">
+                        <Box className="card-type-img">
+                          <img src={cardTypeImg1} alt="cart-type" />
+                        </Box>
+                        <Box className="card-type-img">
+                          <img src={cardTypeImg2} alt="cart-type" />
+                        </Box>
+                        <Box className="card-type-img">
+                          <img src={cardTypeImg3} alt="cart-type" />
+                        </Box>
+                      </Box> */}
+                    </Box>
+                    {/* <Grid container spacing={2} marginTop={"8px"}>
+                      <Grid item xs={12} lg={9} md={9} sm={9}>
+                        <label className="d-block form-field-title">
+                          Name on card
+                        </label>
+                        <TextField
+                          id="outlined-basic"
+                          variant="outlined"
+                          fullWidth
+                          className="form-text-field"
+                          placeholder="Olivia Rhye"
+                        />
+                      </Grid>
+                      <Grid item xs={12} lg={3} md={3} sm={3}>
+                        <label className="d-block form-field-title">
+                          Expiry
+                        </label>
+                        <TextField
+                          id="outlined-basic"
+                          variant="outlined"
+                          fullWidth
+                          className="form-text-field"
+                          placeholder="06 / 2024"
+                        />
+                      </Grid>
+                      <Grid item xs={12} lg={9} md={9} sm={9}>
+                        <label className="d-block form-field-title">
+                          Card number
+                        </label>
+                        <TextField
+                          id="outlined-basic"
+                          variant="outlined"
+                          fullWidth
+                          className="form-text-field"
+                          placeholder="Olivia Rhye"
+                        />
+                      </Grid>
+                      <Grid item xs={12} lg={3} md={3} sm={3}>
+                        <label className="d-block form-field-title">CVV</label>
+                        <TextField
+                          id="outlined-basic"
+                          variant="outlined"
+                          fullWidth
+                          type="password"
+                          className="form-text-field"
+                        />
+                      </Grid>
+                    </Grid> */}
+                  </Box>
+                  {/* <Box className="payment-option-box "> */}
+                  {/* <Box className="d-flex justify-content-between align-items-flex-start"> */}
+                  {/* <Box className="d-flex align-items-flex-start">
+                        <Checkbox
+                          {...label}
+                          icon={<RadioButtonUncheckedIcon />}
+                          checkedIcon={<CheckCircleIcon />}
+                        />
+                        <Box className="d-block">
+                          <span className="d-block payment-title">UPI</span>
+                          <p className="d-block info">
+                            Unlimited users and unlimited individual data.
+                          </p>
+                        </Box>
+                      </Box> */}
+                  {/* <Box className="d-flex align-items-center"> */}
+                  {/* <Box className="card-type-img">
+                          <img src={upiImg1} alt="cart-type" />
+                        </Box>
+                        <Box className="card-type-img">
+                          <img src={upiImg2} alt="cart-type" />
+                        </Box> */}
+                  {/* </Box> */}
+                  {/* </Box> */}
+                  {/* </Box> */}
+                  {/* <Box className="payment-option-box "> */}
+                  {/* <Box className="d-flex justify-content-between align-items-flex-start"> */}
+                  {/* <Box className="d-flex align-items-flex-start"> */}
+                  {/* <Checkbox
+                          {...label}
+                          icon={<RadioButtonUncheckedIcon />}
+                          checkedIcon={<CheckCircleIcon />}
+                        /> */}
+                  {/* <Box className="d-block">
+                          <span className="d-block payment-title">Paypal</span>
+                          <p className="d-block info">
+                            You will be redirected to the PayPal website after
+                            submitting your order{" "}
+                          </p>
+                        </Box> */}
+                  {/* </Box> */}
+                  {/* <Box className="d-flex align-items-center">
+                        <Box className="card-type-img">
+                          <img src={paypalImg} alt="cart-type" />
+                        </Box>
+                      </Box> */}
+                  {/* </Box> */}
+                  {/* </Box> */}
+                  <Box
+                    // className="payment-option-box "
+                    className={`payment-option-box ${
+                      selectedPaymentMethod == "cash" ? "active" : ""
+                    }`}
+                    onClick={() => {
+                      this.setState({
+                        selectedPaymentMethod: "cash",
+                      });
+                    }}
+                  >
+                    <Box className="d-flex justify-content-between align-items-flex-start">
+                      <Box className="d-flex align-items-flex-start">
+                        <Checkbox
+                          {...label}
+                          checked={selectedPaymentMethod === "cash"}
+                        />
+                        <Box className="d-block">
+                          <span className="d-block payment-title">
+                            Cash on delivery
+                          </span>
+                          <p className="d-block info">
+                            You will be redirected to the PayPal website after
+                            submitting your order{" "}
+                          </p>{" "}
+                        </Box>
+                      </Box>
+                      <Box className="d-flex align-items-center">
+                        <Box className="card-type-img">
+                          <img src={cashOnDeliveryImg} alt="cart-type" />
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Box>
+                  <Box className="w-100 d-flex justify-content-end">
+                    {/* <Link to={"/mycart/address/order-placed"}> */}
 
-            //       {/* </Link> */}
-            //     </Box>
-            //   </Box>
-            // </Box>
-            ""
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      className="common-btn proceed-payment-btn"
+                      onClick={() => this.handlePlaceOrder()}
+                      disabled={
+                        this.props.placeOrderData.status ===
+                          status.IN_PROGRESS ||
+                        (this.props?.deliverySlotData?.status ===
+                          status.SUCCESS &&
+                          !this.props?.deliverySlotData?.data?.[0])
+                      }
+                      endIcon={
+                        this.props.placeOrderData.status ===
+                        status.IN_PROGRESS ? (
+                          <CircularProgress className="common-loader" />
+                        ) : (
+                          <></>
+                        )
+                      }
+                    >
+                      Place Order
+                    </Button>
+
+                    {/* </Link> */}
+                  </Box>
+                </Box>
+              </Box>
+            </>
+          ) : (
+            <></>
           )}
         </Container>
         <Modal
@@ -956,6 +1020,34 @@ class Address extends Component {
                   )}
                 </>
               )}
+            </Box>
+          </Box>
+        </Modal>
+
+        <Modal
+          open={this.state.paymentLink}
+          // onClose={this.handleClose}
+          aria-describedby="modal-modal-description"
+          data-aos="flip-left"
+        >
+          <Box
+            className="common-modal"
+            style={{ width: "300px", height: "150px" }}
+          >
+            <Box
+              className="modal-body d-flex align-items-center justify-content-center w-100"
+              style={{ height: "150px" }}
+            >
+              <Button
+                className="common-btn "
+                onClick={() => {
+                  if (this.state.paymentLink) {
+                    window.location.href = this.state.paymentLink;
+                  }
+                }}
+              >
+                Pay
+              </Button>
             </Box>
           </Box>
         </Modal>

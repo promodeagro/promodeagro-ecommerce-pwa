@@ -1,18 +1,20 @@
-import React, { useState } from "react";
-import {
-  Box,
-  Container,
-  Rating,
-  Button,
-} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box, Container, Rating, Button } from "@mui/material";
 import successImg from "../../../../../assets/img/success.png";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 const OrderPlaced = (props) => {
   const [value, setValue] = useState(0);
   const { id } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    return () => {
+      navigate("/");
+    };
+  }, []);
   return (
     <Container>
       <Box
@@ -39,9 +41,9 @@ const OrderPlaced = (props) => {
           <h1 className="d-block title">Order Placed</h1>
           <p className="thank-you-message d-block">
             Thank’s for your order at Elma e-commerce. Your order will be
-            processed as soon as possible. Make sure you make note of your
-            order number, which is <strong>{id ?? id}</strong>. You will be
-            receiving an email shortly with invoice from your order.
+            processed as soon as possible. Make sure you make note of your order
+            number, which is <strong>{id ?? id}</strong>. You will be receiving
+            an email shortly with invoice from your order.
           </p>
           <Box className="d-flex align-items-center order-btn w-100 justify-content-center">
             <Link to={"/"}>
