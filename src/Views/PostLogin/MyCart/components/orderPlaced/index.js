@@ -11,10 +11,12 @@ const OrderPlaced = (props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    return () => {
-      navigate("/");
-    };
+    window.history.pushState(null, null, document.URL);
+    window.addEventListener("popstate", function (event) {
+      window.location.replace("/");
+    });
   }, []);
+
   return (
     <Container>
       <Box
