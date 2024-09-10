@@ -36,6 +36,8 @@ import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDown
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import { fetchDefaultAddress } from "../../Redux/Address/AddressThunk";
 import { fetchCartItems } from "../../Redux/Cart/CartThunk";
+import LoginModal from "components/ModalLogin/LoginModal";
+import AuthModal from "components/ModalLogin/LoginModal";
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -52,8 +54,18 @@ class Header extends Component {
       currentPathName: "",
       pathId: null,
       profileName: "",
+      authModalOpen:false,
     };
+
+
     this.profileModalRef = React.createRef();
+  }
+
+   handleAuthModalOpen = ()=>{
+    this.setState({ isModalOpen: true });
+  }
+  handleAuthModalClose = ()=>{
+    this.setState({ isModalOpen: false });
   }
   componentDidMount() {
     // document.addEventListener("mousedown", this.handleClickOutside);
@@ -61,6 +73,8 @@ class Header extends Component {
       .matchMedia("(max-width: 600px)")
       .addEventListener("change", (e) => this.setState({ matches: e.matches }));
     let items = loginDetails();
+
+    
     if (items?.userId) {
       this.props.fetchDefaultAddress(items?.userId);
     }
@@ -403,7 +417,8 @@ class Header extends Component {
                   {!loginDetails()?.userId ? (
                     <Box
                       className="deliver-box"
-                      onClick={() => this.props.navigate("/signin")}
+                      // onClick={() => this.props.navigate("/signin")}
+                      onClick={()=> this.setState({authModalOpen:true  })}
                     >
                       Login
                       <span>
@@ -819,6 +834,7 @@ class Header extends Component {
             </Container>
           </Box>
         )}
+        <AuthModal open={this.state.authModalOpen} />
       </div>
     );
   }

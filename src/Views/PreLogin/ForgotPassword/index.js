@@ -10,7 +10,6 @@ import {
   Modal,
   FormHelperText,
 } from "@mui/material";
-
 import { ErrorMessages, ValidationEngine } from "../../Utills/helperFunctions";
 import { forgotPassword } from "../../../Redux/ForgotPassword/ForgotPasswordThunk";
 import addSymbol from "../../../assets/img/add-symbol.svg";

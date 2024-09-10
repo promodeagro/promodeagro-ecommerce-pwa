@@ -47,12 +47,6 @@ const validationSchema = {
       type: ValidationEngine.type.MANDATORY,
     },
   ],
-  isPolicyAccepted: [
-    {
-      message: "Please accept privacy policy",
-      type: ValidationEngine.type.MANDATORY,
-    },
-  ],
 };
 
 class Signin extends Component {
@@ -91,27 +85,16 @@ class Signin extends Component {
           "login",
           JSON.stringify(this.props.loginData.data)
         );
-        // ErrorMessages.success("Logged In Successfully");
         this.props.navigate(-1);
       }
-      // if (this.props.loginData.data.token) {
-
-      // } else {
-      //   ErrorMessages.error(this.props.loginData.data.message);
-      // }
-
-      // this.props.getAllAddress({
-      //   userId: this.props.loginData.data.userId,
-      // })
     }
   }
 
   validateForm = () => {
-    const { mobileNumber, password, isPolicyAccepted } = this.state;
+    const { mobileNumber, password } = this.state;
     const error = ValidationEngine.validate(validationSchema, {
       mobileNumber,
       password,
-      isPolicyAccepted,
     });
     return error;
   };
@@ -167,18 +150,6 @@ class Signin extends Component {
                     </Box>
                   </Box>
                 </Box>
-                {/* <Button
-                  variant="outlined"
-                  className="google-login-box"
-                  fullWidth
-                >
-                  <img src={googleIcon} alt="google-icon" />
-                </Button>
-                <Box className="d-flex w-100 align-items-center more-option">
-                  <Divider />
-                  <span> OR</span>
-                  <Divider />
-                </Box> */}
                 <Box className="number-input">
                   <label className="d-block">
                     Number <span className="validate-icon">*</span>
@@ -225,25 +196,6 @@ class Signin extends Component {
                     {errorData?.password?.message}
                   </FormHelperText>
                 )}
-                <Box className="term-condition-container d-flex align-items-center">
-                  <Checkbox
-                    {...label}
-                    checked={this.state.isPolicyAccepted}
-                    size="small"
-                    onChange={this.handleValueChange}
-                    name="isPolicyAccepted"
-                  />
-                  <span className="agree-text">
-                    I agree to the{" "}
-                    <Link to="/terms-condition">Terms & Conditions</Link> and{" "}
-                    <Link to="/privacy-policy">Privacy Policy.</Link>
-                  </span>
-                </Box>
-                {isSubmit && (
-                  <FormHelperText error>
-                    {errorData?.isPolicyAccepted?.message}
-                  </FormHelperText>
-                )}
                 <Button
                   variant="contained"
                   fullWidth
@@ -272,15 +224,6 @@ class Signin extends Component {
                     </Box>
                   </Grid>
                 </Grid>
-
-                {/* <Button
-                                    variant="contained"
-                                    fullWidth
-                                    className="common-btn"
-                                    onClick={this.handleOpen}
-                                >
-                                    Get OTP
-                                </Button> */}
               </Box>
             </Box>
           </Box>

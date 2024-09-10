@@ -154,7 +154,6 @@ export const ErrorMessages = {
 export const loginDetails = () => {
   const items = JSON.parse(localStorage.getItem("login"));
   return items;
-
 }
 
 

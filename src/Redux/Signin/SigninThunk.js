@@ -11,6 +11,8 @@ export const signIn = createAsyncThunk("login", async (params) => {
     return error;
   }
 });
+
+
 // changePassword
 
 export const changePassword = createAsyncThunk(
@@ -35,6 +37,8 @@ export const deleteUser = createAsyncThunk("deleteUser", async (params) => {
     return error;
   }
 });
+
+
 export const fetchPersonalDetails = createAsyncThunk(
   "userdetails",
   async (params) => {
