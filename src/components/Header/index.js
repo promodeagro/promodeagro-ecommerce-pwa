@@ -834,7 +834,7 @@ class Header extends Component {
             </Container>
           </Box>
         )}
-        <AuthModal handleClose={handleAuthModalClose} open={this.state.authModalOpen} />
+        <AuthModal  open={this.state.authModalOpen} />
       </div>
     );
   }
