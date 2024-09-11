@@ -6,14 +6,38 @@ export const signIn = createAsyncThunk("login", async (params) => {
   try {
     let url = config.SIGN_IN;
     const response = await preLoginService.post(url, params);
-    return response.data;
+
+    return {
+      data: response.data,
+      statusCode: response.status,
+    };
   } catch (error) {
-    return error;
+    return {
+      ...error.response.data,
+      statusCode: error.response.status,
+    };
   }
 });
 
 
-// changePassword
+
+export const validateOtp = createAsyncThunk("otp", async (params) => {
+  try {
+    let url = config.VALIDATE_OTP;
+    const response = await preLoginService.post(url, params);
+
+    return {
+      data: response.data,
+      statusCode: response.status,
+    };
+  } catch (error) {
+    return {
+      ...error.response.data,
+      statusCode: error.response.status,
+    };
+  }
+});
+
 
 export const changePassword = createAsyncThunk(
   "changepassword",
@@ -37,7 +61,6 @@ export const deleteUser = createAsyncThunk("deleteUser", async (params) => {
     return error;
   }
 });
-
 
 export const fetchPersonalDetails = createAsyncThunk(
   "userdetails",

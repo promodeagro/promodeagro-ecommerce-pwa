@@ -8,6 +8,7 @@ const Config = {
   FILTERED_PRODUCTS: `${BASE_URL}/products`,
   SIGN_UP: `${BASE_URL}/register`,
   SIGN_IN: `${BASE_URL}/login`,
+  VALIDATE_OTP:`${BASE_URL}/login/validate-otp`,
   ALL_PRODUCTS: `${BASE_URL}/product`,
   ADD_ITEM: `${BASE_URL}/cart/addItem`,
   FETCH_CART_ITEMS: `${BASE_URL}/cart/getItems`,

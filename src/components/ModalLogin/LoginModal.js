@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
-import { Modal, Box, TextField, Button, InputAdornment, FormHelperText } from '@mui/material';
+import React, { useEffect, useState } from "react";
+import {
+  Modal,
+  Box,
+  TextField,
+  Button,
+  InputAdornment,
+  FormHelperText,
+} from "@mui/material";
 import closeModalIcon from "../../assets/img/closeModalIcon.svg";
-import { Link, useNavigate } from 'react-router-dom';
-import { ValidationEngine } from 'Views/Utills/helperFunctions';
-
-
-
-const validationSchema = {
-  mobileNumber: [
+import { Link, useNavigate } from "react-router-dom";
+import { ValidationEngine, ErrorMessages } from "Views/Utills/helperFunctions";
+import { signIn, validateOtp } from "../../Redux/Signin/SigninThunk";
+import status from "../../Redux/Constants";
+import { connect } from "react-redux";
+import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
+import CircularProgress from "@mui/material/CircularProgress";
+const mobileValidationSchema = {
+  emailOrNumber: [
     {
       message: "Please enter Mobile number",
       type: ValidationEngine.type.MANDATORY,
@@ -18,206 +27,239 @@ const validationSchema = {
       regex: ValidationEngine.MOBILE_NUMBER_REGEX,
     },
   ],
-
 };
 
-const AuthModal = ({ open, handleClose }) => {
-  const navigate = useNavigate()
-  const [formType, setFormType] = useState('login'); // login, otp
+const otpScreenValidationSchema = {
+  validateOtp: [
+    {
+      message: "Please enter otp",
+      type: ValidationEngine.type.MANDATORY,
+    },
+  ],
+};
 
-const [emailOrNumber,setEmailOrNumber] = useState('')
+const AuthModal = (props) => {
+  const { open, handleClose } = props;
+  const navigate = useNavigate();
+  const [formType, setFormType] = useState("login");
+  const [emailOrNumber, setEmailOrNumber] = useState("");
+  const [isSubmitMobOrEmail, setSubmitMobOrEmail] = useState(false);
+  const [isOtpSubmitted, setOtpSubmitted] = useState(false);
+  const [validateOtp, setValidateOtp] = useState("");
 
+  const [seconds, setSeconds] = useState(30);
+  const [isActive, setIsActive] = useState(true);
 
-// handle LOGIN form
-const handleRegisterForm = (e) => {
-  e.preventDefault();  // Prevent form from reloading the page
+  useEffect(() => {
+    let interval = null;
 
-  const myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
+    if (isActive && seconds > 0) {
+      interval = setInterval(() => {
+        setSeconds((prevSeconds) => prevSeconds - 1);
+      }, 1000);
+    } else {
+      clearInterval(interval);
+      setIsActive(false);
+    }
 
-  const raw = JSON.stringify({
-    "mobileNumber": emailOrNumber
-  });
+    return () => clearInterval(interval);
+  }, [isActive, seconds]);
 
-  const requestOptions = {
-    method: "POST",
-    headers: myHeaders,
-    body: raw,
-    redirect: "follow"
+  useEffect(() => {
+    if (props.loginData.status === status.SUCCESS && isSubmitMobOrEmail) {
+      setSubmitMobOrEmail(false);
+      if (props.loginData.data) {
+        if (props.loginData.data.statusCode == 200) {
+          resetTimer();
+          setFormType("otp");
+        } else {
+          ErrorMessages.error(props.loginData.data.message);
+        }
+      }
+    }
+  }, [props.loginData.status]);
+
+  useEffect(() => {
+    if (props.validateOtpRes.status === status.SUCCESS && setSubmitMobOrEmail) {
+      setSubmitMobOrEmail(false);
+      if (props.validateOtpRes?.data) {
+        if (props.validateOtpRes?.data?.statusCode == 200) {
+          handleModalClose();
+          localStorage.setItem(
+            "login",
+            JSON.stringify(props?.validateOtpRes?.data?.data)
+          );
+          props.navigate(-1);
+          props.handleClose();
+        } else {
+          ErrorMessages.error(props.validateOtpRes?.data?.message);
+        }
+      }
+    }
+  }, [props.validateOtpRes.status]);
+
+  const resetTimer = () => {
+    setSeconds(30);
+    setIsActive(true);
+  };
+  const validateOtpForm = () => {
+    const error = ValidationEngine.validate(otpScreenValidationSchema, {
+      validateOtp,
+    });
+    return error;
   };
 
-  fetch("https://09ubwkjphb.execute-api.us-east-1.amazonaws.com/login", requestOptions)
-    .then((response) => response.text())
-    .then((result) => console.log(result))  // This will now properly log
-    .catch((error) => console.error(error));
-    setFormType('otp')
-};
-
-// handle log with otp 000
-const handleOtpLogin = (e) => {
-  e.preventDefault();  // Prevent form from reloading the page
-
-  const myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-
-  const raw = JSON.stringify({
-    "mobileNumber": emailOrNumber
-  });
-
-  const requestOptions = {
-    method: "POST",
-    headers: myHeaders,
-    body: raw,
-    redirect: "follow"
+  const validateForm = () => {
+    const error = ValidationEngine.validate(mobileValidationSchema, {
+      emailOrNumber,
+    });
+    return error;
   };
 
-  fetch("https://09ubwkjphb.execute-api.us-east-1.amazonaws.com/login", requestOptions)
-    .then((response) => response.text())
-    .then((result) => console.log(result))  // This will now properly log
-    .catch((error) => console.error(error));
-    setFormType('otp')
-};
-
-  // This function will choose which form to submit
-  const onSubmits = (e) => {
-    if (formType === 'login') {
-      handleRegisterForm(e); // Handle registration
-    } else if (formType === 'otp') {
-      handleOtpLogin(e); // Handle OTP login
+  const handleRegisterForm = async (e) => {
+    e.preventDefault();
+    setSubmitMobOrEmail(true);
+    const errorData = validateForm();
+    if (errorData.isValid) {
+      props.signIn({ mobileNumber: emailOrNumber });
     }
   };
 
-
-  
-// use states for temperery
-
-const [validateNumber , setValidateNumber] = useState(emailOrNumber)
-const [validateOtp , setValidateOtp] = useState("")
-
-
-  // FETCHING TOKOn  form
-
-  const validateOtpForm = (e) => {
+  const handleOtpLogin = async (e) => {
     e.preventDefault();
-  
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-  
-    const raw = JSON.stringify({
-      mobileNumber: emailOrNumber,
-      otp: validateOtp
-    });
-  
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow"
-    };
-  
-    fetch("https://09ubwkjphb.execute-api.us-east-1.amazonaws.com/login/validate-otp", requestOptions)
-      .then((response) => response.json()) // Change this to .json() to properly parse the JSON response
-      .then((result) => {
-        console.log(result); // Now logs the result correctly
-        // Save token to localStorage
-        localStorage.setItem('token', result.token); // 'result.token' will be the correct token from the response
-        console.log("Token saved to localStorage:", result.token);
-      })
-      .catch((error) => console.error('Error:', error));
-      navigate('/mycart')
-    
+    const otpScreenErrorData = validateOtpForm();
+    setOtpSubmitted(true);
+    if (otpScreenErrorData.isValid) {
+      props.validateOtp({
+        mobileNumber: emailOrNumber,
+        otp: validateOtp,
+      });
+    }
   };
-  
-
-  // FETCHING TOKOn  form
-
+  const errorData = validateForm();
+  const otpScreenErrorData = validateOtpForm();
   const renderForm = () => {
     switch (formType) {
-      case 'login':
+      case "login":
         return (
-          <form onSubmit={onSubmits}>
-          <Box>
-            <h2 className='auth_container_title'>Login or Sign Up</h2>
+          <form onSubmit={handleRegisterForm}>
             <Box>
-              <Box className="input_box">
-                <label className="d-block">
-                  Login With Email/Phone
-                </label>
-                <TextField
-                value={emailOrNumber}
-                onChange={(e)=> setEmailOrNumber(e.target.value)}
-                  name="emailOrNumber"
-                  placeholder='Email or Number'
-                  className="input-textfield"
-                  id="outlined-basic"
-                  variant="outlined"
+              <h2 className="auth_container_title">Login or Sign Up</h2>
+              <Box>
+                <Box className="input_box">
+                  <label className="d-block">Login With Email/Phone</label>
+                  <TextField
+                    value={emailOrNumber}
+                    onChange={(e) => setEmailOrNumber(e.target.value)}
+                    name="emailOrNumber"
+                    placeholder="Email or Number"
+                    className="input-textfield"
+                    id="outlined-basic"
+                    variant="outlined"
+                    fullWidth
+                    type="text"
+                  />
+                  {isSubmitMobOrEmail && (
+                    <FormHelperText error>
+                      {errorData?.emailOrNumber?.message}
+                    </FormHelperText>
+                  )}
+                </Box>
+              </Box>
+              <Box className="otp_box_bottom">
+                <Button
+                  type="submit"
+                  variant="contained"
                   fullWidth
-                  type="text"
-                />
-                <FormHelperText error>
-                  {/* Add any validation error messages here */}
-                </FormHelperText>
+                  className="common-btn login-btns"
+                  disabled={
+                    props.loginData.status === status.IN_PROGRESS &&
+                    setSubmitMobOrEmail
+                  }
+                  endIcon={
+                    props.loginData.status === status.IN_PROGRESS &&
+                    setSubmitMobOrEmail ? (
+                      <CircularProgress className="common-loader" />
+                    ) : (
+                      <></>
+                    )
+                  }
+                >
+                  Continue
+                </Button>
               </Box>
             </Box>
-
-            <Box className="otp_box_bottom">
-              <Button
-              type='submit'
-                variant="contained"
-                fullWidth
-                className="common-btn login-btns"
-              >
-                Continue
-              </Button>
-            </Box>
-          </Box>
           </form>
         );
-      case 'otp':
+      case "otp":
         return (
-<form onSubmit={validateOtpForm}>
-          <Box>
-            <h2 className='auth_container_title'>Login</h2>
+          <form onSubmit={handleOtpLogin}>
             <Box>
-              <Box className="input_box">
-                <label className="d-block otp_labels">
-                  +91 {emailOrNumber} <span onClick={()=> setFormType('login')}>Change</span>
-                </label>
-                <TextField
-                value={validateOtp}
-                onChange={(e)=> setValidateOtp(e.target.value)}
-                  name="otp"
-                  placeholder='Enter OTP'
-                  className="input-textfield"
-                  id="outlined-basic"
-                  variant="outlined"
+              <h2 className="auth_container_title">Login</h2>
+              <Box>
+                <Box className="input_box">
+                  <label className="d-block otp_labels">
+                    +91 {emailOrNumber}{" "}
+                    <span onClick={() => setFormType("login")}>Change</span>
+                  </label>
+
+                  <TextField
+                    value={validateOtp}
+                    onChange={(e) => setValidateOtp(e.target.value)}
+                    name="otp"
+                    placeholder="Enter OTP"
+                    className="input-textfield"
+                    id="outlined-basic"
+                    variant="outlined"
+                    fullWidth
+                    type="number"
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          {isActive ? <span>{seconds}s</span> : <></>}
+
+                          <Button
+                            onClick={handleRegisterForm}
+                            className="input_end_text"
+                            disabled={isActive}
+                          >
+                            {" "}
+                            Resend OTP{" "}
+                          </Button>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                  {isOtpSubmitted && (
+                    <FormHelperText error>
+                      {otpScreenErrorData?.validateOtp?.message}
+                    </FormHelperText>
+                  )}
+                </Box>
+              </Box>
+              <Box className="otp_box_bottom">
+                <Button
+                  variant="contained"
                   fullWidth
-                  type="number"
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <span onClick={onSubmits} className='input_end_text'> Resend OTP </span>
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-                <FormHelperText error>
-                  {/* Add any validation error messages here */}
-                </FormHelperText>
+                  className="common-btn login-btns"
+                  type="submit"
+                  disabled={
+                    props.validateOtpRes.status === status.IN_PROGRESS &&
+                    isOtpSubmitted
+                  }
+                  endIcon={
+                    props.validateOtpRes.status === status.IN_PROGRESS &&
+                    isOtpSubmitted ? (
+                      <CircularProgress className="common-loader" />
+                    ) : (
+                      <></>
+                    )
+                  }
+                >
+                  Login
+                </Button>
               </Box>
             </Box>
-
-            <Box className="otp_box_bottom">
-              <Button
-                variant="contained"
-                fullWidth
-                className="common-btn login-btns"
-                type='submit'
-              >
-                Login
-              </Button>
-            </Box>
-          </Box>
           </form>
         );
       default:
@@ -225,20 +267,44 @@ const [validateOtp , setValidateOtp] = useState("")
     }
   };
 
+  const handleModalClose = () => {
+    setFormType("login");
+    setEmailOrNumber("");
+    setSubmitMobOrEmail(false);
+    setOtpSubmitted(false);
+    setValidateOtp("");
+    props.handleClose();
+  };
   return (
-    <Modal  open={open} onClose={handleClose}
-    aria-labelledby="modal-modal-title"
-    aria-describedby="modal-modal-description"
-    data-aos="flip-left"
+    <Modal
+      open={open}
+      onClose={() => handleModalClose()}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+      data-aos="flip-left"
     >
       <Box className="common-modal auth_container">
-        <img className='close_modal'onClick={handleClose} src={closeModalIcon} alt="" />
+        <img
+          className="close_modal"
+          onClick={() => handleModalClose()}
+          src={closeModalIcon}
+          alt="Close"
+        />
         {renderForm()}
       </Box>
     </Modal>
   );
 };
 
-export default AuthModal;
+function mapStateToProps(state) {
+  const { loginData, validateOtpRes } = state.login;
 
+  return { loginData, validateOtpRes };
+}
 
+const mapDispatchToProps = { signIn, validateOtp };
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(navigateRouter(AuthModal));

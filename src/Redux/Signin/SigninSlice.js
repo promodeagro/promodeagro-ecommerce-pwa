@@ -4,7 +4,8 @@ import {
     changePassword,
     deleteUser,
     updatePersonalDetails,
-    fetchPersonalDetails
+    fetchPersonalDetails,
+    validateOtp
 } from "./SigninThunk";
 import status from "./../Constants";
 
@@ -21,10 +22,13 @@ const SigninSlice = createSlice({
             status:null
         },
         personalDetailsData:{
-            status:false
+            status:null
         },
         updatePersonalDetailsData:{
-            status:false
+            status:null
+        },
+        validateOtpRes:{
+            status:null
         }
 
     },
@@ -58,6 +62,8 @@ const SigninSlice = createSlice({
                     },
                 };
             })
+
+
             .addCase(changePassword.pending.toString(), (state, action) => {
                 return {
                     ...state,
@@ -83,6 +89,9 @@ const SigninSlice = createSlice({
                     },
                 };
             })
+
+
+
             .addCase(deleteUser.pending.toString(), (state, action) => {
                 return {
                     ...state,
@@ -108,6 +117,8 @@ const SigninSlice = createSlice({
                     },
                 };
             })
+
+
             .addCase(updatePersonalDetails.pending.toString(), (state, action) => {
                 return {
                     ...state,
@@ -133,6 +144,8 @@ const SigninSlice = createSlice({
                     },
                 };
             })
+
+
             .addCase(fetchPersonalDetails.pending.toString(), (state, action) => {
                 return {
                     ...state,
@@ -154,6 +167,33 @@ const SigninSlice = createSlice({
                 return {
                     ...state,
                     personalDetailsData: {
+                        status: status.FAILURE,
+                    },
+                };
+            })
+
+             
+            .addCase(validateOtp.pending.toString(), (state, action) => {
+                return {
+                    ...state,
+                    validateOtpRes: {
+                        status: status.IN_PROGRESS,
+                    },
+                };
+            })
+            .addCase(validateOtp.fulfilled.toString(), (state, { payload }) => {
+                return {
+                    ...state,
+                    validateOtpRes: {
+                        status: status.SUCCESS,
+                        data: payload,
+                    },
+                };
+            })
+            .addCase(validateOtp.rejected.toString(), (state, action) => {
+                return {
+                    ...state,
+                    validateOtpRes: {
                         status: status.FAILURE,
                     },
                 };
