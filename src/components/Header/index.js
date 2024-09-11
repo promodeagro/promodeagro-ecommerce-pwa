@@ -54,19 +54,18 @@ class Header extends Component {
       currentPathName: "",
       pathId: null,
       profileName: "",
-      authModalOpen:false,
+      authModalOpen: false,
     };
-
 
     this.profileModalRef = React.createRef();
   }
 
-   handleAuthModalOpen = ()=>{
+  handleAuthModalOpen = () => {
     this.setState({ isModalOpen: true });
-  }
-  handleAuthModalClose = ()=>{
+  };
+  handleAuthModalClose = () => {
     this.setState({ isModalOpen: false });
-  }
+  };
   componentDidMount() {
     // document.addEventListener("mousedown", this.handleClickOutside);
     window
@@ -74,7 +73,6 @@ class Header extends Component {
       .addEventListener("change", (e) => this.setState({ matches: e.matches }));
     let items = loginDetails();
 
-    
     if (items?.userId) {
       this.props.fetchDefaultAddress(items?.userId);
     }
@@ -418,7 +416,7 @@ class Header extends Component {
                     <Box
                       className="deliver-box"
                       // onClick={() => this.props.navigate("/signin")}
-                      onClick={()=> this.setState({authModalOpen:true  })}
+                      onClick={() => this.setState({ authModalOpen: true })}
                     >
                       Login
                       <span>
@@ -504,7 +502,7 @@ class Header extends Component {
                                 onClick={() => {
                                   this.handleProfileModal();
                                   localStorage.removeItem("login");
-                                  this.props.navigate("/signin");
+                                  this.props.navigate("/");
                                 }}
                               >
                                 <Link>
@@ -834,14 +832,13 @@ class Header extends Component {
             </Container>
           </Box>
         )}
-        <AuthModal  open={this.state.authModalOpen} 
-        handleClose={()=>{
-         this.setState({
-          authModalOpen:false
-         })
-
-        }}
-        
+        <AuthModal
+          open={this.state.authModalOpen}
+          handleClose={() => {
+            this.setState({
+              authModalOpen: false,
+            });
+          }}
         />
       </div>
     );

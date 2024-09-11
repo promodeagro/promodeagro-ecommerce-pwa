@@ -81,10 +81,10 @@ class ProfileSideBar extends Component {
             <Button
               onClick={() => {
                 localStorage.removeItem("login");
-                this.props.navigate("/signin");
+                this.props.navigate("/");
               }}
             >
-              Logout{" "}
+              Logout 
             </Button>
           </Box>
         </Box>

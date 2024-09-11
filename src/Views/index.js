@@ -60,11 +60,11 @@ const MyOrder = lazy(() => import("./../Views/PostLogin/myOrder"));
 
 const Views = () => {
   const location = useLocation();
-  const isLoggedIn = !!loginDetails()?.token; // Check if user is logged in
+  const isLoggedIn = !!loginDetails()?.token; 
 
   return (
     <Routes location={location}>
-      {/* Redirect to Home if user is logged in and tries to access signin or signup */}
+    
       {isLoggedIn && (
         <>
           <Route path={`/signin`} element={<Navigate to="/" replace />} />
@@ -72,7 +72,7 @@ const Views = () => {
         </>
       )}
 
-      {/* Redirect to Home if user is not logged in and tries to access mycart related pages */}
+  
       {!isLoggedIn && (
         <>
           <Route path={`/my-order`} element={<Navigate to="/" replace />} />
