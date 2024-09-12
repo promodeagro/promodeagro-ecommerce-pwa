@@ -7,8 +7,15 @@ export const fetchHome = createAsyncThunk("home", async (userId) => {
     let url = config.HOME+`?userId=${userId}`;
     
     const response = await postLoginService.get(url);
-    return response.data;
+    return {
+      data:response.data,
+      statusCode:response.status
+    }
+
   } catch (error) {
-    return error;
+    return {
+      ...error.response.data,
+      statusCode: error.response.status,
+    };
   }
 });

@@ -549,13 +549,13 @@ class FeaturedProducts extends Component {
 }
 
 function mapStateToProps(state) {
-  const { homeData } = state.home;
+ 
   const { allProductsData, shopCategoryData } = state.allproducts;
   const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
   const { setBookmarksData, deleteBookMarkData } = state.allproducts;
   return {
     allProductsData,
-    homeData,
+ 
     additems,
     cartItems,
     updateItems,

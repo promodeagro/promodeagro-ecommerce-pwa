@@ -8,6 +8,7 @@ import TopSellingCategories from "./components/topSellingCategories";
 import CustomersSays from "./components/customersSays";
 import { fetchHome } from "../../../Redux/Home/HomeThunk";
 import { fetchCartItems } from "../../../Redux/Cart/CartThunk";
+
 import {
   fetchTopSellingProducts,
   fetchToSellingCategories,
@@ -30,7 +31,6 @@ import {
   setShopByCategory,
 } from "../../../Redux/AllProducts/AllProductSlice";
 import { fetchPersonalDetails } from "../../../Redux/Signin/SigninThunk";
-
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -129,22 +129,19 @@ class Home extends Component {
 
     if (
       prevProps.homeData.status !== this.props.homeData.status &&
-      this.props.homeData.status === status.SUCCESS &&
-      this.props.homeData?.data
+      this.props.homeData.status === status.SUCCESS
     ) {
-      if (
-        this.props.homeData?.data?.response?.status == 500 ||
-        this.props.homeData?.data?.response?.status == 401
-      ) {
+      if (this.props.homeData.data.statusCode === 200) {
+        this.setState({
+          data: this.props?.homeData?.data?.data?.products,
+          loaderCount: 1,
+        });
+      } else {
         this.setState({
           data: [],
           loaderCount: 1,
         });
-      } else if (this.props?.homeData?.data?.products) {
-        this.setState({
-          data: this.props?.homeData?.data?.products,
-          loaderCount: 1,
-        });
+        ErrorMessages.error(this.props?.homeData?.data?.message);
       }
     } else if (this.props.homeData.status === status.FAILURE) {
       this.setState({

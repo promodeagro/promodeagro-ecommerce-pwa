@@ -218,10 +218,10 @@ class MainBanner extends Component {
 }
 
 function mapStateToProps(state) {
-  const { homeData } = state.home;
+
 
   return {
-    homeData,
+  
   };
 }
 

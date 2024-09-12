@@ -117,9 +117,9 @@ class OffersYouMightLike extends Component {
 }
 
 function mapStateToProps(state) {
-  const { homeData } = state.home;
+
   return {
-    homeData,
+  
   };
 }
 

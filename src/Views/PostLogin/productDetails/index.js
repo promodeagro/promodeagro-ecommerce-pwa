@@ -1307,7 +1307,6 @@ class ProductDetails extends Component {
 }
 
 function mapStateToProps(state) {
-  const { homeData } = state.home;
   const {
     allProductsData,
     shopCategoryData,
@@ -1321,7 +1320,7 @@ function mapStateToProps(state) {
   const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
   return {
     allProductsData,
-    homeData,
+
     additems,
     prodducDetailsData,
     cartItems,
