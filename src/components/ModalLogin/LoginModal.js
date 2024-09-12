@@ -90,7 +90,7 @@ const AuthModal = (props) => {
             JSON.stringify(props?.validateOtpRes?.data?.data)
           );
           props.handleDefaultAddress();
-          props.navigate(-1);
+
           props.handleClose();
         } else {
           ErrorMessages.error(props.validateOtpRes?.data?.message);
