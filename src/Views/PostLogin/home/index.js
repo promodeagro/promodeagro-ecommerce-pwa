@@ -187,6 +187,9 @@ class Home extends Component {
         });
       } else {
         ErrorMessages.error(this.props?.topSellingProductsData?.data?.message);
+        this.setState({
+          topSellingApiLoader: false,
+        });
       }
     }
   }
