@@ -185,7 +185,6 @@ export const fetchTopSellingProducts = createAsyncThunk(
         data: response.data,
         statusCode: response.status,
       };
-  
     } catch (error) {
       return {
         ...error.response.data,
@@ -201,9 +200,15 @@ export const fetchAllOffers = createAsyncThunk("alloffers", async (params) => {
     let url = config.GET_ALL_OFFERS;
 
     const response = await postLoginService.get(url);
-    return response.data;
+    return {
+      data: response.data,
+      statusCode: response.status,
+    };
   } catch (error) {
-    return error;
+    return {
+      ...error.response.data,
+      statusCode: error.response.status,
+    };
   }
 });
 

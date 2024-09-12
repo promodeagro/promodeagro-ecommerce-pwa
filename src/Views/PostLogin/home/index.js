@@ -93,12 +93,15 @@ class Home extends Component {
     }
     if (
       prevProps.allOffersData.status !== this.props.allOffersData.status &&
-      this.props.allOffersData.status === status.SUCCESS &&
-      this.props.allOffersData?.data
+      this.props.allOffersData.status === status.SUCCESS
     ) {
-      this.setState({
-        allOffersList: this.props.allOffersData?.data,
-      });
+      if (this.props.allOffersData.data.statusCode === 200) {
+        this.setState({
+          allOffersList: this.props.allOffersData?.data?.data,
+        });
+      } else {
+        ErrorMessages.error(this.props?.allOffersData?.data?.message);
+      }
     }
 
     if (
