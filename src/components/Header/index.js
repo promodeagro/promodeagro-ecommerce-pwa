@@ -834,6 +834,12 @@ class Header extends Component {
         )}
         <AuthModal
           open={this.state.authModalOpen}
+          handleDefaultAddress={() => {
+            this.props.fetchDefaultAddress(loginDetails()?.userId);
+            this.props.fetchPersonalDetails({
+              userId: loginDetails()?.userId,
+            });
+          }}
           handleClose={() => {
             this.setState({
               authModalOpen: false,

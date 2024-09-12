@@ -89,6 +89,7 @@ const AuthModal = (props) => {
             "login",
             JSON.stringify(props?.validateOtpRes?.data?.data)
           );
+          props.handleDefaultAddress();
           props.navigate(-1);
           props.handleClose();
         } else {
