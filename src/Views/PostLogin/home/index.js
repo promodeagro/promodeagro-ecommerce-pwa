@@ -174,14 +174,17 @@ class Home extends Component {
     if (
       prevProps.topSellingProductsData.status !==
         this.props.topSellingProductsData.status &&
-      this.props.topSellingProductsData.status === status.SUCCESS &&
-      this.props.topSellingProductsData?.data?.topSellingProducts
+      this.props.topSellingProductsData.status === status.SUCCESS
     ) {
-      this.setState({
-        topSellingProductsList:
-          this.props.topSellingProductsData.data?.topSellingProducts,
-        topSellingApiLoader: false,
-      });
+      if (this.props.topSellingProductsData.data.statusCode === 200) {
+        this.setState({
+          topSellingProductsList:
+            this.props.topSellingProductsData.data?.data?.topSellingProducts,
+          topSellingApiLoader: false,
+        });
+      } else {
+        ErrorMessages.error(this.props?.topSellingProductsData?.data?.message);
+      }
     }
   }
 

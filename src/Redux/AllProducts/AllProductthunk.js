@@ -179,13 +179,18 @@ export const fetchTopSellingProducts = createAsyncThunk(
     try {
       const userId = loginDetails()?.userId;
       let url = config.TOP_SELLING_PRODUCTS;
-      //  +
-      // `?subcategory=${params?.subcategory}&userId=${params?.userId}`;
 
       const response = await postLoginService.get(url, { params });
-      return response.data;
+      return {
+        data: response.data,
+        statusCode: response.status,
+      };
+  
     } catch (error) {
-      return error;
+      return {
+        ...error.response.data,
+        statusCode: error.response.status,
+      };
     }
   }
 );
@@ -215,5 +220,3 @@ export const addProductReview = createAsyncThunk(
     }
   }
 );
-
-
