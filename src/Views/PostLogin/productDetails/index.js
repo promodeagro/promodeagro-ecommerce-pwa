@@ -57,7 +57,11 @@ import {
   updateItemToCart,
   deleteItemToCart,
 } from "../../../Redux/Cart/CartThunk";
-import { Loader, loginDetails } from "Views/Utills/helperFunctions";
+import {
+  Loader,
+  loginDetails,
+  ErrorMessages,
+} from "Views/Utills/helperFunctions";
 import { yellow } from "@mui/material/colors";
 import {
   FacebookShareButton,
@@ -144,10 +148,14 @@ class ProductDetails extends Component {
         this.props.deleteBookMarkData.status &&
       this.props.deleteBookMarkData.status === status.SUCCESS
     ) {
-      this.props.productDetails({
-        productId: this.props.params.id,
-        userId: items?.userId ? items?.userId : "",
-      });
+      if (this.props.deleteBookMarkData.data.statusCode === 200) {
+        this.props.productDetails({
+          productId: this.props.params.id,
+          userId: items?.userId ? items?.userId : "",
+        });
+      } else {
+        ErrorMessages.error(this.props.deleteBookMarkData?.data?.message);
+      }
     }
 
     if (
@@ -1318,7 +1326,6 @@ function mapStateToProps(state) {
   } = state.allproducts;
   const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
   return {
-
     additems,
     prodducDetailsData,
     cartItems,

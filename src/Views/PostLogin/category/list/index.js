@@ -22,7 +22,7 @@ import priceIcon from "../../../../assets/img/price-icon.png";
 import noImage from "../../../../assets/img/no-image.png";
 import status from "../../../../Redux/Constants";
 import _ from "lodash";
-import { loginDetails } from "../../../Utills/helperFunctions";
+import { loginDetails ,ErrorMessages} from "../../../Utills/helperFunctions";
 import { Link } from "react-router-dom";
 import BookmarkOutlinedIcon from "@mui/icons-material/BookmarkOutlined";
 import {
@@ -52,10 +52,16 @@ class List extends Component {
         this.props.deleteBookMarkData.status &&
       this.props.deleteBookMarkData.status === status.SUCCESS
     ) {
-      this.getAllProduct();
       this.setState({
         bookMarkId: "",
       });
+      if (this.props.deleteBookMarkData.data.statusCode === 200) {
+        this.getAllProduct();
+      } else {
+        ErrorMessages.error(this.props.deleteBookMarkData?.data?.message);
+      }
+
+     
     }
 
     if (
@@ -536,7 +542,7 @@ class List extends Component {
 
 function mapStateToProps(state) {
   const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
-  const { shopCategoryData,  } = state.allproducts;
+  const { shopCategoryData } = state.allproducts;
   const { setBookmarksData, deleteBookMarkData } = state.allproducts;
   return {
     additems,

@@ -24,7 +24,11 @@ import {
 import { connect } from "react-redux";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import status from "../../../../Redux/Constants";
-import { Loader, loginDetails } from "Views/Utills/helperFunctions";
+import {
+  ErrorMessages,
+  Loader,
+  loginDetails,
+} from "Views/Utills/helperFunctions";
 import { OpenInFullTwoTone } from "@mui/icons-material";
 import {
   addItemToCart,
@@ -52,22 +56,35 @@ class WishList extends Component {
     this.setState({
       apiLoader: true,
     });
-    this.props.fetchProductWishList();
+
+    this.props.fetchProductWishList({
+      userId: loginDetails()?.userId,
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (
       prevProps.bookMarksData.status !== this.props.bookMarksData.status &&
-      this.props.bookMarksData.status === status.SUCCESS &&
-      this.props.bookMarksData?.data
+      this.props.bookMarksData.status === status.SUCCESS
     ) {
-      this.setState({
-        wistListData: this.props.bookMarksData?.data,
-        apiLoader: false,
-        deleteItemId: "",
-        isProductSelecting: false,
-        dataId: "",
-      });
+      if (this.props.bookMarksData.data.statusCode === 200) {
+        this.setState({
+          wistListData: this.props.bookMarksData?.data?.data,
+          apiLoader: false,
+          deleteItemId: "",
+          isProductSelecting: false,
+          dataId: "",
+        });
+      } else {
+        this.setState({
+          wistListData: [],
+          apiLoader: false,
+          deleteItemId: "",
+          isProductSelecting: false,
+          dataId: "",
+        });
+        ErrorMessages.error(this.props.bookMarksData?.data?.message);
+      }
     }
     if (
       prevProps.deleteBookMarkData.status !==
@@ -75,7 +92,14 @@ class WishList extends Component {
       this.props.deleteBookMarkData.status === status.SUCCESS
     ) {
       this.handleClose();
-      this.props.fetchProductWishList();
+
+      if (this.props.deleteBookMarkData.data.statusCode === 200) {
+        this.props.fetchProductWishList({
+          userId: loginDetails()?.userId,
+        });
+      } else {
+        ErrorMessages.error(this.props.deleteBookMarkData.data.message);
+      }
     }
 
     if (
@@ -83,7 +107,9 @@ class WishList extends Component {
       this.props.additems.status === status.SUCCESS &&
       this.props.additems.data
     ) {
-      this.props.fetchProductWishList();
+      this.props.fetchProductWishList({
+        userId: loginDetails()?.userId,
+      });
     }
 
     if (
@@ -91,7 +117,9 @@ class WishList extends Component {
       this.props.updateItems.status === status.SUCCESS &&
       this.props.updateItems.data
     ) {
-      this.props.fetchProductWishList();
+      this.props.fetchProductWishList({
+        userId: loginDetails()?.userId,
+      });
     }
 
     if (
@@ -99,7 +127,9 @@ class WishList extends Component {
       this.props.deleteItems.status === status.SUCCESS &&
       this.props.deleteItems.data
     ) {
-      this.props.fetchProductWishList();
+      this.props.fetchProductWishList({
+        userId: loginDetails()?.userId,
+      });
     }
   }
 
@@ -467,7 +497,6 @@ class WishList extends Component {
                 ) : (
                   <Box className="no-data">No Data In Wishlist</Box>
                 )}
-
               </Box>
             </Box>
           </Box>

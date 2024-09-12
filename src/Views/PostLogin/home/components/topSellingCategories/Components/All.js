@@ -12,7 +12,11 @@ import BookmarkOutlinedIcon from "@mui/icons-material/BookmarkOutlined";
 import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
 import Slider from "react-slick";
 import { Link } from "react-router-dom";
-import { Loader, loginDetails } from "Views/Utills/helperFunctions";
+import {
+  Loader,
+  loginDetails,
+  ErrorMessages,
+} from "Views/Utills/helperFunctions";
 import status from "../../../../../../Redux/Constants";
 import { connect } from "react-redux";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
@@ -81,7 +85,11 @@ class All extends Component {
         this.props.deleteBookMarkData.status &&
       this.props.deleteBookMarkData.status === status.SUCCESS
     ) {
-      this.props.apiCalls();
+      if (this.props.deleteBookMarkData.data.statusCode === 200) {
+        this.props.apiCalls();
+      } else {
+        ErrorMessages.error(this.props.deleteBookMarkData.data.message);
+      }
     }
 
     if (
@@ -494,12 +502,9 @@ class All extends Component {
   }
 }
 const mapStateToProps = (state) => {
-  
-  const {  setBookmarksData, deleteBookMarkData } =
-    state.allproducts;
+  const { setBookmarksData, deleteBookMarkData } = state.allproducts;
   const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
   return {
-    
     additems,
     cartItems,
     updateItems,

@@ -5,11 +5,11 @@ import { loginDetails } from "Views/Utills/helperFunctions";
 export const allProducts = createAsyncThunk("products", async (params) => {
   try {
     let url = config.ALL_PRODUCTS;
-  
+
     const response = await postLoginService.get(url, {
       params,
     });
-    
+
     return { data: response.data, statusCode: response.status };
   } catch (error) {
     return {
@@ -122,9 +122,16 @@ export const deleteProductWishList = createAsyncThunk(
         config.DELETE_PRODUCT_WISHLIST +
         `?userId=${userId}&productId=${productId}`;
       const response = await postLoginService.delete(url);
-      return response.data;
+      return {
+        data:response.data,
+        statusCode:response.status
+      }
+      
     } catch (error) {
-      return error;
+      return {
+        ...error.response.data,
+        statusCode: error.response.status,
+      };
     }
   }
 );
@@ -135,16 +142,21 @@ export const fetchProductWishList = createAsyncThunk(
     try {
       const userId = loginDetails()?.userId;
 
-      let url = config.GET_PRODUCT_WISHLIST + `?userId=${userId}`;
+      let url = config.GET_PRODUCT_WISHLIST;
 
-      const response = await postLoginService.get(url);
-      return response.data;
+      const response = await postLoginService.get(url, { params });
+      return {
+        data: response.data,
+        statusCode: response.status,
+      };
     } catch (error) {
-      return error;
+      return {
+        ...error.response.data,
+        statusCode: error.response.status,
+      };
     }
   }
 );
-//
 
 export const fetchProducReview = createAsyncThunk(
   "productreview",

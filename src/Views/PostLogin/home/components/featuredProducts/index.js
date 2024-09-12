@@ -35,7 +35,7 @@ import { connect } from "react-redux";
 import _ from "lodash";
 import { Link } from "react-router-dom";
 import status from "../../../../../Redux/Constants";
-import { Loader, loginDetails } from "Views/Utills/helperFunctions";
+import { Loader, loginDetails ,ErrorMessages} from "Views/Utills/helperFunctions";
 
 class FeaturedProducts extends Component {
   constructor(props) {
@@ -64,10 +64,15 @@ class FeaturedProducts extends Component {
         this.props.deleteBookMarkData.status &&
       this.props.deleteBookMarkData.status === status.SUCCESS
     ) {
-      this.getAllProduct();
       this.setState({
         bookMarkId: "",
       });
+
+      if (this.props.deleteBookMarkData.data.statusCode === 200) {
+        this.getAllProduct();
+      } else {
+        ErrorMessages.error(this.props.deleteBookMarkData?.data?.message);
+      }
     }
 
     if (
@@ -549,12 +554,10 @@ class FeaturedProducts extends Component {
 }
 
 function mapStateToProps(state) {
- 
   const { shopCategoryData } = state.allproducts;
   const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
   const { setBookmarksData, deleteBookMarkData } = state.allproducts;
   return {
- 
     additems,
     cartItems,
     updateItems,
