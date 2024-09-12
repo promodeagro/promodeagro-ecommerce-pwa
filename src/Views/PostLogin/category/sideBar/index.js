@@ -504,7 +504,6 @@ function mapStateToProps(state) {
     shopCategoryData,
     filteredProductData,
     productByCategoryData,
-    productBySubCategoryData,
   } = state.allproducts;
   const { cartItems } = state.cartitem;
   return {
@@ -513,7 +512,6 @@ function mapStateToProps(state) {
     shopCategoryData,
     filteredProductData,
     productByCategoryData,
-    productBySubCategoryData,
   };
 }
 

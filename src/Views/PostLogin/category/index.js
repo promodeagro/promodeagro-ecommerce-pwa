@@ -223,27 +223,25 @@ function Category(props) {
       setSubCatergoryLoader(false);
       setAPIDataLoaded(false);
 
-      if (
-        props.productBySubCategoryData?.data?.response?.status == 500 ||
-        props.productBySubCategoryData?.data?.response?.status == 401
-      ) {
-        setProductsData([]);
-        setCurrentPage(1);
-      } else {
+      if (props.productBySubCategoryData.data.statusCode === 200) {
         setLastEvaluatedKey(
-          props.productBySubCategoryData?.data?.pagination?.lastEvaluatedKey
+          props.productBySubCategoryData?.data?.data?.pagination
+            ?.lastEvaluatedKey
         );
         setTotalPage(
           Math.ceil(
-            props.productBySubCategoryData?.data?.pagination?.TotalProducts /
-              pageSize
+            props.productBySubCategoryData?.data?.data?.pagination
+              ?.TotalProducts / pageSize
           )
         );
-
         setCurrentPage(
-          props.productBySubCategoryData?.data?.pagination?.currentPage
+          props.productBySubCategoryData?.data?.data?.pagination?.currentPage
         );
-        setProductsData(props.productBySubCategoryData?.data?.products);
+        setProductsData(props.productBySubCategoryData?.data?.data?.products);
+      } else {
+        setProductsData([]);
+        setCurrentPage(1);
+        ErrorMessages.error(props.productBySubCategoryData?.data?.message);
       }
     } else if (
       props.productBySubCategoryData?.status == status?.FAILURE &&

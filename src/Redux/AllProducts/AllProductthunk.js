@@ -58,16 +58,16 @@ export const fetchProductBySubCategory = createAsyncThunk(
   "subcategory",
   async (params) => {
     try {
-      const userId = loginDetails()?.userId;
-      console.log("userid ", userId);
 
       let url = config.PRODUCT_BY_SUBCATEGORY;
-      // +
-      // `?subcategory=${subcategory}&userId=${userId}`;
+
       const response = await postLoginService.get(url, { params });
-      return response.data;
+      return { data: response.data, statusCode: response.status };
     } catch (error) {
-      return error;
+      return {
+        ...error.response.data,
+        statusCode: error.response.status,
+      };
     }
   }
 );
