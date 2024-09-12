@@ -107,26 +107,31 @@ class Home extends Component {
     if (
       prevProps.topSellingCategoriesData.status !==
         this.props.topSellingCategoriesData.status &&
-      this.props.topSellingCategoriesData.status === status.SUCCESS &&
-      this.props.topSellingCategoriesData?.data?.topSellingSubcategories
+      this.props.topSellingCategoriesData.status === status.SUCCESS
     ) {
-      this.setState({
-        topSellCategoriesList:
-          this.props.topSellingCategoriesData?.data?.topSellingSubcategories,
-      });
-      if (
-        this.props.topSellingCategoriesData?.data?.topSellingSubcategories
-          ?.length > 0
-      ) {
-        this.props.fetchTopSellingProducts({
-          userId: loginDetails()?.userId,
-          subcategory:
-            this.props.topSellingCategoriesData?.data
-              ?.topSellingSubcategories[0] == "ALL"
-              ? ""
-              : this.props.topSellingCategoriesData?.data
-                  ?.topSellingSubcategories[0],
+      if (this.props.topSellingCategoriesData?.data.statusCode === 200) {
+        this.setState({
+          topSellCategoriesList:
+            this.props.topSellingCategoriesData?.data?.data
+              ?.topSellingSubcategories,
         });
+
+        if (
+          this.props.topSellingCategoriesData?.data?.data
+            ?.topSellingSubcategories?.length > 0
+        ) {
+          this.props.fetchTopSellingProducts({
+            userId: loginDetails()?.userId,
+            subcategory:
+              this.props.topSellingCategoriesData?.data?.data
+                ?.topSellingSubcategories[0] == "ALL"
+                ? ""
+                : this.props.topSellingCategoriesData?.data?.data
+                    ?.topSellingSubcategories[0],
+          });
+        }
+      } else {
+        ErrorMessages.error(this.props.topSellingCategoriesData?.data.message);
       }
     }
 
