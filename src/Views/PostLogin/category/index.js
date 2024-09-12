@@ -197,6 +197,7 @@ function Category(props) {
         );
         setProductsData(props.allProductsData?.data?.data?.products);
       } else {
+        ErrorMessages.error(props.allProductsData?.data.message);
         setProductsData([]);
         setCurrentPage(1);
       }
