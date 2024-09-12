@@ -860,7 +860,6 @@ function mapStateToProps(state) {
   const {
     shopCategoryData,
     productCategoryData,
-    allProductsData,
     allCategories,
   } = state.allproducts;
   const { allAddress, selectedAddressData, defaultAddressData } =
@@ -873,7 +872,6 @@ function mapStateToProps(state) {
     selectedAddressData,
     shopCategoryData,
     productCategoryData,
-    allProductsData,
     allCategories,
     defaultAddressData,
     personalDetailsData,

@@ -550,11 +550,10 @@ class FeaturedProducts extends Component {
 
 function mapStateToProps(state) {
  
-  const { allProductsData, shopCategoryData } = state.allproducts;
+  const { shopCategoryData } = state.allproducts;
   const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
   const { setBookmarksData, deleteBookMarkData } = state.allproducts;
   return {
-    allProductsData,
  
     additems,
     cartItems,

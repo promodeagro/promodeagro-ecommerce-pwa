@@ -178,31 +178,27 @@ function Category(props) {
   }, [props.filteredProductData.status]);
 
   useEffect(() => {
-    if (
-      props.allProductsData?.status == status?.SUCCESS &&
-      productApiLoader &&
-      props.allProductsData?.data
-    ) {
+    if (props.allProductsData?.status == status?.SUCCESS && productApiLoader) {
       setProdductApiLoader(false);
       setAPIDataLoaded(false);
-      if (
-        props.allProductsData?.data?.response?.status == 500 ||
-        props.allProductsData?.data?.response?.status == 401
-      ) {
-        setProductsData([]);
-        setCurrentPage(1);
-      } else {
+      if (props.allProductsData.data.statusCode === 200) {
         setLastEvaluatedKey(
-          props.allProductsData?.data?.pagination?.lastEvaluatedKey
+          props.allProductsData?.data?.data?.pagination?.lastEvaluatedKey
         );
         setTotalPage(
           Math.ceil(
-            props.allProductsData?.data?.pagination?.TotalProducts / pageSize
+            props.allProductsData?.data?.data?.pagination?.TotalProducts /
+              pageSize
           )
         );
 
-        setCurrentPage(props.allProductsData?.data?.pagination?.currentPage);
-        setProductsData(props.allProductsData?.data?.products);
+        setCurrentPage(
+          props.allProductsData?.data?.data?.pagination?.currentPage
+        );
+        setProductsData(props.allProductsData?.data?.data?.products);
+      } else {
+        setProductsData([]);
+        setCurrentPage(1);
       }
     } else if (
       props.allProductsData?.status == status?.FAILURE &&

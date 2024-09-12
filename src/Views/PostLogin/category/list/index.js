@@ -536,7 +536,7 @@ class List extends Component {
 
 function mapStateToProps(state) {
   const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
-  const { shopCategoryData, allProductsData } = state.allproducts;
+  const { shopCategoryData,  } = state.allproducts;
   const { setBookmarksData, deleteBookMarkData } = state.allproducts;
   return {
     additems,
@@ -546,7 +546,6 @@ function mapStateToProps(state) {
     shopCategoryData,
     deleteBookMarkData,
     setBookmarksData,
-    allProductsData,
   };
 }
 

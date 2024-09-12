@@ -500,14 +500,12 @@ class SideBar extends Component {
 
 function mapStateToProps(state) {
   const {
-    allProductsData,
     shopCategoryData,
     filteredProductData,
   
   } = state.allproducts;
   const { cartItems } = state.cartitem;
   return {
-    allProductsData,
     cartItems,
     shopCategoryData,
     filteredProductData,

@@ -495,11 +495,10 @@ class All extends Component {
 }
 const mapStateToProps = (state) => {
   
-  const { allProductsData, setBookmarksData, deleteBookMarkData } =
+  const {  setBookmarksData, deleteBookMarkData } =
     state.allproducts;
   const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
   return {
-    allProductsData,
     
     additems,
     cartItems,

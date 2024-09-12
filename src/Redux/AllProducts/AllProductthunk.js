@@ -5,14 +5,17 @@ import { loginDetails } from "Views/Utills/helperFunctions";
 export const allProducts = createAsyncThunk("products", async (params) => {
   try {
     let url = config.ALL_PRODUCTS;
-    //  +
-    // `?userId=${userId}&pageNumber=${currentPage}&pageSize=${pageSize}&exclusiveStartKey=${lastEvaluatedKey}`;
+  
     const response = await postLoginService.get(url, {
       params,
     });
-    return response.data;
+    
+    return { data: response.data, statusCode: response.status };
   } catch (error) {
-    return error;
+    return {
+      ...error.response.data,
+      statusCode: error.response.status,
+    };
   }
 });
 
