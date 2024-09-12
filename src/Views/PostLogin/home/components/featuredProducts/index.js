@@ -8,6 +8,10 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
+import AuthModal from "components/ModalLogin/LoginModal";
+import { fetchCategories } from "../../../../../Redux/AllProducts/AllProductthunk";
+import { fetchDefaultAddress } from "../../../../../Redux/Address/AddressThunk";
+import { fetchPersonalDetails } from "../../../../../Redux/Signin/SigninThunk";
 import {
   addItemToCart,
   updateItemToCart,
@@ -48,6 +52,7 @@ class FeaturedProducts extends Component {
       isProductSelecting: false,
       bookMarkId: "",
       productsData: [],
+      authModalOpen: false,
     };
   }
 
@@ -128,7 +133,8 @@ class FeaturedProducts extends Component {
           : qty,
       });
     } else {
-      this.props.navigate("/signin");
+      this.setState({ authModalOpen: true });
+      // this.props.navigate("/signin");
     }
   }
 
@@ -520,6 +526,23 @@ class FeaturedProducts extends Component {
             <></>
           )}
         </Container>
+
+        <AuthModal
+          open={this.state.authModalOpen}
+          handleDefaultAddress={() => {
+            this.props.fetchCategories();
+            this.props.fetchDefaultAddress(loginDetails()?.userId);
+            this.props.fetchPersonalDetails({
+              userId: loginDetails()?.userId,
+            });
+            this.props.navigate(0);
+          }}
+          handleClose={() => {
+            this.setState({
+              authModalOpen: false,
+            });
+          }}
+        />
       </Box>
     );
   }
@@ -551,6 +574,9 @@ const mapDispatchToProps = {
   productDetailsData,
   setProductWishList,
   deleteProductWishList,
+  fetchCategories,
+  fetchDefaultAddress,
+  fetchPersonalDetails,
 };
 
 export default connect(
