@@ -254,33 +254,31 @@ function Category(props) {
   useEffect(() => {
     if (
       props.productByCategoryData?.status == status.SUCCESS &&
-      categoryApiLoader &&
-      props.productByCategoryData?.data
+      categoryApiLoader
     ) {
       setAPIDataLoaded(false);
       setCatergoryLoader(false);
-      if (
-        props.productByCategoryData?.data?.response?.status == 500 ||
-        props.productByCategoryData?.data?.response?.status == 401
-      ) {
-        setProductsData([]);
-        setCurrentPage(1);
-      } else if (props.productByCategoryData?.data?.products) {
+
+      if (props.productByCategoryData?.data.statusCode === 200) {
         setLastEvaluatedKey(
-          props.productByCategoryData?.data?.pagination?.lastEvaluatedKey
+          props.productByCategoryData?.data?.data?.pagination?.lastEvaluatedKey
         );
 
         setTotalPage(
           Math.ceil(
-            props.productByCategoryData?.data?.pagination?.TotalProducts /
+            props.productByCategoryData?.data?.data?.pagination?.TotalProducts /
               pageSize
           )
         );
 
         setCurrentPage(
-          props.productByCategoryData?.data?.pagination?.currentPage
+          props.productByCategoryData?.data?.data?.pagination?.currentPage
         );
-        setProductsData(props.productByCategoryData?.data?.products);
+        setProductsData(props.productByCategoryData?.data?.data?.products);
+      } else {
+        setProductsData([]);
+        setCurrentPage(1);
+        ErrorMessages.error(props.productByCategoryData?.data?.message);
       }
     } else if (
       props.productByCategoryData?.status == status.FAILURE &&
