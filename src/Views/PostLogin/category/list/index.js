@@ -22,13 +22,18 @@ import priceIcon from "../../../../assets/img/price-icon.png";
 import noImage from "../../../../assets/img/no-image.png";
 import status from "../../../../Redux/Constants";
 import _ from "lodash";
-import { loginDetails ,ErrorMessages} from "../../../Utills/helperFunctions";
+import { loginDetails, ErrorMessages } from "../../../Utills/helperFunctions";
 import { Link } from "react-router-dom";
 import BookmarkOutlinedIcon from "@mui/icons-material/BookmarkOutlined";
 import {
   deleteProductWishList,
   setProductWishList,
 } from "../../../../Redux/AllProducts/AllProductthunk";
+
+import { fetchCategories } from "../../../../Redux/AllProducts/AllProductthunk";
+import { fetchDefaultAddress } from "../../../../Redux/Address/AddressThunk";
+import { fetchPersonalDetails } from "../../../../Redux/Signin/SigninThunk";
+import AuthModal from "components/ModalLogin/LoginModal";
 
 class List extends Component {
   constructor(props) {
@@ -43,6 +48,7 @@ class List extends Component {
       isProductSelecting: false,
       bookMarkId: "",
       unitIdPrices: [],
+      authModalOpen: false,
     };
   }
 
@@ -60,8 +66,6 @@ class List extends Component {
       } else {
         ErrorMessages.error(this.props.deleteBookMarkData?.data?.message);
       }
-
-     
     }
 
     if (
@@ -134,7 +138,7 @@ class List extends Component {
           : qty,
       });
     } else {
-      this.props.navigate("/signin");
+      this.setState({ authModalOpen: true });
     }
   }
 
@@ -480,6 +484,7 @@ class List extends Component {
       isUpdateIncrease,
       qauntityUnits,
       unitIdPrices,
+      authModalOpen,
     } = this.state;
 
     // Sort data based on sortOrder
@@ -535,6 +540,23 @@ class List extends Component {
             unitIdPrices
           )}
         </Box>
+
+        <AuthModal
+          open={this.state.authModalOpen}
+          handleDefaultAddress={() => {
+            this.props.fetchCategories();
+            this.props.fetchDefaultAddress(loginDetails()?.userId);
+            this.props.fetchPersonalDetails({
+              userId: loginDetails()?.userId,
+            });
+            this.props.navigate(0);
+          }}
+          handleClose={() => {
+            this.setState({
+              authModalOpen: false,
+            });
+          }}
+        />
       </Box>
     );
   }
@@ -563,6 +585,9 @@ const mapDispatchToProps = {
   productDetailsData,
   deleteProductWishList,
   setProductWishList,
+  fetchCategories,
+  fetchDefaultAddress,
+  fetchPersonalDetails,
 };
 
 export default connect(
