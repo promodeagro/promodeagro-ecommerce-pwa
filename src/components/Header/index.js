@@ -38,6 +38,8 @@ import { fetchDefaultAddress } from "../../Redux/Address/AddressThunk";
 import { fetchCartItems } from "../../Redux/Cart/CartThunk";
 import LoginModal from "components/ModalLogin/LoginModal";
 import AuthModal from "components/ModalLogin/LoginModal";
+import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
+
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -234,17 +236,18 @@ class Header extends Component {
   renderCategories = () => {
     return (
       <Box className="categories-box">
-        {this.state.categories?.length ? (
-          this.state.categories?.map((item, index) => {
-            if (index % 2 == 0) {
+        <ul>
+          {this.state.categories?.length ? (
+            this.state.categories?.map((item, index) => {
               return (
-                <Box className="categories">
-                  <h2>{item?.CategoryName}</h2>
-                  <ul>
-                    {item?.Subcategories?.length ? (
-                      item.Subcategories?.map((subcat) => {
-                        const { category } = item;
-
+                <li>
+                  <Link>
+                    {item?.CategoryName}
+                    {item?.Subcategories.length > 0 ? <ChevronRightOutlinedIcon /> : ""}
+                  </Link>
+                  {item?.Subcategories?.length ? (
+                    <ul>
+                      {item.Subcategories?.map((subcat) => {
                         return (
                           <li
                             onClick={() => {
@@ -260,47 +263,18 @@ class Header extends Component {
                             <Link>{subcat}</Link>
                           </li>
                         );
-                      })
-                    ) : (
-                      <></>
-                    )}
-                  </ul>
-                </Box>
+                      })}
+                    </ul>
+                  ) : (
+                    <></>
+                  )}
+                </li>
               );
-            } else {
-              return (
-                <Box className="sub-categories">
-                  <h3>{item?.CategoryName}</h3>
-                  <ul>
-                    {item?.Subcategories?.length ? (
-                      item?.Subcategories.map((subcat) => {
-                        return (
-                          <li
-                            onClick={() => {
-                              this.handleFruitsandVeg([
-                                `${item?.CategoryName}`,
-                                `${subcat}`,
-                              ]);
-                              this.props.navigate(
-                                `/category/${item?.CategoryName}/${subcat}`
-                              );
-                            }}
-                          >
-                            <Link>{subcat}</Link>
-                          </li>
-                        );
-                      })
-                    ) : (
-                      <></>
-                    )}
-                  </ul>
-                </Box>
-              );
-            }
-          })
-        ) : (
-          <></>
-        )}
+            })
+          ) : (
+            <></>
+          )}
+        </ul>
       </Box>
     );
   };
@@ -857,11 +831,8 @@ function mapStateToProps(state) {
   const { cartData } = state.home;
   const { cartItems } = state.cartitem;
   const { personalDetailsData } = state.login;
-  const {
-    shopCategoryData,
-    productCategoryData,
-    allCategories,
-  } = state.allproducts;
+  const { shopCategoryData, productCategoryData, allCategories } =
+    state.allproducts;
   const { allAddress, selectedAddressData, defaultAddressData } =
     state.alladdress;
 
