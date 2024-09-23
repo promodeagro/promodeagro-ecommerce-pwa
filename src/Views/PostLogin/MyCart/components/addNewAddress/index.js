@@ -248,7 +248,6 @@ const AddNewAddress = (props) => {
                   fullWidth
                   className="form-text-field"
                   placeholder="Address"
-                  multiline
                   rows={4}
                   value={address}
                   onChange={handleValueChange}
