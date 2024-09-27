@@ -100,7 +100,6 @@ class Header extends Component {
     ) {
       if (path.includes("updated-address") || path.includes("order-placed")) {
         const id = this.extractIdFromPath(path);
-
         this.setState({
           pathId: id,
         });
@@ -173,7 +172,8 @@ class Header extends Component {
         categories: this.props.allCategories.data,
       });
     }
-
+    // need to remove this console 
+    console.log("all categoriiii" , this.state.categories)
     if (
       prevProps.cartItems.status !== this.props.cartItems.status &&
       this.props.cartItems.status === status.SUCCESS &&
@@ -240,7 +240,7 @@ class Header extends Component {
           {this.state.categories?.length ? (
             this.state.categories?.map((item, index) => {
               return (
-                <li>
+                <li style={{}}>
                   <Link>
                     {item?.CategoryName}
                     {item?.Subcategories.length > 0 ? <ChevronRightOutlinedIcon /> : ""}
@@ -250,6 +250,7 @@ class Header extends Component {
                       {item.Subcategories?.map((subcat) => {
                         return (
                           <li
+                          style={{paddingLeft:10}}
                             onClick={() => {
                               this.handleFruitsandVeg([
                                 `${item?.CategoryName.toUpperCase()}`,
@@ -259,8 +260,8 @@ class Header extends Component {
                                 `/category/${item?.CategoryName.toUpperCase()}/${subcat}`
                               );
                             }}
-                          >
-                            <Link>{subcat}</Link>
+                          >                  
+                            <Link>{subcat} <ChevronRightOutlinedIcon /> </Link>
                           </li>
                         );
                       })}
