@@ -18,7 +18,7 @@ class AboutUs extends Component {
   }
 
   render() {
-    const {} = this.state;
+    const { } = this.state;
     return (
       <Box className="main-container">
         <Box className="welcome-promode-banner">
@@ -28,11 +28,10 @@ class AboutUs extends Component {
                 Welcome to&nbsp;<span> Promode Agro Farms !</span>
               </h2>
               <p>
-                At Promode Agro Farms, we are passionate about sustainable
-                farming and dedicated to producing the highest quality
-                agricultural products. Nestled in the heart of Yadgirigutta, our
-                farm is a testament to nature's bounty and the hard work of our
-                dedicated team.
+              Promode Agro Farm,Bio Dynamic Farming at best ensuring
+<br /> 1. Organic Equivalent at Normal Price!"
+<br /> 2. Missing your state? your Bengali Food @doorstep. <br /> 
+Nestled in the heart of Yadgirigutta, our farm is a testament to nature's bounty and the hard work of our dedicated team.
               </p>
               <Button className="common-btn story-btn">Know Our Story</Button>
             </Box>
@@ -50,14 +49,10 @@ class AboutUs extends Component {
               <Grid item xs={12} lg={9} md={9} sm={12}>
                 <Box className="contents">
                   <p>
-                    Promode Agro Farms was founded in 2021 by group of
-                    visionaries with a deep love for the land and a commitment
-                    to sustainable agriculture. What began as a small family
-                    venture has grown into a thriving farm that embraces modern
-                    farming techniques while staying true to traditional values.
-                    Over the years, we have expanded our operations and enhanced
-                    our practices to ensure that we deliver fresh, healthy, and
-                    environmentally-friendly products to our customers.
+                    Promode Agro Farms was founded in 2021 by group of visionaries with a deep love for the land and a commitment to sustainable agriculture.We started this farming for our own needs for two reasons:
+                <br /> 1. We knew health benefits of Organic Foods but it was much costly to afford.
+                   <br /> 2. We missed our Bengali Food in Hyderabad so wanted to frow here <br /> 
+                    What began as a small family venture has grown into a thriving farm that embraces modern Bio Dynamic farminng techniques while staying true to traditional values. Over the years, we have expanded our operations and enhanced our practices to ensure that we deliver fresh, healthy, and environmentally-friendly products to our customers.
                   </p>
                   <Box className="ceo-details">
                     <Box className="image">
@@ -259,3 +254,6 @@ class AboutUs extends Component {
 }
 
 export default AboutUs;
+
+
+
