@@ -73,6 +73,9 @@ import {
   WhatsappIcon,
   FacebookIcon,
 } from "react-share";
+
+import AuthModal from "../../../components/ModalLogin/LoginModal"
+
 class ProductDetails extends Component {
   constructor(props) {
     super(props);
@@ -94,6 +97,7 @@ class ProductDetails extends Component {
       visibleReviews: 3,
       currentSelectedImage: "",
       quantityUnitPrice: "",
+      authModalOpen: false,
     };
   }
   componentDidMount() {
@@ -291,7 +295,11 @@ class ProductDetails extends Component {
           : qty,
       });
     } else if (!items?.userId) {
-      this.props.navigate("/signin");
+      // this.props.navigate("/signin");
+      this.setState({
+        authModalOpen: true,
+      });
+
     }
   }
 
@@ -840,7 +848,9 @@ class ProductDetails extends Component {
                                     if (items?.userId) {
                                       this.props.navigate("/mycart");
                                     } else {
-                                      this.props.navigate("/signin");
+                                      this.setState({
+                                        authModalOpen: true,
+                                      });
                                     }
                                   }}
                                 >
@@ -1309,6 +1319,15 @@ class ProductDetails extends Component {
             </Box>
           </Box>
         </Modal>
+        <AuthModal
+          open={this.state.authModalOpen}
+         
+          handleClose={() => {
+            this.setState({
+              authModalOpen: false,
+            });
+          }}
+        />
       </Box>
     );
   }
