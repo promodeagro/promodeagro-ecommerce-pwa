@@ -172,8 +172,6 @@ class Header extends Component {
         categories: this.props.allCategories.data,
       });
     }
-    // need to remove this console 
-    console.log("all categoriiii" , this.state.categories)
     if (
       prevProps.cartItems.status !== this.props.cartItems.status &&
       this.props.cartItems.status === status.SUCCESS &&
@@ -711,7 +709,7 @@ Eggs
                           <Link to="/category">Quick Links</Link>
                         </li>
                         <li className="drop_down_parent">
-                        <Link to="/category">Bengali Special</Link>
+                        <Link >Bengali Special</Link>
                         <this.renderBengaliSpecials/>
                         </li>
                        
