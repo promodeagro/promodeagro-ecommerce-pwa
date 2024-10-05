@@ -68,7 +68,14 @@ function Category(props) {
     }
   }, []);
 
-  useEffect(() => {
+  function toTitleCase(str) {
+    return str
+    .toLowerCase() 
+    .split(' ') 
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' '); 
+  }
+    useEffect(() => {
     if (subcategory) {
       setSubCatergoryLoader(true);
       setAPIDataLoaded(true);
@@ -86,8 +93,9 @@ function Category(props) {
     } else if (category) {
       setAPIDataLoaded(true);
       setCatergoryLoader(true);
+
       const data = {
-        category: category,
+        category:toTitleCase(category),
         userId: loginDetails()?.userId,
         pageSize: pageSize,
         pageNumber: currentPage,
@@ -323,7 +331,6 @@ function Category(props) {
     }
     return retData;
   }
-
   const handleChange = (event, value) => {
     setCurrentPage(value);
 
