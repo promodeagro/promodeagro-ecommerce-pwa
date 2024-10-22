@@ -34,12 +34,13 @@ import { fetchCategories } from "../../../../Redux/AllProducts/AllProductthunk";
 import { fetchDefaultAddress } from "../../../../Redux/Address/AddressThunk";
 import { fetchPersonalDetails } from "../../../../Redux/Signin/SigninThunk";
 import AuthModal from "components/ModalLogin/LoginModal";
+import { LocalStorageCartService } from "Services/localStorageCartService";
 
 class List extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      addedProducts: [], // Track added products
+      // addedProducts: [], // Track added products
       quantities: {}, // Track quantities for each product
       sortOrder: null, // Track sort order
       dataId: "",
@@ -79,39 +80,39 @@ class List extends Component {
       });
     }
 
-    if (
-      prevProps.additems.status !== this.props.additems.status &&
-      this.props.additems.status === status.SUCCESS &&
-      this.props.additems.data
-    ) {
-      this.props.handleCartApiLoader(true);
-      this.getAllProduct();
-    }
+    // if (
+    //   prevProps.additems.status !== this.props.additems.status &&
+    //   this.props.additems.status === status.SUCCESS &&
+    //   this.props.additems.data
+    // ) {
+    //   this.props.handleCartApiLoader(true);
+    //   this.getAllProduct();
+    // }
 
-    if (
-      prevProps.updateItems.status !== this.props.updateItems.status &&
-      this.props.updateItems.status === status.SUCCESS &&
-      this.props.updateItems.data
-    ) {
-      this.props.handleCartApiLoader(true);
-      this.getAllProduct();
-    }
+    // if (
+    //   prevProps.updateItems.status !== this.props.updateItems.status &&
+    //   this.props.updateItems.status === status.SUCCESS &&
+    //   this.props.updateItems.data
+    // ) {
+    //   this.props.handleCartApiLoader(true);
+    //   this.getAllProduct();
+    // }
 
-    if (
-      prevProps.deleteItems.status !== this.props.deleteItems.status &&
-      this.props.deleteItems.status === status.SUCCESS &&
-      this.props.deleteItems.data
-    ) {
-      this.props.handleCartApiLoader(true);
-      this.getAllProduct();
-    }
+    // if (
+    //   prevProps.deleteItems.status !== this.props.deleteItems.status &&
+    //   this.props.deleteItems.status === status.SUCCESS &&
+    //   this.props.deleteItems.data
+    // ) {
+    //   this.props.handleCartApiLoader(true);
+    //   this.getAllProduct();
+    // }
 
     if (
       prevProps.cartItems.status !== this.props.cartItems.status &&
       this.props.cartItems.status === status.SUCCESS
     ) {
       this.setState({
-        addedProducts: [],
+        // addedProducts: [],
         quantities: {},
         dataId: "",
         isUpdateIncrease: null,
@@ -129,8 +130,15 @@ class List extends Component {
       dataId: id,
     });
     if (items?.userId) {
-      this.props.addItemToCart({
-        userId: items.userId,
+      // this.props.addItemToCart({
+      //   userId: items.userId,
+      //   productId: id,
+      //   quantity: 1,
+      //   quantityUnits: this.state.qauntityUnits[id]
+      //     ? parseInt(this.state.qauntityUnits[id])
+      //     : qty,
+      // });
+      LocalStorageCartService.addItem(id, {
         productId: id,
         quantity: 1,
         quantityUnits: this.state.qauntityUnits[id]
@@ -215,14 +223,13 @@ class List extends Component {
             </Box>
             <Box className="price-ratting">
               <Box className="price">
-                <img src={priceIcon} alt="" />{" "}
+                <img src={priceIcon} alt="" />
                 {item?.cartItem?.selectedQuantityUnitprice
                   ? item?.cartItem?.selectedQuantityUnitprice
                   : prices?.price?.price
                   ? prices?.price?.price
                   : item?.price}
                 <span>
-                  {" "}
                   {item?.cartItem?.selectedQuantityUnitMrp
                     ? item?.cartItem?.selectedQuantityUnitMrp
                     : prices?.price?.mrp
@@ -246,7 +253,9 @@ class List extends Component {
                         item?.cartItem?.QuantityUnits ||
                         ""
                       }
-                      onChange={(event) => this.handleQuantity(event, item)}
+                      onChange={(event) =>
+                        this.handleQuantity(event, item, addedProducts)
+                      }
                     >
                       {item?.unitPrices.map((unitItem, index) => {
                         return (
@@ -263,9 +272,9 @@ class List extends Component {
               )}
             </>
 
-            {addedProducts.includes(item?.id) || item?.inCart ? (
+            {addedProducts && addedProducts[item?.id] ? (
               <Box className="number-input-container">
-                {item?.inCart && item?.cartItem?.Quantity !== 0 ? (
+                {addedProducts[item?.id].quantity !== 0 ? (
                   <Box
                     className="symbol"
                     onClick={() => {
@@ -276,10 +285,10 @@ class List extends Component {
                         unitqty = 1;
                       }
 
-                      if (item?.cartItem?.ProductId) {
-                        let d = item?.cartItem?.Quantity;
+                      if (addedProducts[item?.id]?.productId) {
+                        let d = addedProducts[item?.id]?.quantity;
                         this.handleQuantityChange(
-                          item?.cartItem?.ProductId,
+                          addedProducts[item?.id]?.productId,
                           -1,
                           Number(d),
                           unitqty
@@ -289,7 +298,7 @@ class List extends Component {
                       }
                     }}
                   >
-                    {(this.props.deleteItems.status === status.IN_PROGRESS ||
+                    {/* {(this.props.deleteItems.status === status.IN_PROGRESS ||
                       this.state?.isProductSelecting ||
                       this.props.cartItems.status === status.IN_PROGRESS ||
                       this.props.updateItems.status === status.IN_PROGRESS) &&
@@ -301,13 +310,16 @@ class List extends Component {
                       />
                     ) : (
                       "-"
-                    )}
+                    )} */}
+                    -
                   </Box>
                 ) : (
                   <></>
                 )}
 
-                <Box className="Number">{item?.cartItem?.Quantity}</Box>
+                <Box className="Number">
+                  {addedProducts[item?.id]?.quantity}
+                </Box>
                 <Box
                   className="symbol"
                   onClick={() => {
@@ -318,11 +330,11 @@ class List extends Component {
                       unitqty = 1;
                     }
 
-                    if (item?.cartItem?.ProductId) {
-                      let d = item?.cartItem?.Quantity;
+                    if (addedProducts[item?.id]?.productId) {
+                      let d = addedProducts[item?.id]?.quantity;
 
                       this.handleQuantityChange(
-                        item?.cartItem?.ProductId,
+                        addedProducts[item?.id]?.productId,
                         1,
                         Number(d),
                         unitqty
@@ -332,7 +344,7 @@ class List extends Component {
                     }
                   }}
                 >
-                  {(this.props.updateItems.status === status.IN_PROGRESS ||
+                  {/* {(this.props.updateItems.status === status.IN_PROGRESS ||
                     this.state?.isProductSelecting ||
                     this.props.cartItems.status === status.IN_PROGRESS) &&
                   item?.id === dataId &&
@@ -340,7 +352,8 @@ class List extends Component {
                     <CircularProgress className="common-loader plus-icon" />
                   ) : (
                     "+"
-                  )}
+                  )} */}
+                  +
                 </Box>
               </Box>
             ) : (
@@ -354,22 +367,22 @@ class List extends Component {
                     } else {
                       unitqty = 1;
                     }
-
+                    this.setState({ isUpdateIncrease: true });
                     this.handleAddToCart(item?.id, unitqty);
                   }}
-                  disabled={
-                    (this.props.additems.status === status.IN_PROGRESS &&
-                      item?.id === this.state.dataId) ||
-                    !item?.availability
-                  }
-                  endIcon={
-                    this.props.additems.status == status.IN_PROGRESS &&
-                    item?.id == this.state?.dataId ? (
-                      <CircularProgress className="common-loader" />
-                    ) : (
-                      <></>
-                    )
-                  }
+                  // disabled={
+                  //   (this.props.additems.status === status.IN_PROGRESS &&
+                  //     item?.id === this.state.dataId) ||
+                  //   !item?.availability
+                  // }
+                  // endIcon={
+                  //   this.props.additems.status == status.IN_PROGRESS &&
+                  //   item?.id == this.state?.dataId ? (
+                  //     <CircularProgress className="common-loader" />
+                  //   ) : (
+                  //     <></>
+                  //   )
+                  // }
                 >
                   {item?.availability ? "Add to Cart" : "Out Of Stock"}
                 </Button>
@@ -400,8 +413,15 @@ class List extends Component {
     productQuantity = productQuantity + increment;
 
     if (productQuantity != 0) {
-      this.props.updateItemToCart({
-        userId: items.userId,
+      // this.props.updateItemToCart({
+      //   userId: items.userId,
+      //   productId: id,
+      //   quantity: parseInt(productQuantity),
+      //   quantityUnits: this.state.qauntityUnits[id]
+      //     ? parseInt(this.state.qauntityUnits[id])
+      //     : qty,
+      // });
+      LocalStorageCartService.updateItem(id, {
         productId: id,
         quantity: parseInt(productQuantity),
         quantityUnits: this.state.qauntityUnits[id]
@@ -409,10 +429,11 @@ class List extends Component {
           : qty,
       });
     } else {
-      this.props.deleteItemToCart({
-        userId: items.userId,
-        productId: id,
-      });
+      // this.props.deleteItemToCart({
+      //   userId: items.userId,
+      //   productId: id,
+      // });
+      LocalStorageCartService.deleteItem(id);
     }
   }
 
@@ -420,7 +441,7 @@ class List extends Component {
     this.setState({ sortOrder: event.target.value });
   };
 
-  handleQuantity = (event, item) => {
+  handleQuantity = (event, item, addedProducts) => {
     const items = loginDetails();
     const { value } = event.target;
     let dupQty = this.state.qauntityUnits;
@@ -445,15 +466,17 @@ class List extends Component {
       };
     });
 
-    if (item?.cartItem?.Quantity > 0) {
+    if (addedProducts[item?.id]?.quantity > 0) {
       this.setState({
         isProductSelecting: true,
         dataId: item?.id,
       });
-      this.props.deleteItemToCart({
-        userId: items.userId,
-        productId: item?.id,
-      });
+      debugger;
+      // this.props.deleteItemToCart({
+      //   userId: items.userId,
+      //   productId: item?.id,
+      // });
+      LocalStorageCartService.deleteItem(item?.id);
     }
   };
 
@@ -477,7 +500,7 @@ class List extends Component {
   render() {
     const { data, cartItemsData } = this.props;
     const {
-      addedProducts,
+      // addedProducts,
       quantities,
       sortOrder,
       dataId,
@@ -532,7 +555,7 @@ class List extends Component {
           {this.handleCategories(
             sortedData,
             dataId,
-            addedProducts,
+            LocalStorageCartService.getData(),
             isUpdateIncrease,
             quantities,
             cartItemsData,

@@ -11,6 +11,7 @@ import {
   fetchCartItems,
   deleteItemToCart,
   updateItemToCart,
+  addListOfItemsToCartReq,
 } from "../../../Redux/Cart/CartThunk";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
@@ -27,6 +28,8 @@ import _ from "lodash";
 import RecentlyViewedItems from "components/RecentlyViewedItems";
 import { saveForLater } from "../../../Redux/AllProducts/AllProductthunk";
 // import RelatedViewedItems from "./components/relatedViewedItems";
+import { LocalStorageCartService } from "Services/localStorageCartService";
+
 class MyCart extends Component {
   constructor(props) {
     super(props);
@@ -41,6 +44,13 @@ class MyCart extends Component {
   componentDidMount() {
     const items = loginDetails();
     if (items?.userId) {
+      let cartData = LocalStorageCartService.getData() || {};
+      if (Object.keys(cartData).length) {
+        this.props.addListOfItemsToCartReq({
+          userId: items.userId,
+          cartItems: Object.values(cartData),
+        });
+      }
       this.props.fetchCartItems({
         userId: items.userId,
       });
@@ -49,6 +59,17 @@ class MyCart extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const items = loginDetails();
+    if (
+      prevProps.addListOfItemRes.status !== this.props.addListOfItemRes.status
+    ) {
+      if (this.props.addListOfItemRes.status === status.SUCCESS) {
+        this.props.fetchCartItems({
+          userId: items.userId,
+        });
+      } else if (this.props.addListOfItemRes.status === status.FAILURE) {
+      }
+    }
+
     if (
       prevProps.cartItems.status !== this.props.cartItems.status &&
       this.props.cartItems.status === status.SUCCESS &&
@@ -391,10 +412,18 @@ class MyCart extends Component {
 }
 
 function mapStateToProps(state) {
-  const { cartItems, deleteItems, updateItems } = state.cartitem;
+  const { cartItems, deleteItems, updateItems, addListOfItemRes } =
+    state.cartitem;
   const { loginData } = state.login;
   const { saveForLaterData } = state.allproducts;
-  return { cartItems, loginData, deleteItems, updateItems, saveForLaterData };
+  return {
+    cartItems,
+    loginData,
+    deleteItems,
+    updateItems,
+    saveForLaterData,
+    addListOfItemRes,
+  };
 }
 
 const mapDispatchToProps = {
@@ -402,6 +431,7 @@ const mapDispatchToProps = {
   deleteItemToCart,
   updateItemToCart,
   saveForLater,
+  addListOfItemsToCartReq,
 };
 
 export default connect(

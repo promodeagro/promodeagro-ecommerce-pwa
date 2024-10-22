@@ -241,14 +241,18 @@ class Header extends Component {
                 <li style={{}}>
                   <Link>
                     {item?.CategoryName}
-                    {item?.Subcategories.length > 0 ? <ChevronRightOutlinedIcon /> : ""}
+                    {item?.Subcategories.length > 0 ? (
+                      <ChevronRightOutlinedIcon />
+                    ) : (
+                      ""
+                    )}
                   </Link>
                   {item?.Subcategories?.length ? (
                     <ul>
                       {item.Subcategories?.map((subcat) => {
                         return (
                           <li
-                          style={{paddingLeft:10}}
+                            style={{ paddingLeft: 10 }}
                             onClick={() => {
                               this.handleFruitsandVeg([
                                 `${item?.CategoryName.toUpperCase()}`,
@@ -258,8 +262,10 @@ class Header extends Component {
                                 `/category/${item?.CategoryName.toUpperCase()}/${subcat}`
                               );
                             }}
-                          >                  
-                            <Link>{subcat} <ChevronRightOutlinedIcon /> </Link>
+                          >
+                            <Link>
+                              {subcat} <ChevronRightOutlinedIcon />{" "}
+                            </Link>
                           </li>
                         );
                       })}
@@ -278,105 +284,100 @@ class Header extends Component {
     );
   };
 
-  
   renderBengaliSpecials = () => {
     return (
       <Box className="drop_downs">
-      <ul>
-              <li>
-              <Link to={'/category/BENGALI%20SPECIAL/Bengali%20Vegetables'}>
+        <ul>
+          <li>
+            <Link to={"/category/BENGALI%20SPECIAL/Bengali%20Vegetables"}>
               Bengali Vegetables
-                <ChevronRightOutlinedIcon />
-                </Link>  
-              </li>
-              <li>
-                <Link to={'/category/BENGALI%20SPECIAL/Bengali%20Groceries'}>
-                Bengali Groceries
-                <ChevronRightOutlinedIcon />
-                </Link>  
-              </li>
-              <li>
-                <Link to={'/category/BENGALI%20SPECIAL/Bengali%20Home%20Needs'}>
-                Bengali Home Needs
-                <ChevronRightOutlinedIcon />
-                </Link>  
-              </li>
-         
-      </ul>
-    </Box>
-    )
-  }
+              <ChevronRightOutlinedIcon />
+            </Link>
+          </li>
+          <li>
+            <Link to={"/category/BENGALI%20SPECIAL/Bengali%20Groceries"}>
+              Bengali Groceries
+              <ChevronRightOutlinedIcon />
+            </Link>
+          </li>
+          <li>
+            <Link to={"/category/BENGALI%20SPECIAL/Bengali%20Home%20Needs"}>
+              Bengali Home Needs
+              <ChevronRightOutlinedIcon />
+            </Link>
+          </li>
+        </ul>
+      </Box>
+    );
+  };
 
   renderFruitsandVegetables = () => {
     return (
       <Box className="drop_downs">
-      <ul>
-              <li>
-              <Link to={'/category/FRUITS/Exotic%20Fruits'}>
+        <ul>
+          <li>
+            <Link to={"/category/FRUITS/Exotic%20Fruits"}>
               Exotic Fruits
-                <ChevronRightOutlinedIcon />
-                </Link>  
-              </li>
-              
-               <li>
-              <Link to={'/category/FRESH%20FRUITS/Daily%20Fruits'}>
-Daily Fruits
-                <ChevronRightOutlinedIcon />
-                </Link>  
-              </li>
-              <li>
-                <Link to={'/category/VEGETABLES/Leafy%20Vegetables'}>
-Leafy Vegetables
-                <ChevronRightOutlinedIcon />
-                </Link>  
-              </li>
-              <li>
-                <Link to={'/category/FRESH%20VEGETABLES/Daily%20Vegetables'}>
-                Daily Vegetables
-                <ChevronRightOutlinedIcon />
-                </Link>  
-              </li>
-         
-      </ul>
-    </Box>
-    )
-  }
+              <ChevronRightOutlinedIcon />
+            </Link>
+          </li>
 
-  
-renderMeatAndFishAndEgg = ()=> {
-  return (
-    <Box className="drop_downs">
-    <ul>
-            <li>
-            <Link to={'/category/EGGS%20MEAT%20&%20FISH/Mutton'}>    
-Mutton
+          <li>
+            <Link to={"/category/FRESH%20FRUITS/Daily%20Fruits"}>
+              Daily Fruits
               <ChevronRightOutlinedIcon />
-              </Link>  
-            </li>
-            <li>
-              <Link to={'/category/EGGS%20MEAT%20&%20FISH/Fish'}>
-            Fish
+            </Link>
+          </li>
+          <li>
+            <Link to={"/category/VEGETABLES/Leafy%20Vegetables"}>
+              Leafy Vegetables
               <ChevronRightOutlinedIcon />
-              </Link>  
-            </li>
-           
-            <li>
-              <Link to={'/category/EGGS%20MEAT%20&%20FISH/Eggs'}>
-Eggs
+            </Link>
+          </li>
+          <li>
+            <Link to={"/category/FRESH%20VEGETABLES/Daily%20Vegetables"}>
+              Daily Vegetables
               <ChevronRightOutlinedIcon />
-              </Link>  
-            </li>
-            <li>
-            <Link to={'/category/EGGS%20MEAT%20&%20FISH/Chicken'}>
-            Chicken
+            </Link>
+          </li>
+        </ul>
+      </Box>
+    );
+  };
+
+  renderMeatAndFishAndEgg = () => {
+    return (
+      <Box className="drop_downs">
+        <ul>
+          <li>
+            <Link to={"/category/EGGS%20MEAT%20&%20FISH/Mutton"}>
+              Mutton
               <ChevronRightOutlinedIcon />
-              </Link>  
-            </li>
-       
-    </ul>
-  </Box>
-  )
-}
+            </Link>
+          </li>
+          <li>
+            <Link to={"/category/EGGS%20MEAT%20&%20FISH/Fish"}>
+              Fish
+              <ChevronRightOutlinedIcon />
+            </Link>
+          </li>
+
+          <li>
+            <Link to={"/category/EGGS%20MEAT%20&%20FISH/Eggs"}>
+              Eggs
+              <ChevronRightOutlinedIcon />
+            </Link>
+          </li>
+          <li>
+            <Link to={"/category/EGGS%20MEAT%20&%20FISH/Chicken"}>
+              Chicken
+              <ChevronRightOutlinedIcon />
+            </Link>
+          </li>
+        </ul>
+      </Box>
+    );
+  };
 
   renderBreadcrumb = () => {
     let path = _.cloneDeep(window.location.pathname);
@@ -406,7 +407,9 @@ Eggs
                       }
                     }}
                   >
-                    <Link>{pathArr?.[2]?.toUpperCase().replaceAll("%20" , " ")}</Link>
+                    <Link>
+                      {pathArr?.[2]?.toUpperCase().replaceAll("%20", " ")}
+                    </Link>
                   </li>
                   {pathArr?.[3] ? <li>/</li> : <></>}
                   {!window.location.pathname.includes("/category/offers") ? (
@@ -709,28 +712,21 @@ Eggs
                           <Link to="/category">Quick Links</Link>
                         </li>
                         <li className="drop_down_parent">
-                        <Link >Bengali Special</Link>
-                        <this.renderBengaliSpecials/>
+                          <Link>Bengali Special</Link>
+                          <this.renderBengaliSpecials />
                         </li>
-                       
 
- <li className="drop_down_parent">
-  <Link>
- Fruits And Vegetables
-  </Link>
-  <this.renderFruitsandVegetables/>
- </li>
+                        <li className="drop_down_parent">
+                          <Link>Fruits And Vegetables</Link>
+                          <this.renderFruitsandVegetables />
+                        </li>
 
- <li className="drop_down_parent last_child">
-  <Link>
-  Meat Fish & Egg
-  </Link>
-  <this.renderMeatAndFishAndEgg/>
- </li>
+                        <li className="drop_down_parent last_child">
+                          <Link>Meat Fish & Egg</Link>
+                          <this.renderMeatAndFishAndEgg />
+                        </li>
 
- 
-
-{/*                         
+                        {/*                         
                         <li
                           onClick={() => {
                             this.handleFruitsandVeg([

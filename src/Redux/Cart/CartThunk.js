@@ -3,7 +3,6 @@ import config from "../../Views/Config";
 import { postLoginService } from ".././../Services";
 
 export const addItemToCart = createAsyncThunk("additems", async (params) => {
-  
   try {
     let url = config.ADD_ITEM;
     const response = await postLoginService.post(url, params);
@@ -49,3 +48,16 @@ export const fetchCartItems = createAsyncThunk("cartitems", async (params) => {
     return error;
   }
 });
+
+export const addListOfItemsToCartReq = createAsyncThunk(
+  "addListOfItemsToCartReq",
+  async (params) => {
+    try {
+      let url = config.ADDLISTOFITEMS;
+      const response = await postLoginService.put(url, params);
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);

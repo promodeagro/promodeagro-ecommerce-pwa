@@ -8,12 +8,13 @@ const Config = {
   FILTERED_PRODUCTS: `${BASE_URL}/products`,
   SIGN_UP: `${BASE_URL}/register`,
   SIGN_IN: `${BASE_URL}/login`,
-  VALIDATE_OTP:`${BASE_URL}/login/validate-otp`,
+  VALIDATE_OTP: `${BASE_URL}/login/validate-otp`,
   ALL_PRODUCTS: `${BASE_URL}/product`,
   ADD_ITEM: `${BASE_URL}/cart/addItem`,
   FETCH_CART_ITEMS: `${BASE_URL}/cart/getItems`,
   UPDATE_ITEM: `${BASE_URL}/cart/updateItem`,
   DELETE_ITEM: `${BASE_URL}/cart/deleteItem`,
+  ADDLISTOFITEMS: `${BASE_URL}/cart/addListOfItems`,
   GET_ALL_ADDRESS: `${BASE_URL}/getAllAddress`,
   ADD_ADDRESS: `${BASE_URL}/addAddress`,
   DELETE_ADDRESS: `${BASE_URL}/deleteAddress`,
@@ -39,9 +40,9 @@ const Config = {
   DELETE_USER: `${BASE_URL}/deleteUser`,
   UPDATE_PERSONAL_DETAILS: `${BASE_URL}/updatePersnalDetail`,
   FETCH_PERSONAL_DETAILS: `${BASE_URL}/getPersnalDetails`,
-  SAVE_FOR_LATER:`${BASE_URL}/SaveForLater`,
-  UPDATE_PRODUCT_PRICE:`${BASE_URL}/updatePriceByQty`,
-  CANCLE_ORDER:`${BASE_URL}/cancleorder`,
+  SAVE_FOR_LATER: `${BASE_URL}/SaveForLater`,
+  UPDATE_PRODUCT_PRICE: `${BASE_URL}/updatePriceByQty`,
+  CANCLE_ORDER: `${BASE_URL}/cancleorder`,
 };
 
 export default Config;
