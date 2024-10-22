@@ -125,7 +125,6 @@ const UpdatedAddress = (props) => {
     ) {
       setDefaultAddressLoader(false);
       if (props.defaultAddressData?.data?.addressId === id) {
-        // debugger;
         // setIsChecked(true);
       }
     }
