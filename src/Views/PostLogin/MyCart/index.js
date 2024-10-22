@@ -38,6 +38,7 @@ class MyCart extends Component {
       dataId: "",
       isUpdateIncrease: null,
       loaderCount: 0,
+      deleteItemId: "",
     };
   }
 
@@ -45,12 +46,12 @@ class MyCart extends Component {
     const items = loginDetails();
     if (items?.userId) {
       let cartData = LocalStorageCartService.getData() || {};
-      if (Object.keys(cartData).length) {
-        this.props.addListOfItemsToCartReq({
-          userId: items.userId,
-          cartItems: Object.values(cartData),
-        });
-      }
+      this.props.addListOfItemsToCartReq({
+        userId: items.userId,
+        cartItems: Object.values(cartData).length
+          ? Object.values(cartData)
+          : [],
+      });
       this.props.fetchCartItems({
         userId: items.userId,
       });
@@ -97,6 +98,12 @@ class MyCart extends Component {
       this.setState({
         bookMarkId: "",
       });
+      if (
+        this.state.deleteItemId &&
+        typeof this.state.deleteItemId === "string"
+      ) {
+        LocalStorageCartService.deleteItem(this.state.deleteItemId);
+      }
     } else if (this.props.saveForLaterData.status === status.FAILURE) {
       this.setState({
         bookMarkId: "",
@@ -111,6 +118,17 @@ class MyCart extends Component {
       this.props.fetchCartItems({
         userId: items.userId,
       });
+      if (
+        this.state.deleteItemId &&
+        typeof this.state.deleteItemId === "object" &&
+        this.state.deleteItemId.productId
+      ) {
+        LocalStorageCartService.updateItem(
+          this.state.deleteItemId.productId,
+          this.state.deleteItemId
+        );
+        this.setState({ deleteItemId: null });
+      }
     } else if (this.props.updateItems.status === status.FAILURE) {
     }
 
@@ -122,6 +140,14 @@ class MyCart extends Component {
       this.props.fetchCartItems({
         userId: items.userId,
       });
+      if (
+        this.state.deleteItemId &&
+        typeof this.state.deleteItemId === "string" &&
+        this.state.deleteItemId.length
+      ) {
+        LocalStorageCartService.deleteItem(this.state.deleteItemId);
+        this.setState({ deleteItemId: null });
+      }
     } else if (this.props.deleteItems.status === status.FAILURE) {
     }
   }
@@ -138,6 +164,13 @@ class MyCart extends Component {
 
     productQuantity = productQuantity + increment;
     if (productQuantity > 0) {
+      this.setState({
+        deleteItemId: {
+          productId: id,
+          quantity: parseInt(productQuantity),
+          quantityUnits: qty,
+        },
+      });
       this.props.updateItemToCart({
         userId: items.userId,
         productId: id,
@@ -148,6 +181,9 @@ class MyCart extends Component {
       this.props.deleteItemToCart({
         userId: items.userId,
         productId: id,
+      });
+      this.setState({
+        deleteItemId: id,
       });
     }
   }
@@ -201,8 +237,9 @@ class MyCart extends Component {
             ) : (
               <></>
             )}
-            {this.props.cartItems.status === status.IN_PROGRESS &&
-            this.state.loaderCount == 0 ? (
+            {this.props.addListOfItemRes.status === status.IN_PROGRESS ||
+            (this.props.cartItems.status === status.IN_PROGRESS &&
+              this.state.loaderCount == 0) ? (
               Loader.commonLoader()
             ) : (
               <Box className="cart-item-list">
@@ -354,7 +391,6 @@ class MyCart extends Component {
                                     -1,
                                     0
                                   );
-
                                   // const items = loginDetails();
                                   // this.props.deleteItemToCart({
                                   //   userId: items.userId,
@@ -373,6 +409,9 @@ class MyCart extends Component {
                                   this.props.saveForLater({
                                     userId: loginDetails()?.userId,
                                     productId: item.ProductId,
+                                  });
+                                  this.setState({
+                                    deleteItemId: item.ProductId,
                                   });
                                 }}
                               >

@@ -471,7 +471,6 @@ class List extends Component {
         isProductSelecting: true,
         dataId: item?.id,
       });
-      debugger;
       // this.props.deleteItemToCart({
       //   userId: items.userId,
       //   productId: item?.id,

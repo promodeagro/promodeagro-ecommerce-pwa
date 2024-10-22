@@ -27,12 +27,13 @@ import { loginDetails } from "Views/Utills/helperFunctions";
 import { Link } from "react-router-dom";
 import { fetchGlobalSearchItems } from "../../Redux/ProductFilters/ProductFiltersThunk";
 import { withRouter } from "components/withRouter";
+import { LocalStorageCartService } from "Services/localStorageCartService";
 
 class SearchResults extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      addedProducts: [], // Track added products
+      // addedProducts: [], // Track added products
       quantities: {}, // Track quantities for each product
       searchTerm: "", // Track search term
       dataId: "",
@@ -64,32 +65,32 @@ class SearchResults extends Component {
       }
     }
 
-    if (
-      prevProps.additems.status !== this.props.additems.status &&
-      this.props.additems.status === status.SUCCESS &&
-      this.props.additems.data
-    ) {
-      this.resetState();
-      this.fetchUserCartItems();
-    }
+    // if (
+    //   prevProps.additems.status !== this.props.additems.status &&
+    //   this.props.additems.status === status.SUCCESS &&
+    //   this.props.additems.data
+    // ) {
+    //   this.resetState();
+    //   this.fetchUserCartItems();
+    // }
 
-    if (
-      prevProps.updateItems.status !== this.props.updateItems.status &&
-      this.props.updateItems.status === status.SUCCESS &&
-      this.props.updateItems.data
-    ) {
-      this.resetState();
-      this.fetchUserCartItems();
-    }
+    // if (
+    //   prevProps.updateItems.status !== this.props.updateItems.status &&
+    //   this.props.updateItems.status === status.SUCCESS &&
+    //   this.props.updateItems.data
+    // ) {
+    //   this.resetState();
+    //   this.fetchUserCartItems();
+    // }
 
-    if (
-      prevProps.deleteItems.status !== this.props.deleteItems.status &&
-      this.props.deleteItems.status === status.SUCCESS &&
-      this.props.deleteItems.data
-    ) {
-      this.resetState();
-      this.fetchUserCartItems();
-    }
+    // if (
+    //   prevProps.deleteItems.status !== this.props.deleteItems.status &&
+    //   this.props.deleteItems.status === status.SUCCESS &&
+    //   this.props.deleteItems.data
+    // ) {
+    //   this.resetState();
+    //   this.fetchUserCartItems();
+    // }
 
     if (prevProps.location.pathname !== this.props.location.pathname) {
       this.searchBgClick();
@@ -98,7 +99,7 @@ class SearchResults extends Component {
 
   resetState() {
     this.setState({
-      addedProducts: [],
+      // addedProducts: [],
       quantities: {},
     });
   }
@@ -117,8 +118,15 @@ class SearchResults extends Component {
     const items = loginDetails();
     this.setState({ dataId: id });
     if (items?.userId) {
-      this.props.addItemToCart({
-        userId: items.userId,
+      // this.props.addItemToCart({
+      //   userId: items.userId,
+      //   productId: id,
+      //   quantity: 1,
+      //   quantityUnits: this.state.qauntityUnits[id]
+      //     ? parseInt(this.state.qauntityUnits[id])
+      //     : qty,
+      // });
+      LocalStorageCartService.addItem(id, {
         productId: id,
         quantity: 1,
         quantityUnits: this.state.qauntityUnits[id]
@@ -133,7 +141,7 @@ class SearchResults extends Component {
   handleCategories(
     sortedData,
     dataId,
-    addedProducts,
+    cartItems,
     isUpdateIncrease,
     quantities,
     cartItemsData,
@@ -226,24 +234,24 @@ class SearchResults extends Component {
                 )}
               </Grid>
               <Grid item xs={4} sm={4} md={4} lg={4}>
-                {item?.inCart ? (
+                {cartItems && cartItems[item?.id] ? (
                   <Box className="number-input-container">
-                    {item?.inCart && item.cartItem?.Quantity !== 0 ? (
+                    {cartItems[item?.id]?.quantity !== 0 ? (
                       <Box
                         className="symbol"
                         onClick={() => {
                           let unitqty = "";
                           if (item?.unitPrices?.length > 0) {
-                            unitqty = item?.cartItem?.QuantityUnits
-                              ? item?.cartItem?.QuantityUnits
+                            unitqty = cartItems[item?.id]?.quantityUnits
+                              ? cartItems[item?.id]?.quantityUnits
                               : item?.unitPrices[0]?.qty;
                           } else {
                             unitqty = 1;
                           }
-                          if (item?.cartItem?.ProductId) {
-                            let d = item.cartItem?.Quantity;
+                          if (cartItems[item?.id]?.productId) {
+                            let d = cartItems[item?.id]?.quantity;
                             this.handleQuantityChange(
-                              item?.cartItem?.ProductId,
+                              cartItems[item?.id]?.productId,
                               -1,
                               Number(d),
                               unitqty
@@ -253,7 +261,7 @@ class SearchResults extends Component {
                           }
                         }}
                       >
-                        {(this.props.deleteItems.status ===
+                        {/* {(this.props.deleteItems.status ===
                           status.IN_PROGRESS ||
                           this.props.globalSearchRes.status ===
                             status.IN_PROGRESS ||
@@ -267,29 +275,32 @@ class SearchResults extends Component {
                           />
                         ) : (
                           "-"
-                        )}
+                        )} */}
+                        -
                       </Box>
                     ) : (
                       <></>
                     )}
 
-                    <Box className="Number">{item?.cartItem?.Quantity}</Box>
+                    <Box className="Number">
+                      {cartItems[item?.id]?.quantity}
+                    </Box>
                     <Box
                       className="symbol"
                       onClick={() => {
                         let unitqty = "";
                         if (item?.unitPrices?.length > 0) {
-                          unitqty = item?.cartItem?.QuantityUnits
-                            ? item?.cartItem?.QuantityUnits
+                          unitqty = cartItems[item?.id]?.quantityUnits
+                            ? cartItems[item?.id]?.quantityUnits
                             : item?.unitPrices[0]?.qty;
                         } else {
                           unitqty = 1;
                         }
 
-                        if (item?.cartItem?.ProductId) {
-                          let d = item?.cartItem?.Quantity;
+                        if (cartItems[item?.id]?.productId) {
+                          let d = cartItems[item?.id]?.quantity;
                           this.handleQuantityChange(
-                            item?.cartItem?.ProductId,
+                            cartItems[item?.id]?.productId,
                             1,
                             Number(d),
                             unitqty
@@ -299,7 +310,7 @@ class SearchResults extends Component {
                         }
                       }}
                     >
-                      {(this.props.updateItems.status === status.IN_PROGRESS ||
+                      {/* {(this.props.updateItems.status === status.IN_PROGRESS ||
                         this.props.globalSearchRes.status ===
                           status.IN_PROGRESS) &&
                       item.id === dataId &&
@@ -307,7 +318,8 @@ class SearchResults extends Component {
                         <CircularProgress className="common-loader plus-icon" />
                       ) : (
                         "+"
-                      )}
+                      )} */}
+                      +
                     </Box>
                   </Box>
                 ) : (
@@ -324,18 +336,18 @@ class SearchResults extends Component {
 
                         this.handleAddToCart(item.id, unitqty);
                       }}
-                      disabled={
-                        this.props.additems.status === status.IN_PROGRESS &&
-                        item.id === this.state.dataId
-                      }
-                      endIcon={
-                        this.props.additems.status == status.IN_PROGRESS &&
-                        item.id == this.state.dataId ? (
-                          <CircularProgress className="common-loader" />
-                        ) : (
-                          <></>
-                        )
-                      }
+                      // disabled={
+                      //   this.props.additems.status === status.IN_PROGRESS &&
+                      //   item.id === this.state.dataId
+                      // }
+                      // endIcon={
+                      //   this.props.additems.status == status.IN_PROGRESS &&
+                      //   item.id == this.state.dataId ? (
+                      //     <CircularProgress className="common-loader" />
+                      //   ) : (
+                      //     <></>
+                      //   )
+                      // }
                     >
                       Add to cart
                     </Button>
@@ -361,19 +373,19 @@ class SearchResults extends Component {
     }
   }
 
-  isLoading(id, isUpdateIncrease = false, isIncrement = true) {
-    const { additems, deleteItems, updateItems } = this.props;
-    const { dataId } = this.state;
-    if (id !== dataId) return false;
-    if (additems.status === status.IN_PROGRESS) return true;
-    if (
-      (deleteItems.status === status.IN_PROGRESS && !isIncrement) ||
-      (updateItems.status === status.IN_PROGRESS &&
-        isIncrement === isUpdateIncrease)
-    )
-      return true;
-    return false;
-  }
+  // isLoading(id, isUpdateIncrease = false, isIncrement = true) {
+  //   const { additems, deleteItems, updateItems } = this.props;
+  //   const { dataId } = this.state;
+  //   if (id !== dataId) return false;
+  //   if (additems.status === status.IN_PROGRESS) return true;
+  //   if (
+  //     (deleteItems.status === status.IN_PROGRESS && !isIncrement) ||
+  //     (updateItems.status === status.IN_PROGRESS &&
+  //       isIncrement === isUpdateIncrease)
+  //   )
+  //     return true;
+  //   return false;
+  // }
 
   navigateToProductDetails(item, itemId) {
     let data = _.cloneDeep(item);
@@ -396,8 +408,15 @@ class SearchResults extends Component {
 
     productQuantity = productQuantity + increment;
     if (productQuantity > 0) {
-      this.props.updateItemToCart({
-        userId: items.userId,
+      // this.props.updateItemToCart({
+      //   userId: items.userId,
+      //   productId: id,
+      //   quantity: parseInt(productQuantity),
+      //   quantityUnits: this.state.qauntityUnits[id]
+      //     ? parseInt(this.state.qauntityUnits[id])
+      //     : qty,
+      // });
+      LocalStorageCartService.updateItem(id, {
         productId: id,
         quantity: parseInt(productQuantity),
         quantityUnits: this.state.qauntityUnits[id]
@@ -405,10 +424,11 @@ class SearchResults extends Component {
           : qty,
       });
     } else {
-      this.props.deleteItemToCart({
-        userId: items.userId,
-        productId: id,
-      });
+      // this.props.deleteItemToCart({
+      //   userId: items.userId,
+      //   productId: id,
+      // });
+      LocalStorageCartService.deleteItem(id);
     }
   }
 
@@ -462,15 +482,16 @@ class SearchResults extends Component {
       };
     });
 
-    if (item?.cartItem?.Quantity > 0) {
+    if ((LocalStorageCartService.getData() || {})[item?.id]?.quantity > 0) {
       this.setState({
         isProductSelecting: true,
         dataId: item?.id,
       });
-      this.props.deleteItemToCart({
-        userId: items.userId,
-        productId: item?.id,
-      });
+      // this.props.deleteItemToCart({
+      //   userId: items.userId,
+      //   productId: item?.id,
+      // });
+      LocalStorageCartService.deleteItem(item?.id);
     }
   };
 
@@ -481,7 +502,7 @@ class SearchResults extends Component {
       dataId,
       isUpdateIncrease,
       productsFiltersData,
-      addedProducts,
+      // addedProducts,
       quantities,
       qauntityUnits,
       searchLoader,
@@ -523,7 +544,7 @@ class SearchResults extends Component {
                 this.handleCategories(
                   productsFiltersData,
                   dataId,
-                  addedProducts,
+                  LocalStorageCartService.getData() || {},
                   isUpdateIncrease,
                   quantities,
                   cartItemsData,

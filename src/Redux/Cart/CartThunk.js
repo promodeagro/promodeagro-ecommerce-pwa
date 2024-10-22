@@ -54,7 +54,7 @@ export const addListOfItemsToCartReq = createAsyncThunk(
   async (params) => {
     try {
       let url = config.ADDLISTOFITEMS;
-      const response = await postLoginService.put(url, params);
+      const response = await postLoginService.post(url, params);
       return response.data;
     } catch (error) {
       return error;
