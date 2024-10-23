@@ -5,9 +5,9 @@
   .slick-dots {
     bottom: 0;
     right: 0;
-    width: 25%;
-    height: 32px;
-    text-align: left;
+    width: 100%;
+    height: 36px;
+    text-align: center;
 
     li {
       vertical-align: middle;
@@ -28,60 +28,10 @@
       }
 
       &.slick-active {
-        width: 24px;
-
         button {
-          width: 24px;
-          border-radius: 10px;
           background-color: #00b207;
         }
       }
-    }
-  }
-
-  .slick-prev,
-  .slick-next {
-    width: 32px;
-    height: 32px;
-    top: 100%;
-    z-index: 10;
-    transform: translate(0, -100%);
-
-    &::before {
-      display: none;
-    }
-  }
-
-  .slick-next {
-    right: 0;
-    border-radius: 50%;
-    border: 1px solid #1f915166;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-image: url("../../img/slick-right-arrow.png");
-
-    &:hover,
-    &:focus {
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-image: url("../../img/slick-right-arrow.png");
-    }
-  }
-
-  .slick-prev {
-    left: auto;
-    right: 47px;
-    border-radius: 50%;
-    border: 1px solid #1f915166;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-image: url("../../img/slick-left-arrow.png");
-
-    &:hover,
-    &:focus {
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-image: url("../../img/slick-left-arrow.png");
     }
   }
 
@@ -89,10 +39,24 @@
     display: flex;
     width: 100%;
 
-    .contents {
+    .desktop-banner {
       display: flex;
       width: 100%;
+      position: relative;
+      height: 415px;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+
+    .contents {
+      display: flex;
+      width: 60%;
+      height: 100%;
+      align-items: center;
       flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+      padding-left: 75px;
 
       .mostly-organic {
         display: flex;
@@ -162,16 +126,14 @@
       }
     }
 
-    .images {
+    .image {
       display: flex;
       width: 100%;
-      position: relative;
-
-      .upto-off-img {
-        position: absolute;
-        left: 0;
-        top: 0;
-      }
+      left: 0;
+      top: 0;
+      overflow: hidden;
+      border-radius: 15px;
+      position: absolute;
     }
   }
   .mobile-banner {
@@ -439,10 +401,7 @@
 .service-container {
   display: flex;
   width: 100%;
-  padding-top: 50px;
-  padding-bottom: 50px;
-  background-color: #117c40;
-
+  padding-bottom: 30px;
   .MuiContainer-root {
     width: 100%;
     display: flex;
@@ -450,13 +409,18 @@
   }
 
   .services {
-    width: 80%;
+    width: 100%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 10px;
+    border: 1px solid #f1f1f1;
 
     .service-box {
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-wrap: wrap;
 
       .icon {
         display: inline-flex;
@@ -467,12 +431,11 @@
         text-align: center;
         border-radius: 50%;
         background-color: #ffffff;
-        margin-bottom: 15px;
       }
 
       .info {
         display: flex;
-        width: 100%;
+        width: calc(100% - 60px);
         flex-wrap: wrap;
 
         .name {
@@ -481,9 +444,7 @@
           font-size: 14px;
           line-height: 18px;
           font-weight: 600;
-          color: #ffffff;
-          text-align: center;
-          justify-content: center;
+          color: #1a1a1a;
         }
 
         .text {
@@ -492,9 +453,7 @@
           font-size: 13px;
           line-height: 24px;
           font-weight: 400;
-          color: #ffffff;
-          text-align: center;
-          justify-content: center;
+          color: #999999;
         }
       }
     }
@@ -564,8 +523,8 @@
   }
 
   .customers-container {
-    padding-left: 60px;
-    padding-right: 60px;
+    padding-left: 30px;
+    padding-right: 30px;
 
     .customers-says {
       width: calc(100% - 30px) !important;
@@ -1198,7 +1157,6 @@
       font-size: 16px;
       line-height: 20px;
       margin-bottom: 15px;
-     
     }
     .banners {
       .image {

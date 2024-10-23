@@ -256,7 +256,7 @@ class Home extends Component {
               cartList={cartList}
               fetchHome={this.fetchHome}
             />
-            <Service />
+            
             <OffersYouMightLike allOffersList={allOffersList} />
 
             <TopSellingCategories
@@ -266,6 +266,7 @@ class Home extends Component {
               topSellCategoriesList={topSellCategoriesList}
               apiCalls={this.apiCalls}
             />
+            <Service />
             <CustomersSays />
           </>
         )}

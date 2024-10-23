@@ -526,7 +526,7 @@ class SearchResults extends Component {
               ),
             }}
             onChange={this.searchChange}
-            placeholder="Search Your favorite veggies...  "
+            placeholder={`Search "Pui saag"`}
           />
           <Box
             className={`search-results ${

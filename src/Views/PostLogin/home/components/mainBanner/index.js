@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Box, Container, Grid, Button } from "@mui/material";
+import { Box, Container, Grid } from "@mui/material";
 import EastIcon from "@mui/icons-material/East";
-import bannerImg from "../../../../../assets/img/banner-img.png";
-import uptoOffImg from "../../../../../assets/img/upto-off-img.png";
+import bannerImg1 from "../../../../../assets/img/banner-img1.png";
+import bannerImg2 from "../../../../../assets/img/banner-img2.png";
 import mobileBannerImg from "../../../../../assets/img/mobile-main-banner-img.png";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -13,20 +13,13 @@ import { setShopByCategory } from "../../../../../Redux/AllProducts/AllProductSl
 class MainBanner extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      matches: window.matchMedia("(max-width: 600px)").matches,
-    };
-  }
-
-  componentDidMount() {
-    window
-      .matchMedia("(max-width: 600px)")
-      .addEventListener("change", (e) => this.setState({ matches: e.matches }));
+    this.state = {};
   }
 
   render() {
     var settings = {
       dots: true,
+      arrows: false,
       infinite: false,
       speed: 500,
       slidesToShow: 1,
@@ -49,53 +42,40 @@ class MainBanner extends Component {
         },
       ],
     };
-    const { matches } = this.state;
     return (
       <Box className="main-banner-container">
         <Container>
           <Slider {...settings}>
             <Box className="banner-contents">
               <Box className="desktop-banner">
-                <Grid container spacing={2} alignItems={"center"}>
-                  <Grid item sm={6}>
-                    <Box className="contents">
-                      <Box className="mostly-organic">
-                        <span>Mostly Organic</span>
-                      </Box>
-                      <Box className="heading">
-                        Fresh & Healthy <span>Organic </span> Food
-                      </Box>
-                      <Box className="text">
-                        Enjoy free shipping on orders to PBEL City. Sit back and
-                        relax while we handle the delivery for you.
-                      </Box>
-                      <Box
-                        className="button"
-                        onClick={() => this.props.setShopByCategory([])}
-                      >
-                        <Link to="/category">
-                          Shop now <EastIcon />
-                        </Link>
-                      </Box>
+                <Box className="contents">
+                  <Box width={"100%"}>
+                    <Box className="mostly-organic">
+                      <span>Mostly Organic</span>
                     </Box>
-                  </Grid>
-                  <Grid item sm={6}>
-                    <Box className="images">
-                      <Box className="upto-off-img">
-                        <img
-                          src={uptoOffImg}
-                          alt="Mostly Organic Fresh & Healthy Organic Food"
-                        />
-                      </Box>
-                      <Box className="image">
-                        <img
-                          src={bannerImg}
-                          alt="Mostly Organic Fresh & Healthy Organic Food"
-                        />
-                      </Box>
+                    <Box className="heading">
+                      Fresh & Healthy <span>Organic </span> Food
                     </Box>
-                  </Grid>
-                </Grid>
+                    <Box className="text">
+                      Enjoy free shipping on orders to PBEL City. Sit back and
+                      relax while we handle the delivery for you.
+                    </Box>
+                    <Box
+                      className="button"
+                      onClick={() => this.props.setShopByCategory([])}
+                    >
+                      <Link to="/category">
+                        Shop now <EastIcon />
+                      </Link>
+                    </Box>
+                  </Box>
+                </Box>
+                <Box className="image">
+                  <img
+                    src={bannerImg1}
+                    alt="Mostly Organic Fresh & Healthy Organic Food"
+                  />
+                </Box>
               </Box>
               <Box className="mobile-banner">
                 <Link to="/category">
@@ -108,46 +88,34 @@ class MainBanner extends Component {
             </Box>
             <Box className="banner-contents">
               <Box className="desktop-banner">
-                <Grid container spacing={2} alignItems={"center"}>
-                  <Grid item sm={6}>
-                    <Box className="contents">
-                      <Box className="mostly-organic">
-                        <span>Mostly Organic</span>
-                      </Box>
-                      <Box className="heading">
-                        Fresh & Healthy <span>Organic </span> Food
-                      </Box>
-                      <Box className="text">
-                        Enjoy free shipping on orders to PBEL City. Sit back and
-                        relax while we handle the delivery for you.
-                      </Box>
-                      <Box
-                        className="button"
-                        onClick={() => this.props.setShopByCategory([])}
-                      >
-                        <Link to="/category">
-                          Shop now <EastIcon />
-                        </Link>
-                      </Box>
+                <Box className="contents">
+                  <Box width={"100%"}>
+                    <Box className="mostly-organic">
+                      <span>Mostly Organic</span>
                     </Box>
-                  </Grid>
-                  <Grid item sm={6}>
-                    <Box className="images">
-                      <Box className="upto-off-img">
-                        <img
-                          src={uptoOffImg}
-                          alt="Mostly Organic Fresh & Healthy Organic Food"
-                        />
-                      </Box>
-                      <Box className="image">
-                        <img
-                          src={bannerImg}
-                          alt="Mostly Organic Fresh & Healthy Organic Food"
-                        />
-                      </Box>
+                    <Box className="heading">
+                      Fresh & Healthy <span>Organic </span> Food
                     </Box>
-                  </Grid>
-                </Grid>
+                    <Box className="text">
+                      Enjoy free shipping on orders to PBEL City. Sit back and
+                      relax while we handle the delivery for you.
+                    </Box>
+                    <Box
+                      className="button"
+                      onClick={() => this.props.setShopByCategory([])}
+                    >
+                      <Link to="/category">
+                        Shop now <EastIcon />
+                      </Link>
+                    </Box>
+                  </Box>
+                </Box>
+                <Box className="image">
+                  <img
+                    src={bannerImg2}
+                    alt="Mostly Organic Fresh & Healthy Organic Food"
+                  />
+                </Box>
               </Box>
               <Box className="mobile-banner">
                 <Link to="/category">
@@ -160,46 +128,34 @@ class MainBanner extends Component {
             </Box>
             <Box className="banner-contents">
               <Box className="desktop-banner">
-                <Grid container spacing={2} alignItems={"center"}>
-                  <Grid item sm={6}>
-                    <Box className="contents">
-                      <Box className="mostly-organic">
-                        <span>Mostly Organic</span>
-                      </Box>
-                      <Box className="heading">
-                        Fresh & Healthy <span>Organic </span> Food
-                      </Box>
-                      <Box className="text">
-                        Enjoy free shipping on orders to PBEL City. Sit back and
-                        relax while we handle the delivery for you.
-                      </Box>
-                      <Box
-                        className="button"
-                        onClick={() => this.props.setShopByCategory([])}
-                      >
-                        <Link to="/category">
-                          Shop now <EastIcon />
-                        </Link>
-                      </Box>
+                <Box className="contents">
+                  <Box width={"100%"}>
+                    <Box className="mostly-organic">
+                      <span>Mostly Organic</span>
                     </Box>
-                  </Grid>
-                  <Grid item sm={6}>
-                    <Box className="images">
-                      <Box className="upto-off-img">
-                        <img
-                          src={uptoOffImg}
-                          alt="Mostly Organic Fresh & Healthy Organic Food"
-                        />
-                      </Box>
-                      <Box className="image">
-                        <img
-                          src={bannerImg}
-                          alt="Mostly Organic Fresh & Healthy Organic Food"
-                        />
-                      </Box>
+                    <Box className="heading">
+                      Fresh & Healthy <span>Organic </span> Food
                     </Box>
-                  </Grid>
-                </Grid>
+                    <Box className="text">
+                      Enjoy free shipping on orders to PBEL City. Sit back and
+                      relax while we handle the delivery for you.
+                    </Box>
+                    <Box
+                      className="button"
+                      onClick={() => this.props.setShopByCategory([])}
+                    >
+                      <Link to="/category">
+                        Shop now <EastIcon />
+                      </Link>
+                    </Box>
+                  </Box>
+                </Box>
+                <Box className="image">
+                  <img
+                    src={bannerImg1}
+                    alt="Mostly Organic Fresh & Healthy Organic Food"
+                  />
+                </Box>
               </Box>
               <Box className="mobile-banner">
                 <Link to="/category">
@@ -218,11 +174,7 @@ class MainBanner extends Component {
 }
 
 function mapStateToProps(state) {
-
-
-  return {
-  
-  };
+  return {};
 }
 
 const mapDispatchToProps = {
