@@ -1,83 +1,88 @@
 import React, { Component } from "react";
-import { Box, Container, Tab } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import productImg from "../../../../../assets/img/product-img.png";
 import priceIcon from "../../../../../assets/img/price-icon.png";
-import "react-multi-carousel/lib/styles.css";
-
-import TabContext from "@mui/lab/TabContext";
-import TabList from "@mui/lab/TabList";
-import TabPanel from "@mui/lab/TabPanel";
+import EastOutlinedIcon from "@mui/icons-material/EastOutlined";
+import { Link } from "react-router-dom";
 import All from "./Components/All";
 
 class TopSellingCategories extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      value: "",
-    };
+    this.state = {};
   }
 
-  handleChange = (event, newValue) => {
-    console.log(newValue);
-    this.setState({
-      value: newValue,
-    });
-    this.props.fetchTopSellings(newValue);
-  };
-
   apiCalls = () => {
-    this.props.apiCalls(this.state.value);
+    this.props.apiCalls();
   };
 
   render() {
     const {
       topSellingProductsList,
       topSellingApiLoader,
-      value,
       topSellCategoriesList,
     } = this.props;
+    // console.log(topSellingProductsList);
+    const filteredBengaliVegetablesProducts = topSellingProductsList?.filter(
+      (product) => product.category === "Bengali Special"
+    );
+
+    const filteredFreshFruitsProducts = topSellingProductsList?.filter(
+      (product) => product.category === "Fresh Fruits"
+    );
+
+    const filteredNewArrivalProducts = topSellingProductsList?.filter(
+      (product) => product.category === "Eggs Meat & Fish"
+    );
 
     return (
       <Box className="top-selling-categories-container">
         <Container>
-          <Box className="heading">Top Selling Categories</Box>
-          <TabContext
-            value={
-              this.state.value ? this.state.value : topSellCategoriesList?.[0]
-            }
-          >
-            <TabList
-              onChange={this.handleChange}
-              aria-label="lab API tabs example"
-            >
-              {topSellCategoriesList?.length > 0 ? (
-                topSellCategoriesList?.map((item) => {
-                  return <Tab label={item} value={item} />;
-                })
-              ) : (
-                <></>
-              )}
-            </TabList>
-            {topSellCategoriesList?.length > 0 ? (
-              <TabPanel
-                value={
-                  this.state.value
-                    ? this.state.value
-                    : topSellCategoriesList?.[0]
-                }
-              >
-                <All
-                  productImg={productImg}
-                  priceIcon={priceIcon}
-                  topSellingProductsList={topSellingProductsList}
-                  topSellingApiLoader={topSellingApiLoader}
-                  apiCalls={this.apiCalls}
-                />
-              </TabPanel>
-            ) : (
-              <></>
-            )}
-          </TabContext>
+          <Box className="selling-categories">
+            <Box className="heading">
+              <h2>{"Bengali Vegetables"}</h2>
+              <Link to={"/category"}>
+                View All <EastOutlinedIcon />
+              </Link>
+            </Box>
+            <All
+              productImg={productImg}
+              priceIcon={priceIcon}
+              topSellingProductsList={filteredBengaliVegetablesProducts}
+              topSellingApiLoader={topSellingApiLoader}
+              apiCalls={this.apiCalls}
+            />
+          </Box>
+          <Box className="selling-categories">
+            <Box className="heading">
+              <h2>{"Fresh Fruits"}</h2>
+              <Link to={"/category"}>
+                View All <EastOutlinedIcon />
+              </Link>
+            </Box>
+            <All
+              productImg={productImg}
+              priceIcon={priceIcon}
+              topSellingProductsList={filteredFreshFruitsProducts}
+              topSellingApiLoader={topSellingApiLoader}
+              apiCalls={this.apiCalls}
+            />
+          </Box>
+          <Box className="selling-categories">
+            <Box className="heading">
+              <h2>{"New Arrival"}</h2>
+              <Link to={"/category"}>
+                View All <EastOutlinedIcon />
+              </Link>
+            </Box>
+            <All
+              productImg={productImg}
+              priceIcon={priceIcon}
+              topSellingProductsList={filteredNewArrivalProducts}
+              topSellingApiLoader={topSellingApiLoader}
+              apiCalls={this.apiCalls}
+            />
+          </Box>
         </Container>
       </Box>
     );

@@ -3,6 +3,7 @@ import { Box, Container, Grid } from "@mui/material";
 import EastIcon from "@mui/icons-material/East";
 import bannerImg1 from "../../../../../assets/img/banner-img1.png";
 import bannerImg2 from "../../../../../assets/img/banner-img2.png";
+import bannerImg3 from "../../../../../assets/img/banner-img3.png";
 import mobileBannerImg from "../../../../../assets/img/mobile-main-banner-img.png";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -20,10 +21,13 @@ class MainBanner extends Component {
     var settings = {
       dots: true,
       arrows: false,
-      infinite: false,
+      infinite: true,
       speed: 500,
       slidesToShow: 1,
       slidesToScroll: 1,
+      autoplay: true,
+      autoplaySpeed: 3000,
+      fade: true,
       responsive: [
         {
           breakpoint: 600,
@@ -47,7 +51,7 @@ class MainBanner extends Component {
         <Container>
           <Slider {...settings}>
             <Box className="banner-contents">
-              <Box className="desktop-banner">
+              <Box className="desktop-banner mostly-organic-banner">
                 <Box className="contents">
                   <Box width={"100%"}>
                     <Box className="mostly-organic">
@@ -87,14 +91,15 @@ class MainBanner extends Component {
               </Box>
             </Box>
             <Box className="banner-contents">
-              <Box className="desktop-banner">
+              <Box className="desktop-banner best-deal-banner">
                 <Box className="contents">
                   <Box width={"100%"}>
                     <Box className="mostly-organic">
-                      <span>Mostly Organic</span>
+                      <span>Best Deal</span>
                     </Box>
                     <Box className="heading">
-                      Fresh & Healthy <span>Organic </span> Food
+                      <span>Special Products</span>
+                      Deal of the Month
                     </Box>
                     <Box className="text">
                       Enjoy free shipping on orders to PBEL City. Sit back and
@@ -113,7 +118,7 @@ class MainBanner extends Component {
                 <Box className="image">
                   <img
                     src={bannerImg2}
-                    alt="Mostly Organic Fresh & Healthy Organic Food"
+                    alt="Special Products Deal of the Month"
                   />
                 </Box>
               </Box>
@@ -121,20 +126,23 @@ class MainBanner extends Component {
                 <Link to="/category">
                   <img
                     src={mobileBannerImg}
-                    alt="Mostly Organic Fresh & Healthy Organic Food"
+                    alt="Special Products Deal of the Month"
                   />
                 </Link>
               </Box>
             </Box>
             <Box className="banner-contents">
-              <Box className="desktop-banner">
+              <Box className="desktop-banner direct-farmer-banner">
+                <Box className="left-top-shaph"></Box>
+                <Box className="right-top-shaph"></Box>
+                <Box className="right-bottom-shaph"><span></span></Box>
                 <Box className="contents">
                   <Box width={"100%"}>
                     <Box className="mostly-organic">
-                      <span>Mostly Organic</span>
+                      <span>Best Deal</span>
                     </Box>
                     <Box className="heading">
-                      Fresh & Healthy <span>Organic </span> Food
+                      Direct From Farmer to Your Home
                     </Box>
                     <Box className="text">
                       Enjoy free shipping on orders to PBEL City. Sit back and
@@ -151,17 +159,14 @@ class MainBanner extends Component {
                   </Box>
                 </Box>
                 <Box className="image">
-                  <img
-                    src={bannerImg1}
-                    alt="Mostly Organic Fresh & Healthy Organic Food"
-                  />
+                  <img src={bannerImg3} alt="Direct From Farmer to Your Home" />
                 </Box>
               </Box>
               <Box className="mobile-banner">
                 <Link to="/category">
                   <img
                     src={mobileBannerImg}
-                    alt="Mostly Organic Fresh & Healthy Organic Food"
+                    alt="Direct From Farmer to Your Home"
                   />
                 </Link>
               </Box>

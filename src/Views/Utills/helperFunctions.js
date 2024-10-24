@@ -171,5 +171,5 @@ const pathFile = {
 };
 
 // pathFile[path.split("/")?.[0]] = `${path.split("/")?.[2]}`;
-console.log(pathFile)
+// console.log(pathFile)
 export { pathFile };

@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { Box } from "@mui/material";
 import MainBanner from "./components/mainBanner";
-import FeaturedProducts from "./components/featuredProducts";
+import ShopByCategories from "./components/shopByCategories";
 import Service from "./components/service";
-import OffersYouMightLike from "./components/offersYouMightLike";
 import TopSellingCategories from "./components/topSellingCategories";
 import CustomersSays from "./components/customersSays";
 import { fetchHome } from "../../../Redux/Home/HomeThunk";
@@ -251,14 +250,7 @@ class Home extends Component {
         ) : (
           <>
             <MainBanner />
-            <FeaturedProducts
-              data={data}
-              cartList={cartList}
-              fetchHome={this.fetchHome}
-            />
-            
-            <OffersYouMightLike allOffersList={allOffersList} />
-
+            <ShopByCategories />
             <TopSellingCategories
               topSellingApiLoader={this.state.topSellingApiLoader}
               topSellingProductsList={topSellingProductsList}
@@ -266,6 +258,7 @@ class Home extends Component {
               topSellCategoriesList={topSellCategoriesList}
               apiCalls={this.apiCalls}
             />
+            
             <Service />
             <CustomersSays />
           </>

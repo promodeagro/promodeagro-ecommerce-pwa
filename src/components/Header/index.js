@@ -163,7 +163,6 @@ class Header extends Component {
 
   render() {
     const { cartList, currentAddress } = this.state;
-    console.log(currentAddress);
 
     return (
       <Box className="header">
