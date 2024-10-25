@@ -180,7 +180,7 @@ class Header extends Component {
       <ul>
         {categories?.length ? (
           categories?.map((item, index) => {
-            const categoryPath = `/category/${item?.CategoryName.toUpperCase().replaceAll(
+            const categoryPath = `/category/${item?.CategoryName.replaceAll(
               " ",
               "%20"
             )}`;
@@ -188,7 +188,7 @@ class Header extends Component {
             return (
               <li>
                 <Link
-                  to={`/category/${item?.CategoryName.toUpperCase()}`}
+                  to={`/category/${item?.CategoryName}`}
                   className={isActive ? "active" : ""}
                 >
                   {item?.CategoryName}

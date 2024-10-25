@@ -1,16 +1,12 @@
 import React, { Component } from "react";
-import { Box, Container, Grid } from "@mui/material";
-import EastIcon from "@mui/icons-material/East";
-import bannerImg1 from "../../../../../assets/img/banner-img1.png";
-import bannerImg2 from "../../../../../assets/img/banner-img2.png";
-import bannerImg3 from "../../../../../assets/img/banner-img3.png";
-import mobileBannerImg from "../../../../../assets/img/mobile-main-banner-img.png";
+import { Box, Container } from "@mui/material";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { setShopByCategory } from "../../../../../Redux/AllProducts/AllProductSlice";
+import noImage from "../../../../../assets/img/no-image.png";
+
 class MainBanner extends Component {
   constructor(props) {
     super(props);
@@ -55,8 +51,13 @@ class MainBanner extends Component {
             {allOffersList?.length > 0 ? (
               allOffersList?.map((item) => {
                 return (
-                  <Box className="banner-contents">
-                    <img src={item?.imageUrl} alt="no image" />
+                  <Box padding={"3px"}>
+                    <Box className="banner-contents">
+                      <img
+                        src={item?.imageUrl ? item?.imageUrl : noImage}
+                        alt="no image"
+                      />
+                    </Box>
                   </Box>
                 );
               })

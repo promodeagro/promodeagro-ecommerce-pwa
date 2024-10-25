@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import { Box, Switch, Container } from "@mui/material";
 import { Link } from "react-router-dom";
-import { styled } from "@mui/material/styles";
 import { fetchFilteredProducts } from "../../../../Redux/AllProducts/AllProductthunk";
 import { connect } from "react-redux";
 import _ from "lodash";
-import { loginDetails } from "Views/Utills/helperFunctions";
 import noImage from "../../../../assets/img/no-image.png";
 
 class SideBar extends Component {
@@ -39,7 +37,7 @@ class SideBar extends Component {
     const { categories, category } = this.props;
 
     const selectedCategory = categories?.data?.find(
-      (item) => item?.CategoryName.toUpperCase() === category
+      (item) => item?.CategoryName === category
     );
     const currentPath = window.location.pathname;
 
@@ -47,7 +45,7 @@ class SideBar extends Component {
       <ul>
         {selectedCategory?.Subcategories?.length ? (
           selectedCategory.Subcategories.map((subcat, index) => {
-            const subcatPath = `/category/${selectedCategory.CategoryName.toUpperCase().replaceAll(
+            const subcatPath = `/category/${selectedCategory.CategoryName.replaceAll(
               " ",
               "%20"
             )}/${subcat.name.replaceAll(" ", "%20")}`;
