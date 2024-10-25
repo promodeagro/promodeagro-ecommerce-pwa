@@ -36,9 +36,15 @@ export const fetchCategories = createAsyncThunk("category", async () => {
   try {
     let url = config.CATEGOREIS;
     const response = await postLoginService.get(url);
-    return response.data;
+    return {
+      data: response.data,
+      statusCode: response.status,
+    };
   } catch (error) {
-    return error;
+    return {
+      ...error.response.data,
+      statusCode: error.response.status,
+    };
   }
 });
 

@@ -16,6 +16,7 @@ class ShopByCategories extends Component {
   }
 
   render() {
+    const { categories } = this.props;
     return (
       <Box className="shop-categories-container">
         <Container>
@@ -26,70 +27,25 @@ class ShopByCategories extends Component {
             </Link>
           </Box>
           <Box className="categories">
-            <Box className="special-category-box">
-              <Box className="image">
-                <Box className="special-heading">
-                  <span>Bengali</span>
-                  Special
-                </Box>
-                <Link to={"#"}>
-                  <img src={bengaliSpecialImg} alt="" />
-                </Link>
-              </Box>
-              <Box className="name">
-                <Link to={"#"}>Bengali Special</Link>
-              </Box>
-            </Box>
-            <Box className="category-box">
-              <Box className="image">
-                <Link to={"#"}>
-                  <img src={categoryImg1} alt="" />
-                </Link>
-              </Box>
-              <Box className="name">
-                <Link to={"#"}>Fresh Vegetables</Link>
-              </Box>
-            </Box>
-            <Box className="category-box">
-              <Box className="image">
-                <Link to={"#"}>
-                  <img src={categoryImg2} alt="" />
-                </Link>
-              </Box>
-              <Box className="name">
-                <Link to={"#"}>Fresh Fruits</Link>
-              </Box>
-            </Box>
-            <Box className="category-box">
-              <Box className="image">
-                <Link to={"#"}>
-                  <img src={categoryImg3} alt="" />
-                </Link>
-              </Box>
-              <Box className="name">
-                <Link to={"#"}>Groceries</Link>
-              </Box>
-            </Box>
-            <Box className="category-box">
-              <Box className="image">
-                <Link to={"#"}>
-                  <img src={categoryImg4} alt="" />
-                </Link>
-              </Box>
-              <Box className="name">
-                <Link to={"#"}>Dairy</Link>
-              </Box>
-            </Box>
-            <Box className="category-box">
-              <Box className="image">
-                <Link to={"#"}>
-                  <img src={categoryImg5} alt="" />
-                </Link>
-              </Box>
-              <Box className="name">
-                <Link to={"#"}>Egg Meat & Fish</Link>
-              </Box>
-            </Box>
+            {categories?.length > 0 ? (
+              categories?.map((item) => {
+                debugger;
+                return (
+                  <Box className="special-category-box">
+                    <Box className="image">
+                      <Link to={"#"}>
+                        <img src={item?.image_url} alt="" />
+                      </Link>
+                    </Box>
+                    <Box className="name">
+                      <Link to={"#"}>{item?.CategoryName}</Link>
+                    </Box>
+                  </Box>
+                );
+              })
+            ) : (
+              <></>
+            )}
           </Box>
         </Container>
       </Box>

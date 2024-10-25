@@ -12,6 +12,7 @@ import {
   fetchTopSellingProducts,
   fetchToSellingCategories,
   fetchAllOffers,
+  fetchCategories,
 } from "../../../Redux/AllProducts/AllProductthunk";
 import status from "../../../Redux/Constants";
 import { connect } from "react-redux";
@@ -30,6 +31,7 @@ import {
   setShopByCategory,
 } from "../../../Redux/AllProducts/AllProductSlice";
 import { fetchPersonalDetails } from "../../../Redux/Signin/SigninThunk";
+import category from "../category";
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -40,6 +42,7 @@ class Home extends Component {
       topSellingProductsList: [],
       topSellCategoriesList: [],
       allOffersList: [],
+    categories:[]
     };
   }
   componentDidMount() {
@@ -47,6 +50,7 @@ class Home extends Component {
     this.setState({
       topSellingApiLoader: true,
     });
+    this.props.fetchCategories();
     this.props.fetchToSellingCategories();
     this.props.fetchAllOffers();
     if (items?.userId) {
@@ -69,6 +73,18 @@ class Home extends Component {
     }
   }
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.allCategories.status !== this.props.allCategories.status &&
+      this.props.allCategories.status === status.SUCCESS
+    ) {
+      if (this.props.allCategories.data.statusCode === 200) {
+        this.setState({
+          categories:this.props.allCategories.data.data
+        })
+      } else {
+        ErrorMessages.error(this.props?.allCategories?.data?.message);
+      }
+    }
     if (
       prevProps.personalDetailsData.status !==
         this.props.personalDetailsData.status &&
@@ -250,7 +266,7 @@ class Home extends Component {
         ) : (
           <>
             <MainBanner />
-            <ShopByCategories />
+            <ShopByCategories   categories={this.state.categories}/>
             <TopSellingCategories
               topSellingApiLoader={this.state.topSellingApiLoader}
               topSellingProductsList={topSellingProductsList}
@@ -258,7 +274,7 @@ class Home extends Component {
               topSellCategoriesList={topSellCategoriesList}
               apiCalls={this.apiCalls}
             />
-            
+
             <Service />
             <CustomersSays />
           </>
@@ -272,8 +288,12 @@ function mapStateToProps(state) {
   const { homeData } = state.home;
   const { additems, cartItems, updateItems, deleteItems } = state.cartitem;
   const { allAddress, selectedAddressData } = state.alladdress;
-  const { topSellingProductsData, topSellingCategoriesData, allOffersData } =
-    state.allproducts;
+  const {
+    topSellingProductsData,
+    topSellingCategoriesData,
+    allOffersData,
+    allCategories,
+  } = state.allproducts;
   const { personalDetailsData } = state.login;
   return {
     homeData,
@@ -284,6 +304,7 @@ function mapStateToProps(state) {
     topSellingCategoriesData,
     allOffersData,
     personalDetailsData,
+    allCategories,
   };
 }
 
@@ -299,6 +320,7 @@ const mapDispatchToProps = {
   fetchToSellingCategories,
   fetchAllOffers,
   fetchPersonalDetails,
+  fetchCategories,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

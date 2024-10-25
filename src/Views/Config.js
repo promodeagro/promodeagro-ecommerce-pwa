@@ -22,7 +22,7 @@ const Config = {
   PLACE_ORDER: `${BASE_URL}/order`,
   FORGOT_PASSWORD: `${BASE_URL}/forgetPassword`,
   GLOBAL_SEARCH: `${BASE_URL}/products/search`,
-  CATEGOREIS: `${BASE_URL}/category`,
+  CATEGOREIS: `${BASE_URL}/getAllCategories`,
   SET_DEFAULT_ADDRESS: `${BASE_URL}/setDefaultAddress`,
   GET_DEFAULT_ADDRESS: `${BASE_URL}/getDefaultAddress`,
   DELIVERY_SLOT: `${BASE_URL}/getAvailableDeliverySlots`,
@@ -43,6 +43,7 @@ const Config = {
   SAVE_FOR_LATER: `${BASE_URL}/SaveForLater`,
   UPDATE_PRODUCT_PRICE: `${BASE_URL}/updatePriceByQty`,
   CANCLE_ORDER: `${BASE_URL}/cancleorder`,
+  
 };
 
 export default Config;
