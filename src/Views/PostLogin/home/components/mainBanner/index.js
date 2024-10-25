@@ -46,131 +46,23 @@ class MainBanner extends Component {
         },
       ],
     };
+
+    const { allOffersList } = this.props;
     return (
       <Box className="main-banner-container">
         <Container>
           <Slider {...settings}>
-            <Box className="banner-contents">
-              <Box className="desktop-banner mostly-organic-banner">
-                <Box className="contents">
-                  <Box width={"100%"}>
-                    <Box className="mostly-organic">
-                      <span>Mostly Organic</span>
-                    </Box>
-                    <Box className="heading">
-                      Fresh & Healthy <span>Organic </span> Food
-                    </Box>
-                    <Box className="text">
-                      Enjoy free shipping on orders to PBEL City. Sit back and
-                      relax while we handle the delivery for you.
-                    </Box>
-                    <Box
-                      className="button"
-                      onClick={() => this.props.setShopByCategory([])}
-                    >
-                      <Link to="/category">
-                        Shop now <EastIcon />
-                      </Link>
-                    </Box>
+            {allOffersList?.length > 0 ? (
+              allOffersList?.map((item) => {
+                return (
+                  <Box className="banner-contents">
+                    <img src={item?.imageUrl} alt="no image" />
                   </Box>
-                </Box>
-                <Box className="image">
-                  <img
-                    src={bannerImg1}
-                    alt="Mostly Organic Fresh & Healthy Organic Food"
-                  />
-                </Box>
-              </Box>
-              <Box className="mobile-banner">
-                <Link to="/category">
-                  <img
-                    src={mobileBannerImg}
-                    alt="Mostly Organic Fresh & Healthy Organic Food"
-                  />
-                </Link>
-              </Box>
-            </Box>
-            <Box className="banner-contents">
-              <Box className="desktop-banner best-deal-banner">
-                <Box className="contents">
-                  <Box width={"100%"}>
-                    <Box className="mostly-organic">
-                      <span>Best Deal</span>
-                    </Box>
-                    <Box className="heading">
-                      <span>Special Products</span>
-                      Deal of the Month
-                    </Box>
-                    <Box className="text">
-                      Enjoy free shipping on orders to PBEL City. Sit back and
-                      relax while we handle the delivery for you.
-                    </Box>
-                    <Box
-                      className="button"
-                      onClick={() => this.props.setShopByCategory([])}
-                    >
-                      <Link to="/category">
-                        Shop now <EastIcon />
-                      </Link>
-                    </Box>
-                  </Box>
-                </Box>
-                <Box className="image">
-                  <img
-                    src={bannerImg2}
-                    alt="Special Products Deal of the Month"
-                  />
-                </Box>
-              </Box>
-              <Box className="mobile-banner">
-                <Link to="/category">
-                  <img
-                    src={mobileBannerImg}
-                    alt="Special Products Deal of the Month"
-                  />
-                </Link>
-              </Box>
-            </Box>
-            <Box className="banner-contents">
-              <Box className="desktop-banner direct-farmer-banner">
-                <Box className="left-top-shaph"></Box>
-                <Box className="right-top-shaph"></Box>
-                <Box className="right-bottom-shaph"><span></span></Box>
-                <Box className="contents">
-                  <Box width={"100%"}>
-                    <Box className="mostly-organic">
-                      <span>Best Deal</span>
-                    </Box>
-                    <Box className="heading">
-                      Direct From Farmer to Your Home
-                    </Box>
-                    <Box className="text">
-                      Enjoy free shipping on orders to PBEL City. Sit back and
-                      relax while we handle the delivery for you.
-                    </Box>
-                    <Box
-                      className="button"
-                      onClick={() => this.props.setShopByCategory([])}
-                    >
-                      <Link to="/category">
-                        Shop now <EastIcon />
-                      </Link>
-                    </Box>
-                  </Box>
-                </Box>
-                <Box className="image">
-                  <img src={bannerImg3} alt="Direct From Farmer to Your Home" />
-                </Box>
-              </Box>
-              <Box className="mobile-banner">
-                <Link to="/category">
-                  <img
-                    src={mobileBannerImg}
-                    alt="Direct From Farmer to Your Home"
-                  />
-                </Link>
-              </Box>
-            </Box>
+                );
+              })
+            ) : (
+              <></>
+            )}
           </Slider>
         </Container>
       </Box>

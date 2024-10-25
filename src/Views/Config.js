@@ -35,7 +35,7 @@ const Config = {
   CHANGE_PASSWORD: `${BASE_URL}/changePassword`,
   TOP_SELLING_PRODUCTS: `${BASE_URL}/getTopSellingProducts`,
   GET_TOP_SELLING_CATEGOREIS: `${BASE_URL}/getTopSellingCategories`,
-  GET_ALL_OFFERS: `${BASE_URL}/getAllOffers`,
+  GET_ALL_OFFERS: `${BASE_URL}/getOffers`,
   ADD_PRODUCT_REVIEW: `${BASE_URL}/addProductReview`,
   DELETE_USER: `${BASE_URL}/deleteUser`,
   UPDATE_PERSONAL_DETAILS: `${BASE_URL}/updatePersnalDetail`,

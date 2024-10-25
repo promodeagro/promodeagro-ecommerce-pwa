@@ -265,7 +265,7 @@ class Home extends Component {
           Loader.commonLoader()
         ) : (
           <>
-            <MainBanner />
+            <MainBanner   allOffersList={allOffersList} />
             <ShopByCategories   categories={this.state.categories}/>
             <TopSellingCategories
               topSellingApiLoader={this.state.topSellingApiLoader}
