@@ -24,6 +24,7 @@ class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      categoriesToggle: false,
       cartList: [],
       currentAddress: {},
       searchToggle: false,
@@ -39,6 +40,9 @@ class Header extends Component {
   }
 
   componentDidMount() {
+    window
+      .matchMedia("(max-width: 600px)")
+      .addEventListener("change", (e) => this.setState({ matches: e.matches }));
     let items = loginDetails();
 
     if (items?.userId) {
@@ -49,6 +53,7 @@ class Header extends Component {
         userId: loginDetails()?.userId,
       });
     }
+
     this.props.fetchCategories();
   }
 
@@ -135,9 +140,10 @@ class Header extends Component {
       this.props.allCategories.data
     ) {
       this.setState({
-        categories: this.props.allCategories.data,
+        categories: this.props.allCategories.data.data,
       });
     }
+
     if (
       prevProps.cartItems.status !== this.props.cartItems.status &&
       this.props.cartItems.status === status.SUCCESS &&
@@ -161,95 +167,140 @@ class Header extends Component {
     });
   };
 
+  handleFruitsandVeg = (data) => {
+    this.props.setShopByCategory(data);
+    this.setState({
+      categoriesToggle: false,
+    });
+  };
+
+  renderCategories = () => {
+    const { categories, currentPathName } = this.state;
+    return (
+      <ul>
+        {categories?.length ? (
+          categories?.map((item, index) => {
+            const categoryPath = `/category/${item?.CategoryName.toUpperCase().replaceAll(
+              " ",
+              "%20"
+            )}`;
+            const isActive = currentPathName === categoryPath;
+            return (
+              <li>
+                <Link
+                  to={`/category/${item?.CategoryName.toUpperCase()}`}
+                  className={isActive ? "active" : ""}
+                >
+                  {item?.CategoryName}
+                </Link>
+              </li>
+            );
+          })
+        ) : (
+          <></>
+        )}
+      </ul>
+    );
+  };
+
   render() {
     const { cartList, currentAddress } = this.state;
-
+    const path = window.location.pathname;
     return (
-      <Box className="header">
-        <Container maxWidth={false}>
-          <Grid container spacing={2} alignItems={"center"}>
-            <Grid item xs={6} sm={4} md={4}>
-              <Box width={"100%"} alignItems={"center"} display={"flex"}>
-                <Box className="logo">
-                  <Link to={"/"}>
-                    <img src={Logo} alt="Promode Agro Farms" />
-                  </Link>
-                </Box>
-                {currentAddress?.address && loginDetails()?.userId && (
-                  <Box
-                    className="deliver-box"
-                    onClick={() =>
-                      this.props.navigate("/my-profile/manage-addresses")
-                    }
-                  >
-                    <strong>Deliver to</strong>
-                    <span>
-                      {currentAddress?.address} <KeyboardArrowDownIcon />
-                    </span>
+      <>
+        <Box className="header">
+          <Container maxWidth={false}>
+            <Grid container spacing={2} alignItems={"center"}>
+              <Grid item xs={6} sm={4} md={4}>
+                <Box width={"100%"} alignItems={"center"} display={"flex"}>
+                  <Box className="logo">
+                    <Link to={"/"}>
+                      <img src={Logo} alt="Promode Agro Farms" />
+                    </Link>
                   </Box>
-                )}
-              </Box>
-            </Grid>
-            <Grid item xs={6} sm={6} md={6}>
-              <Box className="search-box">
-                <SearchResults cartItemsData={cartList} />
-              </Box>
-            </Grid>
-            <Grid item xs={6} sm={2} md={2}>
-              <Box
-                width={"100%"}
-                display={"flex"}
-                alignItems={"center"}
-                justifyContent={"flex-end"}
-              >
-                {!loginDetails()?.userId ? (
-                  <Box
-                    className="login"
-                    onClick={() => this.setState({ authModalOpen: true })}
-                  >
-                    {loginDetails()?.userId && currentAddress?.name
-                      ? currentAddress?.name
-                      : "Login"}
-                  </Box>
-                ) : (
-                  <Box className="login">{currentAddress?.name}</Box>
-                )}
-                <Box className="card">
-                  <Link to={"/mycart"}>
-                    {this.props?.cartData?.length ? (
-                      <p>{this.props.cartData.length}</p>
-                    ) : (
-                      <></>
-                    )}
-                    {this.state.cartList?.length ? (
-                      <p>{this.state.cartList.length}</p>
-                    ) : (
-                      <></>
-                    )}
-                    <img src={cardIcon} alt="Shopping" /> <span>Cart</span>
-                  </Link>
+                  {currentAddress?.address && loginDetails()?.userId && (
+                    <Box
+                      className="deliver-box"
+                      onClick={() =>
+                        this.props.navigate("/my-profile/manage-addresses")
+                      }
+                    >
+                      <strong>Deliver to</strong>
+                      <span>
+                        {currentAddress?.address} <KeyboardArrowDownIcon />
+                      </span>
+                    </Box>
+                  )}
                 </Box>
-              </Box>
+              </Grid>
+              <Grid item xs={6} sm={6} md={6}>
+                <Box className="search-box">
+                  <SearchResults cartItemsData={cartList} />
+                </Box>
+              </Grid>
+              <Grid item xs={6} sm={2} md={2}>
+                <Box
+                  width={"100%"}
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"flex-end"}
+                >
+                  {!loginDetails()?.userId ? (
+                    <Box
+                      className="login"
+                      onClick={() => this.setState({ authModalOpen: true })}
+                    >
+                      {loginDetails()?.userId && currentAddress?.name
+                        ? currentAddress?.name
+                        : "Login"}
+                    </Box>
+                  ) : (
+                    <Box className="login">{currentAddress?.name}</Box>
+                  )}
+                  <Box className="card">
+                    <Link to={"/mycart"}>
+                      {this.props?.cartData?.length ? (
+                        <p>{this.props.cartData.length}</p>
+                      ) : (
+                        <></>
+                      )}
+                      {this.state.cartList?.length ? (
+                        <p>{this.state.cartList.length}</p>
+                      ) : (
+                        <></>
+                      )}
+                      <img src={cardIcon} alt="Shopping" /> <span>Cart</span>
+                    </Link>
+                  </Box>
+                </Box>
+              </Grid>
             </Grid>
-          </Grid>
-        </Container>
-        <AuthModal
-          open={this.state.authModalOpen}
-          handleDefaultAddress={() => {
-            this.props.fetchCategories();
-            this.props.fetchDefaultAddress(loginDetails()?.userId);
-            this.props.fetchPersonalDetails({
-              userId: loginDetails()?.userId,
-            });
-            this.props.navigate(0);
-          }}
-          handleClose={() => {
-            this.setState({
-              authModalOpen: false,
-            });
-          }}
-        />
-      </Box>
+          </Container>
+          <AuthModal
+            open={this.state.authModalOpen}
+            handleDefaultAddress={() => {
+              this.props.fetchCategories();
+              this.props.fetchDefaultAddress(loginDetails()?.userId);
+              this.props.fetchPersonalDetails({
+                userId: loginDetails()?.userId,
+              });
+              this.props.navigate(0);
+            }}
+            handleClose={() => {
+              this.setState({
+                authModalOpen: false,
+              });
+            }}
+          />
+        </Box>
+        {path === "/" ? (
+          <></>
+        ) : (
+          <Box className="categories-container">
+            <Container>{this.renderCategories()}</Container>
+          </Box>
+        )}
+      </>
     );
   }
 }

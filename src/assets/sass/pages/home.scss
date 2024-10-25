@@ -339,6 +339,7 @@
         display: flex;
         width: 160px;
         height: 160px;
+        
         margin-bottom: 10px;
         a {
           display: flex;
@@ -346,6 +347,7 @@
           justify-content: center;
           width: 160px;
           height: 160px;
+          padding: 10px;
           overflow: hidden;
           border-radius: 10px;
           background-color: rgba(0, 178, 7, 0.1);

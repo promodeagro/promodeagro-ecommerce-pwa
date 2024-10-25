@@ -23,9 +23,10 @@ import _ from "lodash";
 import { useParams, useLocation } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 import Stack from "@mui/material/Stack";
+import { fetchCategories } from "../../../Redux/AllProducts/AllProductthunk";
+
 function Category(props) {
   const { category, subcategory, id } = useParams();
-  console.log("data", id);
   const [hideFilter, setHideFilter] = useState(true);
   const [products, setProducts] = useState([]);
   const [productsData, setProductsData] = useState([]);
@@ -48,11 +49,12 @@ function Category(props) {
   const [APIDataLoaded, setAPIDataLoaded] = useState(false);
   const [currentPath, setCurrentPath] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(12);
   const [lastEvaluatedKey, setLastEvaluatedKey] = useState(null);
   const [personalDetailsLoader, setPersonalDetailsLoader] = useState(false);
   const [profileName, setProfileName] = useState(null);
   const [totalPages, setTotalPage] = useState("");
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     // setCurrentPath(window.location.pathname);
@@ -70,12 +72,12 @@ function Category(props) {
 
   function toTitleCase(str) {
     return str
-    .toLowerCase() 
-    .split(' ') 
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' '); 
+      .toLowerCase()
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
   }
-    useEffect(() => {
+  useEffect(() => {
     if (subcategory) {
       setSubCatergoryLoader(true);
       setAPIDataLoaded(true);
@@ -95,7 +97,7 @@ function Category(props) {
       setCatergoryLoader(true);
 
       const data = {
-        category:toTitleCase(category),
+        category: toTitleCase(category),
         userId: loginDetails()?.userId,
         pageSize: pageSize,
         pageNumber: currentPage,
@@ -143,6 +145,14 @@ function Category(props) {
     }
   }, [subcategory, category, id, window.location.pathname]);
 
+  useEffect(() => {
+    if (
+      props.allCategories.status === status.SUCCESS &&
+      props.allCategories.data
+    ) {
+      setCategories(props.allCategories.data);
+    }
+  });
   useEffect(() => {
     if (
       props.filteredProductData?.status == status?.SUCCESS &&
@@ -508,7 +518,7 @@ function Category(props) {
   };
 
   return (
-    <Box className="main-container">
+    <Box className="main-container categories">
       <Container>
         <Grid container spacing={2} alignItems={"flex-start"}>
           <Grid item xs={12} sm={12} md={3} lg={3}>
@@ -523,15 +533,10 @@ function Category(props) {
               allproducts={allproducts}
               pageSize={pageSize}
               lastEvaluatedKey={lastEvaluatedKey}
+              categories={categories}
             />
           </Grid>
-          <Grid
-            item
-            xs={hideFilter ? 12 : 12}
-            sm={hideFilter ? 12 : 12}
-            md={hideFilter ? 12 : 9}
-            lg={hideFilter ? 12 : 9}
-          >
+          <Grid item xs={12} sm={12} md={9} lg={9}>
             {APIDataLoaded ? (
               Loader.commonLoader()
             ) : (
@@ -546,7 +551,11 @@ function Category(props) {
                 />
 
                 {totalPages ? (
-                  <Stack spacing={2} direction="row" justifyContent="flex-end">
+                  <Box
+                    display={"flex"}
+                    justifyContent="flex-end"
+                    marginBottom={"30px"}
+                  >
                     <Pagination
                       count={totalPages}
                       showFirstButton
@@ -556,7 +565,7 @@ function Category(props) {
                         handleChange(event, value);
                       }}
                     />
-                  </Stack>
+                  </Box>
                 ) : (
                   <></>
                 )}
@@ -565,7 +574,7 @@ function Category(props) {
           </Grid>
         </Grid>
       </Container>
-      <RecentlyViewedItems />
+      {/* <RecentlyViewedItems /> */}
     </Box>
   );
 }
@@ -577,6 +586,7 @@ function mapStateToProps(state) {
     filteredProductData,
     productByCategoryData,
     productBySubCategoryData,
+    allCategories,
   } = state.allproducts;
   const { cartItems } = state.cartitem;
   const { personalDetailsData } = state.login;
@@ -588,6 +598,7 @@ function mapStateToProps(state) {
     productByCategoryData,
     productBySubCategoryData,
     personalDetailsData,
+    allCategories,
   };
 }
 
@@ -599,6 +610,7 @@ const mapDispatchToProps = {
   fetchProductByCategory,
   fetchFilteredProducts,
   fetchPersonalDetails,
+  fetchCategories,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Category);

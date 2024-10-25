@@ -22,7 +22,7 @@ class TopSellingCategories extends Component {
       topSellingApiLoader,
       topSellCategoriesList,
     } = this.props;
-    // console.log(topSellingProductsList);
+
     const filteredBengaliVegetablesProducts = topSellingProductsList?.filter(
       (product) => product.category === "Bengali Special"
     );

@@ -2,12 +2,7 @@ import React, { Component } from "react";
 import { Box, Container, Grid } from "@mui/material";
 import EastOutlinedIcon from "@mui/icons-material/EastOutlined";
 import { Link } from "react-router-dom";
-import bengaliSpecialImg from "../../../../../assets/img/bengali-special-img.png";
-import categoryImg1 from "../../../../../assets/img/category-img1.png";
-import categoryImg2 from "../../../../../assets/img/category-img2.png";
-import categoryImg3 from "../../../../../assets/img/category-img3.png";
-import categoryImg4 from "../../../../../assets/img/category-img4.png";
-import categoryImg5 from "../../../../../assets/img/category-img5.png";
+import noImage from "../../../../../assets/img/no-image.png";
 
 class ShopByCategories extends Component {
   constructor(props) {
@@ -17,6 +12,7 @@ class ShopByCategories extends Component {
 
   render() {
     const { categories } = this.props;
+
     return (
       <Box className="shop-categories-container">
         <Container>
@@ -30,14 +26,25 @@ class ShopByCategories extends Component {
             {categories?.length > 0 ? (
               categories?.map((item) => {
                 return (
-                  <Box className="special-category-box">
+                  <Box
+                    className={
+                      item?.CategoryName === "Bengali Special"
+                        ? "special-category-box"
+                        : "category-box"
+                    }
+                  >
                     <Box className="image">
-                      <Link to={"#"}>
-                        <img src={item?.image_url} alt="" />
+                      <Link to={`category/${item?.CategoryName}`}>
+                        <img
+                          src={item?.image_url ? item?.image_url : noImage}
+                          alt=""
+                        />
                       </Link>
                     </Box>
                     <Box className="name">
-                      <Link to={"#"}>{item?.CategoryName}</Link>
+                      <Link to={`category/${item?.CategoryName}`}>
+                        {item?.CategoryName}
+                      </Link>
                     </Box>
                   </Box>
                 );

@@ -24,7 +24,6 @@ import status from "../../../../Redux/Constants";
 import _ from "lodash";
 import { loginDetails, ErrorMessages } from "../../../Utills/helperFunctions";
 import { Link } from "react-router-dom";
-import BookmarkOutlinedIcon from "@mui/icons-material/BookmarkOutlined";
 import {
   deleteProductWishList,
   setProductWishList,
@@ -35,6 +34,7 @@ import { fetchDefaultAddress } from "../../../../Redux/Address/AddressThunk";
 import { fetchPersonalDetails } from "../../../../Redux/Signin/SigninThunk";
 import AuthModal from "components/ModalLogin/LoginModal";
 import { LocalStorageCartService } from "Services/localStorageCartService";
+import CurrencyRupeeOutlinedIcon from "@mui/icons-material/CurrencyRupeeOutlined";
 
 class List extends Component {
   constructor(props) {
@@ -181,7 +181,7 @@ class List extends Component {
               <Box className="sale">Sale {item?.savingsPercentage}%</Box>
             )}
 
-            {loginDetails()?.userId ? (
+            {/* {loginDetails()?.userId ? (
               <Box
                 className="icon"
                 onClick={(event) => {
@@ -197,7 +197,7 @@ class List extends Component {
               </Box>
             ) : (
               <></>
-            )}
+            )} */}
 
             <Box
               className="image"
@@ -221,15 +221,45 @@ class List extends Component {
             >
               <Link>{item?.name}</Link>
             </Box>
-            <Box className="price-ratting">
+
+            <>
+              {item?.unitPrices?.length > 0 ? (
+                <Box className="select">
+                  <select
+                    value={
+                      qauntityUnits[item?.id] ||
+                      item?.cartItem?.QuantityUnits ||
+                      ""
+                    }
+                    onChange={(event) =>
+                      this.handleQuantity(event, item, addedProducts)
+                    }
+                  >
+                    {item?.unitPrices.map((unitItem, index) => {
+                      return (
+                        <option key={index} value={unitItem.qty}>
+                          {unitItem.qty} {item?.unit}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </Box>
+              ) : (
+                <Box className="select">{item?.unit}</Box>
+              )}
+            </>
+            <Box className="price-cart">
               <Box className="price">
-                <img src={priceIcon} alt="" />
-                {item?.cartItem?.selectedQuantityUnitprice
-                  ? item?.cartItem?.selectedQuantityUnitprice
-                  : prices?.price?.price
-                  ? prices?.price?.price
-                  : item?.price}
+                <strong>
+                  <CurrencyRupeeOutlinedIcon />
+                  {item?.cartItem?.selectedQuantityUnitprice
+                    ? item?.cartItem?.selectedQuantityUnitprice
+                    : prices?.price?.price
+                    ? prices?.price?.price
+                    : item?.price}
+                </strong>
                 <span>
+                  <CurrencyRupeeOutlinedIcon />
                   {item?.cartItem?.selectedQuantityUnitMrp
                     ? item?.cartItem?.selectedQuantityUnitMrp
                     : prices?.price?.mrp
@@ -237,68 +267,33 @@ class List extends Component {
                     : item?.mrp}
                 </span>
               </Box>
-              {item?.ratings && (
-                <Box className="ratting">
-                  <StarIcon /> {item?.ratings}
-                </Box>
-              )}
-            </Box>
-            <>
-              {item?.unitPrices?.length > 0 ? (
-                <Box className="select">
-                  <FormControl fullWidth>
-                    <NativeSelect
-                      value={
-                        qauntityUnits[item?.id] ||
-                        item?.cartItem?.QuantityUnits ||
-                        ""
-                      }
-                      onChange={(event) =>
-                        this.handleQuantity(event, item, addedProducts)
-                      }
+              {addedProducts && addedProducts[item?.id] ? (
+                <Box className="number-input-container">
+                  {addedProducts[item?.id].quantity !== 0 ? (
+                    <Box
+                      className="symbol"
+                      onClick={() => {
+                        let unitqty = "";
+                        if (item?.unitPrices?.length > 0) {
+                          unitqty = item?.unitPrices[0]?.qty;
+                        } else {
+                          unitqty = 1;
+                        }
+
+                        if (addedProducts[item?.id]?.productId) {
+                          let d = addedProducts[item?.id]?.quantity;
+                          this.handleQuantityChange(
+                            addedProducts[item?.id]?.productId,
+                            -1,
+                            Number(d),
+                            unitqty
+                          );
+                        } else {
+                          this.handleQuantityChange(item?.id, -1, "", unitqty);
+                        }
+                      }}
                     >
-                      {item?.unitPrices.map((unitItem, index) => {
-                        return (
-                          <option key={index} value={unitItem.qty}>
-                            {unitItem.qty} {item?.unit}
-                          </option>
-                        );
-                      })}
-                    </NativeSelect>
-                  </FormControl>
-                </Box>
-              ) : (
-                <Box className="select">{item?.unit}</Box>
-              )}
-            </>
-
-            {addedProducts && addedProducts[item?.id] ? (
-              <Box className="number-input-container">
-                {addedProducts[item?.id].quantity !== 0 ? (
-                  <Box
-                    className="symbol"
-                    onClick={() => {
-                      let unitqty = "";
-                      if (item?.unitPrices?.length > 0) {
-                        unitqty = item?.unitPrices[0]?.qty;
-                      } else {
-                        unitqty = 1;
-                      }
-
-                      if (addedProducts[item?.id]?.productId) {
-                        let d = addedProducts[item?.id]?.quantity;
-                        this.handleQuantityChange(
-                          addedProducts[item?.id]?.productId,
-                          -1,
-                          Number(d),
-                          unitqty
-                        );
-                      } else {
-                        this.handleQuantityChange(item?.id, -1, "", unitqty);
-                      }
-                    }}
-                  >
-                    {/* {(this.props.deleteItems.status === status.IN_PROGRESS ||
+                      {/* {(this.props.deleteItems.status === status.IN_PROGRESS ||
                       this.state?.isProductSelecting ||
                       this.props.cartItems.status === status.IN_PROGRESS ||
                       this.props.updateItems.status === status.IN_PROGRESS) &&
@@ -311,40 +306,40 @@ class List extends Component {
                     ) : (
                       "-"
                     )} */}
-                    -
+                      -
+                    </Box>
+                  ) : (
+                    <></>
+                  )}
+
+                  <Box className="Number">
+                    {addedProducts[item?.id]?.quantity}
                   </Box>
-                ) : (
-                  <></>
-                )}
+                  <Box
+                    className="symbol"
+                    onClick={() => {
+                      let unitqty = "";
+                      if (item?.unitPrices?.length > 0) {
+                        unitqty = item?.unitPrices[0]?.qty;
+                      } else {
+                        unitqty = 1;
+                      }
 
-                <Box className="Number">
-                  {addedProducts[item?.id]?.quantity}
-                </Box>
-                <Box
-                  className="symbol"
-                  onClick={() => {
-                    let unitqty = "";
-                    if (item?.unitPrices?.length > 0) {
-                      unitqty = item?.unitPrices[0]?.qty;
-                    } else {
-                      unitqty = 1;
-                    }
+                      if (addedProducts[item?.id]?.productId) {
+                        let d = addedProducts[item?.id]?.quantity;
 
-                    if (addedProducts[item?.id]?.productId) {
-                      let d = addedProducts[item?.id]?.quantity;
-
-                      this.handleQuantityChange(
-                        addedProducts[item?.id]?.productId,
-                        1,
-                        Number(d),
-                        unitqty
-                      );
-                    } else {
-                      this.handleQuantityChange(item?.id, 1, "", unitqty);
-                    }
-                  }}
-                >
-                  {/* {(this.props.updateItems.status === status.IN_PROGRESS ||
+                        this.handleQuantityChange(
+                          addedProducts[item?.id]?.productId,
+                          1,
+                          Number(d),
+                          unitqty
+                        );
+                      } else {
+                        this.handleQuantityChange(item?.id, 1, "", unitqty);
+                      }
+                    }}
+                  >
+                    {/* {(this.props.updateItems.status === status.IN_PROGRESS ||
                     this.state?.isProductSelecting ||
                     this.props.cartItems.status === status.IN_PROGRESS) &&
                   item?.id === dataId &&
@@ -353,41 +348,42 @@ class List extends Component {
                   ) : (
                     "+"
                   )} */}
-                  +
+                    +
+                  </Box>
                 </Box>
-              </Box>
-            ) : (
-              <Box className="add-cart">
-                <Button
-                  variant="outlined"
-                  onClick={() => {
-                    let unitqty = "";
-                    if (item?.unitPrices?.length > 0) {
-                      unitqty = item?.unitPrices[0]?.qty;
-                    } else {
-                      unitqty = 1;
-                    }
-                    this.setState({ isUpdateIncrease: true });
-                    this.handleAddToCart(item?.id, unitqty);
-                  }}
-                  // disabled={
-                  //   (this.props.additems.status === status.IN_PROGRESS &&
-                  //     item?.id === this.state.dataId) ||
-                  //   !item?.availability
-                  // }
-                  // endIcon={
-                  //   this.props.additems.status == status.IN_PROGRESS &&
-                  //   item?.id == this.state?.dataId ? (
-                  //     <CircularProgress className="common-loader" />
-                  //   ) : (
-                  //     <></>
-                  //   )
-                  // }
-                >
-                  {item?.availability ? "Add to Cart" : "Out Of Stock"}
-                </Button>
-              </Box>
-            )}
+              ) : (
+                <Box className="add-cart">
+                  <Button
+                    variant="outlined"
+                    onClick={() => {
+                      let unitqty = "";
+                      if (item?.unitPrices?.length > 0) {
+                        unitqty = item?.unitPrices[0]?.qty;
+                      } else {
+                        unitqty = 1;
+                      }
+                      this.setState({ isUpdateIncrease: true });
+                      this.handleAddToCart(item?.id, unitqty);
+                    }}
+                    // disabled={
+                    //   (this.props.additems.status === status.IN_PROGRESS &&
+                    //     item?.id === this.state.dataId) ||
+                    //   !item?.availability
+                    // }
+                    // endIcon={
+                    //   this.props.additems.status == status.IN_PROGRESS &&
+                    //   item?.id == this.state?.dataId ? (
+                    //     <CircularProgress className="common-loader" />
+                    //   ) : (
+                    //     <></>
+                    //   )
+                    // }
+                  >
+                    {item?.availability ? "Add" : "Out"}
+                  </Button>
+                </Box>
+              )}
+            </Box>
           </Box>
         );
       });
@@ -521,7 +517,7 @@ class List extends Component {
             <Grid item xs={12} sm={12} md={6} lg={6}>
               <h2>{this.props.currentCategory}</h2>
             </Grid>
-            {sortedData?.length ? (
+            {/* {sortedData?.length ? (
               <Grid item xs={12} sm={12} md={6} lg={6}>
                 <Box className="d-flex w-100 justify-content-end flex-wrap">
                   <Box className="sort-by">
@@ -547,7 +543,7 @@ class List extends Component {
               </Grid>
             ) : (
               <></>
-            )}
+            )} */}
           </Grid>
         </Box>
         <Box className="products">

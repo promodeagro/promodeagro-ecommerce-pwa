@@ -130,6 +130,9 @@ p {
   width: 100%;
   flex-wrap: wrap;
   padding-top: 90px;
+  &.categories {
+    padding-top: 160px;
+  }
 }
 
 button {

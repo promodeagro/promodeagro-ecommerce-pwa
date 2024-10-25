@@ -1,7 +1,6 @@
 import { Box, CircularProgress } from "@mui/material";
 import { toast } from "react-toastify";
 
-
 export const ValidationEngine = {
   EMAIL_REGEX: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
   PASSWORD_REGEX: /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
@@ -102,8 +101,6 @@ export const ValidationEngine = {
   },
 };
 
-
-
 export const Loader = {
   commonLoader() {
     return (
@@ -113,7 +110,6 @@ export const Loader = {
     );
   },
 };
-
 
 export const ErrorMessages = {
   error: (message) =>
@@ -154,11 +150,9 @@ export const ErrorMessages = {
 export const loginDetails = () => {
   const items = JSON.parse(localStorage.getItem("login"));
   return items;
-}
+};
 
-
-
-let path = window.location.pathname
+let path = window.location.pathname;
 
 const pathFile = {
   // dashboard: "DashBoard",
@@ -166,10 +160,7 @@ const pathFile = {
   "": "Promode Agro Farms",
   "/product-details/": "Promode Agro Farms",
   "/mycart/address/order-placed": "Promode Agro Farms",
-
-
 };
 
 // pathFile[path.split("/")?.[0]] = `${path.split("/")?.[2]}`;
-// console.log(pathFile)
 export { pathFile };
