@@ -29,7 +29,6 @@ class ShopByCategories extends Component {
           <Box className="categories">
             {categories?.length > 0 ? (
               categories?.map((item) => {
-                debugger;
                 return (
                   <Box className="special-category-box">
                     <Box className="image">
