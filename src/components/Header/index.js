@@ -204,8 +204,8 @@ class Header extends Component {
   };
 
   render() {
-    const { cartList, currentAddress, matches } = this.state;
-    const path = window.location.pathname;
+    const { cartList, currentAddress, matches, currentPathName } = this.state;
+
     return (
       <>
         <Box className="header">
@@ -239,9 +239,7 @@ class Header extends Component {
                 <Box className="search-box">
                   <Box
                     className="back-button"
-                    onClick={() =>
-                      this.props.navigate("/")
-                    }
+                    onClick={() => this.props.navigate("/")}
                   >
                     <ArrowBackIosNewOutlinedIcon />
                   </Box>
@@ -327,13 +325,13 @@ class Header extends Component {
             )}
           </>
         )}
-        {path === "/" ? (
-          <></>
-        ) : (
-          <Box className="categories-container">
-            <Container>{this.renderCategories()}</Container>
-          </Box>
-        )}
+        <Box
+          className={`categories-container ${
+            currentPathName.includes("category/") ? "category" : ""
+          }`}
+        >
+          <Container>{this.renderCategories()}</Container>
+        </Box>
       </>
     );
   }

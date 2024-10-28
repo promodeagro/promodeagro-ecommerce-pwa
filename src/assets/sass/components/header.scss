@@ -341,12 +341,15 @@
 .categories-container {
   box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.4);
   background-color: #ffffff;
-  display: block;
+  display: none;
   width: 100%;
   position: fixed;
   left: 0;
   top: 74px;
   z-index: 10;
+  &.category {
+    display: block;
+  }
   ul {
     display: flex;
     width: 100%;
@@ -434,7 +437,6 @@
       width: 40px;
       height: 40px;
     }
-    
   }
   .mobile-deliver-box {
     position: fixed;
