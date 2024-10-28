@@ -183,8 +183,9 @@ class Header extends Component {
       <ul>
         {categories?.length ? (
           categories?.map((item, index) => {
-            const categoryPath = `${currentPathName.replaceAll("%20", " ")}`;
-            const isActive = categoryPath.includes(item?.CategoryName);
+            let c = item?.CategoryName.replaceAll(" ", "%20");
+            const isActive = window.location.pathname.split("/").includes(c);
+
             return (
               <li>
                 <Link
