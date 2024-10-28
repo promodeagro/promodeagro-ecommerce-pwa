@@ -67,7 +67,7 @@
     position: relative;
     min-width: 70px;
     align-items: center;
-    a{
+    a {
       display: flex;
       align-items: center;
     }
@@ -92,7 +92,7 @@
       color: #ffffff;
       text-align: center;
       border-radius: 50%;
-      background-color: #EA5044;
+      background-color: #ea5044;
     }
   }
 
@@ -335,7 +335,7 @@
 }
 
 .categories-container {
-  box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.4);
+  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.4);
   background-color: #ffffff;
   display: block;
   width: 100%;
@@ -351,7 +351,7 @@
       width: auto;
       list-style: none;
       padding-right: 15px;
-      a{
+      a {
         display: block;
         padding: 10px 15px;
         font-size: 14px;
@@ -359,13 +359,13 @@
         font-weight: 500;
         border-radius: 25px;
         color: rgba(0, 0, 0, 0.4);
-        background-color: #F7FBFF;
+        background-color: #f7fbff;
         &:hover {
-          color: #00B207;
+          color: #00b207;
           background-color: rgba(0, 178, 7, 0.1);
         }
         &.active {
-          color: #00B207;
+          color: #00b207;
           background-color: rgba(0, 178, 7, 0.1);
         }
       }
@@ -373,5 +373,58 @@
   }
 }
 
-@media (max-width: 1150px) {
+@media (max-width: 900px) {
+  .header {
+    .deliver-box {
+      max-width: 150px;
+    }
+    .login {
+      display: inline-block;
+      max-width: 100px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    .logo {
+      display: none;
+    }
+    .deliver-box {
+      display: none;
+    }
+    .login {
+      display: none;
+    }
+    .card {
+      min-width: auto;
+      span {
+        display: none;
+      }
+    }
+    .profile-icon {
+      display: inline-flex;
+      color: #ffffff;
+      margin-left: 15px;
+    }
+  }
+  .mobile-deliver-box {
+    position: fixed;
+    z-index: 10;
+    top: 70px;
+    left: 0;
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+    font-weight: 500;
+    line-height: 18px;
+    font-size: 13px;
+    color: #ffffff;
+    padding: 10px 15px;
+    width: 100%;
+    background-color: #1F9151;
+  }
 }

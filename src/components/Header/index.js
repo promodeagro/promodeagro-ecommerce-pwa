@@ -19,6 +19,7 @@ import { fetchDefaultAddress } from "../../Redux/Address/AddressThunk";
 import { fetchCartItems } from "../../Redux/Cart/CartThunk";
 import AuthModal from "components/ModalLogin/LoginModal";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 
 class Header extends Component {
   constructor(props) {
@@ -34,6 +35,7 @@ class Header extends Component {
       pathId: null,
       profileName: "",
       authModalOpen: false,
+      matches: window.matchMedia("(max-width: 600px)").matches,
     };
 
     this.profileModalRef = React.createRef();
@@ -201,41 +203,43 @@ class Header extends Component {
   };
 
   render() {
-    const { cartList, currentAddress } = this.state;
+    const { cartList, currentAddress, matches } = this.state;
     const path = window.location.pathname;
     return (
       <>
         <Box className="header">
           <Container maxWidth={false}>
             <Grid container spacing={2} alignItems={"center"}>
-              <Grid item xs={6} sm={4} md={4}>
-                <Box width={"100%"} alignItems={"center"} display={"flex"}>
-                  <Box className="logo">
-                    <Link to={"/"}>
-                      <img src={Logo} alt="Promode Agro Farms" />
-                    </Link>
-                  </Box>
-                  {currentAddress?.address && loginDetails()?.userId && (
-                    <Box
-                      className="deliver-box"
-                      onClick={() =>
-                        this.props.navigate("/my-profile/manage-addresses")
-                      }
-                    >
-                      <strong>Deliver to</strong>
-                      <span>
-                        {currentAddress?.address} <KeyboardArrowDownIcon />
-                      </span>
+              {!matches && (
+                <Grid item xs={0} sm={5} md={5} lg={4}>
+                  <Box width={"100%"} alignItems={"center"} display={"flex"}>
+                    <Box className="logo">
+                      <Link to={"/"}>
+                        <img src={Logo} alt="Promode Agro Farms" />
+                      </Link>
                     </Box>
-                  )}
-                </Box>
-              </Grid>
-              <Grid item xs={6} sm={6} md={6}>
+                    {currentAddress?.address && loginDetails()?.userId && (
+                      <Box
+                        className="deliver-box"
+                        onClick={() =>
+                          this.props.navigate("/my-profile/manage-addresses")
+                        }
+                      >
+                        <strong>Deliver to</strong>
+                        <span>
+                          {currentAddress?.address} <KeyboardArrowDownIcon />
+                        </span>
+                      </Box>
+                    )}
+                  </Box>
+                </Grid>
+              )}
+              <Grid item xs={9} sm={4} md={4} lg={6}>
                 <Box className="search-box">
                   <SearchResults cartItemsData={cartList} />
                 </Box>
               </Grid>
-              <Grid item xs={6} sm={2} md={2}>
+              <Grid item xs={3} sm={3} md={3} lg={2}>
                 <Box
                   width={"100%"}
                   display={"flex"}
@@ -269,6 +273,16 @@ class Header extends Component {
                       <img src={cardIcon} alt="Shopping" /> <span>Cart</span>
                     </Link>
                   </Box>
+                  {matches && (
+                    <Box
+                      className="profile-icon"
+                      onClick={() =>
+                        this.props.navigate("/my-profile/manage-addresses")
+                      }
+                    >
+                      <AccountCircleOutlinedIcon />
+                    </Box>
+                  )}
                 </Box>
               </Grid>
             </Grid>
@@ -290,6 +304,20 @@ class Header extends Component {
             }}
           />
         </Box>
+        {matches && (
+          <>
+            {currentAddress?.address && loginDetails()?.userId && (
+              <Box
+                className="mobile-deliver-box"
+                onClick={() =>
+                  this.props.navigate("/my-profile/manage-addresses")
+                }
+              >
+                {currentAddress?.address} <KeyboardArrowDownIcon />
+              </Box>
+            )}
+          </>
+        )}
         {path === "/" ? (
           <></>
         ) : (

@@ -332,3 +332,9 @@ button {
     color: #1f9151;
   }
 }
+
+@media (max-width: 600px) {
+  .main-container {
+    padding-top: 124px;
+  }
+}
