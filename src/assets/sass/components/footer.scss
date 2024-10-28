@@ -148,13 +148,13 @@
     padding-bottom: 15px;
     align-items: center;
     border-top: 1px solid #333333;
-    .copyright{
+    .copyright {
       color: #808080;
       font-size: 12px;
       line-height: 20px;
       font-weight: 400;
     }
-    .cards{
+    .cards {
       display: flex;
       width: 100%;
       align-items: center;
@@ -162,6 +162,29 @@
       span {
         margin-left: 10px;
       }
+    }
+  }
+}
+
+@media (max-width: 1150px) {
+  .newsletter-container {
+    .socials-links {
+      justify-content: flex-start;
+      a {
+        margin-right: 5px;
+        margin-left: 0px;
+      }
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .footer {
+    .footer-about-text {
+      margin-bottom: 20px;
+    }
+    .footer-bottom {
+      display: none;
     }
   }
 }

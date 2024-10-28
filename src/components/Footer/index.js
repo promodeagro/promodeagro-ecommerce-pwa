@@ -28,7 +28,7 @@ const Footer = () => {
       <Box className="newsletter-container">
         <Container>
           <Grid container spacing={2} alignItems={"center"}>
-            <Grid item xs={12} sm={12} md={5}>
+            <Grid item xs={12} sm={6} md={6} lg={5}>
               <Box className="contents">
                 <h4>Subcribe our Newsletter</h4>
                 <p>
@@ -37,7 +37,7 @@ const Footer = () => {
                 </p>
               </Box>
             </Grid>
-            <Grid item xs={12} sm={12} md={5}>
+            <Grid item xs={12} sm={6} md={6} lg={5}>
               <Box className="newsletter-box">
                 <TextField
                   id="outlined-search"
@@ -50,7 +50,7 @@ const Footer = () => {
                 </Button>
               </Box>
             </Grid>
-            <Grid item xs={12} sm={12} md={2}>
+            <Grid item xs={12} sm={12} md={12} lg={2}>
               <Box className="socials-links">
                 <a href="#">
                   <FacebookOutlinedIcon />
@@ -95,7 +95,7 @@ const Footer = () => {
             <Grid item xs={12} sm={12} md={8}>
               <Grid container spacing={2}>
                 {login?.userId && (
-                  <Grid item xs={4} sm={3} md={3}>
+                  <Grid item xs={6} sm={3} md={3}>
                     <Box className="footer-links">
                       <h3>My Account</h3>
                       <ul>
@@ -132,7 +132,7 @@ const Footer = () => {
                     </Box>
                   </Grid>
                 )}
-                <Grid item xs={4} sm={3} md={3}>
+                <Grid item xs={6} sm={3} md={3}>
                   <Box className="footer-links">
                     <h3>Helps</h3>
                     <ul>
@@ -159,7 +159,7 @@ const Footer = () => {
                     </ul>
                   </Box>
                 </Grid>
-                <Grid item xs={4} sm={3} md={3}>
+                <Grid item xs={6} sm={3} md={3}>
                   <Box className="footer-links">
                     <h3>Proxy</h3>
                     <ul>
@@ -185,7 +185,7 @@ const Footer = () => {
                     </ul>
                   </Box>
                 </Grid>
-                <Grid item xs={4} sm={3} md={3}>
+                <Grid item xs={6} sm={3} md={3}>
                   <Box className="footer-links">
                     <h3>Categories</h3>
                     <ul>
