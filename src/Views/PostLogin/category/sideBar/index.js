@@ -75,9 +75,7 @@ class SideBar extends Component {
   render() {
     return (
       <Box className="sidebar">
-        <Box className="sub-categories">
-          <Container>{this.renderCategories()}</Container>
-        </Box>
+        <Box className="sub-categories">{this.renderCategories()}</Box>
       </Box>
     );
   }

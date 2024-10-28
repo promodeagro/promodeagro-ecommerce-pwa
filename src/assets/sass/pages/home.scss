@@ -893,6 +893,21 @@
   }
 }
 
+@media screen and (min-width: 600px) and (max-width: 1150px) {
+  .shop-categories-container {
+    padding-bottom: 15px;
+    .categories {
+      flex-wrap: wrap;
+      .special-category-box {
+        margin-bottom: 15px;
+      }
+      .category-box {
+        margin-bottom: 15px;
+      }
+    }
+  }
+}
+
 @media only screen and (max-width: 600px) {
   .main-banner-container {
     .banner-contents {

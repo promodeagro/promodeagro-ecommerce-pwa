@@ -19,7 +19,8 @@ import { fetchDefaultAddress } from "../../Redux/Address/AddressThunk";
 import { fetchCartItems } from "../../Redux/Cart/CartThunk";
 import AuthModal from "components/ModalLogin/LoginModal";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 
 class Header extends Component {
   constructor(props) {
@@ -236,6 +237,14 @@ class Header extends Component {
               )}
               <Grid item xs={9} sm={4} md={4} lg={6}>
                 <Box className="search-box">
+                  <Box
+                    className="back-button"
+                    onClick={() =>
+                      this.props.navigate("/")
+                    }
+                  >
+                    <ArrowBackIosNewOutlinedIcon />
+                  </Box>
                   <SearchResults cartItemsData={cartList} />
                 </Box>
               </Grid>
