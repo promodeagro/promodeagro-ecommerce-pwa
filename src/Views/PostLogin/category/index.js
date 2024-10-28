@@ -519,9 +519,12 @@ function Category(props) {
 
   return (
     <Box className="main-container categories">
+      <Box className="current-category">
+        {subcategory ? subcategory : category}
+      </Box>
       <Container>
         <Grid container spacing={2} alignItems={"flex-start"}>
-          <Grid item xs={12} sm={12} md={3} lg={3}>
+          <Grid item xs={4} sm={3} md={2} lg={2}>
             <SideBar
               onFilterChange={handleFilterChange}
               toggleFilter={toggleFilter}
@@ -536,7 +539,7 @@ function Category(props) {
               categories={categories}
             />
           </Grid>
-          <Grid item xs={12} sm={12} md={9} lg={9}>
+          <Grid item xs={8} sm={9} md={10} lg={10}>
             {APIDataLoaded ? (
               Loader.commonLoader()
             ) : (
@@ -574,7 +577,6 @@ function Category(props) {
           </Grid>
         </Grid>
       </Container>
-      {/* <RecentlyViewedItems /> */}
     </Box>
   );
 }

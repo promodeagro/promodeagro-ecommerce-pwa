@@ -7,10 +7,18 @@ import noImage from "../../../../../assets/img/no-image.png";
 class ShopByCategories extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      matches: window.matchMedia("(max-width: 600px)").matches,
+    };
+  }
+  componentDidMount() {
+    window
+      .matchMedia("(max-width: 600px)")
+      .addEventListener("change", (e) => this.setState({ matches: e.matches }));
   }
 
   render() {
+    const { matches } = this.state;
     const { categories } = this.props;
 
     return (
@@ -55,6 +63,11 @@ class ShopByCategories extends Component {
               })
             ) : (
               <></>
+            )}
+            {matches && (
+              <Box className="view-all-link">
+                <Link to={"/category"}>View All</Link>
+              </Box>
             )}
           </Box>
         </Container>
