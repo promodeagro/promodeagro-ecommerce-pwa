@@ -34,7 +34,9 @@ class ShopByCategories extends Component {
                     }
                   >
                     <Box className="image">
-                      <Link to={`category/${item?.CategoryName}`}>
+                      <Link
+                        to={`category/${item?.CategoryName}/${item?.Subcategories[0]?.name}`}
+                      >
                         <img
                           src={item?.image_url ? item?.image_url : noImage}
                           alt=""
@@ -42,7 +44,9 @@ class ShopByCategories extends Component {
                       </Link>
                     </Box>
                     <Box className="name">
-                      <Link to={`category/${item?.CategoryName}`}>
+                      <Link
+                        to={`category/${item?.CategoryName}/${item?.Subcategories[0]?.name}`}
+                      >
                         {item?.CategoryName}
                       </Link>
                     </Box>

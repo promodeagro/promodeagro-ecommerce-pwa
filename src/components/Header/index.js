@@ -66,7 +66,7 @@ class Header extends Component {
 
     let path = window.location.pathname;
     if (
-      this.state.currentPathName != window.location.pathname &&
+      this.state.currentPathName !== window.location.pathname &&
       !window.location.pathname.includes(this.state.pathId)
     ) {
       if (path.includes("updated-address") || path.includes("order-placed")) {
@@ -83,7 +83,7 @@ class Header extends Component {
         currentPathName: window.location.pathname,
       });
     } else if (
-      this.state.currentPathName != window.location.pathname &&
+      this.state.currentPathName !== window.location.pathname &&
       loginDetails()?.userId
     ) {
       this.setState({
@@ -180,15 +180,12 @@ class Header extends Component {
       <ul>
         {categories?.length ? (
           categories?.map((item, index) => {
-            const categoryPath = `/category/${item?.CategoryName.replaceAll(
-              " ",
-              "%20"
-            )}`;
-            const isActive = currentPathName === categoryPath;
+            const categoryPath = `${currentPathName.replaceAll("%20", " ")}`;
+            const isActive = categoryPath.includes(item?.CategoryName);
             return (
               <li>
                 <Link
-                  to={`/category/${item?.CategoryName}`}
+                  to={`/category/${item?.CategoryName}/${item?.Subcategories[0]?.name}`}
                   className={isActive ? "active" : ""}
                 >
                   {item?.CategoryName}

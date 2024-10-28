@@ -34,7 +34,7 @@ class SideBar extends Component {
   }
 
   renderCategories = () => {
-    const { categories, category } = this.props;
+    const { categories, category, subcategory } = this.props;
 
     const selectedCategory = categories?.data?.find(
       (item) => item?.CategoryName === category
@@ -49,7 +49,8 @@ class SideBar extends Component {
               " ",
               "%20"
             )}/${subcat.name.replaceAll(" ", "%20")}`;
-            const isActive = currentPath === subcatPath;
+            const isActive = subcategory === subcat?.name;
+
             return (
               <li key={index}>
                 <Link to={subcatPath} className={isActive ? "active" : ""}>

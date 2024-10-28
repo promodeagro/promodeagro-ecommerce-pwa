@@ -232,7 +232,7 @@ function Category(props) {
 
   useEffect(() => {
     if (
-      props.productBySubCategoryData?.status == status?.SUCCESS &&
+      props.productBySubCategoryData?.status === status?.SUCCESS &&
       subCategoryApiLoader
     ) {
       setSubCatergoryLoader(false);
@@ -268,7 +268,7 @@ function Category(props) {
 
   useEffect(() => {
     if (
-      props.productByCategoryData?.status == status.SUCCESS &&
+      props.productByCategoryData?.status === status.SUCCESS &&
       categoryApiLoader
     ) {
       setAPIDataLoaded(false);
@@ -296,7 +296,7 @@ function Category(props) {
         ErrorMessages.error(props.productByCategoryData?.data?.message);
       }
     } else if (
-      props.productByCategoryData?.status == status.FAILURE &&
+      props.productByCategoryData?.status === status.FAILURE &&
       categoryApiLoader
     ) {
       setAPIDataLoaded(false);
