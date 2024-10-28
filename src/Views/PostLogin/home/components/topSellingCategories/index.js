@@ -5,88 +5,107 @@ import priceIcon from "../../../../../assets/img/price-icon.png";
 import EastOutlinedIcon from "@mui/icons-material/EastOutlined";
 import { Link } from "react-router-dom";
 import All from "./Components/All";
+import status from "../../../../../Redux/Constants";
+import { getAllProductWithCategory } from "../../../../../Redux/AllProducts/AllProductthunk";
+import { connect } from "react-redux";
+import { Loader } from "Views/Utills/helperFunctions";
 
 class TopSellingCategories extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      loading: false,
+      productItems: [],
+    };
+  }
+
+  componentDidMount() {
+    this.props.getAllProductWithCategory();
+    this.setState({ loading: true });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.allProductWithCategory.status !==
+      this.props.allProductWithCategory.status
+    ) {
+      if (
+        this.props.allProductWithCategory.status === status.SUCCESS ||
+        this.props.allProductWithCategory.status === status.FAILURE
+      ) {
+        this.setState({
+          loading: false,
+          productItems: this.props.allProductWithCategory.data,
+        });
+      }
+    }
   }
 
   apiCalls = () => {
     this.props.apiCalls();
   };
 
-  render() {
+  renderProductWithCategory = () => {
+    const { productItems } = this.state;
     const {
       topSellingProductsList,
       topSellingApiLoader,
       topSellCategoriesList,
     } = this.props;
-
-    const filteredBengaliVegetablesProducts = topSellingProductsList?.filter(
-      (product) => product.category === "Bengali Special"
+    return (
+      <>
+        <Box className="selling-categories">
+          {productItems.map((calegoryItem) => {
+            return (
+              <>
+                <Box className="heading">
+                  <h2>{calegoryItem?.category}</h2>
+                  <Link to={"/category"}>
+                    View All <EastOutlinedIcon />
+                  </Link>
+                </Box>
+                <All
+                  productImg={productImg}
+                  priceIcon={priceIcon}
+                  topSellingProductsList={calegoryItem?.items}
+                  topSellingApiLoader={topSellingApiLoader}
+                  apiCalls={this.apiCalls}
+                />
+              </>
+            );
+          })}
+        </Box>
+      </>
     );
+  };
 
-    const filteredFreshFruitsProducts = topSellingProductsList?.filter(
-      (product) => product.category === "Fresh Fruits"
-    );
-
-    const filteredNewArrivalProducts = topSellingProductsList?.filter(
-      (product) => product.category === "Eggs Meat & Fish"
-    );
-
+  render() {
     return (
       <Box className="top-selling-categories-container">
         <Container>
-          <Box className="selling-categories">
-            <Box className="heading">
-              <h2>{"Bengali Vegetables"}</h2>
-              <Link to={"/category"}>
-                View All <EastOutlinedIcon />
-              </Link>
-            </Box>
-            <All
-              productImg={productImg}
-              priceIcon={priceIcon}
-              topSellingProductsList={filteredBengaliVegetablesProducts}
-              topSellingApiLoader={topSellingApiLoader}
-              apiCalls={this.apiCalls}
-            />
-          </Box>
-          <Box className="selling-categories">
-            <Box className="heading">
-              <h2>{"Fresh Fruits"}</h2>
-              <Link to={"/category"}>
-                View All <EastOutlinedIcon />
-              </Link>
-            </Box>
-            <All
-              productImg={productImg}
-              priceIcon={priceIcon}
-              topSellingProductsList={filteredFreshFruitsProducts}
-              topSellingApiLoader={topSellingApiLoader}
-              apiCalls={this.apiCalls}
-            />
-          </Box>
-          <Box className="selling-categories">
-            <Box className="heading">
-              <h2>{"New Arrival"}</h2>
-              <Link to={"/category"}>
-                View All <EastOutlinedIcon />
-              </Link>
-            </Box>
-            <All
-              productImg={productImg}
-              priceIcon={priceIcon}
-              topSellingProductsList={filteredNewArrivalProducts}
-              topSellingApiLoader={topSellingApiLoader}
-              apiCalls={this.apiCalls}
-            />
-          </Box>
+          {this.state.loading
+            ? Loader.commonLoader()
+            : this.renderProductWithCategory()}
         </Container>
       </Box>
     );
   }
 }
 
-export default React.memo(TopSellingCategories);
+function mapStateToProps(state) {
+  const { allProductWithCategory } = state.allproducts;
+  const { personalDetailsData } = state.login;
+  return {
+    allProductWithCategory,
+    personalDetailsData,
+  };
+}
+
+const mapDispatchToProps = {
+  getAllProductWithCategory,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TopSellingCategories);

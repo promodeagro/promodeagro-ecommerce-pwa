@@ -43,6 +43,7 @@ const Config = {
   SAVE_FOR_LATER: `${BASE_URL}/SaveForLater`,
   UPDATE_PRODUCT_PRICE: `${BASE_URL}/updatePriceByQty`,
   CANCLE_ORDER: `${BASE_URL}/cancleorder`,
+  All_PRODUCT_WITH_CATEGORY: `${BASE_URL}/homePageProducts`
   
 };
 

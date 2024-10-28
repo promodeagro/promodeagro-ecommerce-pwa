@@ -15,6 +15,7 @@ import {
   fetchAllOffers,
   addProductReview,
   saveForLater,
+  getAllProductWithCategory,
 } from "./AllProductthunk";
 import status from "./../Constants";
 
@@ -68,6 +69,9 @@ const AllProductsSlice = createSlice({
     saveForLaterData: {
       status: null,
     },
+    allProductWithCategory: {
+      status: null,
+    },
   },
   reducers: {
     productDetailsData: (state, action) => {
@@ -84,6 +88,32 @@ const AllProductsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(getAllProductWithCategory.pending.toString(), (state, action) => {
+        return {
+          ...state,
+          allProductWithCategory: {
+            status: status.IN_PROGRESS,
+          },
+        };
+      })
+      .addCase(getAllProductWithCategory.fulfilled.toString(), (state, { payload }) => {
+        return {
+          ...state,
+          allProductWithCategory: {
+            status: status.SUCCESS,
+            data: payload,
+          },
+        };
+      })
+      .addCase(getAllProductWithCategory.rejected.toString(), (state, action) => {
+        return {
+          ...state,
+          allProductWithCategory: {
+            status: status.FAILURE,
+          },
+        };
+      })
+
       .addCase(allProducts.pending.toString(), (state, action) => {
         return {
           ...state,

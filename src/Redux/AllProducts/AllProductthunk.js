@@ -251,3 +251,17 @@ export const addProductReview = createAsyncThunk(
     }
   }
 );
+
+export const getAllProductWithCategory = createAsyncThunk(
+  "allProductWithCategory",
+  async (params) => {
+    try {
+      let url = config.All_PRODUCT_WITH_CATEGORY;
+
+      const response = await postLoginService.get(url);
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
