@@ -256,31 +256,17 @@ class All extends Component {
               topSellingProductsList?.map((item) => {
                 let prices = unitIdPrices.find((d) => d.id === item.id);
                 return (
-                  <Box className="product-box" key={item.id}>
+                  <Box
+                    className={
+                      !item?.availability ? "product-box hide" : "product-box"
+                    }
+                    key={item.id}
+                  >
                     {item?.savingsPercentage != 0 ? (
                       <Box className="sale">Off {item?.savingsPercentage}%</Box>
                     ) : (
                       <></>
                     )}
-
-                    {/* {loginDetails()?.userId ? (
-                      <Box
-                        className="icon"
-                        onClick={(event) => {
-                          event.preventDefault();
-                          this.handleWishList(item.id, item?.inWishlist);
-                        }}
-                      >
-                        {item?.inWishlist ? (
-                          <BookmarkOutlinedIcon />
-                        ) : (
-                          <TurnedInNotOutlinedIcon />
-                        )}
-                      </Box>
-                    ) : (
-                      <></>
-                    )} */}
-
                     <Box
                       className="image"
                       onClick={() => {

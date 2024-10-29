@@ -169,35 +169,13 @@ class List extends Component {
         let prices = unitIdPrices.find((d) => d.id === item.id);
         return (
           <Box
-            className={
-              this.props.hideFilter
-                ? "product-box hide-filter-box"
-                : "product-box"
-            }
+            className={!item?.availability ? "product-box hide" : "product-box"}
             key={item?.id}
             onContextMenu={this.handleContextMenu}
           >
             {item?.savingsPercentage != 0 && (
               <Box className="sale">Sale {item?.savingsPercentage}%</Box>
             )}
-
-            {/* {loginDetails()?.userId ? (
-              <Box
-                className="icon"
-                onClick={(event) => {
-                  event.preventDefault();
-                  this.handleWishList(item?.id, item?.inWishlist);
-                }}
-              >
-                {item?.inWishlist ? (
-                  <BookmarkOutlinedIcon />
-                ) : (
-                  <TurnedInNotOutlinedIcon />
-                )}
-              </Box>
-            ) : (
-              <></>
-            )} */}
 
             <Box
               className="image"
@@ -207,9 +185,7 @@ class List extends Component {
                 );
               }}
             >
-              {/* <Link to={`/product-details/${item.id}`}> */}
               <img src={item?.image ? item?.image : noImage} alt={item?.name} />
-              {/* </Link> */}
             </Box>
             <Box
               className="name"
@@ -221,33 +197,30 @@ class List extends Component {
             >
               <Link>{item?.name}</Link>
             </Box>
-
-            <>
-              {item?.unitPrices?.length > 0 ? (
-                <Box className="select">
-                  <select
-                    value={
-                      qauntityUnits[item?.id] ||
-                      item?.cartItem?.QuantityUnits ||
-                      ""
-                    }
-                    onChange={(event) =>
-                      this.handleQuantity(event, item, addedProducts)
-                    }
-                  >
-                    {item?.unitPrices.map((unitItem, index) => {
-                      return (
-                        <option key={index} value={unitItem.qty}>
-                          {unitItem.qty} {item?.unit}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </Box>
-              ) : (
-                <Box className="select">{item?.unit}</Box>
-              )}
-            </>
+            {item?.unitPrices?.length > 0 ? (
+              <Box className="select">
+                <select
+                  value={
+                    qauntityUnits[item?.id] ||
+                    item?.cartItem?.QuantityUnits ||
+                    ""
+                  }
+                  onChange={(event) =>
+                    this.handleQuantity(event, item, addedProducts)
+                  }
+                >
+                  {item?.unitPrices.map((unitItem, index) => {
+                    return (
+                      <option key={index} value={unitItem.qty}>
+                        {unitItem.qty} {item?.unit}
+                      </option>
+                    );
+                  })}
+                </select>
+              </Box>
+            ) : (
+              <Box className="select">{item?.unit}</Box>
+            )}
             <Box className="price-cart">
               <Box className="price">
                 <strong>
@@ -365,19 +338,6 @@ class List extends Component {
                       this.setState({ isUpdateIncrease: true });
                       this.handleAddToCart(item?.id, unitqty);
                     }}
-                    // disabled={
-                    //   (this.props.additems.status === status.IN_PROGRESS &&
-                    //     item?.id === this.state.dataId) ||
-                    //   !item?.availability
-                    // }
-                    // endIcon={
-                    //   this.props.additems.status == status.IN_PROGRESS &&
-                    //   item?.id == this.state?.dataId ? (
-                    //     <CircularProgress className="common-loader" />
-                    //   ) : (
-                    //     <></>
-                    //   )
-                    // }
                   >
                     {item?.availability ? "Add" : "Out"}
                   </Button>

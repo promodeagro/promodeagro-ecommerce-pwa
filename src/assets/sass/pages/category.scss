@@ -167,6 +167,10 @@
         margin-right: 0;
       }
 
+      &.hide{
+        opacity: 0.6;
+      }
+
       .sale {
         position: absolute;
         left: 0;

@@ -693,6 +693,9 @@
     border-radius: 10px;
     border: 1px solid #e6e6e6;
     position: relative;
+    &.hide {
+      opacity: 0.6;
+    }
 
     .sale {
       position: absolute;

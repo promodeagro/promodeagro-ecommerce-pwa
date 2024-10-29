@@ -544,6 +544,10 @@
     border: 1px solid #e6e6e6;
     position: relative;
 
+    &.hide{
+      opacity: 0.6;
+    }
+
     .sale {
       position: absolute;
       left: 0;
@@ -764,6 +768,7 @@
 @media only screen and (max-width: 600px) {
   .details-container {
     .product-images {
+      margin-bottom: 10px;
       .big-image {
         height: 250px;
         img {
