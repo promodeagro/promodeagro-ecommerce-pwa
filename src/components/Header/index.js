@@ -239,8 +239,10 @@ class Header extends Component {
               <Grid item xs={9} sm={4} md={4} lg={6}>
                 <Box className="search-box">
                   <Box
-                    className="back-button"
                     onClick={() => this.props.navigate("/")}
+                    className={`back-button ${
+                      currentPathName === "/" ? "none" : ""
+                    }`}
                   >
                     <ArrowBackIosNewOutlinedIcon />
                   </Box>
@@ -295,22 +297,6 @@ class Header extends Component {
               </Grid>
             </Grid>
           </Container>
-          <AuthModal
-            open={this.state.authModalOpen}
-            handleDefaultAddress={() => {
-              this.props.fetchCategories();
-              this.props.fetchDefaultAddress(loginDetails()?.userId);
-              this.props.fetchPersonalDetails({
-                userId: loginDetails()?.userId,
-              });
-              this.props.navigate(0);
-            }}
-            handleClose={() => {
-              this.setState({
-                authModalOpen: false,
-              });
-            }}
-          />
         </Box>
         {matches && (
           <>
@@ -333,6 +319,22 @@ class Header extends Component {
         >
           <Container>{this.renderCategories()}</Container>
         </Box>
+        <AuthModal
+          open={this.state.authModalOpen}
+          handleDefaultAddress={() => {
+            this.props.fetchCategories();
+            this.props.fetchDefaultAddress(loginDetails()?.userId);
+            this.props.fetchPersonalDetails({
+              userId: loginDetails()?.userId,
+            });
+            this.props.navigate(0);
+          }}
+          handleClose={() => {
+            this.setState({
+              authModalOpen: false,
+            });
+          }}
+        />
       </>
     );
   }

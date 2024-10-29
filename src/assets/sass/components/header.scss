@@ -430,12 +430,17 @@
       color: #ffffff;
       margin-left: 15px;
     }
-    .back-button {
-      color: #ffffff;
-      display: inline-flex;
-      align-items: center;
-      width: 40px;
-      height: 40px;
+    .search-box {
+      .back-button {
+        color: #ffffff;
+        display: inline-flex;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+        &.none {
+          display: none;
+        }
+      }
     }
   }
   .mobile-deliver-box {
@@ -455,6 +460,8 @@
     background-color: #1f9151;
   }
   .categories-container {
-    display: none;
+    &.category {
+      display: none;
+    }
   }
 }

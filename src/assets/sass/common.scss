@@ -335,6 +335,12 @@ button {
 
 @media (max-width: 600px) {
   .main-container {
+    padding-top: 84px;
+    &.categories {
+      padding-top: 114px;
+    }
+  }
+  .mobile-deliver-box + .categories-container + .main-container {
     padding-top: 124px;
     &.categories {
       padding-top: 154px;
