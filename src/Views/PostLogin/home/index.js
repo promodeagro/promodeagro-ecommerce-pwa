@@ -42,7 +42,7 @@ class Home extends Component {
       topSellingProductsList: [],
       topSellCategoriesList: [],
       allOffersList: [],
-    categories:[]
+      categories: [],
     };
   }
   componentDidMount() {
@@ -79,8 +79,8 @@ class Home extends Component {
     ) {
       if (this.props.allCategories.data.statusCode === 200) {
         this.setState({
-          categories:this.props.allCategories.data.data
-        })
+          categories: this.props.allCategories.data.data,
+        });
       } else {
         ErrorMessages.error(this.props?.allCategories?.data?.message);
       }
@@ -265,8 +265,8 @@ class Home extends Component {
           Loader.commonLoader()
         ) : (
           <>
-            <MainBanner   allOffersList={allOffersList} />
-            <ShopByCategories   categories={this.state.categories}/>
+            <MainBanner allOffersList={allOffersList} />
+            <ShopByCategories categories={this.state.categories} />
             <TopSellingCategories
               topSellingApiLoader={this.state.topSellingApiLoader}
               topSellingProductsList={topSellingProductsList}
