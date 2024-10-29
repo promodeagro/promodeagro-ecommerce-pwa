@@ -16,10 +16,14 @@ class SimilarProducts extends Component {
     this.state = {
       loading: false,
       productItems: [],
+      matches: window.matchMedia("(max-width: 600px)").matches,
     };
   }
 
   componentDidMount() {
+    window
+      .matchMedia("(max-width: 600px)")
+      .addEventListener("change", (e) => this.setState({ matches: e.matches }));
     this.props.getAllProductWithCategory();
     this.setState({ loading: true });
   }
@@ -46,14 +50,16 @@ class SimilarProducts extends Component {
   };
 
   renderProductWithCategory = () => {
-    const { productItems } = this.state;
+    const { productItems, matches } = this.state;
     const { topSellingApiLoader } = this.props;
     return (
       <>
         {productItems.map((categoryItem) => {
           if (
-            categoryItem.category === "Fresh Fruits" ||
-            categoryItem.category === "Fresh Vegetables"
+            matches
+              ? categoryItem.category === "Fresh Fruits"
+              : categoryItem.category === "Fresh Fruits" ||
+                categoryItem.category === "Fresh Vegetables"
           ) {
             return (
               <Box className="selling-categories" key={categoryItem.category}>

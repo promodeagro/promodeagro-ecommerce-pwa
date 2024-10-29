@@ -78,9 +78,13 @@ class ProductDetails extends Component {
       topSellingProductsList: [],
       topSellCategoriesList: [],
       isShareOpen: false,
+      matches: window.matchMedia("(max-width: 600px)").matches,
     };
   }
   componentDidMount() {
+    window
+      .matchMedia("(max-width: 600px)")
+      .addEventListener("change", (e) => this.setState({ matches: e.matches }));
     const items = loginDetails();
     this.setState({
       pathName: window.location.pathname,
@@ -393,7 +397,7 @@ class ProductDetails extends Component {
   }
 
   toggleShareMenu = () => {
-    this.setState(prevState => ({ isShareOpen: !prevState.isShareOpen }));
+    this.setState((prevState) => ({ isShareOpen: !prevState.isShareOpen }));
   };
 
   render() {
@@ -406,7 +410,8 @@ class ProductDetails extends Component {
       quantityUnitPrice,
       topSellingProductsList,
       topSellCategoriesList,
-      isShareOpen 
+      isShareOpen,
+      matches,
     } = this.state;
 
     return (
@@ -419,7 +424,7 @@ class ProductDetails extends Component {
               <Container>
                 <Box className="details-container">
                   <Grid container spacing={2}>
-                    <Grid item xs={12} sm={12} md={5} lg={5}>
+                    <Grid item xs={12} sm={6} md={5} lg={5}>
                       <Box className="product-images">
                         <Box className="big-image">
                           <Zoom>
@@ -430,7 +435,6 @@ class ProductDetails extends Component {
                                   ? currentSelectedImage
                                   : noImage
                               }
-                              width="500"
                             />
                           </Zoom>
                         </Box>
@@ -463,91 +467,99 @@ class ProductDetails extends Component {
                           </ul>
                         </Box> */}
                       </Box>
-                      <Box className="product-description">
-                        <h3>About Product</h3>
-                        <p>{productItem?.description}</p>
-                      </Box>
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={7} lg={7}>
-                      <Box className="product-info">
-                        <Box className="breadcrum">
-                          <ul>
-                            <li>
-                              <Link to="/">Hone</Link>
-                            </li>
-                            <li>
-                              <span>/</span>
-                            </li>
-                            <li>
-                              <Link
-                                to={`/category/${productItem?.category}/${productItem?.subCategory}`}
-                              >
-                                {productItem?.category}
-                              </Link>
-                            </li>
-                            <li>
-                              <span>/</span>
-                            </li>
-                            <li>
-                              <strong>{productItem?.name}</strong>
-                            </li>
-                          </ul>
+                      {!matches && (
+                        <Box className="product-description">
+                          <h3>About Product</h3>
+                          <p>{productItem?.description}</p>
                         </Box>
+                      )}
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={7} lg={7}>
+                      <Box className="product-info">
+                        {!matches && (
+                          <Box className="breadcrum">
+                            <ul>
+                              <li>
+                                <Link to="/">Hone</Link>
+                              </li>
+                              <li>
+                                <span>/</span>
+                              </li>
+                              <li>
+                                <Link
+                                  to={`/category/${productItem?.category}/${productItem?.subCategory}`}
+                                >
+                                  {productItem?.category}
+                                </Link>
+                              </li>
+                              <li>
+                                <span>/</span>
+                              </li>
+                              <li>
+                                <strong>{productItem?.name}</strong>
+                              </li>
+                            </ul>
+                          </Box>
+                        )}
                         <Box className="product-name">
                           <span>{productItem?.name}</span>
                           <Box className="share-icon">
                             <ShareOutlinedIcon onClick={this.toggleShareMenu} />
                             {isShareOpen && (
-                            <ul>
-                              <li>
-                                <FacebookShareButton
-                                  url={`https://promodeagro.com/product-details/${productItem?.category}/${productItem?.subCategory}/${productItem?.id}`}
-                                  quote={"find best products"}
-                                  hashtag={`share your thoughts about ${productItem?.subCategory}`}
-                                >
-                                  <FacebookIcon size={20} round={true} /> Facebook
-                                </FacebookShareButton>
-                              </li>
-                              <li>
-                                <WhatsappShareButton
-                                  source={window.location.href}
-                                  url={`https://promodeagro.com/product-details/${
-                                    productItem?.category
-                                  }/${productItem?.subCategory?.replace(
-                                    " ",
-                                    "%20"
-                                  )}/${productItem?.id}`}
-                                  quote={"find best products"}
-                                  hashtag={`share your thoughts about ${productItem?.subCategory}`}
-                                >
-                                  <WhatsappIcon size={20} round={true} /> WhatsApp
-                                </WhatsappShareButton>
-                              </li>
-                              <li>
-                                <TwitterShareButton
-                                  url={`https://promodeagro.com/product-details/${productItem?.category}/${productItem?.subCategory}/${productItem?.id}`}
-                                  quote={"Find |Best Products"}
-                                  hashtag={`Share Yours Thoughts About ${productItem?.subCategory}`}
-                                >
-                                  <TwitterIcon size={20} round={true} /> Twitter
-                                </TwitterShareButton>
-                              </li>
-                              <li>
-                                <TelegramShareButton
-                                  title={productItem?.subCategory}
-                                  url={`https://promodeagro.com/product-details/${
-                                    productItem?.category
-                                  }/${productItem?.subCategory?.replace(
-                                    " ",
-                                    "%20"
-                                  )}/${productItem?.id}`}
-                                  quote={"Find |Best Products"}
-                                  hashtag={`Share Yours Thoughts About ${productItem?.subCategory}`}
-                                >
-                                  <TelegramIcon size={20} round={true} /> Telegram
-                                </TelegramShareButton>
-                              </li>
-                            </ul>
+                              <ul>
+                                <li>
+                                  <FacebookShareButton
+                                    url={`https://promodeagro.com/product-details/${productItem?.category}/${productItem?.subCategory}/${productItem?.id}`}
+                                    quote={"find best products"}
+                                    hashtag={`share your thoughts about ${productItem?.subCategory}`}
+                                  >
+                                    <FacebookIcon size={20} round={true} />{" "}
+                                    Facebook
+                                  </FacebookShareButton>
+                                </li>
+                                <li>
+                                  <WhatsappShareButton
+                                    source={window.location.href}
+                                    url={`https://promodeagro.com/product-details/${
+                                      productItem?.category
+                                    }/${productItem?.subCategory?.replace(
+                                      " ",
+                                      "%20"
+                                    )}/${productItem?.id}`}
+                                    quote={"find best products"}
+                                    hashtag={`share your thoughts about ${productItem?.subCategory}`}
+                                  >
+                                    <WhatsappIcon size={20} round={true} />{" "}
+                                    WhatsApp
+                                  </WhatsappShareButton>
+                                </li>
+                                <li>
+                                  <TwitterShareButton
+                                    url={`https://promodeagro.com/product-details/${productItem?.category}/${productItem?.subCategory}/${productItem?.id}`}
+                                    quote={"Find |Best Products"}
+                                    hashtag={`Share Yours Thoughts About ${productItem?.subCategory}`}
+                                  >
+                                    <TwitterIcon size={20} round={true} />{" "}
+                                    Twitter
+                                  </TwitterShareButton>
+                                </li>
+                                <li>
+                                  <TelegramShareButton
+                                    title={productItem?.subCategory}
+                                    url={`https://promodeagro.com/product-details/${
+                                      productItem?.category
+                                    }/${productItem?.subCategory?.replace(
+                                      " ",
+                                      "%20"
+                                    )}/${productItem?.id}`}
+                                    quote={"Find |Best Products"}
+                                    hashtag={`Share Yours Thoughts About ${productItem?.subCategory}`}
+                                  >
+                                    <TelegramIcon size={20} round={true} />{" "}
+                                    Telegram
+                                  </TelegramShareButton>
+                                </li>
+                              </ul>
                             )}
                           </Box>
                         </Box>
@@ -605,7 +617,7 @@ class ProductDetails extends Component {
                         )}
                         <Box className="product-cart-buttons">
                           <Grid container spacing={2}>
-                            <Grid item xs={12} sm={4} md={4} lg={4}>
+                            <Grid item xs={12} sm={8} md={6} lg={4}>
                               {productItem?.availability ? (
                                 <>
                                   {parseInt(itemQuantity) != 0 ? (
@@ -753,49 +765,51 @@ class ProductDetails extends Component {
                             </Grid>
                           </Grid>
                         </Box>
-                        <Box className="choose-promode">
-                          <h4>
-                            We choose <span>Promode Agro</span>
-                          </h4>
-                          <ul>
-                            <li>
-                              <Box className="image">
-                                <img src={deliveryTruck} alt="" />
-                              </Box>
-                              <Box className="contents">
-                                <strong>Free Shipping</strong>
-                                <p>Free shipping on all your order</p>
-                              </Box>
-                            </li>
-                            <li>
-                              <Box className="image">
-                                <img src={customerSupport} alt="" />
-                              </Box>
-                              <Box className="contents">
-                                <strong>Customer Support 24/7</strong>
-                                <p>Instant access to Support</p>
-                              </Box>
-                            </li>
-                            <li>
-                              <Box className="image">
-                                <img src={securePayment} alt="" />
-                              </Box>
-                              <Box className="contents">
-                                <strong>100% Secure Payment</strong>
-                                <p>We ensure your money is save</p>
-                              </Box>
-                            </li>
-                            <li>
-                              <Box className="image">
-                                <img src={moneyBack} alt="" />
-                              </Box>
-                              <Box className="contents">
-                                <strong>Money-Back Guarantee</strong>
-                                <p>Same Days Money-Back Guarantee</p>
-                              </Box>
-                            </li>
-                          </ul>
-                        </Box>
+                        {!matches && (
+                          <Box className="choose-promode">
+                            <h4>
+                              We choose <span>Promode Agro</span>
+                            </h4>
+                            <ul>
+                              <li>
+                                <Box className="image">
+                                  <img src={deliveryTruck} alt="" />
+                                </Box>
+                                <Box className="contents">
+                                  <strong>Free Shipping</strong>
+                                  <p>Free shipping on all your order</p>
+                                </Box>
+                              </li>
+                              <li>
+                                <Box className="image">
+                                  <img src={customerSupport} alt="" />
+                                </Box>
+                                <Box className="contents">
+                                  <strong>Customer Support 24/7</strong>
+                                  <p>Instant access to Support</p>
+                                </Box>
+                              </li>
+                              <li>
+                                <Box className="image">
+                                  <img src={securePayment} alt="" />
+                                </Box>
+                                <Box className="contents">
+                                  <strong>100% Secure Payment</strong>
+                                  <p>We ensure your money is save</p>
+                                </Box>
+                              </li>
+                              <li>
+                                <Box className="image">
+                                  <img src={moneyBack} alt="" />
+                                </Box>
+                                <Box className="contents">
+                                  <strong>Money-Back Guarantee</strong>
+                                  <p>Same Days Money-Back Guarantee</p>
+                                </Box>
+                              </li>
+                            </ul>
+                          </Box>
+                        )}
                       </Box>
                     </Grid>
                   </Grid>
@@ -807,6 +821,57 @@ class ProductDetails extends Component {
                   topSellCategoriesList={topSellCategoriesList}
                   apiCalls={this.apiCalls}
                 />
+                <Box className="details-container">
+                  {matches && (
+                    <Box className="product-description">
+                      <h4>About Product</h4>
+                      <p>{productItem?.description}</p>
+                    </Box>
+                  )}
+                  {matches && (
+                    <Box className="choose-promode">
+                      <h4>Why Choose us ?</h4>
+                      <ul>
+                        <li>
+                          <Box className="image">
+                            <img src={deliveryTruck} alt="" />
+                          </Box>
+                          <Box className="contents">
+                            <strong>Free Shipping</strong>
+                            <p>Delivery at your door step</p>
+                          </Box>
+                        </li>
+                        <li>
+                          <Box className="image">
+                            <img src={customerSupport} alt="" />
+                          </Box>
+                          <Box className="contents">
+                            <strong>On Time</strong>
+                            <p>Guarantee</p>
+                          </Box>
+                        </li>
+                        <li>
+                          <Box className="image">
+                            <img src={securePayment} alt="" />
+                          </Box>
+                          <Box className="contents">
+                            <strong>Easy Return</strong>
+                            <p>No Questions Asked</p>
+                          </Box>
+                        </li>
+                        <li>
+                          <Box className="image">
+                            <img src={moneyBack} alt="" />
+                          </Box>
+                          <Box className="contents">
+                            <strong>100% Organic </strong>
+                            <p>You can Trust</p>
+                          </Box>
+                        </li>
+                      </ul>
+                    </Box>
+                  )}
+                </Box>
               </Container>
             ) : (
               <p>No Item Found</p>
