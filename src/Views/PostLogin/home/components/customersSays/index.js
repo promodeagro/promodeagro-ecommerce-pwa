@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { Box, Container, Tooltip, Rating } from "@mui/material";
-import StarIcon from "@mui/icons-material/Star";
-import personImg from "../../../../../assets/img/person.png";
 import customerBg from "../../../../../assets/img/customer-bg.png";
 import saysReviewImg1 from "../../../../../assets/img/says-review-img1.png";
 import saysReviewImg2 from "../../../../../assets/img/says-review-img2.png";

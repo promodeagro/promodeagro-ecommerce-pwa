@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { Box, Container } from "@mui/material";
 import productImg from "../../../../assets/img/product-img.png";
 import priceIcon from "../../../../assets/img/price-icon.png";
-import EastOutlinedIcon from "@mui/icons-material/EastOutlined";
-import { Link } from "react-router-dom";
 import All from "./Components/All";
 import status from "../../../../Redux/Constants";
 import { getAllProductWithCategory } from "../../../../Redux/AllProducts/AllProductthunk";

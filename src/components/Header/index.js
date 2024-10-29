@@ -178,7 +178,7 @@ class Header extends Component {
   };
 
   renderCategories = () => {
-    const { categories, currentPathName } = this.state;
+    const { categories } = this.state;
     return (
       <ul>
         {categories?.length ? (
@@ -187,7 +187,7 @@ class Header extends Component {
             const isActive = window.location.pathname.split("/").includes(c);
 
             return (
-              <li>
+              <li key={index}>
                 <Link
                   to={`/category/${item?.CategoryName}/${item?.Subcategories[0]?.name}`}
                   className={isActive ? "active" : ""}
