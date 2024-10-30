@@ -16,6 +16,9 @@ class ShopByCategories extends Component {
       .matchMedia("(max-width: 600px)")
       .addEventListener("change", (e) => this.setState({ matches: e.matches }));
   }
+  scrollToTop = () => {
+    window.scrollTo(0, 0);
+  };
 
   render() {
     const { matches } = this.state;
@@ -26,7 +29,7 @@ class ShopByCategories extends Component {
         <Container>
           <Box className="heading">
             <h2>Shop by Categories</h2>
-            <Link to={"/category"}>
+            <Link to={"/category"} onClick={this.scrollToTop}>
               View All <EastOutlinedIcon />
             </Link>
           </Box>
@@ -44,6 +47,7 @@ class ShopByCategories extends Component {
                     <Box className="image">
                       <Link
                         to={`category/${item?.CategoryName}/${item?.Subcategories[0]?.name}`}
+                        onClick={this.scrollToTop}
                       >
                         <img
                           src={item?.image_url ? item?.image_url : noImage}
@@ -54,6 +58,7 @@ class ShopByCategories extends Component {
                     <Box className="name">
                       <Link
                         to={`category/${item?.CategoryName}/${item?.Subcategories[0]?.name}`}
+                        onClick={this.scrollToTop}
                       >
                         {item?.CategoryName}
                       </Link>

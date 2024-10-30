@@ -45,6 +45,10 @@ class TopSellingCategories extends Component {
     this.props.apiCalls();
   };
 
+  scrollToTop = () => {
+    window.scrollTo(0, 0);
+  };
+
   renderProductWithCategory = () => {
     const { productItems } = this.state;
     const {
@@ -59,7 +63,7 @@ class TopSellingCategories extends Component {
             <Box className="selling-categories">
               <Box className="heading">
                 <h2>{calegoryItem?.category}</h2>
-                <Link to={`/category/${calegoryItem?.category}/${calegoryItem?.subcategory}`}>
+                <Link to={`/category/${calegoryItem?.category}/${calegoryItem?.subcategory}`} onClick={this.scrollToTop}>
                   View All <EastOutlinedIcon />
                 </Link>
               </Box>
