@@ -1,33 +1,14 @@
 import React, { Component } from "react";
-import {
-  addItemToCart,
-  fetchCartItems,
-  updateItemToCart,
-  deleteItemToCart,
-} from "../../Redux/Cart/CartThunk";
-import { productDetailsData } from "../../Redux/AllProducts/AllProductSlice";
 import { connect } from "react-redux";
 import {
   Box,
-  FormControl,
-  NativeSelect,
   Button,
-  Grid,
-  CircularProgress,
 } from "@mui/material";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
-import StarIcon from "@mui/icons-material/Star";
-import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
-import priceIcon from "../../assets/img/price-icon.png";
 import noImage from "../../assets/img/no-image.png";
-import status from "../../Redux/Constants";
 import _ from "lodash";
 import { loginDetails } from "Views/Utills/helperFunctions";
 import { Link } from "react-router-dom";
-import {
-  deleteProductWishList,
-  setProductWishList,
-} from "../../Redux/AllProducts/AllProductthunk";
 
 import { fetchCategories } from "../../Redux/AllProducts/AllProductthunk";
 import { fetchDefaultAddress } from "../../Redux/Address/AddressThunk";
@@ -150,23 +131,6 @@ class ProductItemView extends Component {
                   <Box className="sale">Sale {item?.savingsPercentage}%</Box>
                 )}
 
-                {/* {loginDetails()?.userId ? (
-              <Box
-                className="icon"
-                onClick={(event) => {
-                  event.preventDefault();
-                  this.handleWishList(item?.id, item?.inWishlist);
-                }}
-              >
-                {item?.inWishlist ? (
-                  <BookmarkOutlinedIcon />
-                ) : (
-                  <TurnedInNotOutlinedIcon />
-                )}
-              </Box>
-            ) : (
-              <></>
-            )} */}
 
                 <Box
                   className="image"
@@ -176,12 +140,10 @@ class ProductItemView extends Component {
                     );
                   }}
                 >
-                  {/* <Link to={`/product-details/${item.id}`}> */}
                   <img
                     src={item?.image ? item?.image : noImage}
                     alt={item?.name}
                   />
-                  {/* </Link> */}
                 </Box>
                 <Box
                   className="name"
@@ -270,19 +232,6 @@ class ProductItemView extends Component {
                             }
                           }}
                         >
-                          {/* {(this.props.deleteItems.status === status.IN_PROGRESS ||
-                      this.state?.isProductSelecting ||
-                      this.props.cartItems.status === status.IN_PROGRESS ||
-                      this.props.updateItems.status === status.IN_PROGRESS) &&
-                    item?.id === dataId &&
-                    !isUpdateIncrease ? (
-                      <CircularProgress
-                        className="common-loader plus-icon"
-                        size={24}
-                      />
-                    ) : (
-                      "-"
-                    )} */}
                           -
                         </Box>
                       ) : (
@@ -316,15 +265,6 @@ class ProductItemView extends Component {
                           }
                         }}
                       >
-                        {/* {(this.props.updateItems.status === status.IN_PROGRESS ||
-                    this.state?.isProductSelecting ||
-                    this.props.cartItems.status === status.IN_PROGRESS) &&
-                  item?.id === dataId &&
-                  isUpdateIncrease ? (
-                    <CircularProgress className="common-loader plus-icon" />
-                  ) : (
-                    "+"
-                  )} */}
                         +
                       </Box>
                     </Box>
@@ -342,19 +282,6 @@ class ProductItemView extends Component {
                           this.setState({ isUpdateIncrease: true });
                           this.handleAddToCart(item?.id, unitqty);
                         }}
-                        // disabled={
-                        //   (this.props.additems.status === status.IN_PROGRESS &&
-                        //     item?.id === this.state.dataId) ||
-                        //   !item?.availability
-                        // }
-                        // endIcon={
-                        //   this.props.additems.status == status.IN_PROGRESS &&
-                        //   item?.id == this.state?.dataId ? (
-                        //     <CircularProgress className="common-loader" />
-                        //   ) : (
-                        //     <></>
-                        //   )
-                        // }
                       >
                         {item?.availability ? "Add" : "Out"}
                       </Button>
