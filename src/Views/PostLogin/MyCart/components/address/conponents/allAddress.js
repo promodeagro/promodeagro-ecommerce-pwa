@@ -218,13 +218,13 @@ const AllAddress = (props) => {
                               <span className="d-block contact-heading">
                                 Contact
                               </span>
-                              <Box className="d-flex align-items-center">
+                              <Box className="d-flex align-items-center justify-content-start">
                                 <span className="d-block title">Phone</span>
                                 <span className="d-block details">
                                   {item.phoneNumber}
                                 </span>
                               </Box>
-                              <Box className="d-flex align-items-center">
+                              <Box className="d-flex align-items-center justify-content-start">
                                 <span className="d-block title">Email</span>
                                 <span className="d-block details">
                                   {item.email}
