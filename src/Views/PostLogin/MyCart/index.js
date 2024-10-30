@@ -186,7 +186,7 @@ class MyCart extends Component {
     const { dataId, isUpdateIncrease } = this.state;
     return (
       <>
-        <Box className="mycart-container">
+        <Box className="main-container mycart-container">
           <Container>
             {this.state.cartList?.length > 0 ? (
               <Box className="sub-total-container d-flex justify-content-between">
