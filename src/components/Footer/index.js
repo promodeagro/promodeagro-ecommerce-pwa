@@ -195,14 +195,14 @@ class Footer extends Component {
                               Shopping Cart
                             </Link>
                           </li>
-                          <li>
+                          {/* <li>
                             <Link
                               to="/my-profile/wish-list"
                               onClick={this.scrollToTop}
                             >
                               Wishlist
                             </Link>
-                          </li>
+                          </li> */}
                         </ul>
                       </Box>
                     </Grid>
