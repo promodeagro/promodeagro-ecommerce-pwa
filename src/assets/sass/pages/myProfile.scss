@@ -3,18 +3,21 @@
   align-items: flex-start;
   width: 100%;
   padding: 30px 0 30px 0;
+
   .profile-sidebar {
     display: inline-flex;
     width: 220px;
     flex-wrap: wrap;
     border-radius: 5px;
     border: 1px solid #bfbfbf;
+
     .heading {
       display: flex;
       align-items: center;
       justify-content: space-between;
       width: 100%;
       border-bottom: 1px solid #bfbfbf;
+
       a {
         width: 100%;
         display: flex;
@@ -25,15 +28,18 @@
         font-weight: 600;
         color: #000000;
         padding: 15px 15px;
+
         &:hover {
           color: #1f9151;
         }
       }
     }
+
     .profile-links {
       display: block;
       width: 100%;
       border-bottom: 1px solid #bfbfbf;
+
       .sab-heading {
         display: flex;
         width: 100%;
@@ -42,6 +48,7 @@
         justify-content: flex-start;
         font-weight: 600;
         color: #2a3a31;
+
         span {
           width: 32px;
           height: 32px;
@@ -52,27 +59,33 @@
           justify-content: center;
           border: 1px solid #bfbfbf;
         }
+
         button {
           font-weight: 600;
           color: #2a3a31;
+
           span {
             border: none;
           }
         }
       }
+
       .links {
         display: flex;
         width: 100%;
         padding-bottom: 10px;
+
         ul {
           display: flex;
           width: 100%;
           flex-wrap: wrap;
           padding: 0;
           margin: 0;
+
           li {
             display: flex;
             width: 100%;
+
             a {
               display: block;
               width: 100%;
@@ -82,6 +95,7 @@
               color: #344054;
               padding: 15px 25px;
             }
+
             &.active {
               a {
                 color: #1b7643;
@@ -91,16 +105,19 @@
           }
         }
       }
+
       &:last-child {
         border-bottom: none;
       }
     }
   }
+
   .profile-right {
     display: flex;
     flex-wrap: wrap;
     width: calc(100% - 220px);
     padding-left: 30px;
+
     .heading {
       display: flex;
       align-items: center;
@@ -115,48 +132,58 @@
         font-weight: 600;
         color: #000000;
       }
+
       .edit-btn {
         text-transform: lowercase;
         color: #535554;
         font-weight: 400;
+
         svg {
           font-size: 18px;
         }
       }
+
       .address-btn {
         font-size: 13px;
       }
+
       .address-cancel-btn {
         font-size: 13px;
         background-color: #bfbfbf;
       }
     }
+
     .profile-forms {
       display: flex;
       flex-wrap: wrap;
       width: 100%;
       padding-top: 30px;
+
       .textfield {
         display: flex;
         flex-wrap: wrap;
         width: 100%;
         padding-bottom: 15px;
+
         label {
           display: flex;
           width: 100%;
           padding-bottom: 5px;
           font-weight: 500;
         }
+
         .input {
           width: 300px;
 
           .MuiInputBase-root {
             background-color: #fcfcfc;
             border-radius: 3px;
+
             &::after,
             &::before {
               display: none;
             }
+
             input {
               font-size: 13px;
               padding-left: 10px;
@@ -165,25 +192,30 @@
               padding-bottom: 10px;
             }
           }
+
           &.outlined {
             .MuiInputBase-root {
               background-color: transparent;
             }
           }
         }
+
         p {
           display: flex;
           width: 100%;
         }
       }
+
       .change-password-btn {
         margin-top: 15px;
         font-size: 13px;
       }
     }
+
     .address-container {
       display: flex;
       width: 100%;
+
       .address-card-container {
         padding: 18px 20px;
         border: 1px solid #d6d6d6;
@@ -218,6 +250,7 @@
         .person-name {
           margin-top: 22px;
           color: #303030;
+
           span {
             display: inline-flex;
             color: #1f9151;
@@ -247,7 +280,7 @@
           }
 
           .title {
-            width: 80px;
+            width: 60px;
             font-size: 14px;
             line-height: 24px;
             font-weight: 400;
@@ -255,14 +288,19 @@
           }
 
           .details {
+            width: calc(100% - 60px);
             font-size: 14px;
             line-height: 24px;
             font-weight: 400;
             color: #6d6d6d;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
         }
       }
     }
+
     .products {
       display: flex;
       width: 100%;
@@ -403,8 +441,9 @@
           font-size: 12px;
           line-height: 16px;
           color: #adadad;
-          > div {
-            > div {
+
+          >div {
+            >div {
               border: 1px solid #a8a8a833;
               border-radius: 3px;
               padding-left: 10px;
@@ -439,6 +478,7 @@
             color: #1f9151;
             text-transform: capitalize;
             height: 36px;
+
             &.Mui-disabled {
               color: rgba(0, 0, 0, 0.26) !important;
               border: 1px solid rgba(0, 0, 0, 0.26) !important;
@@ -485,24 +525,29 @@
         }
       }
     }
+
     .notification-container {
       display: flex;
       width: 100%;
       flex-wrap: wrap;
       margin-top: 30px;
+
       .notification {
         display: flex;
         align-items: center;
         justify-content: space-between;
         width: 100%;
         margin-bottom: 20px;
+
         p {
           display: inline-flex;
         }
+
         button {
           color: #2a3a31;
           text-transform: capitalize;
         }
+
         .MuiAlert-message {
           display: flex;
           width: 100%;
@@ -511,6 +556,7 @@
         }
       }
     }
+
     .promode-text-box {
       margin-top: 30px;
       margin-bottom: 30px;
@@ -524,34 +570,42 @@
       color: #000000;
       padding: 15px 15px 30px;
     }
+
     .delete-btn {
       font-size: 13px;
+
       &.MuiButton-colorError {
         background-color: #d32f2f;
       }
     }
+
     .add-address-container {
       display: flex;
       width: 60%;
       margin-top: 30px;
+
       .textfield {
         display: flex;
         flex-wrap: wrap;
         width: 100%;
         padding-bottom: 0px;
+
         label {
           display: flex;
           width: 100%;
           padding-bottom: 5px;
           font-weight: 500;
         }
+
         .input {
           .MuiInputBase-root {
             border-radius: 3px;
+
             &::after,
             &::before {
               display: none;
             }
+
             input {
               font-size: 13px;
               padding-left: 10px;
@@ -560,17 +614,20 @@
               padding-bottom: 10px;
             }
           }
+
           &.outlined {
             .MuiInputBase-root {
               background-color: transparent;
             }
           }
         }
+
         p {
           display: flex;
           width: 100%;
         }
       }
+
       .MuiCheckbox-root {
         color: #1f9151;
 
@@ -579,12 +636,14 @@
           border-color: #1f9151;
         }
       }
+
       .MuiTypography-root {
         font-size: 12px;
         line-height: 15px;
         color: #b1b1b1;
         font-weight: 500;
       }
+
       .save-address-btn {
         width: 100%;
       }

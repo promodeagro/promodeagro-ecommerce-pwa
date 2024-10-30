@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Box, Container, Grid } from "@mui/material";
 import deliveryTruck from "../../../../../assets/img/delivery-truck.png";
 import customerSupport from "../../../../../assets/img/customer-support.png";
-import lockSync from "../../../../../assets/img/lock-sync.png";
-import securityCheck from "../../../../../assets/img/security-check.png";
+import securePayment from "../../../../../assets/img/secure-payment.png";
+import moneyBack from "../../../../../assets/img/money-back.png";
 
 class Service extends Component {
   constructor(props) {
@@ -24,7 +24,7 @@ class Service extends Component {
                   </Box>
                   <Box className="info">
                     <Box className="name">Free Shipping</Box>
-                    <Box className="text">Delivery at your door step</Box>
+                    <Box className="text">Free shipping on all your order</Box>
                   </Box>
                 </Box>
               </Grid>
@@ -34,30 +34,30 @@ class Service extends Component {
                     <img src={customerSupport} alt="24/7 Service" />
                   </Box>
                   <Box className="info">
-                    <Box className="name">24/7 Service</Box>
-                    <Box className="text">Reach us when needed</Box>
+                    <Box className="name">Customer Support 24/7</Box>
+                    <Box className="text">Instant access to Support</Box>
                   </Box>
                 </Box>
               </Grid>
               <Grid item xs={6} lg={3} md={3} sm={3}>
                 <Box className="service-box">
                   <Box className="icon">
-                    <img src={lockSync} alt="Secure Payment" />
+                    <img src={securePayment} alt="Secure Payment" />
                   </Box>
                   <Box className="info">
-                    <Box className="name">Secure Payment</Box>
-                    <Box className="text">We ensure Your money is safe</Box>
+                    <Box className="name">100% Secure Payment</Box>
+                    <Box className="text">We ensure your money is save</Box>
                   </Box>
                 </Box>
               </Grid>
               <Grid item xs={6} lg={3} md={3} sm={3}>
                 <Box className="service-box">
                   <Box className="icon">
-                    <img src={securityCheck} alt="100% Assurance" />
+                    <img src={moneyBack} alt="100% Assurance" />
                   </Box>
                   <Box className="info">
-                    <Box className="name">100% Assurance</Box>
-                    <Box className="text">We ensure Your money is safe</Box>
+                    <Box className="name">Money-Back Guarantee</Box>
+                    <Box className="text">Same Days Money-Back Guarantee</Box>
                   </Box>
                 </Box>
               </Grid>

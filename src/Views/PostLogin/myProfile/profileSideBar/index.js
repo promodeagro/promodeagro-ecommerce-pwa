@@ -33,7 +33,7 @@ class ProfileSideBar extends Component {
         {
           heading: "Alerts & Privacy",
           links: [
-            { name: "Wish list", to: "/my-profile/wish-list" },
+            // { name: "Wish list", to: "/my-profile/wish-list" },
             { name: "Notification", to: "/my-profile/notification" },
             { name: "Account Privacy", to: "/my-profile/account-privacy" },
           ],

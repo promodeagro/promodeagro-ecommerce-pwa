@@ -1,8 +1,5 @@
 import React, { Component } from "react";
 import { Box, Container, Grid } from "@mui/material";
-import offersBanner1 from "../../../../../assets/img/offers-banner1.png";
-import offersBanner2 from "../../../../../assets/img/offers-banner2.png";
-import offersBanner3 from "../../../../../assets/img/offers-banner3.png";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";

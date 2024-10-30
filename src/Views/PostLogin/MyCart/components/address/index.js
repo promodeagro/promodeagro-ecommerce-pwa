@@ -344,7 +344,7 @@ class Address extends Component {
       return skipped.has(step);
     };
     return (
-      <Box className="address-container">
+      <Box className="main-container address-container">
         <Container>
           <Box className="address-stepper-container">
             <Stepper activeStep={activeStep}>

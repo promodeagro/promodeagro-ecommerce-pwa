@@ -167,6 +167,10 @@
         margin-right: 0;
       }
 
+      &.hide{
+        opacity: 0.6;
+      }
+
       .sale {
         position: absolute;
         left: 0;
@@ -387,7 +391,7 @@
 @media only screen and (max-width: 600px) {
   .current-category {
     position: fixed;
-    top: 114px;
+    top: 70px;
     left: 0;
     z-index: 10;
     display: flex;
@@ -397,9 +401,17 @@
     background-color: #ffffff;
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
   }
+  .mobile-deliver-box + .categories-container + .main-container {
+    .current-category {
+      top: 114px;
+    }
+    .sidebar {
+      top: 154px;
+    }
+  }
   .sidebar {
     position: fixed;
-    top: 154px;
+    top: 114px;
     left: 0;
     width: 110px;
     z-index: 10;

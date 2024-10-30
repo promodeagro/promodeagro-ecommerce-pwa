@@ -1,6 +1,7 @@
 .main-banner-container {
   display: block;
   width: 100%;
+  margin-top: 15px;
 
   .slick-dots {
     bottom: 10px;
@@ -404,13 +405,14 @@
           line-height: 18px;
           font-weight: 600;
           color: #1a1a1a;
+          margin-bottom: 5px;
         }
 
         .text {
           display: flex;
           width: 100%;
           font-size: 13px;
-          line-height: 24px;
+          line-height: 16px;
           font-weight: 400;
           color: #999999;
         }
@@ -692,6 +694,9 @@
     border-radius: 10px;
     border: 1px solid #e6e6e6;
     position: relative;
+    &.hide {
+      opacity: 0.6;
+    }
 
     .sale {
       position: absolute;

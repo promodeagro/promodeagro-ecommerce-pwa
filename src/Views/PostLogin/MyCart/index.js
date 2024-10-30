@@ -16,18 +16,12 @@ import {
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Link } from "react-router-dom";
-import realtedProdctImg1 from "../../../assets/img/realted-product-1.png";
-import starIcon from "../../../assets/img/star.png";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import productCartImg from "../../../assets/img/product-cart-img.png";
 import { connect } from "react-redux";
 import status from "../../../Redux/Constants";
 import { Loader, loginDetails } from "../../../Views/Utills/helperFunctions";
 import _ from "lodash";
 import RecentlyViewedItems from "components/RecentlyViewedItems";
 import { saveForLater } from "../../../Redux/AllProducts/AllProductthunk";
-// import RelatedViewedItems from "./components/relatedViewedItems";
 import { LocalStorageCartService } from "Services/localStorageCartService";
 
 class MyCart extends Component {
@@ -192,7 +186,7 @@ class MyCart extends Component {
     const { dataId, isUpdateIncrease } = this.state;
     return (
       <>
-        <Box className="mycart-container">
+        <Box className="main-container mycart-container">
           <Container>
             {this.state.cartList?.length > 0 ? (
               <Box className="sub-total-container d-flex justify-content-between">

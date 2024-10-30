@@ -54,27 +54,25 @@ class TopSellingCategories extends Component {
     } = this.props;
     return (
       <>
-        <Box className="selling-categories">
-          {productItems.map((calegoryItem) => {
-            return (
-              <>
-                <Box className="heading">
-                  <h2>{calegoryItem?.category}</h2>
-                  <Link to={"/category"}>
-                    View All <EastOutlinedIcon />
-                  </Link>
-                </Box>
-                <All
-                  productImg={productImg}
-                  priceIcon={priceIcon}
-                  topSellingProductsList={calegoryItem?.items}
-                  topSellingApiLoader={topSellingApiLoader}
-                  apiCalls={this.apiCalls}
-                />
-              </>
-            );
-          })}
-        </Box>
+        {productItems.map((calegoryItem) => {
+          return (
+            <Box className="selling-categories">
+              <Box className="heading">
+                <h2>{calegoryItem?.category}</h2>
+                <Link to={`/category/${calegoryItem?.category}/${calegoryItem?.subcategory}`}>
+                  View All <EastOutlinedIcon />
+                </Link>
+              </Box>
+              <All
+                productImg={productImg}
+                priceIcon={priceIcon}
+                topSellingProductsList={calegoryItem?.items}
+                topSellingApiLoader={topSellingApiLoader}
+                apiCalls={this.apiCalls}
+              />
+            </Box>
+          );
+        })}
       </>
     );
   };

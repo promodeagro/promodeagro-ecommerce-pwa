@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Box, Container } from "@mui/material";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+// import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
 import { connect } from "react-redux";
 import { setShopByCategory } from "../../../../../Redux/AllProducts/AllProductSlice";
 import noImage from "../../../../../assets/img/no-image.png";

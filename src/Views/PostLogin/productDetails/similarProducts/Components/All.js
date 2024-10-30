@@ -1,15 +1,6 @@
 import React, { Component } from "react";
-import {
-  Box,
-  FormControl,
-  NativeSelect,
-  Button,
-  CircularProgress,
-} from "@mui/material";
-import noImage from "../../../../../../assets/img/no-image.png";
-import StarIcon from "@mui/icons-material/Star";
-import BookmarkOutlinedIcon from "@mui/icons-material/BookmarkOutlined";
-import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
+import { Box, Button, CircularProgress } from "@mui/material";
+import noImage from "../../../../../assets/img/no-image.png";
 import Slider from "react-slick";
 import { Link } from "react-router-dom";
 import {
@@ -17,19 +8,20 @@ import {
   loginDetails,
   ErrorMessages,
 } from "Views/Utills/helperFunctions";
-import status from "../../../../../../Redux/Constants";
+import status from "../../../../../Redux/Constants";
 import { connect } from "react-redux";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import {
   deleteProductWishList,
   setProductWishList,
-} from "../../../../../../Redux/AllProducts/AllProductthunk";
+} from "../../../../../Redux/AllProducts/AllProductthunk";
 import {
   deleteItemToCart,
   addItemToCart,
   updateItemToCart,
-} from "../../../../../../Redux/Cart/CartThunk";
+} from "../../../../../Redux/Cart/CartThunk";
 import CurrencyRupeeOutlinedIcon from "@mui/icons-material/CurrencyRupeeOutlined";
+
 class All extends Component {
   constructor(props) {
     super(props);
@@ -267,6 +259,7 @@ class All extends Component {
                     ) : (
                       <></>
                     )}
+
                     <Box
                       className="image"
                       onClick={() => {

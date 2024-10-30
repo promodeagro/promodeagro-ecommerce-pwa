@@ -178,15 +178,16 @@ class Header extends Component {
   };
 
   renderCategories = () => {
-    const { categories, currentPathName } = this.state;
+    const { categories } = this.state;
     return (
       <ul>
         {categories?.length ? (
           categories?.map((item, index) => {
-            const categoryPath = `${currentPathName.replaceAll("%20", " ")}`;
-            const isActive = categoryPath.includes(item?.CategoryName);
+            let c = item?.CategoryName.replaceAll(" ", "%20");
+            const isActive = window.location.pathname.split("/").includes(c);
+
             return (
-              <li>
+              <li key={index}>
                 <Link
                   to={`/category/${item?.CategoryName}/${item?.Subcategories[0]?.name}`}
                   className={isActive ? "active" : ""}
@@ -204,8 +205,8 @@ class Header extends Component {
   };
 
   render() {
-    const { cartList, currentAddress, matches } = this.state;
-    const path = window.location.pathname;
+    const { cartList, currentAddress, matches, currentPathName } = this.state;
+
     return (
       <>
         <Box className="header">
@@ -238,10 +239,10 @@ class Header extends Component {
               <Grid item xs={9} sm={4} md={4} lg={6}>
                 <Box className="search-box">
                   <Box
-                    className="back-button"
-                    onClick={() =>
-                      this.props.navigate("/")
-                    }
+                    onClick={() => this.props.navigate("/")}
+                    className={`back-button ${
+                      currentPathName === "/" ? "none" : ""
+                    }`}
                   >
                     <ArrowBackIosNewOutlinedIcon />
                   </Box>
@@ -296,22 +297,6 @@ class Header extends Component {
               </Grid>
             </Grid>
           </Container>
-          <AuthModal
-            open={this.state.authModalOpen}
-            handleDefaultAddress={() => {
-              this.props.fetchCategories();
-              this.props.fetchDefaultAddress(loginDetails()?.userId);
-              this.props.fetchPersonalDetails({
-                userId: loginDetails()?.userId,
-              });
-              this.props.navigate(0);
-            }}
-            handleClose={() => {
-              this.setState({
-                authModalOpen: false,
-              });
-            }}
-          />
         </Box>
         {matches && (
           <>
@@ -327,13 +312,29 @@ class Header extends Component {
             )}
           </>
         )}
-        {path === "/" ? (
-          <></>
-        ) : (
-          <Box className="categories-container">
-            <Container>{this.renderCategories()}</Container>
-          </Box>
-        )}
+        <Box
+          className={`categories-container ${
+            currentPathName.includes("category/") ? "category" : ""
+          }`}
+        >
+          <Container>{this.renderCategories()}</Container>
+        </Box>
+        <AuthModal
+          open={this.state.authModalOpen}
+          handleDefaultAddress={() => {
+            this.props.fetchCategories();
+            this.props.fetchDefaultAddress(loginDetails()?.userId);
+            this.props.fetchPersonalDetails({
+              userId: loginDetails()?.userId,
+            });
+            this.props.navigate(0);
+          }}
+          handleClose={() => {
+            this.setState({
+              authModalOpen: false,
+            });
+          }}
+        />
       </>
     );
   }
