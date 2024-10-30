@@ -57,7 +57,6 @@ function Category(props) {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    // setCurrentPath(window.location.pathname);
     if (loginDetails()?.userId) {
       setCartApiLoader(true);
       setPersonalDetailsLoader(true);
@@ -69,6 +68,13 @@ function Category(props) {
       });
     }
   }, []);
+
+  useEffect(() => {
+    if (currentPath !== window.location.pathname) {
+      setCurrentPath(window.location.pathname);
+      setCurrentPage(1);
+    }
+  }, [window.location.pathname]);
 
   function toTitleCase(str) {
     return str
@@ -85,7 +91,7 @@ function Category(props) {
         subcategory: subcategory.replaceAll("%20", ""),
         userId: loginDetails()?.userId,
         pageSize: pageSize,
-        pageNumber: currentPage,
+        pageNumber: currentPath !== window.location.pathname ? 1 : currentPage,
         exclusiveStartKey: lastEvaluatedKey,
       };
       if (data.pageNumber === 1) {
@@ -100,7 +106,7 @@ function Category(props) {
         category: toTitleCase(category),
         userId: loginDetails()?.userId,
         pageSize: pageSize,
-        pageNumber: currentPage,
+        pageNumber: currentPath !== window.location.pathname ? 1 : currentPage,
         exclusiveStartKey: lastEvaluatedKey,
       };
       if (data.pageNumber === 1) {
@@ -121,7 +127,7 @@ function Category(props) {
         category: "",
         discounts: "",
         pageSize: pageSize,
-        pageNumber: currentPage,
+        pageNumber: currentPath !== window.location.pathname ? 1 : currentPage,
         exclusiveStartKey: lastEvaluatedKey,
       };
       if (data.pageNumber === 1) {
@@ -135,7 +141,7 @@ function Category(props) {
       const data = {
         userId: loginDetails()?.userId,
         pageSize: pageSize,
-        pageNumber: currentPage,
+        pageNumber: currentPath !== window.location.pathname ? 1 : currentPage,
         exclusiveStartKey: lastEvaluatedKey,
       };
       if (data.pageNumber === 1) {
@@ -209,7 +215,6 @@ function Category(props) {
               pageSize
           )
         );
-
         setCurrentPage(
           props.allProductsData?.data?.data?.pagination?.currentPage
         );
@@ -285,7 +290,6 @@ function Category(props) {
               pageSize
           )
         );
-
         setCurrentPage(
           props.productByCategoryData?.data?.data?.pagination?.currentPage
         );
@@ -454,7 +458,7 @@ function Category(props) {
         subcategory: subcategory.replaceAll("%20", ""),
         userId: loginDetails()?.userId,
         pageSize: pageSize,
-        pageNumber: currentPage,
+        pageNumber: currentPath !== window.location.pathname ? 1 : currentPage,
         exclusiveStartKey: lastEvaluatedKey,
       };
       setSubCatergoryLoader(true);
@@ -467,7 +471,7 @@ function Category(props) {
         category: category,
         userId: loginDetails()?.userId,
         pageSize: pageSize,
-        pageNumber: currentPage,
+        pageNumber: currentPath !== window.location.pathname ? 1 : currentPage,
         exclusiveStartKey: lastEvaluatedKey,
       };
       if (data.pageNumber === 1) {
