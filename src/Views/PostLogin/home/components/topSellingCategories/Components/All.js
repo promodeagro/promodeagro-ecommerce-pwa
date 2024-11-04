@@ -53,7 +53,7 @@ class All extends Component {
         ) : (
           <>
             {topSellingProductsList?.length > 0 ? (
-              <ProductItemView productList={topSellingProductsList} />
+              <ProductItemView productList={topSellingProductsList} homeSellingProducts={topSellingProductsList} />
             ) : (
               <Box className="no-data">No products available</Box>
             )}

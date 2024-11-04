@@ -12,13 +12,15 @@
 
     li {
       vertical-align: middle;
-      width: 8px;
-      height: 8px;
-      margin-top: 5px;
+      width: 12px;
+      height: 12px;
+      margin-top: 10px;
+      margin-left: 3px;
+      margin-right: 3px;
 
       button {
-        width: 8px;
-        height: 8px;
+        width: 12px;
+        height: 12px;
         padding: 0;
         border-radius: 50%;
         background-color: #b4ccb4;
@@ -914,11 +916,6 @@
 }
 
 @media only screen and (max-width: 600px) {
-  .main-banner-container {
-    .banner-contents {
-      height: 200px;
-    }
-  }
   .shop-categories-container {
     padding-bottom: 10px;
     .heading {
