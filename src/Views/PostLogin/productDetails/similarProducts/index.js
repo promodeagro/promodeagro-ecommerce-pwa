@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Box, Container } from "@mui/material";
 import productImg from "../../../../assets/img/product-img.png";
 import priceIcon from "../../../../assets/img/price-icon.png";
-import All from "./Components/All";
+import All from "../../home/components/topSellingCategories/Components/All";
 import status from "../../../../Redux/Constants";
 import { getAllProductWithCategory } from "../../../../Redux/AllProducts/AllProductthunk";
 import { connect } from "react-redux";
