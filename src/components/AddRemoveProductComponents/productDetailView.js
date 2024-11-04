@@ -88,7 +88,7 @@ class ProductDetailCartUpdateView extends Component {
       qauntityUnits: event.target.value,
       quantityUnitPrice: priceOfItem ? priceOfItem : "",
     });
-    if (addedProduct[this.props.params.id]?.quantity > 0) {
+    if (addedProduct && addedProduct[this.props.params.id]?.quantity > 0) {
       this.setState({
         dataId: this.props.params.id,
       });
@@ -157,7 +157,7 @@ class ProductDetailCartUpdateView extends Component {
             <Grid item xs={12} sm={8} md={6} lg={4}>
               {productItem?.availability ? (
                 <>
-                  {addedProducts[this.props.params.id]?.quantity &&
+                  {addedProducts && addedProducts[this.props.params.id]?.quantity &&
                   addedProducts[this.props.params.id]?.quantity != 0 ? (
                     <Box className="number-input-container">
                       <Box

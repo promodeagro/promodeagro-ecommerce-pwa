@@ -125,7 +125,7 @@ class ProductItemView extends Component {
       };
     });
 
-    if (addedProduct[item?.id]?.quantity > 0) {
+    if (addedProduct && addedProduct[item?.id]?.quantity > 0) {
       this.setState({
         isProductSelecting: true,
         dataId: item?.id,
