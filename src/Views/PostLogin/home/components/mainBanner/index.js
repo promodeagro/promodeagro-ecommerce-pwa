@@ -4,6 +4,7 @@ import Slider from "react-slick";
 import { connect } from "react-redux";
 import { setShopByCategory } from "../../../../../Redux/AllProducts/AllProductSlice";
 import noImage from "../../../../../assets/img/no-image.png";
+import { Link } from "react-router-dom";
 
 class MainBanner extends Component {
   constructor(props) {
@@ -49,13 +50,15 @@ class MainBanner extends Component {
             {allOffersList?.length > 0 ? (
               allOffersList?.map((item) => {
                 return (
-                  <Box padding={"3px"}>
-                    <Box className="banner-contents">
+                  <Box className="banner-contents">
+                    <Link
+                      to={`/category/${item?.category}/${item?.subCategory}`}
+                    >
                       <img
                         src={item?.imageUrl ? item?.imageUrl : noImage}
                         alt="no image"
                       />
-                    </Box>
+                    </Link>
                   </Box>
                 );
               })
