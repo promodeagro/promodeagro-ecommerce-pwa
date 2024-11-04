@@ -263,6 +263,7 @@ class All extends Component {
                     <Box
                       className="image"
                       onClick={() => {
+                        window.scrollTo({ top: 0, behavior: "smooth" });
                         this.props.navigate(
                           `/product-details/${item.category}/${item.name}/${item.id}`
                         );
@@ -276,6 +277,7 @@ class All extends Component {
                     <Box
                       className="name"
                       onClick={() => {
+                        window.scrollTo({ top: 0, behavior: "smooth" });
                         this.props.navigate(
                           `/product-details/${item.category}/${item.name}/${item.id}`
                         );

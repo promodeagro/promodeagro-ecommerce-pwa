@@ -37,15 +37,15 @@
   }
 
   .banner-contents {
-    display: flex;
+    display: block;
     width: 100%;
     text-align: center;
     border-radius: 15px;
     overflow: hidden;
-    height: 415px;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+    // height: 415px;
+    // align-items: center;
+    // justify-content: center;
+    // box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
 
     .desktop-banner {
       display: flex;
