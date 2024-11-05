@@ -7,6 +7,7 @@ import {
   addListOfItemsToCartReq,
 } from "./CartThunk";
 import status from "./../Constants";
+import { getNumberOfItemsOnChart } from "Services/localStorageCartService";
 
 const CartItemSlice = createSlice({
   name: "cartitems",
@@ -26,8 +27,20 @@ const CartItemSlice = createSlice({
     addListOfItemRes: {
       status: null,
     },
+    noOfcartItemsInLS: getNumberOfItemsOnChart(),
   },
-  reducers: {},
+  reducers: {
+    // updateNoOfcartItemsInLS: (state, action) => {
+    //   return {
+    //     ...state,
+    //     noOfcartItemsInLS: state.noOfcartItemsInLS
+    //   }
+    // }
+    updateNoOfcartItemsInLS: (state, action) => {
+      state.noOfcartItemsInLS = action.payload;
+      return state;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(addItemToCart.pending.toString(), (state, action) => {
@@ -160,5 +173,5 @@ const CartItemSlice = createSlice({
       });
   },
 });
-
+export const { updateNoOfcartItemsInLS } = CartItemSlice.actions;
 export default CartItemSlice.reducer;

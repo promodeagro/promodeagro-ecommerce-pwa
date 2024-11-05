@@ -30,7 +30,6 @@ class ProductDetailCartUpdateView extends Component {
   }
 
   handleAddToCart(id, qty) {
-    debugger
     const items = loginDetails();
     this.setState({
       dataId: id,

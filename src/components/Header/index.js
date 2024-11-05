@@ -206,6 +206,7 @@ class Header extends Component {
 
   render() {
     const { cartList, currentAddress, matches, currentPathName } = this.state;
+    const { noOfcartItemsInLS } = this.props;
 
     return (
       <>
@@ -270,12 +271,9 @@ class Header extends Component {
                   )}
                   <Box className="card">
                     <Link to={"/mycart"}>
-                      {this.props?.cartData?.length ? (
-                        <p>{this.props.cartData.length}</p>
-                      ) : (
-                        <></>
-                      )}
-                      {this.state.cartList?.length ? (
+                      {noOfcartItemsInLS ? (
+                        <p>{noOfcartItemsInLS}</p>
+                      ) : this.state.cartList?.length ? (
                         <p>{this.state.cartList.length}</p>
                       ) : (
                         <></>
@@ -342,15 +340,15 @@ class Header extends Component {
 
 function mapStateToProps(state) {
   const { cartData } = state.home;
-  const { cartItems } = state.cartitem;
+  const { cartItems, noOfcartItemsInLS } = state.cartitem;
   const { personalDetailsData } = state.login;
   const { shopCategoryData, productCategoryData, allCategories } =
     state.allproducts;
   const { allAddress, selectedAddressData, defaultAddressData } =
     state.alladdress;
-
   return {
     cartData,
+    noOfcartItemsInLS,
     cartItems,
     allAddress,
     selectedAddressData,
