@@ -29,7 +29,7 @@ class ShopByCategories extends Component {
         <Container>
           <Box className="heading">
             <h2>Shop by Categories</h2>
-            <Link to={"/category"} onClick={this.scrollToTop}>
+            <Link to={""} onClick={this.scrollToTop}>
               View All <EastOutlinedIcon />
             </Link>
           </Box>
@@ -71,7 +71,7 @@ class ShopByCategories extends Component {
             )}
             {matches && (
               <Box className="view-all-link">
-                <Link to={"/category"}>View All</Link>
+                <Link to={""}>View All</Link>
               </Box>
             )}
           </Box>
