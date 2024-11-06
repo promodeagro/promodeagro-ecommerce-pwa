@@ -32,11 +32,30 @@ class SearchResults extends Component {
       productsFiltersData: [],
       searchLoader: false,
       showResult: false,
+      placeholderIndex: 0,
     };
     this.searchInputRef = React.createRef();
     this.debouncedSearch = _.debounce((params) => {
       this.props.fetchGlobalSearchItems(params);
     }, 1000);
+    this.placeholderTexts = [
+      'Search "Pui saag"',
+      'Search "Laal Saag"',
+      'Search "Gondharaj Nimbu"',
+    ];
+  }
+
+  componentDidMount() {
+    this.intervalId = setInterval(() => {
+      this.setState((prevState) => ({
+        placeholderIndex:
+          (prevState.placeholderIndex + 1) % this.placeholderTexts.length,
+      }));
+    }, 3000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
   }
 
   componentDidUpdate(prevProps) {
@@ -80,8 +99,13 @@ class SearchResults extends Component {
 
   render() {
     const { cartItemsData } = this.props;
-    const { searchTerm, productsFiltersData, searchLoader, showResult } =
-      this.state;
+    const {
+      searchTerm,
+      productsFiltersData,
+      searchLoader,
+      showResult,
+      placeholderIndex,
+    } = this.state;
 
     return (
       <>
@@ -99,7 +123,7 @@ class SearchResults extends Component {
               ),
             }}
             onChange={this.searchChange}
-            placeholder={`Search "Pui saag"`}
+            placeholder={this.placeholderTexts[placeholderIndex]}
           />
           <Box
             className={`search-results ${

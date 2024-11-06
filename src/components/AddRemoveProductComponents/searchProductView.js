@@ -1,12 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  Box,
-  Button,
-  Grid,
-  FormControl,
-  NativeSelect,
-} from "@mui/material";
+import { Box, Button, Grid, FormControl, NativeSelect } from "@mui/material";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import StarIcon from "@mui/icons-material/Star";
 import priceIcon from "../../assets/img/price-icon.png";
@@ -177,26 +171,24 @@ class SearchProductItemView extends Component {
                     </Box>
                     {item?.unitPrices?.length > 0 ? (
                       <Box className="select">
-                        <FormControl fullWidth>
-                          <NativeSelect
-                            value={
-                              qauntityUnits[item.id] ||
-                              item?.cartItem?.QuantityUnits ||
-                              ""
-                            }
-                            onChange={(event) =>
-                              this.handleQuantity(event, item)
-                            }
-                          >
-                            {item.unitPrices.map((unitItem, index) => {
-                              return (
-                                <option key={index} value={unitItem.qty}>
-                                  {unitItem?.qty} {item?.unit}
-                                </option>
-                              );
-                            })}
-                          </NativeSelect>
-                        </FormControl>
+                        <select
+                          value={
+                            qauntityUnits[item?.id] ||
+                            item?.cartItem?.QuantityUnits ||
+                            ""
+                          }
+                          onChange={(event) =>
+                            this.handleQuantity(event, item, addedProducts)
+                          }
+                        >
+                          {item?.unitPrices.map((unitItem, index) => {
+                            return (
+                              <option key={index} value={unitItem.qty}>
+                                {unitItem.qty} {item?.unit}
+                              </option>
+                            );
+                          })}
+                        </select>
                       </Box>
                     ) : (
                       <Box className="select">{item.unit}</Box>
@@ -309,18 +301,17 @@ class SearchProductItemView extends Component {
   }
 }
 
-
 function mapStateToProps(state) {
-    return {};
-  }
-  
-  const mapDispatchToProps = {
-    fetchCategories,
-    fetchDefaultAddress,
-    fetchPersonalDetails,
-  };
-  
-  export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(navigateRouter(SearchProductItemView));
+  return {};
+}
+
+const mapDispatchToProps = {
+  fetchCategories,
+  fetchDefaultAddress,
+  fetchPersonalDetails,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(navigateRouter(SearchProductItemView));

@@ -116,6 +116,7 @@
         input {
           padding-top: 10px;
           padding-bottom: 8px;
+          transition: opacity 1.5s ease-in-out;
         }
       }
 
@@ -285,28 +286,24 @@
         }
         .select {
           display: flex;
-          width: 100%;
-          font-size: 12px;
-          line-height: 16px;
-          color: #adadad;
-          > div {
-            > div {
-              border: 1px solid #a8a8a833;
-              border-radius: 3px;
-              padding-left: 10px;
-
-              &::before {
-                display: none;
-              }
-
-              &::after {
-                display: none;
-              }
-
-              select {
-                font-size: 12px;
-                line-height: 16px;
-              }
+          width: 50%;
+          font-size: 13px;
+          line-height: 18px;
+          color: #958e8e;
+          margin-top: 10px;
+          select {
+            width: 100%;
+            font-size: 13px;
+            line-height: 18px;
+            border: 1px solid #cacaca;
+            border-radius: 3px;
+            padding-left: 3px;
+            padding-right: 3px;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            cursor: pointer;
+            option {
+              cursor: pointer;
             }
           }
         }
