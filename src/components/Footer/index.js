@@ -5,6 +5,7 @@ import methodVisa from "../../assets/img/MethodVisa.png";
 import methodMastercard from "../../assets/img/MethodMastercard.png";
 import methodDiscover from "../../assets/img/MethodDiscover.png";
 import paymentSecure from "../../assets/img/PaymentSecure.png";
+import madeInImg from "../../assets/img/made-in.png";
 import { Link } from "react-router-dom";
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import TwitterIcon from "@mui/icons-material/Twitter";
@@ -136,50 +137,63 @@ class Footer extends Component {
           ""
         ) : (
           <>
-            <Box className="newsletter-container">
-              <Container>
-                <Grid container spacing={2} alignItems={"center"}>
-                  <Grid item xs={12} sm={6} md={6} lg={5}>
-                    <Box className="contents">
-                      <h4>Subscribe to our Newsletter</h4>
-                      <p>
-                        Pellentesque eu nibh eget mauris congue mattis nec
-                        tellus. Phasellus imperdiet elit eu magna.
-                      </p>
-                    </Box>
+            {matches ? (
+              <Box className="made-container">
+                <h2>Made In India Product</h2>
+                <span>
+                  <img src={madeInImg} alt="" />
+                </span>
+                <p>
+                  From <br />
+                  Promode agrp farms
+                </p>
+              </Box>
+            ) : (
+              <Box className="newsletter-container">
+                <Container>
+                  <Grid container spacing={2} alignItems={"center"}>
+                    <Grid item xs={12} sm={6} md={6} lg={5}>
+                      <Box className="contents">
+                        <h4>Subscribe to our Newsletter</h4>
+                        <p>
+                          Pellentesque eu nibh eget mauris congue mattis nec
+                          tellus. Phasellus imperdiet elit eu magna.
+                        </p>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={6} lg={5}>
+                      <Box className="newsletter-box">
+                        <TextField
+                          id="outlined-search"
+                          className="newsletter"
+                          variant="outlined"
+                          placeholder="Your email address"
+                        />
+                        <Button variant="contained" className="common-btn">
+                          Subscribe
+                        </Button>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={12} lg={2}>
+                      <Box className="socials-links">
+                        <a href="#">
+                          <FacebookOutlinedIcon />
+                        </a>
+                        <a href="#">
+                          <TwitterIcon />
+                        </a>
+                        <a href="#">
+                          <PinterestIcon />
+                        </a>
+                        <a href="#">
+                          <InstagramIcon />
+                        </a>
+                      </Box>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12} sm={6} md={6} lg={5}>
-                    <Box className="newsletter-box">
-                      <TextField
-                        id="outlined-search"
-                        className="newsletter"
-                        variant="outlined"
-                        placeholder="Your email address"
-                      />
-                      <Button variant="contained" className="common-btn">
-                        Subscribe
-                      </Button>
-                    </Box>
-                  </Grid>
-                  <Grid item xs={12} sm={12} md={12} lg={2}>
-                    <Box className="socials-links">
-                      <a href="#">
-                        <FacebookOutlinedIcon />
-                      </a>
-                      <a href="#">
-                        <TwitterIcon />
-                      </a>
-                      <a href="#">
-                        <PinterestIcon />
-                      </a>
-                      <a href="#">
-                        <InstagramIcon />
-                      </a>
-                    </Box>
-                  </Grid>
-                </Grid>
-              </Container>
-            </Box>
+                </Container>
+              </Box>
+            )}
             <Box className="footer">
               <Container>
                 <Grid container spacing={2}>
