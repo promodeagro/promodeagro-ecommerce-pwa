@@ -116,6 +116,7 @@
       .input {
         .MuiInputBase-root {
           border-radius: 3px;
+          
           &::after,
           &::before {
             display: none;
@@ -136,6 +137,11 @@
         &.outlined {
           .MuiInputBase-root {
             background-color: transparent;
+          }
+        }
+        &.textarea {
+          .MuiInputBase-root {
+            height: auto;
           }
         }
       }

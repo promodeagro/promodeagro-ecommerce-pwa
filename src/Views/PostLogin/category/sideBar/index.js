@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Box, Switch, Container } from "@mui/material";
+import { Box } from "@mui/material";
 import { Link } from "react-router-dom";
 import { fetchFilteredProducts } from "../../../../Redux/AllProducts/AllProductthunk";
 import { connect } from "react-redux";
@@ -39,7 +39,6 @@ class SideBar extends Component {
     const selectedCategory = categories?.data?.find(
       (item) => item?.CategoryName === category
     );
-    const currentPath = window.location.pathname;
 
     return (
       <ul>

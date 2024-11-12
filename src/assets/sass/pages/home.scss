@@ -38,208 +38,10 @@
     }
   }
 
-  .banner-contents {
-    display: block;
-    width: 100%;
+  .banner-image {
     text-align: center;
     border-radius: 15px;
     overflow: hidden;
-    // height: 415px;
-    // align-items: center;
-    // justify-content: center;
-    // box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-
-    .desktop-banner {
-      display: flex;
-      width: 100%;
-      justify-content: flex-end;
-      position: relative;
-      border-radius: 15px;
-      overflow: hidden;
-    }
-
-    .contents {
-      left: 0;
-      top: 0;
-      position: absolute;
-      display: flex;
-      width: 60%;
-      height: 100%;
-      align-items: center;
-      flex-wrap: wrap;
-      z-index: 1;
-      padding-left: 75px;
-
-      .mostly-organic {
-        display: flex;
-        width: 100%;
-
-        span {
-          display: inline-flex;
-          padding: 5px 10px;
-          font-size: 13px;
-          line-height: 16px;
-          font-weight: 500;
-          color: #1f9151;
-          border-radius: 15px;
-          background-color: rgba(31, 145, 81, 0.1);
-        }
-      }
-
-      .heading {
-        display: flex;
-        width: 90%;
-        flex-wrap: wrap;
-        font-size: 48px;
-        line-height: 60px;
-        font-weight: 600;
-        color: #002603;
-
-        span {
-          display: inline-flex;
-          margin-right: 10px;
-          color: #1f9151;
-        }
-      }
-
-      .text {
-        display: flex;
-        width: 75%;
-        font-size: 13px;
-        line-height: 22px;
-        font-weight: 500;
-        color: #00000080;
-        margin-top: 10px;
-      }
-
-      .button {
-        display: flex;
-        width: 100%;
-        margin-top: 20px;
-
-        a {
-          display: inline-flex;
-          text-transform: capitalize;
-          padding-top: 10px;
-          padding-bottom: 10px;
-          padding-left: 30px;
-          padding-right: 30px;
-          font-size: 14px;
-          line-height: 22px;
-          font-weight: 500;
-          color: #ffffff;
-          border-radius: 25px;
-          background-color: #1f9151;
-          &:hover {
-            background-color: #005f41;
-          }
-
-          svg {
-            margin-left: 10px;
-          }
-        }
-      }
-    }
-
-    .image {
-      display: inline-flex;
-      width: auto;
-      img {
-        max-height: 415px;
-      }
-    }
-    .mostly-organic-banner {
-      background: rgb(240, 182, 56);
-      background: linear-gradient(
-        180deg,
-        rgba(240, 182, 56, 1) 0%,
-        rgba(247, 189, 63, 1) 50%,
-        rgba(236, 170, 47, 1) 100%
-      );
-    }
-    .best-deal-banner {
-      background: rgb(168, 166, 169);
-      background: linear-gradient(
-        180deg,
-        rgba(168, 166, 169, 1) 0%,
-        rgba(169, 167, 170, 1) 50%,
-        rgba(173, 171, 174, 1) 100%
-      );
-      .contents {
-        .mostly-organic {
-          span {
-            color: #ffffff;
-            background-color: rgba(255, 255, 255, 0.1);
-          }
-        }
-        .heading {
-          color: #ffffff;
-        }
-        .text {
-          color: #ffffff;
-        }
-      }
-    }
-    .direct-farmer-banner {
-      padding: 30px;
-      background-color: #fcfcfc;
-      justify-content: flex-start;
-      .left-top-shaph {
-        position: absolute;
-        left: -24px;
-        top: -24px;
-        width: 72px;
-        height: 72px;
-        border-radius: 50%;
-        background-color: #354a68;
-      }
-      .right-top-shaph {
-        position: absolute;
-        right: -24px;
-        top: -24px;
-        width: 72px;
-        height: 72px;
-        border-radius: 50%;
-        background-color: #95afcc;
-      }
-      .right-bottom-shaph {
-        position: absolute;
-        right: -125px;
-        bottom: -125px;
-        width: 300px;
-        height: 300px;
-        padding: 75px;
-        border-radius: 50%;
-        background-color: #e9f3ff;
-        span {
-          display: block;
-          width: 150px;
-          height: 150px;
-          border-radius: 50%;
-          background-color: #354a68;
-        }
-      }
-      .contents {
-        width: 50%;
-        left: auto;
-        right: 0;
-        padding-left: 0;
-        .mostly-organic {
-          span {
-            background-color: rgba(53, 74, 104, 0.14);
-            color: #354a68;
-          }
-        }
-        .heading {
-          color: #354a68;
-        }
-      }
-      .image {
-        img {
-          max-height: 355px;
-        }
-      }
-    }
   }
 }
 
@@ -916,6 +718,18 @@
 }
 
 @media only screen and (max-width: 600px) {
+  .main-banner-container {
+    .banner-image {
+      height: 180px;
+      a {
+        display: block;
+        height: 100%;
+      }
+      img {
+        height: 180px;
+      }
+    }
+  }
   .shop-categories-container {
     padding-bottom: 10px;
     .heading {
@@ -941,6 +755,7 @@
             justify-content: flex-start;
             img {
               width: 100%;
+              max-height: 120px;
             }
           }
         }

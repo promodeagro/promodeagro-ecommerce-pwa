@@ -41,9 +41,8 @@ class List extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // addedProducts: [], // Track added products
-      quantities: {}, // Track quantities for each product
-      sortOrder: null, // Track sort order
+      quantities: {}, 
+      sortOrder: null,
       isUpdateIncrease: false,
       qauntityUnits: [],
       isProductSelecting: false,
@@ -89,8 +88,8 @@ class List extends Component {
     }
   }
 
-  getAllProduct(nextPage) {
-    this.props.allproducts(nextPage);
+  getAllProduct() {
+    this.props.allproducts();
   }
 
   handleContextMenu = (event) => {
@@ -102,14 +101,8 @@ class List extends Component {
   };
 
   render() {
-    const { data, cartItemsData } = this.props;
-    const {
-      // addedProducts,
-      quantities,
-      sortOrder,
-      isUpdateIncrease,
-      qauntityUnits,
-    } = this.state;
+    const { data } = this.props;
+    const { sortOrder } = this.state;
 
     // Sort data based on sortOrder
     const sortedData = sortOrder

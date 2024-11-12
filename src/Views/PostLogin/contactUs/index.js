@@ -286,7 +286,7 @@ class ContactUs extends Component {
                         <Box className="textfield">
                           <label className="d-block">Feedback</label>
                           <TextField
-                            className="input"
+                            className="input textarea"
                             variant="outlined"
                             fullWidth
                             multiline

@@ -50,7 +50,7 @@ class MainBanner extends Component {
             {allOffersList?.length > 0 ? (
               allOffersList?.map((item) => {
                 return (
-                  <Box className="banner-contents">
+                  <Box className="banner-image">
                     <Link
                       to={`/category/${item?.category}/${item?.subCategory}`}
                     >
