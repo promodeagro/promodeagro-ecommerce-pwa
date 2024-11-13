@@ -6,26 +6,19 @@ import List from "./list";
 import {
   allProducts,
   fetchProductBySubCategory,
-  fetchProductByCategory,
-  fetchFilteredProducts,
 } from "../../../Redux/AllProducts/AllProductthunk";
-import { fetchPersonalDetails } from "../../../Redux/Signin/SigninThunk";
 import { ErrorMessages } from "Views/Utills/helperFunctions";
-import { fetchCartItems } from "../../../Redux/Cart/CartThunk";
 import status from "../../../Redux/Constants";
 import { Loader, loginDetails } from "Views/Utills/helperFunctions";
-import { setShopByCategory } from "../../../Redux/AllProducts/AllProductSlice";
 import _ from "lodash";
 import { useParams } from "react-router-dom";
 import { fetchCategories } from "../../../Redux/AllProducts/AllProductthunk";
 
 function Category(props) {
-  const { category, subcategory, id } = useParams();
+  const { category, subcategory } = useParams();
   const [productsData, setProductsData] = useState([]);
   const [productApiLoader, setProdductApiLoader] = useState(false);
   const [subCategoryApiLoader, setSubCatergoryLoader] = useState(false);
-
-  const [getCartApiLoader, setCartApiLoader] = useState(false);
   const [APIDataLoaded, setAPIDataLoaded] = useState(false);
   const [categories, setCategories] = useState([]);
 
@@ -34,15 +27,10 @@ function Category(props) {
       setSubCatergoryLoader(true);
       setAPIDataLoaded(true);
       const data = {
+        userId: loginDetails()?.userId ? loginDetails()?.userId : "",
         subcategory: subcategory.replaceAll("%20", ""),
       };
       props.fetchProductBySubCategory(data);
-    } else if (category) {
-      setAPIDataLoaded(true);
-      props.fetchProductByCategory();
-    } else if (id) {
-      setAPIDataLoaded(true);
-      props.fetchFilteredProducts();
     } else {
       setAPIDataLoaded(true);
       setProdductApiLoader(true);
@@ -100,33 +88,6 @@ function Category(props) {
     }
   }, [props.productBySubCategoryData.status]);
 
-  useEffect(() => {
-    if (
-      props.cartItems.status === status.SUCCESS &&
-      props.cartItems.data &&
-      getCartApiLoader
-    ) {
-      setCartApiLoader(false);
-    }
-  }, [props.cartItems.status]);
-
-  const allproducts = () => {
-    if (subcategory) {
-      props.fetchProductBySubCategory();
-    } else if (category) {
-      const data = {
-        category: category,
-      };
-      props.fetchProductByCategory(data);
-    } else if (id) {
-      setAPIDataLoaded(true);
-      props.fetchFilteredProducts();
-    } else {
-      setProdductApiLoader(true);
-      props.allProducts();
-    }
-  };
-
   return (
     <Box className="main-container categories">
       <Box className="current-category">
@@ -149,7 +110,6 @@ function Category(props) {
                 <List
                   currentCategory={subcategory ? subcategory : category}
                   data={productsData ? productsData : []}
-                  allproducts={allproducts}
                 />
               </>
             )}
@@ -163,10 +123,8 @@ function Category(props) {
 function mapStateToProps(state) {
   const { allProductsData, productBySubCategoryData, allCategories } =
     state.allproducts;
-  const { cartItems } = state.cartitem;
   return {
     allProductsData,
-    cartItems,
     productBySubCategoryData,
     allCategories,
   };
@@ -174,12 +132,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
   allProducts,
-  fetchCartItems,
-  setShopByCategory,
   fetchProductBySubCategory,
-  fetchProductByCategory,
-  fetchFilteredProducts,
-  fetchPersonalDetails,
   fetchCategories,
 };
 

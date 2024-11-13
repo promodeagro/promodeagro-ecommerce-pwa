@@ -70,7 +70,9 @@ class ProductItemView extends Component {
           : qty,
       });
     } else {
-      this.props.handleAuthModal();
+      this.setState({
+        authModalOpen: true,
+      });
     }
   }
 
@@ -354,7 +356,6 @@ class ProductItemView extends Component {
       sliderView = false,
       productList,
       showDeleteWishlist = false,
-      showAuthModal = false,
     } = this.props;
     const settings = {
       dots: false,
@@ -399,24 +400,22 @@ class ProductItemView extends Component {
           <>{this.renderProductItems(productList, showDeleteWishlist)}</>
         )}
 
-        {showAuthModal ? (
-          <AuthModal
-            open={this.state.authModalOpen}
-            handleDefaultAddress={() => {
-              this.props.fetchCategories();
-              this.props.fetchDefaultAddress(loginDetails()?.userId);
-              this.props.fetchPersonalDetails({
-                userId: loginDetails()?.userId,
-              });
-              this.props.navigate(0);
-            }}
-            handleClose={() => {
-              this.setState({
-                authModalOpen: false,
-              });
-            }}
-          />
-        ) : null}
+        <AuthModal
+          open={this.state.authModalOpen}
+          handleDefaultAddress={() => {
+            this.props.fetchCategories();
+            this.props.fetchDefaultAddress(loginDetails()?.userId);
+            this.props.fetchPersonalDetails({
+              userId: loginDetails()?.userId,
+            });
+            this.props.navigate(0);
+          }}
+          handleClose={() => {
+            this.setState({
+              authModalOpen: false,
+            });
+          }}
+        />
 
         {showDeleteWishlist ? (
           <Dialog
