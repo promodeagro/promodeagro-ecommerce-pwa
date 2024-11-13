@@ -27,7 +27,6 @@ function Category(props) {
       setSubCatergoryLoader(true);
       setAPIDataLoaded(true);
       const data = {
-        userId: loginDetails()?.userId ? loginDetails()?.userId : "",
         subcategory: subcategory.replaceAll("%20", ""),
       };
       props.fetchProductBySubCategory(data);

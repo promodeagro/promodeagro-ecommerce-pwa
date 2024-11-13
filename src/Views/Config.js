@@ -26,7 +26,7 @@ const Config = {
   SET_DEFAULT_ADDRESS: `${BASE_URL}/setDefaultAddress`,
   GET_DEFAULT_ADDRESS: `${BASE_URL}/getDefaultAddress`,
   DELIVERY_SLOT: `${BASE_URL}/getAvailableDeliverySlots`,
-  PRODUCT_BY_SUBCATEGORY: `${BASE_URL}/product`,
+  PRODUCT_BY_SUBCATEGORY: `${BASE_URL}/getProductBySubCategory`,
   PRODUCT_BY_CATEGORY: `${BASE_URL}/getProductByCategory`,
   ADD_PRODUCT_WISHLIST: `${BASE_URL}/addProductInWishList`,
   DELETE_PRODUCT_WISHLIST: `${BASE_URL}/removeProductInWishList`,
