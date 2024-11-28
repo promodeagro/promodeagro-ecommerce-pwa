@@ -54,7 +54,8 @@ Nestled in the heart of Yadgirigutta, our farm is a testament to nature's bounty
                    <br /> 2. We missed our Bengali Food in Hyderabad so wanted to frow here <br /> 
                     What began as a small family venture has grown into a thriving farm that embraces modern Bio Dynamic farminng techniques while staying true to traditional values. Over the years, we have expanded our operations and enhanced our practices to ensure that we deliver fresh, healthy, and environmentally-friendly products to our customers.
                   </p>
-                  <Box className="ceo-details">
+
+                  {/* <Box className="ceo-details">
                     <Box className="image">
                       <img src={ceoImg} alt="" />
                     </Box>
@@ -65,7 +66,9 @@ Nestled in the heart of Yadgirigutta, our farm is a testament to nature's bounty
                     <Box className="signature">
                       <img src={signatureImg} alt="" />
                     </Box>
-                  </Box>
+                  </Box> */}
+
+
                 </Box>
               </Grid>
             </Grid>
