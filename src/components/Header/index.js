@@ -282,14 +282,20 @@ class Header extends Component {
                     </Link>
                   </Box>
                   {matches && (
+
                     <Box
                       className="profile-icon"
                       onClick={() =>
-                        this.props.navigate("/my-profile/manage-addresses")
+                        loginDetails()?.userId
+                          ? this.props.navigate("/my-profile/manage-addresses")
+                          : this.setState({ authModalOpen: true })
                       }
                     >
+                      
                       <AccountCircleOutlinedIcon />
                     </Box>
+
+
                   )}
                 </Box>
               </Grid>

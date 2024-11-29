@@ -204,7 +204,8 @@
 
 // new sasss start
 .auth_container{
-width: 600px;
+  width: 90%;
+max-width: 600px;
 height: auto;
 padding: 48px 80px;
 border-radius: 12px;
@@ -366,4 +367,20 @@ outline: none !important;
     width:64% !important;
     margin-left: auto  !important;
     margin-right: auto  !important;
+  }
+
+
+
+  @media screen and (max-width:600px) {
+    .auth_container{
+      padding: 30px 35px;
+    }
+  } 
+  
+  
+  @media screen and (max-width:480px) {
+    .auth_container{
+      padding: 30px 35px;
+      padding: 16px 24px; 
+    }
   }
