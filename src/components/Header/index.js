@@ -21,6 +21,7 @@ import AuthModal from "components/ModalLogin/LoginModal";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
+import MyCart from "components/MyCart";
 
 class Header extends Component {
   constructor(props) {
@@ -37,6 +38,7 @@ class Header extends Component {
       profileName: "",
       authModalOpen: false,
       matches: window.matchMedia("(max-width: 600px)").matches,
+      myCartOpen:false
     };
 
     this.profileModalRef = React.createRef();
@@ -269,7 +271,11 @@ class Header extends Component {
                   ) : (
                     <Box className="login">{currentAddress?.name}</Box>
                   )}
-                  <Box className="card">
+                  <Box onClick={() => {
+          this.setState({
+            myCartOpen: true,
+          });
+        }} className="card">
                     <Link to={"/mycart"}>
                       {noOfcartItemsInLS ? (
                         <p>{noOfcartItemsInLS}</p>
@@ -323,6 +329,14 @@ class Header extends Component {
         >
           <Container>{this.renderCategories()}</Container>
         </Box>
+        <MyCart
+        open={this.state.myCartOpen}
+        handleClose={() => {
+          this.setState({
+            myCartOpen: false,
+          });
+        }}
+        />
         <AuthModal
           open={this.state.authModalOpen}
           handleDefaultAddress={() => {
