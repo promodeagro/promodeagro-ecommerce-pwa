@@ -1,6 +1,5 @@
 import { Box, Button, Drawer, Grid, IconButton, Modal, Typography } from '@mui/material'
 import React, { Component } from 'react'
-import "../../assets/sass/components/myCart.scss"
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import greenPlusIcon from "../../assets/img/greenPlusIcon.svg"
 import ArrowDown from "../../assets/img/ArrowDown.svg"
@@ -30,8 +29,8 @@ class MyCart extends Component {
         this.state = {
             matches: window.matchMedia("(max-width: 800px)").matches,
             showAddressPopup: true,
-            TabSelectAddressPopupOpen:false,
-            TabAddNewAddressOpen:false,
+            TabSelectAddressPopupOpen: false,
+            TabAddNewAddressOpen: false,
             // carts
             cartList: [],
             dataId: "",
@@ -39,8 +38,8 @@ class MyCart extends Component {
             loaderCount: 0,
             deleteItemId: "",
 
-            AddNewAddressOpen:false
-            ,slotOpen:false
+            AddNewAddressOpen: false
+            , slotOpen: false
         };
     }
     componentDidMount() {
@@ -49,21 +48,21 @@ class MyCart extends Component {
             .addEventListener("change", (e) => this.setState({ matches: e.matches }));
 
 
-            const items = loginDetails();
-            if (items?.userId) {
-                let cartData = LocalStorageCartService.getData() || {};
-                this.props.addListOfItemsToCartReq({
-                    userId: items.userId,
-                    cartItems: Object.values(cartData).length
-                        ? Object.values(cartData)
-                        : [],
-                });
-                this.props.fetchCartItems({
-                    userId: items.userId,
-                });
-            }
+        const items = loginDetails();
+        if (items?.userId) {
+            let cartData = LocalStorageCartService.getData() || {};
+            this.props.addListOfItemsToCartReq({
+                userId: items.userId,
+                cartItems: Object.values(cartData).length
+                    ? Object.values(cartData)
+                    : [],
+            });
+            this.props.fetchCartItems({
+                userId: items.userId,
+            });
+        }
     }
-    
+
     componentDidUpdate(prevProps, prevState) {
         const items = loginDetails();
         if (
@@ -192,7 +191,7 @@ class MyCart extends Component {
 
 
     render() {
-        const { matches ,dataId, isUpdateIncrease } = this.state
+        const { matches, dataId, isUpdateIncrease } = this.state
         const { open, handleClose } = this.props
         return (
             <>
@@ -217,10 +216,10 @@ class MyCart extends Component {
                                     {/* <DeliverySlots/> */}
                                     <span className='select_delivery_slot_wrapper'>
                                         <div onClick={() => {
-    this.setState({
-        slotOpen: true,
-    });
-}} >
+                                            this.setState({
+                                                slotOpen: true,
+                                            });
+                                        }} >
                                             <span>22 Oct, Tue, Between 6:00 AM - 7:00AM</span>
                                             <img src={ArrowDown} alt="" />
                                         </div>
@@ -242,106 +241,106 @@ class MyCart extends Component {
                                     <Box className="items_container">
                                         {console.log(this.state.cartList)}
                                         {this.state.cartList.length === 0 ? (
-      <Box sx={{display:"flex" , justifyContent:'center' ,alignItems:'center' , height:'100px'}}>No Items In Cart</Box>
-    ) : (
-
-        
-        this.state.cartList.map((item) => {
-            return (
-                <>
-                <Box className="cart_item" key={item?.ProductId}>
-                    {/* Image */}
-                    <Box
-                        className="img_box"
-                        onClick={() => {
-                            this.props.navigate(
-                                `/product-details/${item?.category}/${item?.subcategory}/${item?.ProductId}`
-                            );
-                        }}
-                        sx={{
-                            width: 60,
-                            height: 60,
-                            borderRadius: 1,
-                            marginRight: 2,
-                        }}
-                    >
-                        <img
-                            src={item?.productImage}
-                            alt="product-cart-img"
-                        />
-                    </Box>
-
-                    {/* Product Details */}
-                    <Box className="item_details" flexGrow={1}>
-                        <span>{item?.productName}</span>
-                        <span>Piece</span>
-                        <Box display="flex" alignItems="center">
-                            <span className="price">₹ {item?.Price}</span>
-                            <span className="mrp">{item?.Mrp}</span>
-                        </Box>
-                    </Box>
-
-                    {/* Quantity Controls */}
-                    <Box
-                        display="flex"
-                        alignItems="center"
-                        borderRadius={1}
-                        bgcolor="#1F9151"
-                        color="white"
-                    >
-                        <IconButton
-                            onClick={() => {
-                                let d = item.Quantity;
-                                this.handleQuantityChange(
-                                    item.ProductId,
-                                    -1,
-                                    Number(d),
-                                    item.QuantityUnits
-                                );
-                            }}
-                            size="small"
-                            color="inherit"
-                        >
-                            -
-                        </IconButton>
-                        <Typography variant="body1" mx={1}>
-                            {item?.Quantity}
-                        </Typography>
-                        <IconButton
-                            onClick={() => {
-                                let d = item.Quantity;
-                                this.handleQuantityChange(
-                                    item.ProductId,
-                                    1,
-                                    Number(d),
-                                    item.QuantityUnits
-                                );
-                            }}
-                            size="small"
-                            color="inherit"
-                        >
-                            +
-                        </IconButton>
-                    </Box>
-                </Box>
-
-                
-                </>
-                
-            );
-        })
+                                            <Box sx={{ display: "flex", justifyContent: 'center', alignItems: 'center', height: '100px' }}>No Items In Cart</Box>
+                                        ) : (
 
 
-    )}
+                                            this.state.cartList.map((item) => {
+                                                return (
+                                                    <>
+                                                        <Box className="cart_item" key={item?.ProductId}>
+                                                            {/* Image */}
+                                                            <Box
+                                                                className="img_box"
+                                                                onClick={() => {
+                                                                    this.props.navigate(
+                                                                        `/product-details/${item?.category}/${item?.subcategory}/${item?.ProductId}`
+                                                                    );
+                                                                }}
+                                                                sx={{
+                                                                    width: 60,
+                                                                    height: 60,
+                                                                    borderRadius: 1,
+                                                                    marginRight: 2,
+                                                                }}
+                                                            >
+                                                                <img
+                                                                    src={item?.productImage}
+                                                                    alt="product-cart-img"
+                                                                />
+                                                            </Box>
 
-<Box className="bill_details">
-<strong>Bill details</strong>
-<div> <span>Item total</span> <strong>₹436</strong></div>
-<div><span>Delivery Charges</span> <div ><span className='mrp'>₹25</span> <span className="free">Free</span> </div></div>
-<div><strong>Grand Total</strong> <strong>₹436</strong></div>
+                                                            {/* Product Details */}
+                                                            <Box className="item_details" flexGrow={1}>
+                                                                <span>{item?.productName}</span>
+                                                                <span>Piece</span>
+                                                                <Box display="flex" alignItems="center">
+                                                                    <span className="price">₹ {item?.Price}</span>
+                                                                    <span className="mrp">{item?.Mrp}</span>
+                                                                </Box>
+                                                            </Box>
 
-</Box>
-<Box className="space_adder"></Box>
+                                                            {/* Quantity Controls */}
+                                                            <Box
+                                                                display="flex"
+                                                                alignItems="center"
+                                                                borderRadius={1}
+                                                                bgcolor="#1F9151"
+                                                                color="white"
+                                                            >
+                                                                <IconButton
+                                                                    onClick={() => {
+                                                                        let d = item.Quantity;
+                                                                        this.handleQuantityChange(
+                                                                            item.ProductId,
+                                                                            -1,
+                                                                            Number(d),
+                                                                            item.QuantityUnits
+                                                                        );
+                                                                    }}
+                                                                    size="small"
+                                                                    color="inherit"
+                                                                >
+                                                                    -
+                                                                </IconButton>
+                                                                <Typography variant="body1" mx={1}>
+                                                                    {item?.Quantity}
+                                                                </Typography>
+                                                                <IconButton
+                                                                    onClick={() => {
+                                                                        let d = item.Quantity;
+                                                                        this.handleQuantityChange(
+                                                                            item.ProductId,
+                                                                            1,
+                                                                            Number(d),
+                                                                            item.QuantityUnits
+                                                                        );
+                                                                    }}
+                                                                    size="small"
+                                                                    color="inherit"
+                                                                >
+                                                                    +
+                                                                </IconButton>
+                                                            </Box>
+                                                        </Box>
+
+
+                                                    </>
+
+                                                );
+                                            })
+
+
+                                        )}
+
+                                        <Box className="bill_details">
+                                            <strong>Bill details</strong>
+                                            <div> <span>Item total</span> <strong>₹436</strong></div>
+                                            <div><span>Delivery Charges</span> <div ><span className='mrp'>₹25</span> <span className="free">Free</span> </div></div>
+                                            <div><strong>Grand Total</strong> <strong>₹436</strong></div>
+
+                                        </Box>
+                                        <Box className="space_adder"></Box>
 
                                     </Box>
 
@@ -381,7 +380,7 @@ class MyCart extends Component {
                                                 this.setState({
                                                     TabSelectAddressPopupOpen: true,
                                                 });
-                                            }}  sx={{ marginLeft: 'auto', color: 'green', fontWeight: 'bold' }}>
+                                            }} sx={{ marginLeft: 'auto', color: 'green', fontWeight: 'bold' }}>
                                                 Change
                                             </Link>
                                         )}
@@ -412,31 +411,31 @@ class MyCart extends Component {
 
                                 <Box className="select_delivery_address">
                                     <img onClick={() => {
-                                                this.setState({
-                                                    showAddressPopup: true,
-                                                });
-                                            }} src={BackArrow  } alt="" />
+                                        this.setState({
+                                            showAddressPopup: true,
+                                        });
+                                    }} src={BackArrow} alt="" />
                                     <h2>Select Delivery Address</h2>
                                 </Box>
 
                                 <Box className="select_delivery_slot">
-  <h2>Select Delivery Slot</h2>
+                                    <h2>Select Delivery Slot</h2>
 
-<div onClick={() => {
-    this.setState({
-        AddNewAddressOpen: true,
-    });
-}} className="add_new_address_btn">
-  <img src={greenPlusIcon} alt="" />
-  <span>Add New Address</span>
-</div>
-</Box>
+                                    <div onClick={() => {
+                                        this.setState({
+                                            AddNewAddressOpen: true,
+                                        });
+                                    }} className="add_new_address_btn">
+                                        <img src={greenPlusIcon} alt="" />
+                                        <span>Add New Address</span>
+                                    </div>
+                                </Box>
 
-<Box className="delivery_slots_container">
-<h2>Select Delivery Slot</h2>
-<AllAddresses
-/>
-</Box>
+                                <Box className="delivery_slots_container">
+                                    <h2>Select Delivery Slot</h2>
+                                    <AllAddresses
+                                    />
+                                </Box>
                             </Box>
 
                         }
@@ -448,95 +447,95 @@ class MyCart extends Component {
 
 
                 <Drawer open={this.state.TabSelectAddressPopupOpen}
-                anchor='bottom'
-                onClose={() => {
-                    this.setState({
-                        TabSelectAddressPopupOpen: false,
-                    });
-                }}
+                    anchor='bottom'
+                    onClose={() => {
+                        this.setState({
+                            TabSelectAddressPopupOpen: false,
+                        });
+                    }}
                 >
-<Box
-sx={{
-    borderRadius: "12px 12px 0 0",        // Rounded top corners
-    overflow: "hidden"                    // Prevents child content from overflowing the border radius
-  }}
-  className="tab_popup"
->   
-<Box className="tab_select_delivery_container">
-<h2>Select Delivery Address</h2>
-</Box>
+                    <Box
+                        sx={{
+                            borderRadius: "12px 12px 0 0",        // Rounded top corners
+                            overflow: "hidden"                    // Prevents child content from overflowing the border radius
+                        }}
+                        className="tab_popup"
+                    >
+                        <Box className="tab_select_delivery_container">
+                            <h2>Select Delivery Address</h2>
+                        </Box>
 
-<Button onClick={() => {
-                    this.setState({
-                        TabAddNewAddressOpen: true,
-                    });
-                }} className="tab_address_btn">
-  <img  alt="" src={greenPlusIcon} />
-  <span style={{textTransform:"none"}}>Add new Address</span>
-</Button>
+                        <Button onClick={() => {
+                            this.setState({
+                                TabAddNewAddressOpen: true,
+                            });
+                        }} className="tab_address_btn">
+                            <img alt="" src={greenPlusIcon} />
+                            <span style={{ textTransform: "none" }}>Add new Address</span>
+                        </Button>
 
-<AllAddresses/>
-</Box>
+                        <AllAddresses />
+                    </Box>
                 </Drawer>
 
 
                 <Drawer open={this.state.TabAddNewAddressOpen}
-                anchor='bottom'
-                onClose={() => {
-                    this.setState({
-                        TabAddNewAddressOpen: false,
-                    });
-                }}
+                    anchor='bottom'
+                    onClose={() => {
+                        this.setState({
+                            TabAddNewAddressOpen: false,
+                        });
+                    }}
                 >
-<Box
-sx={{
-    borderRadius: "12px 12px 0 0",        // Rounded top corners
-    overflow: "scroll"                    // Prevents child content from overflowing the border radius
-    , padding:0,
-    background:"#fff"
-  }}
-  className="tab_popup_new_address"
->
-    <AddNewAddress
-    handleClose={() => {
-        this.setState({
-            TabAddNewAddressOpen: false,
-        });
-    }}
-    />
-</Box>
+                    <Box
+                        sx={{
+                            borderRadius: "12px 12px 0 0",        // Rounded top corners
+                            overflow: "scroll"                    // Prevents child content from overflowing the border radius
+                            , padding: 0,
+                            background: "#fff"
+                        }}
+                        className="tab_popup_new_address"
+                    >
+                        <AddNewAddress
+                            handleClose={() => {
+                                this.setState({
+                                    TabAddNewAddressOpen: false,
+                                });
+                            }}
+                        />
+                    </Box>
                 </Drawer>
 
-<Modal 
+                <Modal
 
-open={this.state.AddNewAddressOpen}
-onClose={() => {
-    this.setState({
-        AddNewAddressOpen: false,
-    });
-}}
->
-    <Box className="">
-    <AddNewAddress handleClose={() => {
-    this.setState({
-        AddNewAddressOpen: false,
-    });
-}} />
-    </Box>
-</Modal>
-<Modal open={this.state.slotOpen}
-onClose={() => {
-    this.setState({
-        slotOpen: false,
-    });
-}}
->
-<>
-<DeliverySlots/>
-</>
-</Modal>
+                    open={this.state.AddNewAddressOpen}
+                    onClose={() => {
+                        this.setState({
+                            AddNewAddressOpen: false,
+                        });
+                    }}
+                >
+                    <Box className="">
+                        <AddNewAddress handleClose={() => {
+                            this.setState({
+                                AddNewAddressOpen: false,
+                            });
+                        }} />
+                    </Box>
+                </Modal>
+                <Modal open={this.state.slotOpen}
+                    onClose={() => {
+                        this.setState({
+                            slotOpen: false,
+                        });
+                    }}
+                >
+                    <>
+                        <DeliverySlots />
+                    </>
+                </Modal>
 
-                
+
             </>
         )
     }
