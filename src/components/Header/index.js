@@ -282,7 +282,7 @@ class Header extends Component {
         className="card">
 
 
-                    <Link to={"/mycart"}>
+                    <Link>
                       {noOfcartItemsInLS ? (
                         <p>{noOfcartItemsInLS}</p>
                       ) : this.state.cartList?.length ? (
