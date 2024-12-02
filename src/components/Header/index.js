@@ -138,7 +138,6 @@ class Header extends Component {
         });
       }
     }
-
     if (
       prevProps.allCategories.status !== this.props.allCategories.status &&
       this.props.allCategories.status === status.SUCCESS &&
@@ -271,11 +270,18 @@ class Header extends Component {
                   ) : (
                     <Box className="login">{currentAddress?.name}</Box>
                   )}
-                  <Box onClick={() => {
-          this.setState({
-            myCartOpen: true,
-          });
-        }} className="card">
+
+
+                  <Box
+                  
+                  onClick={() =>
+                    loginDetails()?.userId
+                        ? this.setState({ myCartOpen: true }) // Show MyCart modal
+                        : this.setState({ authModalOpen: true }) // Show Login modal
+                }
+        className="card">
+
+
                     <Link to={"/mycart"}>
                       {noOfcartItemsInLS ? (
                         <p>{noOfcartItemsInLS}</p>
