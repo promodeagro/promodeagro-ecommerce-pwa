@@ -23,7 +23,6 @@ import _ from "lodash";
 import RecentlyViewedItems from "components/RecentlyViewedItems";
 import { saveForLater } from "../../../Redux/AllProducts/AllProductthunk";
 import { LocalStorageCartService } from "Services/localStorageCartService";
-
 class MyCart extends Component {
   constructor(props) {
     super(props);
@@ -35,7 +34,6 @@ class MyCart extends Component {
       deleteItemId: "",
     };
   }
-
   componentDidMount() {
     const items = loginDetails();
     if (items?.userId) {
@@ -51,7 +49,6 @@ class MyCart extends Component {
       });
     }
   }
-
   componentDidUpdate(prevProps, prevState) {
     const items = loginDetails();
     if (
