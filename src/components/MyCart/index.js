@@ -1,4 +1,4 @@
-import { Box, Button, Drawer, Grid, IconButton, Modal, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, Drawer, Grid, IconButton, Modal, Typography } from '@mui/material'
 import React, { Component } from 'react'
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import greenPlusIcon from "../../assets/img/greenPlusIcon.svg"
@@ -7,7 +7,7 @@ import ArrowDown from "../../assets/img/ArrowDown.svg"
 import closeModal from "../../assets/img/closeModalIcon.svg"
 import BackArrow from "../../assets/img/backArrow.svg"
 import { Link } from 'react-router-dom';
-import { loginDetails } from 'Views/Utills/helperFunctions';
+import { Loader, loginDetails } from 'Views/Utills/helperFunctions';
 import { LocalStorageCartService } from 'Services/localStorageCartService';
 import status from '../../Redux/Constants';
 import {
@@ -37,9 +37,9 @@ class MyCart extends Component {
             isUpdateIncrease: null,
             loaderCount: 0,
             deleteItemId: "",
-
-            AddNewAddressOpen: false
-            , slotOpen: false
+            AddNewAddressOpen: false,
+            slotOpen: false,
+            defaultAddress:""
         };
     }
     componentDidMount() {
@@ -237,7 +237,11 @@ class MyCart extends Component {
 
                                 <Box className="item_details_container">
                                     <h2>Item Details</h2>
-
+                                    {this.props.addListOfItemRes.status === status.IN_PROGRESS ||
+            (this.props.cartItems.status === status.IN_PROGRESS &&
+              this.state.loaderCount == 0) ? (
+              Loader.commonLoader()
+            ) : (
                                     <Box className="items_container">
                                         {console.log(this.state.cartList)}
                                         {this.state.cartList.length === 0 ? (
@@ -290,18 +294,36 @@ class MyCart extends Component {
                                                             >
                                                                 <IconButton
                                                                     onClick={() => {
-                                                                        let d = item.Quantity;
-                                                                        this.handleQuantityChange(
-                                                                            item.ProductId,
-                                                                            -1,
-                                                                            Number(d),
-                                                                            item.QuantityUnits
-                                                                        );
+                                                                      let d = item.Quantity;
+                                    
+                                                                      this.handleQuantityChange(
+                                                                        item.ProductId,
+                                                                        -1,
+                                                                        Number(d),
+                                                                        item.QuantityUnits
+                                                                      );
                                                                     }}
+
+
                                                                     size="small"
                                                                     color="inherit"
                                                                 >
-                                                                    -
+                                                                   {(this.props.deleteItems.status ===
+                                  status.IN_PROGRESS &&
+                                  item.ProductId === dataId &&
+                                  !isUpdateIncrease) ||
+                                (this.props.updateItems.status ===
+                                  status.IN_PROGRESS &&
+                                  item.ProductId === dataId &&
+                                  !isUpdateIncrease) ? (
+                                  <CircularProgress
+                                    className="common-loader plus-icon"
+                                    size={24}
+                                  />
+                                ) : (
+                                  "-"
+                                )}
+                                
                                                                 </IconButton>
                                                                 <Typography variant="body1" mx={1}>
                                                                     {item?.Quantity}
@@ -310,20 +332,29 @@ class MyCart extends Component {
                                                                     onClick={() => {
                                                                         let d = item.Quantity;
                                                                         this.handleQuantityChange(
-                                                                            item.ProductId,
-                                                                            1,
-                                                                            Number(d),
-                                                                            item.QuantityUnits
+                                                                          item.ProductId,
+                                                                          1,
+                                                                          Number(d),
+                                                                          item.QuantityUnits
                                                                         );
-                                                                    }}
+                                                                      }}
                                                                     size="small"
                                                                     color="inherit"
                                                                 >
-                                                                    +
+                                                                  {this.props.updateItems.status ===
+                                  status.IN_PROGRESS &&
+                                item.ProductId === dataId &&
+                                isUpdateIncrease ? (
+                                  <CircularProgress
+                                    className="common-loader plus-icon"
+                                    size={24}
+                                  />
+                                ) : (
+                                  "+"
+                                )}
                                                                 </IconButton>
                                                             </Box>
                                                         </Box>
-
 
                                                     </>
 
@@ -332,7 +363,8 @@ class MyCart extends Component {
 
 
                                         )}
-
+{console.log(this.state.cartList)}
+{this.state.cartList?.length > 0 ? (
                                         <Box className="bill_details">
                                             <strong>Bill details</strong>
                                             <div> <span>Item total</span> <strong>₹436</strong></div>
@@ -340,11 +372,17 @@ class MyCart extends Component {
                                             <div><strong>Grand Total</strong> <strong>₹436</strong></div>
 
                                         </Box>
+                                          ) : (
+                                            <></>
+                                          )}
                                         <Box className="space_adder"></Box>
+                                        
 
                                     </Box>
-
+      )}
                                 </Box>
+
+
 
                                 {/* <Box className="bill_details">
 <strong>Bill details</strong>
