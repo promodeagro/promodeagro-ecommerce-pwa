@@ -22,6 +22,8 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import MyCart from "components/MyCart";
+import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
+import AddressPopover from "components/AddressPopover/addresspopover";
 
 class Header extends Component {
   constructor(props) {
@@ -38,7 +40,9 @@ class Header extends Component {
       profileName: "",
       authModalOpen: false,
       matches: window.matchMedia("(max-width: 600px)").matches,
-      myCartOpen:false
+      myCartOpen: false,
+      profileModal: false,
+      isAddressPopoverOpen: false,
     };
 
     this.profileModalRef = React.createRef();
@@ -205,8 +209,15 @@ class Header extends Component {
     );
   };
 
+  handleProfileModal = () => {
+    this.setState({
+      profileModal: !this.state.profileModal,
+    });
+  };
+
   render() {
-    const { cartList, currentAddress, matches, currentPathName } = this.state;
+    const { cartList, currentAddress, matches, currentPathName, profileModal } =
+      this.state;
     const { noOfcartItemsInLS } = this.props;
 
     return (
@@ -214,6 +225,7 @@ class Header extends Component {
         <Box className="header">
           <Container maxWidth={false}>
             <Grid container spacing={2} alignItems={"center"}>
+              {console.log(currentAddress, "sss")}
               {!matches && (
                 <Grid item xs={0} sm={5} md={5} lg={4}>
                   <Box width={"100%"} alignItems={"center"} display={"flex"}>
@@ -225,13 +237,17 @@ class Header extends Component {
                     {currentAddress?.address && loginDetails()?.userId && (
                       <Box
                         className="deliver-box"
-                        onClick={() =>
-                          this.props.navigate("/my-profile/manage-addresses")
+                        onClick={(event) =>
+                          this.setState({
+                            isAddressPopoverOpen: true,
+                            anchorEl: event.currentTarget,
+                          })
                         }
                       >
                         <strong>Deliver to</strong>
                         <span>
-                          {currentAddress?.address} <KeyboardArrowDownIcon />
+                          {currentAddress?.address || "Set Address"}
+                          <KeyboardArrowDownIcon />
                         </span>
                       </Box>
                     )}
@@ -268,20 +284,76 @@ class Header extends Component {
                         : "Login"}
                     </Box>
                   ) : (
-                    <Box className="login">{currentAddress?.name}</Box>
+                    <Box
+                      onClick={() => this.handleProfileModal()}
+                      className="login profile_modal_par"
+                    >
+                      {currentAddress?.name}
+                      <KeyboardArrowDownIcon />
+
+                      {profileModal && (
+                        <>
+                          <Box
+                            className="profile-modal"
+                            ref={this.profileModalRef}
+                          >
+                            <ul>
+                              <li onClick={() => this.handleProfileModal()}>
+                                <Link to="/my-profile/personal-information">
+                                  <PermIdentityOutlinedIcon /> My Profile
+                                </Link>
+                              </li>
+                              <li onClick={() => this.handleProfileModal()}>
+                                <Link to="/my-order">
+                                  <PermIdentityOutlinedIcon /> Orders
+                                </Link>
+                              </li>
+                              <li onClick={() => this.handleProfileModal()}>
+                                <Link to="/my-profile/wish-list">
+                                  <PermIdentityOutlinedIcon /> Wish list
+                                </Link>
+                              </li>
+                              <li onClick={() => this.handleProfileModal()}>
+                                <Link to="/contact-us">
+                                  <PermIdentityOutlinedIcon /> Contact Us
+                                </Link>
+                              </li>
+                              <li onClick={() => this.handleProfileModal()}>
+                                <Link to="/my-profile/notification">
+                                  <PermIdentityOutlinedIcon /> Notification
+                                </Link>
+                              </li>
+                              <li
+                                onClick={() => {
+                                  this.handleProfileModal();
+                                  localStorage.removeItem("login");
+                                  this.props.navigate("/");
+                                }}
+                              >
+                                <Link>
+                                  <PermIdentityOutlinedIcon /> Logout
+                                </Link>
+                              </li>
+                            </ul>
+                          </Box>
+                          <Box
+                            className="profile-modal-bg"
+                            onClick={() => this.handleProfileModal()}
+                          ></Box>
+                        </>
+                      )}
+                    </Box>
                   )}
 
-
                   <Box
-                  
-                  onClick={() =>
-                    loginDetails()?.userId
-                        ? this.setState({ myCartOpen: true }) // Show MyCart modal
-                        : this.setState({ authModalOpen: true }) // Show Login modal
-                }
-        className="card">
-
-
+                    onClick={
+                      () =>
+                        loginDetails()?.userId
+                          ? this.setState({ myCartOpen: true }) // Show MyCart modal
+                          : this.setState({ authModalOpen: true }) // Show Login modal
+                    }
+                    className="card"
+                  >
                     <Link>
                       {noOfcartItemsInLS ? (
                         <p>{noOfcartItemsInLS}</p>
@@ -294,7 +366,6 @@ class Header extends Component {
                     </Link>
                   </Box>
                   {matches && (
-
                     <Box
                       className="profile-icon"
                       onClick={() =>
@@ -303,11 +374,8 @@ class Header extends Component {
                           : this.setState({ authModalOpen: true })
                       }
                     >
-                      
                       <AccountCircleOutlinedIcon />
                     </Box>
-
-
                   )}
                 </Box>
               </Grid>
@@ -335,13 +403,22 @@ class Header extends Component {
         >
           <Container>{this.renderCategories()}</Container>
         </Box>
+        <AddressPopover
+          open={this.state.isAddressPopoverOpen}
+          anchorEl={this.state.anchorEl}
+          handleClose={() => this.setState({ isAddressPopoverOpen: false })}
+          currentAddress={this.state.currentAddress} // Pass the current address data here
+          onAddressSubmit={(newAddress) => {
+            this.setState({ currentAddress: newAddress });
+          }}
+        />
         <MyCart
-        open={this.state.myCartOpen}
-        handleClose={() => {
-          this.setState({
-            myCartOpen: false,
-          });
-        }}
+          open={this.state.myCartOpen}
+          handleClose={() => {
+            this.setState({
+              myCartOpen: false,
+            });
+          }}
         />
         <AuthModal
           open={this.state.authModalOpen}

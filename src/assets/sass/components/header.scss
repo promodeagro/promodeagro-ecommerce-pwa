@@ -2,7 +2,7 @@
   display: flex;
   width: 100%;
   padding-top: 15px;
-  padding-bottom: 15px;
+   padding-bottom: 15px;
   background-color: #005f41;
   position: fixed;
   top: 0;
@@ -24,7 +24,7 @@
     flex-wrap: wrap;
     margin-left: 20px;
     cursor: pointer;
-
+max-height: 100%;
     strong {
       display: flex;
       width: 100%;

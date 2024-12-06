@@ -1,6 +1,94 @@
-.button{
-width: 12px;
-color: red;
-background-color: red;
+.buttonpopover {
+  height: 6px;
+  width: 20px;
+}
+  .MuiButton-root {
+    background-color: #28a745 !important; /* Green color for the button, using !important */
+    color: white !important; /* Text color inside the button */
+    font-size: 12px;
+    border-radius: 5px;
+    padding: 10px 20px; /* Adjust button padding */
+    font-weight: bold;
+    height: 6px;
+    width: 20px;
+
+    &:hover {
+      background-color: #218838 !important; /* Darker green on hover, using !important */
+    }
+    svg {
+      font-size: 12px !important;
+    }
+  }
+
+.header-box {
+  display: grid;
+  grid-template-columns: 1fr auto; /* Two columns: first for text and second for the button */
+  grid-template-rows: auto auto; /* Two rows for the text and subtext */
+  gap: 10px;
+  align-items: flex-start; /* Align items at the top */
+  width: 100%; /* Ensure it uses the full width */
+}
+
+.address-text {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.address-subtext {
+  font-size: 10px;
+  color: rgb(88, 86, 86);
+  margin-top: 2px; /* Adds space between subtext and text */
+  font-weight: 400;
+
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end; /* Aligns the button to the right */
+  align-items: center; /* Centers the button vertically */
+  grid-column: 2; /* Positions the button in the second column */
+  grid-row: span 2; /* Makes sure button spans both rows */
+}
+
+
+.address-popover button {
+  width: 4rem;
+  margin: 0;
+}
+.addressbox {
+  font-size: 12px;
+  height: 4rem; /* Set height */
+  background-color: transparent; /* Initially transparent background */
+  border-radius: 14px; /* Rounded corners */
+  border: 1px solid #cfcaca; /* Gray border color */
+  padding: 0.5rem; /* Add padding for spacing inside the box */
+  transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+.addressbox:hover {
+  background-color: #9ce4bb; /* Green background color on hover */
+}
+
+.addressmainbox {
+  display: flex; /* Enable flexbox */
+  flex-direction: column; /* Stack items vertically */
+  gap: 1rem; /* Adds gap between child elements */  
+}
+.smallbutton{
+  background-color: #1f9151;
+  height: 30px;
+  width: 120px;
+  border-radius: 6px;
+  font-weight: 500;
+  color: #ffffff;
+  font-size: 12px;
+  box-shadow: none;
+  text-transform: capitalize;
+  border: none;
+
+  &:hover {
+    background-color: #1f9151;
+    box-shadow: none;
+  }
 }
 

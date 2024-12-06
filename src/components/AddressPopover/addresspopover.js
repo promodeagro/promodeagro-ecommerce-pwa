@@ -1,11 +1,5 @@
 import React, { Component } from "react";
-import {
-  Popover,
-  Box,
-  TextField,
-  Button,
-  FormHelperText,
-} from "@mui/material";
+import { Popover, Box, Button } from "@mui/material";
 import { ValidationEngine } from "Views/Utills/helperFunctions"; // Assuming validation engine is imported
 import CircularProgress from "@mui/material/CircularProgress";
 
@@ -78,7 +72,7 @@ class AddressPopover extends Component {
   };
 
   render() {
-    const { open, anchorEl } = this.props;
+    const { open, anchorEl, currentAddress } = this.props; // Destructure currentAddress from props
     const { street, city, zip, isSubmitting, submitAddress } = this.state;
     const errorData = this.validateForm();
 
@@ -96,90 +90,35 @@ class AddressPopover extends Component {
           horizontal: "left",
         }}
       >
-        <Box
-          className=""
-          sx={{
-            width: 600,
-            padding: 2,
-            maxWidth: "100%",
-          }}
-        >
+        <Box sx={{ width: 500, padding: 2, maxWidth: "100%" }}>
           <form onSubmit={this.handleAddressSubmit}>
             <Box>
-              <Box>Select a Location for Delivery
-              <Button
-                  type="submit"
-                  variant="contained"
-                  fullWidth
-                  className="common-btn"
-                  disabled={isSubmitting}
-                  endIcon={
-                    isSubmitting ? (
-                      <CircularProgress className="common-loader" />
-                    ) : (
-                      <></>
-                    )
-                  }
-                >
-                  {isSubmitting ? "Saving..." : "+ Add Address"}
-                </Button>
-
+              <Box className="header-box">
+                <Box className="address-text">
+                  Select a Location for Delivery
+                  <Box className="address-subtext">
+                    Choose your address location to see delivery options
+                  </Box>
+                </Box>
+                <Box className="button-container">
+                  <button
+                    variant="contained"
+                    className="smallbutton"              
+                  >
+                    + Add Address
+                  </button>
+                </Box>
               </Box>
-
-                <Box className="input-box">
-                  <label className="d-block">Street Address</label>
-                  <TextField
-                    value={street}
-                    onChange={(e) => this.setState({ street: e.target.value })}
-                    name="street"
-                    placeholder="Street Address"
-                    className="input-textfield"
-                    variant="outlined"
-                    fullWidth
-                  />
-                  {submitAddress && errorData?.street?.message && (
-                    <FormHelperText error>
-                      {errorData?.street?.message}
-                    </FormHelperText>
-                  )}
-                </Box>
-                <Box className="input-box">
-                  <label className="d-block">City</label>
-                  <TextField
-                    value={city}
-                    onChange={(e) => this.setState({ city: e.target.value })}
-                    name="city"
-                    placeholder="City"
-                    className="input-textfield"
-                    variant="outlined"
-                    fullWidth
-                  />
-                  {submitAddress && errorData?.city?.message && (
-                    <FormHelperText error>
-                      {errorData?.city?.message}
-                    </FormHelperText>
-                  )}
-                </Box>
-                <Box className="input-box">
-                  <label className="d-block">Zip Code</label>
-                  <TextField
-                    value={zip}
-                    onChange={(e) => this.setState({ zip: e.target.value })}
-                    name="zip"
-                    placeholder="Zip Code"
-                    className="input-textfield"
-                    variant="outlined"
-                    fullWidth
-                  />
-                  {submitAddress && errorData?.zip?.message && (
-                    <FormHelperText error>
-                      {errorData?.zip?.message}
-                    </FormHelperText>
-                  )}
-                </Box>
-              
             </Box>
           </form>
+          <Box className="addressmainbox">
+            <Box className="addressbox" variant="contained" fullWidth>
+            {currentAddress?.address || "No Address Set"} {/* Display the current address */}
+            </Box>
+            <Box className="addressbox" variant="contained" fullWidth>
+              hjhjhj
+            </Box>
+          </Box>
         </Box>
       </Popover>
     );
