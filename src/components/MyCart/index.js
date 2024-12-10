@@ -284,8 +284,6 @@ class MyCart extends Component {
                                     <h2>My Cart</h2>
                                     <img onClick={handleClose} src={closeModal} alt="" />
                                 </Box>
-
-
                                 <Box className="my_cart_bottom_address">
                                         <img src={LocationIcon} alt="" />
                                         <Box>
@@ -663,18 +661,7 @@ class MyCart extends Component {
                         }} />
                     </Box>
                 </Modal>
-                <Modal open={this.state.slotOpen}
-                    onClose={() => {
-                        this.setState({
-                            slotOpen: false,
-                        });
-                    }}
-                >
-                    <>
-                        <DeliverySlots />
-                    </>
-                </Modal>
-
+               
 
                 <Modal
           open={this.state.paymentLink}
@@ -703,6 +690,18 @@ class MyCart extends Component {
             </Box>
           </Box>
         </Modal>
+
+        <Modal open={this.state.slotOpen}
+                    onClose={() => {
+                        this.setState({
+                            slotOpen: false,
+                        });
+                    }}
+                >
+                    <>
+                        <DeliverySlots />
+                    </>
+                </Modal>
             </>
         )
     }
