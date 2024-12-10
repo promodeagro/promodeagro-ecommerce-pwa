@@ -447,15 +447,14 @@ class MyCart extends Component {
 
 
                                             )}
-                                            {console.log(this.state.cartList)}
                                             {this.state.cartList?.length > 0 ? (
-                                                <Box className="bill_details">
+                                                <div className="bill_details">
                                                     <strong>Bill details</strong>
                                                     <div> <span>Item total</span> <strong>₹436</strong></div>
                                                     <div><span>Delivery Charges</span> <div ><span className='mrp'>₹25</span> <span className="free">Free</span> </div></div>
                                                     <div><strong>Grand Total</strong> <strong>₹436</strong></div>
 
-                                                </Box>
+                                                </div>
                                             ) : (
                                                 <></>
                                             )}
