@@ -128,6 +128,14 @@ class Footer extends Component {
     );
   };
 
+    // Method to extract ID from URL path
+    extractIdFromPath(path) {
+      const regex = /[\/]([0-9]+)$/;  // Match numbers at the end of the URL (e.g., /order-placed/12345)
+      const match = path.match(regex);
+      return match ? match[1] : null;  // Return matched ID or null if not found
+    }
+
+
   render() {
     const login = loginDetails();
     const { currentPathName, matches } = this.state;

@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import config from "../../Views/Config";
 import { postLoginService } from "../../Services";
 
+
 export const placeOrder = createAsyncThunk("placeorder", async (params) => {
   try {
     let url = config.PLACE_ORDER;
@@ -11,6 +12,7 @@ export const placeOrder = createAsyncThunk("placeorder", async (params) => {
     return error;
   }
 });
+
 export const fetchAllorders = createAsyncThunk("allorders", async (userId) => {
   try {
     let url = config.PLACE_ORDER + `/${userId}`;
