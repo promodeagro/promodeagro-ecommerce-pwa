@@ -23,7 +23,8 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import MyCart from "components/MyCart";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
-
+import AddressModal from "components/AddressModal/addressmodal";
+import AddAddressModal from "components/AddressModal/addaddressmodal";
 
 class Header extends Component {
   constructor(props) {
@@ -40,8 +41,11 @@ class Header extends Component {
       profileName: "",
       authModalOpen: false,
       matches: window.matchMedia("(max-width: 600px)").matches,
-      myCartOpen:false,
+      myCartOpen: false,
       profileModal: false,
+      isAddressModalOpen: false, // State to control AddressModal visibility
+      currentAddress: {}, // Current address details
+      isAddAddressModalOpen: false, // State for AddAddressModal
     };
 
     this.profileModalRef = React.createRef();
@@ -208,25 +212,47 @@ class Header extends Component {
     );
   };
 
-
   handleProfileModal = () => {
     this.setState({
       profileModal: !this.state.profileModal,
     });
   };
 
+  toggleAddressModal = () => {
+    this.setState((prevState) => ({
+      isAddressModalOpen: !prevState.isAddressModalOpen,
+    }));
+  };
+  handleClose = () => {
+    this.setState({
+      isAddressModalOpen: false, // Close the AddressModal
+      isAddAddressModalOpen: false, // Close the AddAddressModal
+    });
+  };
 
+  toggleAddAddressModal = (e) => {
+    if (e?.stopPropagation) {
+      e.stopPropagation(); // Prevent click from bubbling up to parent element
+    }
+    this.setState((prevState) => ({
+      isAddAddressModalOpen: !prevState.isAddAddressModalOpen,
+    }));
+  };
   
   render() {
-    const { cartList, currentAddress, matches, currentPathName , profileModal} = this.state;
+    const { cartList, currentAddress, matches, currentPathName, profileModal } =
+      this.state;
     const { noOfcartItemsInLS } = this.props;
+    const { isAddressModalOpen } = this.state;
+    const { isAddAddressModalOpen} = this.state;
+
 
     return (
       <>
         <Box className="header">
           <Container maxWidth={false}>
             <Grid container spacing={2} alignItems={"center"}>
-              {console.log(currentAddress , "sss")}
+              {console.log(currentAddress, "sss")}
               {!matches && (
                 <Grid item xs={0} sm={5} md={5} lg={4}>
                   <Box width={"100%"} alignItems={"center"} display={"flex"}>
@@ -235,19 +261,38 @@ class Header extends Component {
                         <img src={Logo} alt="Promode Agro Farms" />
                       </Link>
                     </Box>
-                    {currentAddress?.address && loginDetails()?.userId && (
-                      <Box
-                        className="deliver-box"
-                        onClick={() =>
-                          this.props.navigate("/my-profile/manage-addresses")
-                        }
-                      >
-                        <strong>Deliver to</strong>
-                        <span>
-                          {currentAddress?.address} <KeyboardArrowDownIcon />
-                        </span>
-                      </Box>
-                    )}
+                    {loginDetails()?.userId ? (
+            currentAddress?.address ? (
+              <Box
+                className="deliver-box"
+                onClick={this.toggleAddressModal}
+              >
+                <strong>Deliver to</strong>
+                <span>
+                  {currentAddress?.landmark_area}, {currentAddress?.address}, {currentAddress?.city}<KeyboardArrowDownIcon />
+                </span>
+              </Box>
+            ) : (
+              <Box
+                className="deliver-box"
+                onClick={this.toggleAddAddressModal}
+              >
+                <strong>Delivery in One Day</strong>
+                <a
+  className="anchortagheader"
+  onClick={(e) => {
+    e.stopPropagation(); // Prevent click from bubbling up to Box
+    this.toggleAddAddressModal(e); // Pass the event explicitly
+  }}
+>
+  + Add Address
+</a>
+              </Box>
+            )
+          ) : (
+            // Don't show Delivery in One Day if user is not logged in
+            <></>
+          )}
                   </Box>
                 </Grid>
               )}
@@ -277,16 +322,16 @@ class Header extends Component {
                       onClick={() => this.setState({ authModalOpen: true })}
                     >
                       {loginDetails()?.userId && currentAddress?.name
-                        ? currentAddress?.name  
+                        ? currentAddress?.name
                         : "Login"}
                     </Box>
                   ) : (
-                    <Box  
-                    onClick={() => this.handleProfileModal()}
-                    className="login profile_modal_par">
-                      {currentAddress?.name}
+                    <Box
+                      onClick={() => this.handleProfileModal()}
+                      className="login profile_modal_par"
+                    >
+                      {currentAddress?.name || "User"}{" "}
                       <KeyboardArrowDownIcon />
-
                       {profileModal && (
                         <>
                           <Box
@@ -338,16 +383,18 @@ class Header extends Component {
                           ></Box>
                         </>
                       )}
-                      </Box>
+                    </Box>
                   )}
 
                   <Box
-                  onClick={() =>
-                    loginDetails()?.userId
-                        ? this.setState({ myCartOpen: true }) // Show MyCart modal
-                        : this.setState({ authModalOpen: true }) // Show Login modal
-                }
-        className="card">
+                    onClick={
+                      () =>
+                        loginDetails()?.userId
+                          ? this.setState({ myCartOpen: true }) // Show MyCart modal
+                          : this.setState({ authModalOpen: true }) // Show Login modal
+                    }
+                    className="card"
+                  >
                     <Link>
                       {noOfcartItemsInLS ? (
                         <p>{noOfcartItemsInLS}</p>
@@ -360,7 +407,6 @@ class Header extends Component {
                     </Link>
                   </Box>
                   {matches && (
-
                     <Box
                       className="profile-icon"
                       onClick={() =>
@@ -371,8 +417,6 @@ class Header extends Component {
                     >
                       <AccountCircleOutlinedIcon />
                     </Box>
-
-
                   )}
                 </Box>
               </Grid>
@@ -400,13 +444,27 @@ class Header extends Component {
         >
           <Container>{this.renderCategories()}</Container>
         </Box>
+        {isAddressModalOpen && (
+          <AddressModal
+            open={isAddressModalOpen}
+            handleClose={this.handleClose} // passing the correct function here
+            currentAddress={currentAddress} // Pass additional props if needed
+          />
+        )}
+                {isAddAddressModalOpen && (
+          <AddAddressModal
+            open={isAddAddressModalOpen}
+            handleClose={this.handleClose} // passing the correct function here
+          />
+        )}
+
         <MyCart
-        open={this.state.myCartOpen}
-        handleClose={() => {
-          this.setState({
-            myCartOpen: false,
-          });
-        }}
+          open={this.state.myCartOpen}
+          handleClose={() => {
+            this.setState({
+              myCartOpen: false,
+            });
+          }}
         />
         <AuthModal
           open={this.state.authModalOpen}

@@ -2,8 +2,8 @@ import { Box, FormControlLabel, Grid, Radio, Tab, Tabs, Typography } from '@mui/
 import React, { useState } from 'react'
 import closeModalIcon from "../../../../assets/img/closeModalIcon.svg"
 
-const DeliverySlots = () => {
-    const [selectedTab, setSelectedTab] = useState(0);
+const DeliverySlots = ({ handleClose }) => {
+  const [selectedTab, setSelectedTab] = useState(0);
     const [selectedSlot, setSelectedSlot] = useState(null);
 
     const timeSlots = [
@@ -22,7 +22,7 @@ const DeliverySlots = () => {
     <Box className="common-modal delevery_slot_modal">
     <div className='delevery_slot_modal_top'>
       <h2>Delivery Slot</h2>
-      <img  src={closeModalIcon} alt="" />
+      <img src={closeModalIcon} alt="Close Modal" onClick={handleClose} />
       </div>
   
     <Box className="delevery_slot_modal_days">
