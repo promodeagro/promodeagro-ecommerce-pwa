@@ -29,6 +29,8 @@ import AllAddresses from './Components/AllAddresses';
 import AddNewAddress from './Components/AddNewAddress';
 import DeliverySlots from './Components/DeliverySlots';
 
+import "../../assets/sass/components/myCart.scss"
+
 class MyCart extends Component {
     constructor(props) {
         super(props);
