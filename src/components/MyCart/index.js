@@ -1,4 +1,3 @@
-
 import { Box, Button, CircularProgress, Drawer, Grid, IconButton, Modal, Radio, Typography } from '@mui/material'
 import React, { Component } from 'react'
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -13,23 +12,22 @@ import { Link } from 'react-router-dom';
 import { ErrorMessages, Loader, loginDetails } from 'Views/Utills/helperFunctions';
 import { LocalStorageCartService } from 'Services/localStorageCartService';
 import status from '../../Redux/Constants';
-
 import {
-  fetchCartItems,
-  deleteItemToCart,
-  updateItemToCart,
-  addListOfItemsToCartReq,
+    fetchCartItems,
+    deleteItemToCart,
+    updateItemToCart,
+    addListOfItemsToCartReq,
 } from "../../Redux/Cart/CartThunk";
 import LocationIcon from "../../assets/img/LocationImg.svg"
 import {
     placeOrder
 } from "../../Redux/Order/PlaceOrderThunk";
 import { saveForLater } from "../../Redux/AllProducts/AllProductthunk";
-import { connect } from "react-redux";
-import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
-import AllAddresses from "./Components/AllAddresses";
-import AddNewAddress from "./Components/AddNewAddress";
-import DeliverySlots from "./Components/DeliverySlots";
+import { connect } from 'react-redux';
+import { navigateRouter } from 'Views/Utills/Navigate/navigateRouter';
+import AllAddresses from './Components/AllAddresses';
+import AddNewAddress from './Components/AddNewAddress';
+import DeliverySlots from './Components/DeliverySlots';
 
 class MyCart extends Component {
     constructor(props) {
@@ -52,21 +50,26 @@ class MyCart extends Component {
             paymentLink: null,
         };
     }
-  }
+    componentDidMount() {
+        window
+            .matchMedia("(max-width: 800px)")
+            .addEventListener("change", (e) => this.setState({ matches: e.matches }));
 
-  componentDidUpdate(prevProps, prevState) {
-    const items = loginDetails();
-    if (
-      prevProps.addListOfItemRes.status !== this.props.addListOfItemRes.status
-    ) {
-      if (this.props.addListOfItemRes.status === status.SUCCESS) {
-        this.props.fetchCartItems({
-          userId: items.userId,
-        });
-      } else if (this.props.addListOfItemRes.status === status.FAILURE) {
-      }
+
+        const items = loginDetails();
+        if (items?.userId) {
+            let cartData = LocalStorageCartService.getData() || {};
+            this.props.addListOfItemsToCartReq({
+                userId: items.userId,
+                cartItems: Object.values(cartData).length
+                    ? Object.values(cartData)
+                    : [],
+            });
+            this.props.fetchCartItems({
+                userId: items.userId,
+            });
+        }
     }
-
     componentDidUpdate(prevProps, prevState) {
         const items = loginDetails();
 
@@ -292,7 +295,6 @@ class MyCart extends Component {
                                             </span>
                                         </Box>
 
-
                                         {!matches && (
                                             <Link onClick={() => {
                                                 this.setState({
@@ -462,36 +464,6 @@ class MyCart extends Component {
                                         </Box>
                                     )}
                                 </Box>
-                              </Box>
-                            </>
-                          );
-                        })
-                      )}
-                      {console.log(this.state.cartList)}
-                      {this.state.cartList?.length > 0 ? (
-                        <Box className="bill_details">
-                          <strong>Bill details</strong>
-                          <div>
-                            <span>Item total</span> <strong>₹{this.props.subTotal}</strong>
-                            </div>
-                          <div>
-                            <span>Delivery Charges</span>{" "}
-                            <div>
-                              <span className="mrp">₹25</span>{" "}
-                              <span className="free">Free</span>{" "}
-                            </div>
-                          </div>
-                          <div>
-                          <strong>Grand Total</strong> <strong>₹{this.props.subTotal}</strong>
-                          </div>
-                        </Box>
-                      ) : (
-                        <></>
-                      )}
-                      <Box className="space_adder"></Box>
-                    </Box>
-                  )}
-                </Box>
 
 
 
@@ -606,64 +578,79 @@ class MyCart extends Component {
                         }
                     </Box>
 
-                    {!matches && (
-                      <Link
-                        onClick={() => {
-                          this.setState({
-                            showAddressPopup: false,
-                          });
-                        }}
-                        href="#"
-                        sx={{
-                          marginLeft: "auto",
-                          color: "green",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        Change
-                      </Link>
-                    )}
-                    {matches && (
-                      <Link
-                        href="#"
-                        onClick={() => {
-                          this.setState({
-                            TabSelectAddressPopupOpen: true,
-                          });
-                        }}
-                        sx={{
-                          marginLeft: "auto",
-                          color: "green",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        Change
-                      </Link>
-                    )}
-                  </Box>
+                </Drawer>
 
-                  <Grid item xs={6} lg={4} md={6} sm={6}>
-                    <Button
-                      className="common-btn pay_now_btn"
-                      variant="contained"
-                      fullWidth
-                    >
-                      Pay Now
-                      {/* <img src={buttonArrowIcon} alt="" /> */}
-                    </Button>
-                  </Grid>
-                </Box>
-              </Box>
-            ) : (
-              <Box className="select_delivery_address_container">
-                <Box className="select_delivery_address">
-                  <img
-                    onClick={() => {
-                      this.setState({
-                        showAddressPopup: true,
-                      });
+
+
+
+                <Drawer open={this.state.TabSelectAddressPopupOpen}
+                    anchor='bottom'
+                    onClose={() => {
+                        this.setState({
+                            TabSelectAddressPopupOpen: false,
+                        });
                     }}
+                >
+                    <Box
+                        sx={{
+                            borderRadius: "12px 12px 0 0",        // Rounded top corners
+                            overflow: "hidden"                    // Prevents child content from overflowing the border radius
+                        }}
+                        className="tab_popup"
+                    >
+                        <Box className="tab_select_delivery_container">
+                            <h2>Select Delivery Address</h2>
+                        </Box>
 
+                        <Button onClick={() => {
+                            this.setState({
+                                TabAddNewAddressOpen: true,
+                            });
+                        }} className="tab_address_btn">
+                            <img alt="" src={greenPlusIcon} />
+                            <span style={{ textTransform: "none" }}>Add new Address</span>
+                        </Button>
+
+                        <AllAddresses />
+                    </Box>
+                </Drawer>
+
+
+                <Drawer open={this.state.TabAddNewAddressOpen}
+                    anchor='bottom'
+                    onClose={() => {
+                        this.setState({
+                            TabAddNewAddressOpen: false,
+                        });
+                    }}
+                >
+                    <Box
+                        sx={{
+                            borderRadius: "12px 12px 0 0",        // Rounded top corners
+                            overflow: "scroll"                    // Prevents child content from overflowing the border radius
+                            , padding: 0,
+                            background: "#fff"
+                        }}
+                        className="tab_popup_new_address"
+                    >
+                        <AddNewAddress
+                            handleClose={() => {
+                                this.setState({
+                                    TabAddNewAddressOpen: false,
+                                });
+                            }}
+                        />
+                    </Box>
+                </Drawer>
+
+                <Modal
+
+                    open={this.state.AddNewAddressOpen}
+                    onClose={() => {
+                        this.setState({
+                            AddNewAddressOpen: false,
+                        });
+                    }}
                 >
                     <Box className="">
                         <AddNewAddress handleClose={() => {
@@ -748,6 +735,6 @@ const mapDispatchToProps = {
 };
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(navigateRouter(MyCart));
