@@ -145,7 +145,9 @@ class Footer extends Component {
           ""
         ) : (
           <>
-            {matches ? (
+
+
+            {/* {matches ? (
               <Box className="made-container">
                 <h2>Made In India Product</h2>
                 <span>
@@ -201,7 +203,9 @@ class Footer extends Component {
                   </Grid>
                 </Container>
               </Box>
-            )}
+            )} */}
+
+
             <Box className="footer">
               <Container>
                 <Grid container spacing={2}>
