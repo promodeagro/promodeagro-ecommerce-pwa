@@ -280,7 +280,7 @@ class Footer extends Component {
                                 to="/return-refund"
                                 onClick={this.scrollToTop}
                               >
-                                FAQs
+                              Return & Refund
                               </Link>
                             </li>
                             <li>
