@@ -28,6 +28,7 @@ import { navigateRouter } from 'Views/Utills/Navigate/navigateRouter';
 import AllAddresses from './Components/AllAddresses';
 import AddNewAddress from './Components/AddNewAddress';
 import DeliverySlots from './Components/DeliverySlots';
+import CartItems from './Components/CartItems';
 
 class MyCart extends Component {
     constructor(props) {
@@ -304,6 +305,8 @@ const {handleClose} = this.props
                 <Drawer
                     anchor={"right"}
                     open={open}
+                    
+
                     onClose={handleClose}
                 >
                     <Box className="cart_popup">
@@ -345,146 +348,17 @@ const {handleClose} = this.props
                                         )}
 
                                     </Box>
-
-
-
                                 <Box className="item_details_container">
                                     <h2>Item Details</h2>
-                                    {this.props.addListOfItemRes.status === status.IN_PROGRESS ||
-                                        (this.props.cartItems.status === status.IN_PROGRESS &&
-                                            this.state.loaderCount == 0) ? (
-                                        Loader.commonLoader()
-                                    ) : (
-                                        <Box className="items_container">
+                                 <CartItems/>
 
 
-                                            {console.log(this.state.cartList , "maping the data for ref")}
-                                            {this.state.cartList.length === 0 ? (
-                                                <Box sx={{ display: "flex", justifyContent: 'center', alignItems: 'center', height: '100px' }}>No Items In Cart</Box>
-                                            ) : (
-
-
-                                                this.state.cartList.map((item) => {
-                                                    return (
-                                                        <>
-                                                            <Box className="cart_item" key={item?.ProductId}>
-                                                                {/* Image */}
-                                                                <Box
-                                                                    className="img_box"
-                                                                    onClick={() => {
-                                                                        handleClose()
-                                                                        this.props.navigate(
-                                                                            `/product-details/${item?.category}/${item?.subcategory}/${item?.ProductId}`
-                                                                        );
-                                                                    }}
-                                                                    sx={{
-                                                                        width: 60,
-                                                                        height: 60,
-                                                                        borderRadius: 1,
-                                                                        marginRight: 2,
-                                                                    }}
-                                                                >
-                                                                    <img
-                                                                        src={item?.productImage}
-                                                                        alt="product-cart-img"
-                                                                    />
-                                                                </Box>
-
-                                                                {/* Product Details */}
-                                                                <Box className="item_details" flexGrow={1}>
-                                                                    <span>{item?.productName}</span>
-                                                                    <span>Piece</span>
-                                                                    <Box display="flex" alignItems="center">
-                                                                        <span className="price">₹ {item?.Price}</span>
-                                                                        <span className="mrp">{item?.Mrp}</span>
-                                                                    </Box>
-                                                                </Box>
-
-                                                                {/* Quantity Controls */}
-                                                                <Box
-                                                                    display="flex"
-                                                                    alignItems="center"
-                                                                    borderRadius={1}
-                                                                    bgcolor="#1F9151"
-                                                                    color="white"
-                                                                >
-                                                                    <IconButton
-                                                                        onClick={() => {
-                                                                            let d = item.Quantity;
-
-                                                                            this.handleQuantityChange(
-                                                                                item.ProductId,
-                                                                                -1,
-                                                                                Number(d),
-                                                                                item.QuantityUnits
-                                                                            );
-                                                                        }}
-
-
-                                                                        size="small"
-                                                                        color="inherit"
-                                                                    >
-                                                                        {(this.props.deleteItems.status ===
-                                                                            status.IN_PROGRESS &&
-                                                                            item.ProductId === dataId &&
-                                                                            !isUpdateIncrease) ||
-                                                                            (this.props.updateItems.status ===
-                                                                                status.IN_PROGRESS &&
-                                                                                item.ProductId === dataId &&
-                                                                                !isUpdateIncrease) ? (
-                                                                            <CircularProgress
-                                                                                className="common-loader plus-icon"
-                                                                                size={24}
-                                                                            />
-                                                                        ) : (
-                                                                            "-"
-                                                                        )}
-
-                                                                    </IconButton>
-                                                                    <Typography variant="body1" mx={1}>
-                                                                        {item?.Quantity}
-                                                                    </Typography>
-                                                                    <IconButton
-                                                                        onClick={() => {
-                                                                            let d = item.Quantity;
-                                                                            this.handleQuantityChange(
-                                                                                item.ProductId,
-                                                                                1,
-                                                                                Number(d),
-                                                                                item.QuantityUnits
-                                                                            );
-                                                                        }}
-                                                                        size="small"
-                                                                        color="inherit"
-                                                                    >
-                                                                        {this.props.updateItems.status ===
-                                                                            status.IN_PROGRESS &&
-                                                                            item.ProductId === dataId &&
-                                                                            isUpdateIncrease ? (
-                                                                            <CircularProgress
-                                                                                className="common-loader plus-icon"
-                                                                                size={24}
-                                                                            />
-                                                                        ) : (
-                                                                            "+"
-                                                                        )}
-                                                                    </IconButton>
-                                                                </Box>
-                                                            </Box>
-
-                                                        </>
-
-                                                    );
-                                                })
-
-
-                                            )}
-                                            {this.state.cartList?.length > 0 ? (
+{this.state.cartList?.length > 0 ? (
                                                 <>
                                                
                                                 <div className="bill_details">
                                                     <strong>Bill details</strong>
-                                                    <div> <span>Item total</span> <strong>₹436</strong></div>
+                                                    <div> <span>Item total</span> <strong>₹{this.state.totalPrice}</strong></div>
                                                     <div><span>Delivery Charges</span> <div ><span className='mrp'>₹25</span> <span className="free">Free</span> </div></div>
                                                     <div><strong>Grand Total</strong> <strong>₹{this.state.totalPrice}</strong></div>
                                                     {console.log(this.state.cartListArr ,"Gaaand Total")}
@@ -516,10 +390,6 @@ const {handleClose} = this.props
 
                                     </span>
                                 </Box>
-
-
-
-
 
                                 <Box className="Payment_methods_box">
           <h2>Payment Method</h2>
@@ -569,11 +439,6 @@ const {handleClose} = this.props
                                             ) : (
                                                 <></>
                                             )}
-                                            {/* <Box className="space_adder"></Box> */}
-
-
-                                        </Box>
-                                    )}
                                 </Box>
 
 
