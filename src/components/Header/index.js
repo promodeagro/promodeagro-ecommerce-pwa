@@ -47,7 +47,6 @@ class Header extends Component {
       currentAddress: {}, // Current address details
       isAddAddressModalOpen: false, // State for AddAddressModal
     };
-
     this.profileModalRef = React.createRef();
   }
 
@@ -193,7 +192,6 @@ class Header extends Component {
           categories?.map((item, index) => {
             let c = item?.CategoryName.replaceAll(" ", "%20");
             const isActive = window.location.pathname.split("/").includes(c);
-
             return (
               <li key={index}>
                 <Link
@@ -223,9 +221,13 @@ class Header extends Component {
       isAddressModalOpen: !prevState.isAddressModalOpen,
     }));
   };
-  handleClose = () => {
+  handleAddressClose = () => {
     this.setState({
       isAddressModalOpen: false, // Close the AddressModal
+    });
+  };
+  handleAddAddressClose = () => {
+    this.setState({
       isAddAddressModalOpen: false, // Close the AddAddressModal
     });
   };
@@ -238,14 +240,13 @@ class Header extends Component {
       isAddAddressModalOpen: !prevState.isAddAddressModalOpen,
     }));
   };
-  
+
   render() {
     const { cartList, currentAddress, matches, currentPathName, profileModal } =
       this.state;
     const { noOfcartItemsInLS } = this.props;
     const { isAddressModalOpen } = this.state;
-    const { isAddAddressModalOpen} = this.state;
-
+    const { isAddAddressModalOpen } = this.state;
 
     return (
       <>
@@ -262,37 +263,38 @@ class Header extends Component {
                       </Link>
                     </Box>
                     {loginDetails()?.userId ? (
-            currentAddress?.address ? (
-              <Box
-                className="deliver-box"
-                onClick={this.toggleAddressModal}
-              >
-                <strong>Deliver to</strong>
-                <span>
-                  {currentAddress?.landmark_area}, {currentAddress?.address}, {currentAddress?.city}<KeyboardArrowDownIcon />
-                </span>
-              </Box>
-            ) : (
-              <Box
-                className="deliver-box"
-                onClick={this.toggleAddAddressModal}
-              >
-                <strong>Delivery in One Day</strong>
-                <a
-  className="anchortagheader"
-  onClick={(e) => {
-    e.stopPropagation(); // Prevent click from bubbling up to Box
-    this.toggleAddAddressModal(e); // Pass the event explicitly
-  }}
->
-  + Add Address
-</a>
-              </Box>
-            )
-          ) : (
-            // Don't show Delivery in One Day if user is not logged in
-            <></>
-          )}
+                      currentAddress?.address ? (
+                        <Box
+                          className="deliver-box"
+                          onClick={this.toggleAddressModal}
+                        >
+                          <strong>Deliver to</strong>
+                          <span>
+                            {currentAddress?.landmark_area},
+                            {currentAddress?.address}, {currentAddress?.city}
+                            <KeyboardArrowDownIcon />
+                          </span>
+                        </Box>
+                      ) : (
+                        <Box
+                          className="deliver-box"
+                          onClick={this.toggleAddAddressModal}
+                        >
+                          <strong>Delivery in One Day</strong>
+                          <a
+                            className="anchortagheader"
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent click from bubbling up to Box
+                              this.toggleAddAddressModal(e); // Pass the event explicitly
+                            }}
+                          >
+                            + Add Address
+                          </a>
+                        </Box>
+                      )
+                    ) : (
+                      <></>
+                    )}
                   </Box>
                 </Grid>
               )}
@@ -330,8 +332,7 @@ class Header extends Component {
                       onClick={() => this.handleProfileModal()}
                       className="login profile_modal_par"
                     >
-                      {currentAddress?.name || "User"}{" "}
-                      <KeyboardArrowDownIcon />
+                      {currentAddress?.name || "User"} <KeyboardArrowDownIcon />
                       {profileModal && (
                         <>
                           <Box
@@ -385,7 +386,6 @@ class Header extends Component {
                       )}
                     </Box>
                   )}
-
                   <Box
                     onClick={
                       () =>
@@ -447,17 +447,15 @@ class Header extends Component {
         {isAddressModalOpen && (
           <AddressModal
             open={isAddressModalOpen}
-            handleClose={this.handleClose} // passing the correct function here
-            currentAddress={currentAddress} // Pass additional props if needed
+            handleClose={this.handleAddressClose} 
           />
         )}
-                {isAddAddressModalOpen && (
+        {isAddAddressModalOpen && (
           <AddAddressModal
             open={isAddAddressModalOpen}
-            handleClose={this.handleClose} // passing the correct function here
+            handleClose={this.handleAddAddressClose} 
           />
-        )}
-
+        )}      
         <MyCart
           open={this.state.myCartOpen}
           handleClose={() => {
