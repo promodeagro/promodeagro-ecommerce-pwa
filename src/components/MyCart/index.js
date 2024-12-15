@@ -28,6 +28,7 @@ import { navigateRouter } from 'Views/Utills/Navigate/navigateRouter';
 import AllAddresses from './Components/AllAddresses';
 import AddNewAddress from './Components/AddNewAddress';
 import DeliverySlots from './Components/DeliverySlots';
+import CartItems from './Components/CartItems';
 
 class MyCart extends Component {
     constructor(props) {
@@ -48,8 +49,13 @@ class MyCart extends Component {
             defaultAddress: "",
             selectedPaymentMethod: "online", 
             paymentLink: null,
+            ListData:[],
+            itemListArr:[],
+            cartListArr:[]
+            ,totalPrice:""
         };
     }
+
     componentDidMount() {
         window
             .matchMedia("(max-width: 800px)")
@@ -70,9 +76,11 @@ class MyCart extends Component {
             });
         }
     }
+    
     componentDidUpdate(prevProps, prevState) {
         const items = loginDetails();
 
+const {handleClose} = this.props
 
         if (
             prevProps.addListOfItemRes.status !== this.props.addListOfItemRes.status
@@ -89,8 +97,39 @@ class MyCart extends Component {
             this.props.cartItems.status === status.SUCCESS &&
             this.props.cartItems.data
         ) {
+
+            let cartListData = [];
+            let itemListData = [];
+            this.props.cartItems.data.items.forEach((item) => {
+              let data = {
+                mrp: item.Mrp,
+                price: item.Price,
+                id: item.ProductId,
+                Quantity: item.Quantity,
+                savingsPercentage: item.Savings,
+                subtotal: item.Subtotal,
+                userId: item.UserId,
+                image: item.productImage,
+                name: item.productName,
+              };
+      
+              let data1 = {
+                productId: item.ProductId,
+                quantity: item.Quantity,
+                quantityUnits: item.QuantityUnits,
+              };
+              itemListData.push(data1);
+              cartListData.push(data);
+            });
+
+            
             this.setState({
                 cartList: this.props.cartItems.data.items,
+                ListData:this.props.cartItems.data.items,
+                cartListArr: cartListData,
+                itemListArr: itemListData,
+                totalPrice: this.props.cartItems.data.subTotal,
+
                 loaderCount: 1,
             });
         } else if (this.props.cartItems.status === status.FAILURE) {
@@ -163,7 +202,6 @@ class MyCart extends Component {
         if (
             prevProps.placeOrderData.status !== this.props.placeOrderData.status &&
             this.props.placeOrderData.status === status.SUCCESS
-
         ) {   
         } 
         if (
@@ -171,62 +209,53 @@ class MyCart extends Component {
             this.props.placeOrderData.status === status.SUCCESS
           ) {
             if (this.props.placeOrderData.data?.statuscode === 200) {
-              console.log(this.props.placeOrderData.data.paymentLink , "Payment Link")
-            //   ErrorMessages.success(this.props.placeOrderData.data.message);
-              localStorage.removeItem("selectedTab");
-            //   localStorage.removeItem("address");
-            //   this.props.navigate(
-            //     `/mycart/address/order-placed/${this.props.placeOrderData.data.orderId}`
-            //   );
-            } if (this.props.placeOrderData.data?.paymentLink) {
-                this.setState({
-                  paymentLink: this.props.placeOrderData.data?.paymentLink,
-                });
+                // for Cash orderz
+              if(this.props.placeOrderData.data?.orderId){
+                ErrorMessages.success(this.props?.placeOrderData?.data?.message);
+                    this.props.navigate(
+                      `/mycart/address/order-placed/${this.props.placeOrderData.data.orderId}`
+                    ); 
+                    handleClose()
+                    localStorage.removeItem("cartItem");
+                    localStorage.removeItem("address");
+              } if(!this.props.placeOrderData.data?.orderId){
+                ErrorMessages.error(this.props?.placeOrderData?.data?.error);
               }
-            else {
-              ErrorMessages.success(this.props.placeOrderData.data?.message || "Error placing order");
-              this.props.navigate(
-                `/mycart/address/order-placed/${this.props.placeOrderData.data.orderId}`
-              );
-             
-              const { open, handleClose } = this.props
-              handleClose()
-            }
+
+            //   for Online Paymentz
+
+          if(this.props.placeOrderData.data?.paymentLink){
+            this.setState({
+                paymentLink:this.props.placeOrderData.data.paymentLink
+            });
+            if (this.state.paymentLink) {
+                window.open(this.state.paymentLink, '_blank');
+              }
+        }
+        
+    }
+    
           }
 
-    }
-
- 
-    handlePlaceOrder = () => {
+          
+        }
+        handlePlaceOrder = () => {
         let login = loginDetails();
         let addressId = localStorage.getItem("address");
-        const {selectedPaymentMethod} = this.state
+        const {selectedPaymentMethod,itemListArr} = this.state
         const Data = {
-          addressId: addressId, 
-          deliverySlotId: "36ca92c3",
-          items:  [
-            {
-              productId: "a7968405-e7e5-4448-825b-384e03ffd137",
-              quantityUnits: 1,
-              quantity: 1
-            },
-            {
-              productId: "e5c9736e-decf-46a1-9784-8477cd73cc72",
-              quantityUnits: 1,
-              quantity: 1
-            }
-          ],
-
-          paymentDetails: {
+            addressId:addressId ? addressId : "f9858f86-95e3-4437-affa-93216b4ca4f9", 
+            deliverySlotId: "36ca92c3",
+          items:itemListArr ,
+        paymentDetails: {
             method: selectedPaymentMethod
-          },
-          userId:login.userId,
-        };
-            console.log("Data being sent to the API:", Data);
-        this.props.placeOrder(Data)
-
-      };
+        },
+        userId:login.userId,
+    };
+    this.props.placeOrder(Data)
     
+};
+
 
     handleQuantityChange(id, increment, productQuantity = 0, qty) {
         const items = loginDetails();
@@ -268,12 +297,16 @@ class MyCart extends Component {
     render() {
         const { matches, dataId, isUpdateIncrease, selectedPaymentMethod } = this.state
         const { open, handleClose } = this.props
+
+
         return (
             <>
 
                 <Drawer
                     anchor={"right"}
                     open={open}
+                    
+
                     onClose={handleClose}
                 >
                     <Box className="cart_popup">
@@ -315,159 +348,23 @@ class MyCart extends Component {
                                         )}
 
                                     </Box>
-
-
-
                                 <Box className="item_details_container">
                                     <h2>Item Details</h2>
-                                    {this.props.addListOfItemRes.status === status.IN_PROGRESS ||
-                                        (this.props.cartItems.status === status.IN_PROGRESS &&
-                                            this.state.loaderCount == 0) ? (
-                                        Loader.commonLoader()
-                                    ) : (
-                                        <Box className="items_container">
-                                            {console.log(this.state.cartList)}
-                                            {this.state.cartList.length === 0 ? (
-                                                <Box sx={{ display: "flex", justifyContent: 'center', alignItems: 'center', height: '100px' }}>No Items In Cart</Box>
-                                            ) : (
+                                 <CartItems/>
 
 
-                                                this.state.cartList.map((item) => {
-                                                    return (
-                                                        <>
-                                                            <Box className="cart_item" key={item?.ProductId}>
-                                                                {/* Image */}
-                                                                <Box
-                                                                    className="img_box"
-                                                                    onClick={() => {
-                                                                        handleClose()
-                                                                        this.props.navigate(
-                                                                            `/product-details/${item?.category}/${item?.subcategory}/${item?.ProductId}`
-                                                                        );
-                                                                    }}
-                                                                    sx={{
-                                                                        width: 60,
-                                                                        height: 60,
-                                                                        borderRadius: 1,
-                                                                        marginRight: 2,
-                                                                    }}
-                                                                >
-                                                                    <img
-                                                                        src={item?.productImage}
-                                                                        alt="product-cart-img"
-                                                                    />
-                                                                </Box>
-
-                                                                {/* Product Details */}
-                                                                <Box className="item_details" flexGrow={1}>
-                                                                    <span>{item?.productName}</span>
-                                                                    <span>Piece</span>
-                                                                    <Box display="flex" alignItems="center">
-                                                                        <span className="price">₹ {item?.Price}</span>
-                                                                        <span className="mrp">{item?.Mrp}</span>
-                                                                    </Box>
-                                                                </Box>
-
-                                                                {/* Quantity Controls */}
-                                                                <Box
-                                                                    display="flex"
-                                                                    alignItems="center"
-                                                                    borderRadius={1}
-                                                                    bgcolor="#1F9151"
-                                                                    color="white"
-                                                                >
-                                                                    <IconButton
-                                                                        onClick={() => {
-                                                                            let d = item.Quantity;
-
-                                                                            this.handleQuantityChange(
-                                                                                item.ProductId,
-                                                                                -1,
-                                                                                Number(d),
-                                                                                item.QuantityUnits
-                                                                            );
-                                                                        }}
-
-
-                                                                        size="small"
-                                                                        color="inherit"
-                                                                    >
-                                                                        {(this.props.deleteItems.status ===
-                                                                            status.IN_PROGRESS &&
-                                                                            item.ProductId === dataId &&
-                                                                            !isUpdateIncrease) ||
-                                                                            (this.props.updateItems.status ===
-                                                                                status.IN_PROGRESS &&
-                                                                                item.ProductId === dataId &&
-                                                                                !isUpdateIncrease) ? (
-                                                                            <CircularProgress
-                                                                                className="common-loader plus-icon"
-                                                                                size={24}
-                                                                            />
-                                                                        ) : (
-                                                                            "-"
-                                                                        )}
-
-                                                                    </IconButton>
-                                                                    <Typography variant="body1" mx={1}>
-                                                                        {item?.Quantity}
-                                                                    </Typography>
-                                                                    <IconButton
-                                                                        onClick={() => {
-                                                                            let d = item.Quantity;
-                                                                            this.handleQuantityChange(
-                                                                                item.ProductId,
-                                                                                1,
-                                                                                Number(d),
-                                                                                item.QuantityUnits
-                                                                            );
-                                                                        }}
-                                                                        size="small"
-                                                                        color="inherit"
-                                                                    >
-                                                                        {this.props.updateItems.status ===
-                                                                            status.IN_PROGRESS &&
-                                                                            item.ProductId === dataId &&
-                                                                            isUpdateIncrease ? (
-                                                                            <CircularProgress
-                                                                                className="common-loader plus-icon"
-                                                                                size={24}
-                                                                            />
-                                                                        ) : (
-                                                                            "+"
-                                                                        )}
-                                                                    </IconButton>
-                                                                </Box>
-                                                            </Box>
-
-                                                        </>
-
-                                                    );
-                                                })
-
-
-                                            )}
-                                            {this.state.cartList?.length > 0 ? (
+{this.state.cartList?.length > 0 ? (
+                                                <>
+                                               
                                                 <div className="bill_details">
                                                     <strong>Bill details</strong>
-                                                    <div> <span>Item total</span> <strong>₹436</strong></div>
+                                                    <div> <span>Item total</span> <strong>₹{this.state.totalPrice}</strong></div>
                                                     <div><span>Delivery Charges</span> <div ><span className='mrp'>₹25</span> <span className="free">Free</span> </div></div>
-                                                    <div><strong>Grand Total</strong> <strong>₹436</strong></div>
-
+                                                    <div><strong>Grand Total</strong> <strong>₹{this.state.totalPrice}</strong></div>
+                                                    {console.log(this.state.cartListArr ,"Gaaand Total")}
                                                 </div>
-                                            ) : (
-                                                <></>
-                                            )}
-                                            {/* <Box className="space_adder"></Box> */}
 
-
-                                        </Box>
-                                    )}
-                                </Box>
-
-
-
-                       
+                                                
 
                                 <Box className="select_delivery_slot">
                                     <h2>Select Delivery Slot</h2>
@@ -493,10 +390,6 @@ class MyCart extends Component {
 
                                     </span>
                                 </Box>
-
-
-
-
 
                                 <Box className="Payment_methods_box">
           <h2>Payment Method</h2>
@@ -540,6 +433,15 @@ class MyCart extends Component {
                       Place Order
                     </Button>
 </Grid>
+</>
+
+                                                
+                                            ) : (
+                                                <></>
+                                            )}
+                                </Box>
+
+
                            
                             </Box>
 
@@ -723,9 +625,7 @@ console.log(placeOrderData , "dsnviwdbuowb")
         addListOfItemRes,
     };
 }
-
 const mapDispatchToProps = {
-
     placeOrder,
     fetchCartItems,
     deleteItemToCart,
