@@ -287,7 +287,7 @@ class AddAddressModal extends Component {
               </Box>
             </Grid>
           </Grid>
-          
+
           <Box sx={{ marginTop: "16px" }}>
             {isSubmitting ? (
               <CircularProgress color="success" />

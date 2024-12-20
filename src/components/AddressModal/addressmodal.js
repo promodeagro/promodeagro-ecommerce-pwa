@@ -4,6 +4,7 @@ import { Box, Modal } from "@mui/material";
 import Deleteicon from "../../assets/img/trash-2.png";
 import Editicon from "../../assets/img/editicon.svg";
 import { getAllAddress, deleteAddress, setDefaultAddress } from "../../Redux/Address/AddressThunk";
+
 import { loginDetails } from "Views/Utills/helperFunctions";
 import AddAddressModal from "./addaddressmodal";
 
@@ -32,6 +33,44 @@ class AddressModal extends Component {
 
   handleDeleteClick = (addressId) => {
     this.setState({ openDeleteModal: true, addressToDelete: addressId });
+
+  };
+
+  handleDeleteModalClose = (closeParentModal = false) => {
+    this.setState({ openDeleteModal: false, addressToDelete: null });
+    if (closeParentModal) {
+      this.props.handleClose(); // Close the parent modal (AddressModal)
+    }
+  };
+
+  handleConfirmDelete = () => {
+    const { addressToDelete } = this.state;
+    const loginData = loginDetails();
+    const userId = loginData?.userId;
+
+    if (userId && addressToDelete) {
+      this.props
+        .deleteAddress({
+          userId: userId,
+          addressId: addressToDelete,
+        })
+        .then(() => {
+          this.setState({ openDeleteModal: false, addressToDelete: null });
+          this.props.handleClose(); // Close the AddressModal after deletion
+        })
+        .catch((error) => {
+          console.error("Failed to delete address:", error);
+        });
+    } else {
+      console.error("User ID or address ID is missing.");
+    }
+  };
+
+  handleEditClick = (address) => {
+    this.setState({
+      addressToEdit: address, // Set the address data to be edited
+      submitAddress: true, // Open the AddAddressModal
+    });
   };
 
   handleDeleteModalClose = (closeParentModal = false) => {
@@ -144,6 +183,7 @@ class AddressModal extends Component {
               <span className="iconcontainer1">
                 <span>
                   <span className="underlinetext">{defaultAddress.address_type}</span>
+
                   <span className="roundDiv">Default</span>
                 </span>
                 <span className="iconcontainer2">
@@ -172,6 +212,7 @@ class AddressModal extends Component {
                 otherAddresses.map((address) => (
                   <a key={address.addressId} className="address-item"   onClick={() => this.handleSetDefaultAddress(address.addressId)}
 >
+
                     <Box className="iconcontainer1">
                       <span>
                         <span className="underlinetext">
@@ -263,6 +304,7 @@ const mapDispatchToProps = (dispatch) => ({
   getAllAddress: (params) => dispatch(getAllAddress(params)),
   deleteAddress: (params) => dispatch(deleteAddress(params)),
   setDefaultAddress: (params) => dispatch(setDefaultAddress(params)),
+
 
 });
 
