@@ -20,25 +20,23 @@ const DeliverySlots = ({ handleClose }) => {
     (state) => state.cartitems?.deliverySlots || {}
   );
 
-  const [selectedDay, setSelectedDay] = useState("today"); // State to track selected day
-  const [selectedTab, setSelectedTab] = useState(0); // State for the selected tab (All, Morning, Afternoon, Evening)
-  const [selectedSlot, setSelectedSlot] = useState(null); // State for selected slot
+  const [selectedDay, setSelectedDay] = useState("today");
+  const [selectedTab, setSelectedTab] = useState(0);  
+  const [selectedSlot, setSelectedSlot] = useState(null); 
 
-  // Fetch the slots when the selected day changes
   useEffect(() => {
     dispatch(fetchDeliverySlots(selectedDay));
   }, [selectedDay, dispatch]);
 
   const handleTabChange = (event, newValue) => {
-    setSelectedTab(newValue); // Change the tab when clicked
+    setSelectedTab(newValue); 
   };
 
   const handleSlotChange = (event) => {
-    setSelectedSlot(event.target.value); // Update selected slot
+    setSelectedSlot(event.target.value); 
   };
 
   const getFilteredSlots = () => {
-    // Filter the slots based on the selected tab (All, Morning, Afternoon, Evening)
     if (selectedTab === 0) return slots; // All slots
     if (selectedTab === 1) 
       return slots.filter((slot) => slot.start_time >= "06:00" && slot.end_time <= "12:00"); // Morning
@@ -49,7 +47,7 @@ const DeliverySlots = ({ handleClose }) => {
     return [];
   };
 
-  const filteredSlots = getFilteredSlots(); // Get filtered slots based on selected tab
+  const filteredSlots = getFilteredSlots(); 
 
   return (
     <Box className="common-modal delevery_slot_modal">
@@ -57,8 +55,6 @@ const DeliverySlots = ({ handleClose }) => {
         <h2>Delivery Slot</h2>
         <img src={closeModalIcon} alt="Close Modal" onClick={handleClose} />
       </div>
-
-      {/* Day Selector (Today / Tomorrow) */}
       <Box className="delevery_slot_modal_days">
         <span
           className={selectedDay === "today" ? "active" : ""}
@@ -73,8 +69,6 @@ const DeliverySlots = ({ handleClose }) => {
           Tomorrow
         </span>
       </Box>
-
-      {/* Tabs for filtering slots */}
       <Box>
         <Tabs
           value={selectedTab}
@@ -89,8 +83,6 @@ const DeliverySlots = ({ handleClose }) => {
           <Tab label="Afternoon" />
           <Tab label="Evening" />
         </Tabs>
-
-        {/* Display the filtered slots */}
         <Box p={2} sx={{ border: "1px solid #e0e0e0", borderRadius: 1, mt: 2 }}>
           {status === "IN_PROGRESS" ? (
             <CircularProgress />
