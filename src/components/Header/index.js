@@ -64,7 +64,6 @@ class Header extends Component {
         userId: loginDetails()?.userId,
       });
     }
-
     this.props.fetchCategories();
   }
 
@@ -104,7 +103,6 @@ class Header extends Component {
         userId: loginDetails()?.userId ? loginDetails()?.userId : "",
       });
     }
-
     if (
       prevProps.personalDetailsData.status !==
         this.props.personalDetailsData.status &&
@@ -125,7 +123,6 @@ class Header extends Component {
         profileName: "",
       });
     }
-
     if (
       prevProps.defaultAddressData.status !==
         this.props.defaultAddressData.status &&
@@ -153,7 +150,6 @@ class Header extends Component {
         categories: this.props.allCategories.data.data,
       });
     }
-
     if (
       prevProps.cartItems.status !== this.props.cartItems.status &&
       this.props.cartItems.status === status.SUCCESS &&
@@ -270,8 +266,7 @@ class Header extends Component {
                         >
                           <strong>Deliver to</strong>
                           <span>
-                            {currentAddress?.landmark_area},
-                            {currentAddress?.address}, {currentAddress?.city}
+                            {currentAddress?.landmark_area}, {currentAddress?.address}, {currentAddress?.city}
                             <KeyboardArrowDownIcon />
                           </span>
                         </Box>

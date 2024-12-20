@@ -4,6 +4,7 @@ import {
   fetchCartItems,
   deleteItemToCart,
   updateItemToCart,
+  fetchDeliverySlots,
   addListOfItemsToCartReq,
 } from "./CartThunk";
 import status from "./../Constants";
@@ -27,6 +28,12 @@ const CartItemSlice = createSlice({
     addListOfItemRes: {
       status: null,
     },
+    deliverySlots: {
+      data: [],
+      status: null,
+      error: null,
+    },
+    
     noOfcartItemsInLS: getNumberOfItemsOnChart(),
   },
   reducers: {
@@ -170,7 +177,21 @@ const CartItemSlice = createSlice({
             status: status.FAILURE,
           },
         };
+      })
+      .addCase(fetchDeliverySlots.pending, (state) => {
+        state.deliverySlots.status = "IN_PROGRESS";
+        state.deliverySlots.error = null;
+      })
+      .addCase(fetchDeliverySlots.fulfilled, (state, { payload }) => {
+        state.deliverySlots.status = "SUCCESS";
+        state.deliverySlots.data = payload;
+      })
+      .addCase(fetchDeliverySlots.rejected, (state, action) => {
+        state.deliverySlots.status = "FAILURE";
+        state.deliverySlots.data = [];
+        state.deliverySlots.error = action.error?.message || "Failed to fetch delivery slots.";
       });
+
   },
 });
 export const { updateNoOfcartItemsInLS } = CartItemSlice.actions;

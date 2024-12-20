@@ -8,6 +8,7 @@ import Workicon from "../../assets/img/workicon.png";
 import Othericon from "../../assets/img/othericon.png";
 import { updateAddress, postAddress } from "../../Redux/Address/AddressThunk";
 import { loginDetails } from "Views/Utills/helperFunctions";
+import closeModalIcon from "../../assets/img/closeModalIcon.svg"
 
 const addressValidationSchema = {
   fullName: [
@@ -175,7 +176,10 @@ class AddAddressModal extends Component {
     return (
       <Modal open={open} onClose={handleClose}>
         <Box className="common-modal newaddressmodal">
-          <span className="address-text">Add Address</span>
+          <div className='modalheader'>
+          <h2>Add Address</h2>
+      <img src={closeModalIcon} alt="Close Modal" onClick={handleClose} />
+      </div>
           <p className="saveaddressas">Save Address As</p>
           <div className="iconcontainer">
             {["Home", "Work", "Other"].map((type) => (
@@ -283,6 +287,7 @@ class AddAddressModal extends Component {
               </Box>
             </Grid>
           </Grid>
+          
           <Box sx={{ marginTop: "16px" }}>
             {isSubmitting ? (
               <CircularProgress color="success" />
