@@ -267,6 +267,7 @@ class Header extends Component {
                           <strong>Deliver to</strong>
                           <span>
                             {currentAddress?.landmark_area}, {currentAddress?.address}, {currentAddress?.city}
+
                             <KeyboardArrowDownIcon />
                           </span>
                         </Box>

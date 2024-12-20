@@ -84,7 +84,7 @@ gap: 16px;
   }
   .address-modal {
     position: fixed; /* Fixed positioning relative to the viewport */
-    top: 78px; /* Position from the top */
+    top: 70px; /* Position from the top */
     left: 220px; /* Margin of 4px from the left side */
     z-index: 10; /* Ensures modal stays on top */
     width: 550px; /* Modal width */
@@ -181,6 +181,7 @@ gap: 16px;
   border-radius: 10px;
   padding: 1rem;
   justify-content: center;
+
 }
 
 .deletemodal{
@@ -188,6 +189,7 @@ gap: 16px;
   height: 200px;
   border-radius: 10px;
   padding: 1rem;
+
   display: flex; /* Enable flexbox */
   flex-direction: column; /* Align items in a column layout */
   justify-content: center; /* Center content vertically */
@@ -370,6 +372,7 @@ color: black;
       cursor: pointer;
   }
 }
+
 
 
 
