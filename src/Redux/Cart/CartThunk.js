@@ -61,3 +61,17 @@ export const addListOfItemsToCartReq = createAsyncThunk(
     }
   }
 );
+
+
+export const fetchDeliverySlots = createAsyncThunk(
+  "fetchDeliverySlots",
+  async (day) => {
+    try {
+      let url = `${config.DELIVERY_SLOTS}?day=${day}`;
+      const response = await postLoginService.get(url);
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
