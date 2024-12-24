@@ -149,7 +149,8 @@ export const ErrorMessages = {
 
 export const loginDetails = () => {
   const items = JSON.parse(localStorage.getItem("login"));
-  return items;
+  const address = localStorage.getItem("address");
+  return { ...items, address };
 };
 
 let path = window.location.pathname;

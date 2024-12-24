@@ -44,7 +44,7 @@ const Config = {
   UPDATE_PRODUCT_PRICE: `${BASE_URL}/updatePriceByQty`,
   CANCLE_ORDER: `${BASE_URL}/cancleorder`,
   All_PRODUCT_WITH_CATEGORY: `${BASE_URL}/homePageProducts`,
-  DELIVERY_SLOTS: `${BASE_URL}/getAvailableDeliverySlots`,
+  DELIVERY_SLOTS: `${BASE_URL}/slots`,
 };
 
 export default Config;

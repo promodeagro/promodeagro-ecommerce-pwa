@@ -398,14 +398,39 @@ text-decoration-skip-ink: none !important;
 color: #16191F !important;
 
 }
-    padding: 14px;
-    max-width: 439px;
-    width: 90%;
-    height: 410px;
-    border-radius: 16px;
-    border: 1px ;
-   
+padding: 0.8rem; /* Internal padding */
+max-width: 480px;
+width: 90%;
+height: 420px;
+border-radius: 16px;
+border: 1px solid #ccc; /* Add a visible border */
+background-color: #fff; /* Ensure a consistent background */
+overflow-y: auto; /* Enables vertical scrolling if content overflows */
+display: flex;
+flex-direction: column; /* Allows content to stack vertically */
+scrollbar-width: none; /* Hides scrollbar for Firefox */
+-ms-overflow-style: none; /* Hides scrollbar for IE/Edge */
 
+/* Optional: additional fallback to hide scrollbars in Webkit browsers */
+&::-webkit-scrollbar {
+  display: none; /* Hides scrollbar in Chrome, Safari, and other Webkit-based browsers */
+}
+      
+      /* Ensure the scrollable area works */
+      .delevery_slot_modal:focus {
+        outline: none; /* Optional: removes outline when focused */
+      }
+      
+  .delevery_slot_modal > .delevery_slot_modal_top {
+    flex-shrink: 0; /* Ensure header doesn't shrink */
+  }
+  
+  .delevery_slot_modal > .modal-content {
+    flex-grow: 1; /* Allow content to take remaining space */
+    overflow-y: auto; /* Enable vertical scrolling for content */
+    padding-right: 8px; /* Space for scrollbar */
+  }
+  
    .delevery_slot_modal_top{
         display: flex;
         align-items: center;
@@ -1085,3 +1110,21 @@ span{
         }
     }
         }
+
+.boxdecor{
+    padding: 0 20px 0 20px;
+}
+
+.box{
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
+.noslot{
+    justify-content: center;
+    display: flex;
+    align-items: center;
+
+
+}
