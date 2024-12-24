@@ -314,10 +314,10 @@ class MyCart extends Component {
                 </Box>
                 <Box className="my_cart_bottom_address">
                   <img src={LocationIcon} alt="" />
-                  <Box>
-                    <span>Delivering to Home</span>
-                    <span>Plot No.13, Suncity, Near Shadan College..</span>
-                  </Box>
+                  <Box> 
+  <span>Delivering to Home</span>
+  <span>{this.state.selectedAddress ? `${this.state.selectedAddress.address}, ${this.state.selectedAddress.zipCode}` : "No Address Selected"}</span> 
+</Box>
 
                   {!matches && (
                     <Link
@@ -387,12 +387,18 @@ class MyCart extends Component {
                           <div
                             onClick={() => {
                               this.setState({
-                                slotOpen: true,
+                                slotOpen: true, // Open the slot selection modal
                               });
                             }}
                           >
-                            <span>22 Oct, Tue, Between 6:00 AM - 7:00AM</span>
-                            <img src={ArrowDown} alt="" />
+                            {/* Show the selected slot or placeholder */}
+                            <span>
+                              {this.state.selectedSlot
+                                ? `${this.state.selectedSlot}`
+                                : "Select Slot"}
+                            </span>
+
+                            <img src={ArrowDown} alt="Open Slots" />
                           </div>
 
                           {matches && (
@@ -409,7 +415,6 @@ class MyCart extends Component {
                           )}
                         </span>
                       </Box>
-
                       <Box className="Payment_methods_box">
                         <h2>Payment Method</h2>
 
@@ -511,7 +516,11 @@ class MyCart extends Component {
 
                 <Box className="delivery_slots_container">
                   <h2>Select Delivery Slot</h2>
-                  <AllAddresses />
+                  <AllAddresses
+                    onAddressSelect={(address) =>
+                      this.setState({ selectedAddress: address })
+                    }
+                  />
                 </Box>
               </Box>
             )}
@@ -636,15 +645,16 @@ class MyCart extends Component {
             });
           }}
         >
-  <>
-    <DeliverySlots
-      handleClose={() =>
-        this.setState({
-          slotOpen: false,
-        })
-      }
-    />
-  </>
+          <>
+            <DeliverySlots
+              onSlotSelect={(selectedSlot) => this.setState({ selectedSlot })}
+              handleClose={() =>
+                this.setState({
+                  slotOpen: false,
+                })
+              }
+            />
+          </>
         </Modal>
       </>
     );

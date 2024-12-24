@@ -65,12 +65,14 @@ export const addListOfItemsToCartReq = createAsyncThunk(
 
 export const fetchDeliverySlots = createAsyncThunk(
   "fetchDeliverySlots",
-  async (day) => {
+  async ({ zipCode }) => {
     try {
-      let url = `${config.DELIVERY_SLOTS}?day=${day}`;
+      // Assuming URL format includes both zipCode and selectedDay (if needed)
+      let url = `${config.DELIVERY_SLOTS}/${zipCode}`; // Adjust URL if required
       const response = await postLoginService.get(url);
       return response.data;
     } catch (error) {
+      console.error("Error fetching delivery slots:", error); // Optional logging for debugging
       return error;
     }
   }
