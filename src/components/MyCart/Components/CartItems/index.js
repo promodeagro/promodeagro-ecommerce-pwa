@@ -232,7 +232,6 @@ class Carts extends Component {
                           item.ProductId === dataId &&
                           !isUpdateIncrease) ? (
                           <CircularProgress
-                            className="common-loader plus-icon"
                             size={24}
                           />
                         ) : (
@@ -259,7 +258,7 @@ class Carts extends Component {
                         item.ProductId === dataId &&
                         isUpdateIncrease ? (
                           <CircularProgress
-                            className="common-loader plus-icon"
+                           
                             size={24}
                           />
                         ) : (

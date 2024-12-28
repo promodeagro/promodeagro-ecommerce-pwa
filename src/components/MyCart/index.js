@@ -226,6 +226,20 @@ class MyCart extends Component {
           handleClose();
           localStorage.removeItem("cartItem");
           localStorage.removeItem("address");
+          LocalStorageCartService.saveData({});
+          // Dispatch actions to update cart in Redux and fetch fresh cart data
+          let login = loginDetails();
+          if (login?.userId) {
+              this.props.addListOfItemsToCartReq({
+                  userId: login.userId,
+                  cartItems: [],
+              });
+              this.props.fetchCartItems({
+                  userId: login.userId,
+              });
+          }
+          // Clear cart in the component's state
+          this.setState({ cartList: [] });
         }
         if (!this.props.placeOrderData.data?.orderId) {
           ErrorMessages.error(this.props?.placeOrderData?.data?.error);
@@ -250,7 +264,7 @@ class MyCart extends Component {
     const { selectedPaymentMethod, itemListArr } = this.state;
     const Data = {
       addressId: addressId ? addressId : "f9858f86-95e3-4437-affa-93216b4ca4f9",
-      deliverySlotId: "36ca92c3",
+      deliverySlotId: "1bff6d72",
       items: itemListArr,
       paymentDetails: {
         method: selectedPaymentMethod,
@@ -258,6 +272,7 @@ class MyCart extends Component {
       userId: login.userId,
     };
     this.props.placeOrder(Data);
+
   };
 
   handleQuantityChange(id, increment, productQuantity = 0, qty) {
@@ -610,7 +625,7 @@ class MyCart extends Component {
           </Box>
         </Modal>
 
-        <Modal
+        {/* <Modal
           open={this.state.paymentLink}
           aria-describedby="modal-modal-description"
           data-aos="flip-left"
@@ -635,7 +650,7 @@ class MyCart extends Component {
               </Button>
             </Box>
           </Box>
-        </Modal>
+        </Modal> */}
 
         <Modal
           open={this.state.slotOpen}

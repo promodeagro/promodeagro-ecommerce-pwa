@@ -264,7 +264,8 @@ class Home extends Component {
         this.state.loaderCount == 0 ? (
 
         <>
-            <Box minHeight={'100vh'}  className=" css-1oqqzyl-MuiContainer-root main-banner-container">
+            <Box minHeight={'100vh'}  className="main-banner-container">
+              <Container>
 
 <Skeleton   animation="wave"   sx={{ borderRadius: "12px" }}  variant="rectangular" height={200} width="100%" />
 
@@ -354,7 +355,7 @@ class Home extends Component {
 ))}
 </Box>
 </Box>
-
+</Container>
 </Box>
         </>
 
