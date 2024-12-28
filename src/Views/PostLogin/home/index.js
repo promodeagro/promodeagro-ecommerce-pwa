@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Box, Skeleton, Typography } from "@mui/material";
+import { Box, Container, Skeleton, Typography } from "@mui/material";
 import MainBanner from "./components/mainBanner";
 import ShopByCategories from "./components/shopByCategories";
 import Service from "./components/service";
