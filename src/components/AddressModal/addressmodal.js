@@ -304,8 +304,6 @@ const mapDispatchToProps = (dispatch) => ({
   getAllAddress: (params) => dispatch(getAllAddress(params)),
   deleteAddress: (params) => dispatch(deleteAddress(params)),
   setDefaultAddress: (params) => dispatch(setDefaultAddress(params)),
-
-
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddressModal);

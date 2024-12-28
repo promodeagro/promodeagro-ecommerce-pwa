@@ -63,15 +63,27 @@ class Home extends Component {
       this.props.fetchCartItems({
         userId: items?.userId,
       });
-      this.props.fetchDefaultAddress(items?.userId);
+       // Fetch and store the default address in localStorage
+    console.log("Fetching default address for the user...");
+    this.props.fetchDefaultAddress(items?.userId).then((response) => {
+      console.log("Response from fetchDefaultAddress:", response);  // Detailed log of the entire response
 
-      // this.props.getAllAddress({
-      //   userId: items?.userId,
-      // })
-    } else {
-      this.props.fetchHome();
-    }
+      // Check if the response has the required data
+      if (response?.payload?.address) {
+        console.log("Default address fetched successfully:", response.payload);
+        localStorage.setItem("defaultAddress", JSON.stringify(response.payload));
+        console.log("Default address saved to localStorage.");
+      } else {
+        console.error("Failed to fetch default address. Response:", response);
+      }
+    }).catch(error => {
+      console.error("Error fetching default address:", error);
+    });
+  } else {
+    console.log("No user ID found. Fetching home data...");
+    this.props.fetchHome();
   }
+}
   componentDidUpdate(prevProps, prevState) {
     if (
       prevProps.allCategories.status !== this.props.allCategories.status &&

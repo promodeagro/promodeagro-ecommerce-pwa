@@ -18,6 +18,7 @@ import closeModal from "../../assets/img/closeModalIcon.svg";
 import BackArrow from "../../assets/img/backArrow.svg";
 import cashIcon from "../../assets/img/cashIcon.svg";
 import { Link } from "react-router-dom";
+import AddAddressModal from "../../../src/components/AddressModal/addaddressmodal";
 import {
   ErrorMessages,
   Loader,
@@ -312,13 +313,40 @@ class MyCart extends Component {
     }
   }
 
+  getDefaultAddress() {
+    const defaultAddress = JSON.parse(localStorage.getItem("defaultAddress"));
+    if (defaultAddress) {
+      return `${defaultAddress.address}, ${defaultAddress.zipCode}`;
+    }
+    return "No Address Selected"; // Default message if there's no default address in local storage
+  }
+
+  toggleAddAddressModal = (e) => {
+    if (e?.stopPropagation) {
+      e.stopPropagation(); // Prevent click from bubbling up to parent element
+    }
+    this.setState((prevState) => ({
+      isAddAddressModalOpen: !prevState.isAddAddressModalOpen,
+    }));
+  };
+
+  handleAddAddressClose = () => {
+    this.setState({
+      isAddAddressModalOpen: false, // Close the AddAddressModal
+    });
+  };
+
+
   render() {
     const { matches, dataId, isUpdateIncrease, selectedPaymentMethod } =
       this.state;
     const { open, handleClose } = this.props;
+    const { isAddAddressModalOpen } = this.state;
+
 
     return (
       <>
+
         <Drawer anchor={"right"} open={open} onClose={handleClose}>
           <Box className="cart_popup">
             {this.state.showAddressPopup ? (
@@ -329,11 +357,16 @@ class MyCart extends Component {
                 </Box>
                 <Box className="my_cart_bottom_address">
                   <img src={LocationIcon} alt="" />
-                  <Box> 
-  <span>Delivering to Home</span>
-  <span>{this.state.selectedAddress ? `${this.state.selectedAddress.address}, ${this.state.selectedAddress.zipCode}` : "No Address Selected"}</span> 
-</Box>
-
+                  <Box>
+                    <span>Delivering to Home</span>
+                    <span>
+                      {
+                        this.state.selectedAddress
+                          ? `${this.state.selectedAddress.address}, ${this.state.selectedAddress.zipCode}`
+                          : this.getDefaultAddress() // Get default address from local storage if no address is selected
+                      }
+                    </span>
+                  </Box>
                   {!matches && (
                     <Link
                       onClick={() => {
@@ -378,7 +411,6 @@ class MyCart extends Component {
                       <div className="bill_details">
                         <strong>Bill details</strong>
                         <div>
-                          {" "}
                           <span>Item total</span>{" "}
                           <strong>₹{this.state.totalPrice}</strong>
                         </div>
@@ -406,7 +438,6 @@ class MyCart extends Component {
                               });
                             }}
                           >
-                            {/* Show the selected slot or placeholder */}
                             <span>
                               {this.state.selectedSlot
                                 ? `${this.state.selectedSlot}`
@@ -432,7 +463,6 @@ class MyCart extends Component {
                       </Box>
                       <Box className="Payment_methods_box">
                         <h2>Payment Method</h2>
-
                         <div
                           onClick={() =>
                             this.setState({ selectedPaymentMethod: "online" })
@@ -446,7 +476,6 @@ class MyCart extends Component {
                             color="success"
                           />
                         </div>
-
                         <div
                           onClick={() =>
                             this.setState({ selectedPaymentMethod: "cash" })
@@ -462,7 +491,6 @@ class MyCart extends Component {
                           />
                         </div>
                       </Box>
-
                       <Grid
                         sx={{ paddingBottom: "20px" }}
                         item
@@ -512,25 +540,20 @@ class MyCart extends Component {
                   />
                   <h2>Select Delivery Address</h2>
                 </Box>
-
                 <Box className="select_delivery_slot">
-                  <h2>Select Delivery Slot</h2>
-
                   <div
-                    onClick={() => {
-                      this.setState({
-                        AddNewAddressOpen: true,
-                      });
-                    }}
+                   onClick={(e) => {
+                    e.stopPropagation(); // Prevent click from bubbling up to Box
+                    this.toggleAddAddressModal(e); // Pass the event explicitly
+                  }}
                     className="add_new_address_btn"
                   >
                     <img src={greenPlusIcon} alt="" />
                     <span>Add New Address</span>
                   </div>
                 </Box>
-
                 <Box className="delivery_slots_container">
-                  <h2>Select Delivery Slot</h2>
+                  <h2>Select An Address</h2>
                   <AllAddresses
                     onAddressSelect={(address) =>
                       this.setState({ selectedAddress: address })
@@ -561,20 +584,20 @@ class MyCart extends Component {
             <Box className="tab_select_delivery_container">
               <h2>Select Delivery Address</h2>
             </Box>
-
             <Button
-              onClick={() => {
-                this.setState({
-                  TabAddNewAddressOpen: true,
-                });
+               onClick={(e) => {
+                e.stopPropagation(); // Prevent click from bubbling up to Box
+                this.toggleAddAddressModal(e); // Pass the event explicitly
               }}
               className="tab_address_btn"
             >
               <img alt="" src={greenPlusIcon} />
-              <span style={{ textTransform: "none" }}>Add new Address</span>
+              <span style={{ textTransform: "none" }}>Add New Address</span>
             </Button>
 
-            <AllAddresses />
+            <AllAddresses  onAddressSelect={(address) =>
+                      this.setState({ selectedAddress: address })
+                    } />
           </Box>
         </Drawer>
 
@@ -671,6 +694,12 @@ class MyCart extends Component {
             />
           </>
         </Modal>
+         {isAddAddressModalOpen && (
+                  <AddAddressModal
+                    open={isAddAddressModalOpen}
+                    handleClose={this.handleAddAddressClose} 
+                  />
+                )} 
       </>
     );
   }
