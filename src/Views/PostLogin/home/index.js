@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Box } from "@mui/material";
+import { Box, Skeleton, Typography } from "@mui/material";
 import MainBanner from "./components/mainBanner";
 import ShopByCategories from "./components/shopByCategories";
 import Service from "./components/service";
@@ -262,7 +262,103 @@ class Home extends Component {
       <Box className="main-container">
         {this.props.homeData.status === status.IN_PROGRESS &&
         this.state.loaderCount == 0 ? (
-          Loader.commonLoader()
+
+        <>
+            <Box minHeight={'100vh'}  className=" css-1oqqzyl-MuiContainer-root main-banner-container">
+
+<Skeleton   animation="wave"   sx={{ borderRadius: "12px" }}  variant="rectangular" height={200} width="100%" />
+
+<Box paddingTop={'20px'} >
+{/* Section Title */}
+<Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+<Typography variant="h6">
+  <Skeleton width={200} animation="wave" />
+</Typography>
+<Skeleton width={60} animation="wave" />
+</Box>
+
+{/* Category Skeletons */}
+<Box display="flex" gap={2} flexWrap="wrap">
+{Array.from({ length: 6 }).map((_, index) => (
+  <Box key={index} textAlign="center">
+    <Skeleton 
+      variant="rectangular" 
+      animation="wave" 
+      height={100} 
+      width={120} 
+      sx={{ borderRadius: "12px", marginBottom: "8px" }} 
+    />
+    <Skeleton width={80} height={20} animation="wave" />
+  </Box>
+))}
+</Box>
+</Box>
+
+<Box paddingTop={'20px'} >
+{/* Section Header */}
+<Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+<Typography variant="h6">
+  <Skeleton width={150} animation="wave" />
+</Typography>
+<Skeleton width={60} animation="wave" />
+</Box>
+
+{/* Product Skeletons */}
+<Box display="flex" gap={2} overflow="auto">
+{Array.from({ length: 5 }).map((_, index) => (
+  <Box 
+    key={index} 
+   width={'20%'} 
+    borderRadius="8px" 
+    padding="16px" 
+    boxShadow="0px 1px 3px rgba(0,0,0,0.1)"
+    bgcolor="#fff"
+  >
+    {/* Discount Tag */}
+    <Skeleton 
+      variant="rectangular" 
+      width={60} 
+      height={20} 
+      sx={{ borderRadius: "8px", marginBottom: "8px" }} 
+      animation="wave" 
+    />
+
+    {/* Product Image */}
+    <Skeleton 
+      variant="rectangular" 
+      width="100%" 
+      height={100} 
+      sx={{ borderRadius: "8px", marginBottom: "8px" }} 
+      animation="wave" 
+    />
+
+    {/* Product Title */}
+    <Skeleton width="70%" height={20} animation="wave" sx={{ marginBottom: "8px" }} />
+
+    {/* Dropdown Skeleton */}
+    <Skeleton width="80%" height={30} animation="wave" sx={{ marginBottom: "8px" }} />
+
+    {/* Price */}
+    <Skeleton width="50%" height={20} animation="wave" sx={{ marginBottom: "8px" }} />
+    <Skeleton width="30%" height={15} animation="wave" sx={{ marginBottom: "16px" }} />
+
+    {/* Add Button */}
+    <Skeleton 
+      variant="rectangular" 
+      width="100%" 
+      height={40} 
+      sx={{ borderRadius: "8px" }} 
+      animation="wave" 
+    />
+  </Box>
+))}
+</Box>
+</Box>
+
+</Box>
+        </>
+
+          
         ) : (
           <>
             <MainBanner allOffersList={allOffersList} />
