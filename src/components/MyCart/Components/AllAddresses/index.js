@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Box,
   Button,
@@ -7,15 +8,12 @@ import {
   DialogContent,
   DialogContentText,
   Grid,
-  IconButton,
+  Modal,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { connect, useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { connect } from "react-redux";
 import {
   deleteAddress,
   getAllAddress,
-  getDefaultAddress,
 } from "../../../../Redux/Address/AddressThunk";
 import {
   ErrorMessages,
@@ -23,246 +21,290 @@ import {
   loginDetails,
 } from "Views/Utills/helperFunctions";
 import status from "../../../../Redux/Constants";
-import DeleteIcon from "@mui/icons-material/Delete";
 import penciEditIcon from "../../../../assets/img/pencilEditIcon.svg";
 import deleteBinIcon from "../../../../assets/img/deleteBinIcon.svg";
+import AddAddressModal from "../../../../../src/components/AddressModal/addaddressmodal";
 
-const AllAdresses = (props) => {
-  const [open, setOpen] = useState(false);
-  const [allAddress, setAllAddress] = useState([]);
-  const [allAddressApiLoader, setAllAddresApiLoader] = useState(false);
-  const [deleteAddressApiLoader, setDeleteAddressApiLoader] = useState(false);
-  const allAddressState = useSelector((state) => state.alladdress.allAddress);
-  const [addressId, setAddressId] = useState("");
-  const [defaultAddressLoader, setDefaultAddressLoader] = useState(false);
-  const [selectedAddressId, setSelectedAddressId] = useState("");
-  const postAddressStatus = useSelector(
-    (state) => state.alladdress.postAddress.status
-  );
-  const deleteAddressStatus = useSelector(
-    (state) => state.alladdress.deleteAddresses.status
-  );
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+class AllAddresses extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+      allAddressApiLoader: false,
+      deleteAddressApiLoader: false,
+      openDeleteModal: false, // For confirming delete
+      addressToEdit: null, // Store the address data to be edited
+      openAddAddressModal: false,
+      addressId: "",
+      selectedAddressId: localStorage.getItem("address") || "",
+    };
+  }
 
-  useEffect(() => {
-    let items = loginDetails();
-    setAllAddresApiLoader(true);
-    setSelectedAddressId(localStorage.getItem("address"));
-    dispatch(
-      getAllAddress({
-        userId: items.userId,
-      })
-    );
-  }, []);
+  componentDidMount() {
+    const items = loginDetails();
+    this.setState({ allAddressApiLoader: true });
+    this.props.getAllAddress({ userId: items.userId });
+  }
 
-  useEffect(() => {
-    if (props.defaultSelectedAddress?.addressId && !selectedAddressId) {
-      setSelectedAddressId(props.defaultSelectedAddress.addressId);
+  componentDidUpdate(prevProps) {
+    const { allAddressData, deleteAddresses } = this.props;
+
+    if (allAddressData.defaultAddressId && !this.state.selectedAddressId) {
+      this.setDefaultAddress(allAddressData.defaultAddressId);
     }
-  }, [props.defaultSelectedAddress]);
 
-  console.log(allAddressState);
-
-  useEffect(() => {
     if (
-      allAddressState.status === status.SUCCESS &&
-      allAddressState.data.addresses &&
-      allAddressApiLoader
+      deleteAddresses.status === status.SUCCESS &&
+      this.state.deleteAddressApiLoader
     ) {
-      localStorage.removeItem("address");
-
-      setAllAddresApiLoader(true);
-      setAllAddress(allAddressState.data.addresses);
-      if (allAddressState?.data?.addresses?.length == 0) {
-        setSelectedAddressId("");
-      }
+      this.handlePostDelete();
     }
-  }, [allAddressState]);
+  }
 
-  useEffect(() => {
-    if (deleteAddressStatus === status.SUCCESS && deleteAddressApiLoader) {
-      let items = loginDetails();
-      setAllAddresApiLoader(true);
-      setDeleteAddressApiLoader(false);
-      props.getDefaultAddress();
-      dispatch(
-        getAllAddress({
-          userId: items.userId,
+  setDefaultAddress = (defaultAddressId) => {
+    this.setState({ selectedAddressId: defaultAddressId });
+    localStorage.setItem("address", defaultAddressId);
+  };
+
+  handleEditClick = (address) => {
+    this.setState({ openAddAddressModal: true, addressToEdit: address });
+  };
+  handleAddAddressModalClose = () => {
+    this.setState({ openAddAddressModal: false, addressToEdit: null });
+  };
+
+  handlePostDelete = () => {
+    const items = loginDetails();
+    this.setState({ allAddressApiLoader: true, deleteAddressApiLoader: false });
+    this.props.getDefaultAddress();
+    this.props.getAllAddress({ userId: items.userId });
+    ErrorMessages.success("Address Delete Successfully");
+    this.setState({ open: false });
+  };
+
+  handleDelete = (userId, addressId) => {
+    this.setState({ deleteAddressApiLoader: true });
+    this.props.deleteAddress({ userId, addressId });
+  };
+
+  handleDeleteClick = (addressId) => {
+    this.setState({ openDeleteModal: true, addressToDelete: addressId });
+  };
+
+  handleDeleteModalClose = () => {
+    this.setState({ openDeleteModal: false, addressToDelete: null });
+  };
+
+  handleConfirmDelete = () => {
+    const { addressToDelete } = this.state;
+    const loginData = loginDetails();
+    const userId = loginData?.userId;
+
+    if (userId && addressToDelete) {
+      this.props
+        .deleteAddress({ userId: userId, addressId: addressToDelete })
+        .then(() => {
+          this.setState({ openDeleteModal: false, addressToDelete: null }); // Close modal after deletion
+          this.props.handleClose(); // If needed, close parent modal
         })
-      );
-      ErrorMessages.success("Address Delete Successfully");
-      setOpen(false);
+        .catch((error) => {
+          console.error("Failed to delete address:", error);
+        });
+    } else {
+      console.error("User ID or address ID is missing.");
     }
-  }, [deleteAddressStatus]);
-
-  useEffect(() => {
-    if (
-      props.setDefaultAddressData.status == status.SUCCESS &&
-      defaultAddressLoader
-    ) {
-      if (props.setDefaultAddressData.data) {
-        setSelectedAddressId("");
-        setDefaultAddressLoader(false);
-        props.getDefaultAddress();
-      }
-    }
-  }, [props.setDefaultAddressData.status]);
-
-  const handleDelete = (userId, addressId) => {
-    setDeleteAddressApiLoader(true);
-    dispatch(
-      deleteAddress({
-        userId: userId,
-        addressId: addressId,
-      })
-    );
   };
 
-  const handleEdit = (event, address) => {
-    event.stopPropagation();
-    navigate(`/mycart/address/updated-address/${address?.addressId}`, {
-      state: { address },
-    });
+  handleClickOpen = (item) => {
+    this.setState({ addressId: item.addressId, open: true });
   };
 
-  const handleClickOpen = (item) => {
-    setAddressId(item.addressId);
-    setOpen(true);
+  handleClose = () => {
+    this.setState({ addressId: "", open: false });
   };
 
-  const handleClose = () => {
-    setAddressId("");
-    setOpen(false);
-  };
-
-  const handleSelectedAddress = (select) => {
+  handleSelectedAddress = (select) => {
     localStorage.setItem("address", select?.addressId);
-    setSelectedAddressId(select?.addressId);
-  
-    // Call the parent component method to update the selected address
-    if (props.onAddressSelect) {
-      props.onAddressSelect(select);
+    this.setState({ selectedAddressId: select?.addressId });
+    if (this.props.onAddressSelect) {
+      this.props.onAddressSelect(select);
     }
   };
-  
+
+  render() {
+    const { allAddressData, setDefaultAddressData, openDeleteModal } =
+      this.props;
+    const {
+      open,
+      allAddressApiLoader,
+      deleteAddressApiLoader,
+      selectedAddressId,
+    } = this.state;
+
+    const sortedAddresses = allAddressData.addresses
+      ? [
+          ...allAddressData.addresses.filter(
+            (address) => address.addressId === allAddressData.defaultAddressId
+          ),
+          ...allAddressData.addresses.filter(
+            (address) => address.addressId !== allAddressData.defaultAddressId
+          ),
+        ]
+      : [];
+
     return (
-    <>
-      {console.log("status", allAddressState.status)}
-      {allAddressState.status === status.IN_PROGRESS ? (
-        Loader.commonLoader()
-      ) : (
-        <>
-          {allAddress?.length > 0 ? (
-            allAddress.map((item, index) => {
-              return (
+      <>
+        {allAddressData.status === status.IN_PROGRESS ? (
+          Loader.commonLoader()
+        ) : (
+          <>
+            {sortedAddresses?.length > 0 ? (
+              sortedAddresses.map((item, index) => (
                 <Grid key={index} item xs={12} lg={4} md={6} sm={6}>
                   {item?.addressId === selectedAddressId &&
-                  props.setDefaultAddressData.status == status.IN_PROGRESS ? (
+                  setDefaultAddressData.status === status.IN_PROGRESS ? (
                     Loader.commonLoader()
                   ) : (
-                    <>
-                      <Box
-                        onClick={() => handleSelectedAddress(item)}
-                        className={`address_box ${
-                          item.addressId == selectedAddressId
-                            ? "address_box_active"
-                            : ""
-                        }`}
-                      >
-                        <div>
-                          {console.log(item)}
-                          <span>Home</span>
-                        </div>
-                        <p>
-                          {item.address} {item.zipCode}{" "}
-                        </p>
-                        <div className="address_box_bottom">
-                          <img
-                            src={deleteBinIcon}
-                            aria-label="delete"
-                            className={
-                              item.addressId == selectedAddressId
-                                ? "address-btn active"
-                                : "address-btn"
-                            }
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              handleClickOpen(item);
-                            }}
-                            alt=""
-                          />
-                          <img
-                            src={penciEditIcon}
-                            aria-label="delete"
-                            className={
-                              item.addressId == selectedAddressId
-                                ? "address-btn active"
-                                : "address-btn"
-                            }
-                            alt=""
-                          />
-                        </div>
-                      </Box>
-                    </>
+                    <Box
+                      onClick={() => this.handleSelectedAddress(item)}
+                      className={`address_box ${
+                        item.addressId === selectedAddressId
+                          ? "address_box_active"
+                          : ""
+                      } ${
+                        item.addressId === allAddressData.defaultAddressId
+                          ? "default_address"
+                          : ""
+                      }`}
+                    >
+                      <p>
+                        {item.address} {item.zipCode}
+                        {item.addressId === allAddressData.defaultAddressId && (
+                          <span className="roundDiv">Default</span>
+                        )}
+                      </p>
+
+                      <div className="address_box_bottom">
+                      <img
+                          src={penciEditIcon}
+                          aria-label="edit"
+                          className={
+                            item.addressId === selectedAddressId
+                              ? "address-btn active"
+                              : "address-btn"
+                          }
+                          alt="edit"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            this.handleEditClick(item); // Open AddAddressModal with prefilled data
+                          }}
+                        />
+                        <img
+                          src={deleteBinIcon}
+                          aria-label="delete"
+                          className={
+                            item.addressId === selectedAddressId
+                              ? "address-btn active"
+                              : "address-btn"
+                          }
+                          alt="delete"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            this.handleDeleteClick(item.addressId); // Open delete modal
+                          }}
+                        />
+                      </div>
+                    </Box>
                   )}
                 </Grid>
-              );
-            })
-          ) : (
-            <Box className="empty_address">
-              you don’t have <br />
-              save address with us
-            </Box>
-          )}
-        </>
-      )}
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete this address?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions
-          style={{ justifyContent: "center", paddingBottom: "24px" }}
+              ))
+            ) : (
+              <Box className="empty_address">
+                you don’t have <br /> save address with us
+              </Box>
+            )}
+          </>
+        )}
+
+        <Dialog
+          open={open}
+          onClose={this.handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
         >
-          <Button
-            variant="outlined"
-            className="outline-common-btn"
-            onClick={handleClose}
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure you want to delete this address?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions
+            style={{ justifyContent: "center", paddingBottom: "24px" }}
           >
-            Cancel
-          </Button>
-          <Button
-            variant="outlined"
-            className="outline-common-btn"
-            color="error"
-            onClick={(event) => {
-              event.stopPropagation();
-              let items = loginDetails();
-              handleDelete(items?.userId, addressId);
-            }}
-            disabled={props.deleteAddresses.status == status.IN_PROGRESS}
-            endIcon={
-              props.deleteAddresses.status === status.IN_PROGRESS ? (
-                <CircularProgress className="common-loader delete" />
-              ) : (
-                <></>
-              )
-            }
-          >
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </>
-  );
-};
+            <Button
+              variant="outlined"
+              className="outline-common-btn"
+              onClick={this.handleClose}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="outlined"
+              className="outline-common-btn"
+              color="error"
+              onClick={(event) => {
+                event.stopPropagation();
+                const items = loginDetails();
+                this.handleDelete(items?.userId, this.state.addressId);
+              }}
+              disabled={deleteAddressApiLoader}
+              endIcon={
+                deleteAddressApiLoader ? (
+                  <CircularProgress className="common-loader delete" />
+                ) : null
+              }
+            >
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Modal
+          open={this.state.openDeleteModal}
+          onClose={this.handleDeleteModalClose}
+        >
+          <Box className="common-modal deletemodal">
+            <Box className="delete-text">Confirm Deletion</Box>
+            <Box className="delete-subtext">
+              Are you sure you want to delete this address?
+            </Box>
+            <Box className="buttongap">
+              <button
+                variant="outlined"
+                className="cancelbutton"
+                onClick={() => this.handleDeleteModalClose()} // Close modal on Cancel
+              >
+                Cancel
+              </button>
+              <button
+                className="confirmbutton"
+                variant="contained"
+                onClick={this.handleConfirmDelete} // Confirm deletion
+              >
+                Confirm
+              </button>
+            </Box>
+          </Box>
+        </Modal>
+        {this.state.openAddAddressModal && (
+          <AddAddressModal
+            open={this.state.openAddAddressModal}
+            handleClose={this.handleAddAddressModalClose}
+            addressData={this.state.addressToEdit} // Pass address data to prefill
+          />
+        )}
+      </>
+    );
+  }
+}
 
 function mapStateToProps(state) {
   const { cartData } = state.home;
@@ -273,6 +315,7 @@ function mapStateToProps(state) {
     deleteAddresses,
     setDefaultAddressData,
   } = state.alladdress;
+
   return {
     cartData,
     cartItems,
@@ -280,11 +323,13 @@ function mapStateToProps(state) {
     deleteAddresses,
     selectedAddressData,
     setDefaultAddressData,
+    allAddressData: state.alladdress.allAddress?.data || {},
   };
 }
 
 const mapDispatchToProps = {
   getAllAddress,
+  deleteAddress,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AllAdresses);
+export default connect(mapStateToProps, mapDispatchToProps)(AllAddresses);

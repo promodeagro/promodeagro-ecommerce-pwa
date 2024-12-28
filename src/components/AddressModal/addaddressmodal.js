@@ -6,9 +6,14 @@ import { ValidationEngine } from "Views/Utills/helperFunctions";
 import Homeicon from "../../assets/img/homeicon.png";
 import Workicon from "../../assets/img/workicon.png";
 import Othericon from "../../assets/img/othericon.png";
-import { updateAddress, postAddress } from "../../Redux/Address/AddressThunk";
+import {
+  updateAddress,
+  postAddress,
+  setDefaultAddress,
+  fetchDefaultAddress,
+} from "../../Redux/Address/AddressThunk"; // Import the setDefaultAddress action
 import { loginDetails } from "Views/Utills/helperFunctions";
-import closeModalIcon from "../../assets/img/closeModalIcon.svg"
+import closeModalIcon from "../../assets/img/closeModalIcon.svg";
 
 const addressValidationSchema = {
   fullName: [
@@ -63,14 +68,20 @@ class AddAddressModal extends Component {
       selectedAddressType: "",
       addressId: "",
       initialLoad: true, // Ensures props are loaded only once
+      isDefaultChecked: false, // To track if the checkbox is checked
     };
   }
 
+  componentDidMount() {
+    const defaultAddress = JSON.parse(localStorage.getItem("defaultAddress"));
+    this.setState({
+      isDefaultAddressPresent: !!defaultAddress, // true if a default address exists
+      isDefaultChecked: !defaultAddress, // If no default address, set checkbox to checked
+    });
+  }
+
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (
-      nextProps.addressData &&
-      prevState.initialLoad // Ensures this runs only on initial load
-    ) {
+    if (nextProps.addressData && prevState.initialLoad) {
       return {
         fullName: nextProps.addressData.name || "",
         flatNumber: nextProps.addressData.house_number || "",
@@ -80,84 +91,137 @@ class AddAddressModal extends Component {
         pincode: nextProps.addressData.zipCode || "",
         selectedAddressType: nextProps.addressData.address_type || "",
         addressId: nextProps.addressData.addressId || "",
-        initialLoad: false, // Disable further updates from props
+        initialLoad: false,
       };
     }
     return null;
   }
 
-  validateForm = () => {
-    const { fullName, flatNumber, landmark, phone, area, pincode } = this.state;
-    const error = ValidationEngine.validate(addressValidationSchema, {
+  handleAddressTypeSelection = (type) => {
+    this.setState({
+      selectedAddressType: type,
+    });
+  };
+
+  handleAddressSubmit = async (e) => {
+    e.preventDefault();
+    const { isValid, errors } = this.validateForm();
+    if (!isValid) {
+      console.log("Form validation failed:", errors);
+      return;
+    }
+  
+    const {
       fullName,
       flatNumber,
       landmark,
       phone,
       area,
       pincode,
-    });
-    return error;
-  };
-
-  handleAddressSubmit = async (e) => {
-    e.preventDefault();
-    const errorData = this.validateForm();
-
-    if (errorData.isValid) {
-      const {
-        fullName,
-        flatNumber,
-        landmark,
-        phone,
-        area,
-        pincode,
-        selectedAddressType,
-        addressId,
-      } = this.state;
-
-      const loginData = loginDetails();
-      const userId = loginData ? loginData.userId : null;
-
-      if (!userId) {
-        console.error("User ID is missing.");
-        return;
-      }
-
-      const requestBody = {
-        userId: userId,
-        address: {
-          name: fullName,
-          address: area,
-          phoneNumber: phone,
-          landmark_area: landmark,
-          zipCode: pincode,
-          house_number: flatNumber,
-          address_type: selectedAddressType,
-        },
-      };
-
-      this.setState({ isSubmitting: true });
-
-      try {
-        if (addressId) {
-          // Update existing address
-          requestBody.addressId = addressId;
-          await this.props.updateAddress(requestBody);
-        } else {
-          // Add new address
-          await this.props.postAddress(requestBody);
+      selectedAddressType,
+      isDefaultChecked,
+      addressId, // Include addressId in the state
+    } = this.state;
+    const loginData = loginDetails(); // Retrieve login details
+    const userId = loginData?.userId; // Access userId safely
+  
+    if (!userId) {
+      console.error("User ID is missing.");
+      return;
+    }
+  
+    const requestBody = {
+      userId: userId,
+      address: {
+        name: fullName,
+        address: area,
+        phoneNumber: phone,
+        landmark_area: landmark,
+        zipCode: pincode,
+        house_number: flatNumber,
+        address_type: selectedAddressType,
+      },
+    };
+  
+    this.setState({ isSubmitting: true });
+  
+    try {
+      console.log("Sending API request:", requestBody);
+  
+      if (addressId) {
+        requestBody.addressId = addressId;
+        const response = await this.props.updateAddress(requestBody);
+        console.log("Update Address API Response:", response);
+      } else {
+        // If addressId does not exist, call postAddress API
+        const response = await this.props.postAddress(requestBody);
+        const newAddressId = response?.payload?.addressId;
+        if (!newAddressId) {
+          console.error("Address ID is missing in the response:", response);
+          this.setState({ isSubmitting: false });
+          return;
         }
-        this.setState({ isSubmitting: false });
-        this.props.handleClose();
-      } catch (error) {
-        this.setState({ isSubmitting: false });
-        console.error("Error submitting address:", error);
+        console.log("Post Address API Response Address ID:", newAddressId);
+  
+        if (isDefaultChecked || !this.state.isDefaultAddressPresent) {
+          console.log(
+            `Setting address ${newAddressId} as default for user ${userId}.`
+          );
+          await this.props.setDefaultAddress({ userId, addressId: newAddressId });
+          console.log("Set Default Address API called successfully.");
+          const fetchDefaultAddressResponse =
+            await this.props.fetchDefaultAddress(userId); // Pass userId here
+          if (fetchDefaultAddressResponse?.payload) {
+            const newDefaultAddress = fetchDefaultAddressResponse.payload;
+            if (!newDefaultAddress) {
+              console.warn("New default address not found in the response.");
+            } else {
+              localStorage.setItem(
+                "defaultAddress",
+                JSON.stringify(newDefaultAddress)
+              );
+              console.log(
+                "Default address saved to local storage:",
+                newDefaultAddress
+              );
+            }
+          } else {
+            console.error("Failed to fetch the default address.");
+          }
+        }
       }
+  
+      this.setState({ isSubmitting: false });
+      this.props.handleClose();
+    } catch (error) {
+      console.error("Error in API call:", error);
+      this.setState({ isSubmitting: false });
     }
   };
+  
+  
+  
 
-  handleAddressTypeSelection = (type) => {
-    this.setState({ selectedAddressType: type });
+  validateForm = () => {
+    const { fullName, flatNumber, landmark, phone, area, pincode } = this.state;
+    const errors = {};
+    Object.keys(addressValidationSchema).forEach((field) => {
+      const fieldValidators = addressValidationSchema[field];
+
+      fieldValidators.forEach((validator) => {
+        if (
+          validator.type === ValidationEngine.type.MANDATORY &&
+          !this.state[field]
+        ) {
+          errors[field] = validator.message;
+        }
+      });
+    });
+    const isValid = Object.keys(errors).length === 0;
+    return {
+      isValid,
+      errors,
+    };
   };
 
   render() {
@@ -171,15 +235,17 @@ class AddAddressModal extends Component {
       pincode,
       isSubmitting,
       selectedAddressType,
+      isDefaultAddressPresent,
+      isDefaultChecked, 
     } = this.state;
 
     return (
       <Modal open={open} onClose={handleClose}>
         <Box className="common-modal newaddressmodal">
-          <div className='modalheader'>
-          <h2>Add Address</h2>
-      <img src={closeModalIcon} alt="Close Modal" onClick={handleClose} />
-      </div>
+          <div className="modalheader">
+            <h2>Add Address</h2>
+            <img src={closeModalIcon} alt="Close Modal" onClick={handleClose} />
+          </div>
           <p className="saveaddressas">Save Address As</p>
           <div className="iconcontainer">
             {["Home", "Work", "Other"].map((type) => (
@@ -211,26 +277,22 @@ class AddAddressModal extends Component {
               </a>
             ))}
           </div>
-
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <Box className="labelform">
                 <span className="para">
                   Full Name<p className="para1">*</p>
                 </span>
-
                 <TextField
                   fullWidth
                   value={fullName}
                   onChange={(e) => this.setState({ fullName: e.target.value })}
                 />
               </Box>
-
               <Box className="labelform">
                 <span className="para">
                   Flat No./ House No./ Building No.<p className="para1">*</p>
                 </span>
-
                 <TextField
                   fullWidth
                   value={flatNumber}
@@ -239,10 +301,8 @@ class AddAddressModal extends Component {
                   }
                 />
               </Box>
-
               <Box className="labelform">
                 <span className="para">Landmark</span>
-
                 <TextField
                   fullWidth
                   value={landmark}
@@ -255,19 +315,16 @@ class AddAddressModal extends Component {
                 <span className="para">
                   Phone No.<p className="para1">*</p>
                 </span>
-
                 <TextField
                   fullWidth
                   value={phone}
                   onChange={(e) => this.setState({ phone: e.target.value })}
                 />
               </Box>
-
               <Box className="labelform">
                 <span className="para">
                   Area/Locality<p className="para1">*</p>
                 </span>
-
                 <TextField
                   fullWidth
                   value={area}
@@ -278,7 +335,6 @@ class AddAddressModal extends Component {
                 <span className="para">
                   Pincode<p className="para1">*</p>
                 </span>
-
                 <TextField
                   fullWidth
                   value={pincode}
@@ -287,7 +343,28 @@ class AddAddressModal extends Component {
               </Box>
             </Grid>
           </Grid>
-
+          {!this.state.addressId && !isDefaultAddressPresent ? (
+            <>
+              <Checkbox
+                defaultChecked
+                color="success"
+                onChange={() =>
+                  this.setState({ isDefaultChecked: !isDefaultChecked })
+                }
+              />
+              <span className="checkboxspan">Set this Address as default</span>
+            </>
+          ) : !this.state.addressId && isDefaultAddressPresent ? (
+            <>
+              <Checkbox
+                color="success"
+                onChange={() =>
+                  this.setState({ isDefaultChecked: !isDefaultChecked })
+                }
+              />
+              <span className="checkboxspan">Set this Address as default</span>
+            </>
+          ) : null}
           <Box sx={{ marginTop: "16px" }}>
             {isSubmitting ? (
               <CircularProgress color="success" />
@@ -311,6 +388,8 @@ class AddAddressModal extends Component {
 const mapDispatchToProps = (dispatch) => ({
   updateAddress: (data) => dispatch(updateAddress(data)),
   postAddress: (data) => dispatch(postAddress(data)),
+  setDefaultAddress: (data) => dispatch(setDefaultAddress(data)), // Add setDefaultAddress dispatch
+  fetchDefaultAddress: (params) => dispatch(fetchDefaultAddress(params)), // Ensure this is defined
 });
 
 export default connect(null, mapDispatchToProps)(AddAddressModal);
