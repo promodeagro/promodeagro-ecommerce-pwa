@@ -189,7 +189,7 @@ class DeliverySlots extends Component {
                       <FormControlLabel
                         control={
                           <Radio
-                            sx={{ ml: 2 }}
+                            sx={{ ml: 1 }}
                             checked={
                               selectedSlot === `${slot.start} - ${slot.end}`
                             }
