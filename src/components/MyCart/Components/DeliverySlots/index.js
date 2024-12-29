@@ -23,7 +23,7 @@ class DeliverySlots extends Component {
       selectedTab: 0,
       selectedSlot: null,
       filteredAddress: null,
-      deliveryType: "same day", // Default value, will be updated from API response
+      deliveryType: "same day",
     };
   }
 
@@ -32,7 +32,7 @@ class DeliverySlots extends Component {
     dispatch(fetchDeliverySlots(this.state.selectedDay));
     const loginData = loginDetails();
     if (loginData && loginData.userId) {
-      dispatch(getAllAddress({ userId: loginData.userId })); // Fetch addresses for the user
+      dispatch(getAllAddress({ userId: loginData.userId })); 
     }
   }
 
@@ -79,16 +79,13 @@ class DeliverySlots extends Component {
 
   handleSlotChange = (event) => {
     const selectedSlot = event.target.value;
-  
-    // Update the state in DeliverySlots
+
     this.setState({ selectedSlot });
-  
-    // Notify the parent component (Cart) about the selected slot
     if (this.props.onSlotSelect) {
       this.props.onSlotSelect(selectedSlot);
     }
   };
-  
+
   getFilteredSlots = () => {
     const { slots } = this.props;
     const { selectedTab } = this.state;
@@ -131,22 +128,22 @@ class DeliverySlots extends Component {
             <img src={closeModalIcon} alt="Close Modal" onClick={handleClose} />
           </div>
           <Box className="delevery_slot_modal_days">
-  {this.state.deliveryType === "same day" ? (
-    <span
-      className={selectedDay === "today" ? "active" : ""}
-      onClick={() => this.setState({ selectedDay: "today" })}
-    >
-      Today
-    </span>
-  ) : (
-    <span
-      className={selectedDay === "tomorrow" ? "active" : ""}
-      onClick={() => this.setState({ selectedDay: "tomorrow" })}
-    >
-      Tomorrow
-    </span>
-  )}
-</Box>
+            {this.state.deliveryType === "same day" ? (
+              <span
+                className={selectedDay === "today" ? "active" : ""}
+                onClick={() => this.setState({ selectedDay: "today" })}
+              >
+                Today
+              </span>
+            ) : (
+              <span
+                className={selectedDay === "tomorrow" ? "active" : ""}
+                onClick={() => this.setState({ selectedDay: "tomorrow" })}
+              >
+                Tomorrow
+              </span>
+            )}
+          </Box>
           <Box>
             <Tabs
               value={selectedTab}
@@ -168,40 +165,37 @@ class DeliverySlots extends Component {
                 <CircularProgress color="success" />
               </div>
             ) : filteredSlots.length > 0 ? (
-              <div className="boxdecor">
-                <Grid container direction="column" spacing={2}>
+              <Box
+                sx={{
+                  border: "1px solid #e0e0e0",
+                  borderRadius: 2,
+                }}
+              >
+                <Grid container spacing={0}>
                   {filteredSlots.map((slot, index) => (
-                    <Grid item key={index}>
-                      <Box
-                        sx={{
-                          border: "1px solid #e0e0e0",
-                          borderRadius: 2,
-                          overflow: "auto",
-                        }}
-                      >
-                        <FormControlLabel
-                          control={
-                            <Radio
-                              sx={{ ml: 2 }}
-                              checked={
-                                selectedSlot === `${slot.start} - ${slot.end}`
-                              }
-                              onChange={this.handleSlotChange}
-                              value={`${slot.start} - ${slot.end}`}
-                              color="success"
-                            />
-                          }
-                          label={
-                            <Typography variant="body2">{`${slot.start} - ${slot.end}`}</Typography>
-                          }
-                        />
-                      </Box>
+                    <Grid item xs={6} key={index}>
+                      <FormControlLabel
+                        control={
+                          <Radio
+                            sx={{ ml: 2 }}
+                            checked={
+                              selectedSlot === `${slot.start} - ${slot.end}`
+                            }
+                            onChange={this.handleSlotChange}
+                            value={`${slot.start} - ${slot.end}`}
+                            color="success"
+                          />
+                        }
+                        label={
+                          <Typography variant="body2">{`${slot.start} - ${slot.end}`}</Typography>
+                        }
+                      />
                     </Grid>
                   ))}
                 </Grid>
-              </div>
+              </Box>
             ) : (
-              <div className="noslot">No slots available</div>
+              <div className="noslot">No Slots Available</div>
             )}
           </Box>
         </Box>
@@ -215,9 +209,9 @@ const mapStateToProps = (state) => ({
   status: state.cartitem?.deliverySlots?.status || "IDLE",
   allAddressData: state.alladdress.allAddress?.data?.addresses || [], // Adjusted for allAddressData
   addressStatus: state.addresses?.status || "IDLE",
-  deliveryType: state.cartitem?.deliverySlots?.data?.slots?.[0]?.deliveryType || "same day", // Extract deliveryType
+  deliveryType:
+    state.cartitem?.deliverySlots?.data?.slots?.[0]?.deliveryType || "same day", // Extract deliveryType
   selectedSlot: state.cartitem?.selectedSlot || null, // Add selectedSlot in Redux
-
 });
 
 export default connect(mapStateToProps)(DeliverySlots);

@@ -3,8 +3,11 @@ import { connect } from "react-redux";
 import { Box, Modal } from "@mui/material";
 import Deleteicon from "../../assets/img/trash-2.png";
 import Editicon from "../../assets/img/editicon.svg";
-import { getAllAddress, deleteAddress, setDefaultAddress } from "../../Redux/Address/AddressThunk";
-
+import {
+  getAllAddress,
+  deleteAddress,
+  setDefaultAddress,
+} from "../../Redux/Address/AddressThunk";
 import { loginDetails } from "Views/Utills/helperFunctions";
 import AddAddressModal from "./addaddressmodal";
 
@@ -12,10 +15,10 @@ class AddressModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      submitAddress: false,  // For adding a new address
-      openDeleteModal: false,  // For confirming delete
+      submitAddress: false, // For adding a new address
+      openDeleteModal: false, // For confirming delete
       addressToDelete: null,
-      addressToEdit: null,  // Store the address data to be edited
+      addressToEdit: null, // Store the address data to be edited
     };
   }
 
@@ -29,11 +32,9 @@ class AddressModal extends Component {
       console.error("User ID not found in login details.");
     }
   }
-  
 
   handleDeleteClick = (addressId) => {
     this.setState({ openDeleteModal: true, addressToDelete: addressId });
-
   };
 
   handleDeleteModalClose = (closeParentModal = false) => {
@@ -113,7 +114,7 @@ class AddressModal extends Component {
   handleSetDefaultAddress = (addressId) => {
     const loginData = loginDetails();
     const userId = loginData?.userId;
-  
+
     if (userId && addressId) {
       this.props
         .setDefaultAddress({
@@ -122,17 +123,15 @@ class AddressModal extends Component {
         })
         .then(() => {
           console.log("Default address set successfully!");
-          
-          // Find the new default address details
           const newDefaultAddress = this.props.allAddressData.addresses.find(
             (address) => address.addressId === addressId
           );
-  
-          // Update localStorage
-          localStorage.setItem("defaultAddress", JSON.stringify(newDefaultAddress));
-          
-          // Optional: Close the modal
+          localStorage.setItem(
+            "defaultAddress",
+            JSON.stringify(newDefaultAddress)
+          );
           this.props.handleClose();
+          window.location.reload();   
         })
         .catch((error) => {
           console.error("Failed to set default address:", error);
@@ -141,7 +140,7 @@ class AddressModal extends Component {
       console.error("User ID or address ID is missing.");
     }
   };
-  
+
   render() {
     const { open, allAddressData, handleClose } = this.props;
     const { submitAddress, openDeleteModal, addressToEdit } = this.state;
@@ -182,37 +181,28 @@ class AddressModal extends Component {
             <Box className="addressbox" variant="contained" fullWidth>
               <span className="iconcontainer1">
                 <span>
-                  <span className="underlinetext">{defaultAddress.address_type}</span>
-
+                  <span className="underlinetext">
+                    {defaultAddress.address_type}
+                  </span>
                   <span className="roundDiv">Default</span>
-                </span>
-                <span className="iconcontainer2">
-                  <img
-                    src={Deleteicon}
-                    alt="Delete"
-                    className="icons"
-                    onClick={() =>
-                      this.handleDeleteClick(defaultAddress.addressId)
-                    }
-                  />
-                  <img
-                    src={Editicon}
-                    alt="Edit"
-                    className="icons"
-                    onClick={() => this.handleEditClick(defaultAddress)} // Open for edit
-                  />
                 </span>
               </span>
               <div style={{ marginTop: "8px" }}>
-                {defaultAddress.house_number} {defaultAddress.landmark_area} {defaultAddress.address}, {defaultAddress.zipCode}
+                {defaultAddress.house_number} {defaultAddress.landmark_area}{" "}
+                {defaultAddress.address}, {defaultAddress.zipCode}
               </div>
             </Box>
+
             <Box className="alladdressbox">
               {otherAddresses.length > 0 ? (
                 otherAddresses.map((address) => (
-                  <a key={address.addressId} className="address-item"   onClick={() => this.handleSetDefaultAddress(address.addressId)}
->
-
+                  <a
+                    key={address.addressId}
+                    className="address-item"
+                    onClick={() =>
+                      this.handleSetDefaultAddress(address.addressId)
+                    }
+                  >
                     <Box className="iconcontainer1">
                       <span>
                         <span className="underlinetext">
@@ -237,7 +227,8 @@ class AddressModal extends Component {
                       </Box>
                     </Box>
                     <Box sx={{ marginTop: "8px" }}>
-                      {address.house_number} {address.landmark_area} {address.address}, {address.zipCode}
+                      {address.house_number} {address.landmark_area}{" "}
+                      {address.address}, {address.zipCode}
                     </Box>
                   </a>
                 ))
@@ -247,11 +238,7 @@ class AddressModal extends Component {
             </Box>
           </Box>
           <span className="viewbutton">
-            <button
-              variant="contained"
-              className="smallbutton1"
-              type="button"
-            >
+            <button variant="contained" className="smallbutton1" type="button">
               View Saved Address
             </button>
           </span>

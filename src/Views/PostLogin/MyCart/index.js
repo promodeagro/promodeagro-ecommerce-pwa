@@ -318,7 +318,6 @@ class MyCart extends Component {
                                 className="symbol"
                                 onClick={() => {
                                   let d = item.Quantity;
-
                                   this.handleQuantityChange(
                                     item.ProductId,
                                     -1,
