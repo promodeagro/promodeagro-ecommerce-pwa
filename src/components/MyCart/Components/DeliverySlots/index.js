@@ -79,12 +79,24 @@ class DeliverySlots extends Component {
 
   handleSlotChange = (event) => {
     const selectedSlot = event.target.value;
-
+  
+    // Find the slot object corresponding to the selected value
+    const selectedSlotData = this.getFilteredSlots().find(
+      (slot) => `${slot.start} - ${slot.end}` === selectedSlot
+    );
+  
+    // Log the slot ID
+    if (selectedSlotData) {
+      console.log("Selected Slot ID:", selectedSlotData.id);
+    }
+  
     this.setState({ selectedSlot });
+  
     if (this.props.onSlotSelect) {
       this.props.onSlotSelect(selectedSlot);
     }
   };
+  
 
   getFilteredSlots = () => {
     const { slots } = this.props;
@@ -187,7 +199,7 @@ class DeliverySlots extends Component {
                           />
                         }
                         label={
-                          <Typography variant="body2">{`${slot.start} - ${slot.end}`}</Typography>
+                          <Typography variant="body2">{`${slot.start} ${slot.startAmPm} - ${slot.end} ${slot.endAmPm}`}</Typography>
                         }
                       />
                     </Grid>
