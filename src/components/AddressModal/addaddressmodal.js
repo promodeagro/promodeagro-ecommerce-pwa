@@ -105,10 +105,9 @@ class AddAddressModal extends Component {
 
   handleAddressSubmit = async (e) => {
     e.preventDefault();
-    const { isValid, errors } = this.validateForm();
+    const { isValid } = this.validateForm(); // Validate form
     if (!isValid) {
-      console.log("Form validation failed:", errors);
-      return;
+      return; // Stop if form is invalid
     }
   
     const {
@@ -200,25 +199,26 @@ class AddAddressModal extends Component {
   
   validateForm = () => {
     const { fullName, flatNumber, landmark, phone, area, pincode } = this.state;
-    const errors = {};
-    Object.keys(addressValidationSchema).forEach((field) => {
-      const fieldValidators = addressValidationSchema[field];
-
-      fieldValidators.forEach((validator) => {
-        if (
-          validator.type === ValidationEngine.type.MANDATORY &&
-          !this.state[field]
-        ) {
-          errors[field] = validator.message;
-        }
-      });
+  const errors = {};
+  Object.keys(addressValidationSchema).forEach((field) => {
+    const fieldValidators = addressValidationSchema[field];
+    fieldValidators.forEach((validator) => {
+      if (
+        validator.type === ValidationEngine.type.MANDATORY &&
+        !this.state[field]
+      ) {
+        errors[field] = validator.message; // Capture validation error
+      }
     });
-    const isValid = Object.keys(errors).length === 0;
-    return {
-      isValid,
-      errors,
-    };
+  });
+
+  const isValid = Object.keys(errors).length === 0;
+  this.setState({ validationErrors: errors }); // Update state with errors
+  return {
+    isValid,
+    errors,
   };
+};
 
   render() {
     const { open, handleClose } = this.props;
@@ -283,6 +283,8 @@ class AddAddressModal extends Component {
                   fullWidth
                   value={fullName}
                   onChange={(e) => this.setState({ fullName: e.target.value })}
+                  error={!!this.state.validationErrors?.fullName}
+                
                 />
               </Box>
               <Box className="labelform">
@@ -294,15 +296,19 @@ class AddAddressModal extends Component {
                   value={flatNumber}
                   onChange={(e) =>
                     this.setState({ flatNumber: e.target.value })
+                    
                   }
+                  error={!!this.state.validationErrors?.flatNumber}
+                
                 />
               </Box>
               <Box className="labelform">
-                <span className="para">Landmark</span>
+                <span className="para">Landmark<p className="para1">*</p></span>
                 <TextField
                   fullWidth
                   value={landmark}
                   onChange={(e) => this.setState({ landmark: e.target.value })}
+                  error={!!this.state.validationErrors?.landmark}
                 />
               </Box>
             </Grid>
@@ -315,6 +321,8 @@ class AddAddressModal extends Component {
                   fullWidth
                   value={phone}
                   onChange={(e) => this.setState({ phone: e.target.value })}
+                  error={!!this.state.validationErrors?.phone}
+                
                 />
               </Box>
               <Box className="labelform">
@@ -325,6 +333,8 @@ class AddAddressModal extends Component {
                   fullWidth
                   value={area}
                   onChange={(e) => this.setState({ area: e.target.value })}
+                  error={!!this.state.validationErrors?.area}
+
                 />
               </Box>
               <Box className="labelform">
@@ -335,6 +345,8 @@ class AddAddressModal extends Component {
                   fullWidth
                   value={pincode}
                   onChange={(e) => this.setState({ pincode: e.target.value })}
+                  error={!!this.state.validationErrors?.pincode}
+                
                 />
               </Box>
             </Grid>
