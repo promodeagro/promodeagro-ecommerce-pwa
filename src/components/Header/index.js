@@ -383,12 +383,23 @@ class Header extends Component {
                     </Box>
                   )}
                   <Box
-                    onClick={
-                      () =>
-                        loginDetails()?.userId
-                          ? this.setState({ myCartOpen: true }) // Show MyCart modal
-                          : this.setState({ authModalOpen: true }) // Show Login modal
-                    }
+                    // onClick={
+                    //   () =>
+                    //     loginDetails()?.userId
+                    //       ? this.setState({ myCartOpen: true }) // Show MyCart modal
+                    //       : this.setState({ authModalOpen: true }) // Show Login modal
+                    // }
+                    onClick={() => {
+                      if (loginDetails()?.userId) {
+                        if (!currentAddress?.address) {
+                          this.toggleAddAddressModal();
+                        } else {
+                          this.setState({ myCartOpen: true });
+                        }
+                      } else {
+                        this.setState({ authModalOpen: true });
+                      }
+                    }} 
                     className="card"
                   >
                     <Link>

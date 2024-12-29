@@ -48,11 +48,9 @@ class AllAddresses extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { allAddressData, deleteAddresses } = this.props;
-
     if (allAddressData.defaultAddressId && !this.state.selectedAddressId) {
       this.setDefaultAddress(allAddressData.defaultAddressId);
     }
-
     if (
       deleteAddresses.status === status.SUCCESS &&
       this.state.deleteAddressApiLoader
@@ -69,8 +67,23 @@ class AllAddresses extends React.Component {
   handleEditClick = (address) => {
     this.setState({ openAddAddressModal: true, addressToEdit: address });
   };
+
   handleAddAddressModalClose = () => {
-    this.setState({ openAddAddressModal: false, addressToEdit: null });
+    const items = loginDetails();
+    this.setState({ openAddAddressModal: false, addressToEdit: null }, () => {
+      // Call API to fetch all addresses after closing the modal
+      this.props
+        .getAllAddress({ userId: items.userId })
+        .then(() => {
+          // Display success message after fetching the addresses
+          // ErrorMessages.success("Address updated successfully!");
+        })
+        .catch((error) => {
+          // Handle error if the address fetch fails
+          console.error("Failed to fetch addresses after edit:", error);
+          // ErrorMessages.error("Failed to update addresses.");
+        });
+    });
   };
 
   handlePostDelete = () => {
@@ -78,7 +91,7 @@ class AllAddresses extends React.Component {
     this.setState({ allAddressApiLoader: true, deleteAddressApiLoader: false });
     this.props.getDefaultAddress();
     this.props.getAllAddress({ userId: items.userId });
-    ErrorMessages.success("Address Delete Successfully");
+    // ErrorMessages.success("Address Delete Successfully");
     this.setState({ open: false });
   };
 
@@ -105,7 +118,9 @@ class AllAddresses extends React.Component {
         .deleteAddress({ userId: userId, addressId: addressToDelete })
         .then(() => {
           this.setState({ openDeleteModal: false, addressToDelete: null }); // Close modal after deletion
-          this.props.handleClose(); // If needed, close parent modal
+          const items = loginDetails(); // Ensure loginDetails is available
+          this.props.getAllAddress({ userId: items.userId }); // Call the address API again
+          // ErrorMessages.success("Address Deleted Successfully");
         })
         .catch((error) => {
           console.error("Failed to delete address:", error);
@@ -140,6 +155,7 @@ class AllAddresses extends React.Component {
       deleteAddressApiLoader,
       selectedAddressId,
     } = this.state;
+    const { openAddAddressModal, addressToEdit } = this.state;
 
     const sortedAddresses = allAddressData.addresses
       ? [
@@ -154,38 +170,41 @@ class AllAddresses extends React.Component {
 
     return (
       <>
-        {allAddressData.status === status.IN_PROGRESS ? (
-          Loader.commonLoader()
-        ) : (
-          <>
-            {sortedAddresses?.length > 0 ? (
-              sortedAddresses.map((item, index) => (
-                <Grid key={index} item xs={12} lg={4} md={6} sm={6}>
-                  {item?.addressId === selectedAddressId &&
-                  setDefaultAddressData.status === status.IN_PROGRESS ? (
-                    Loader.commonLoader()
-                  ) : (
-                    <Box
-                      onClick={() => this.handleSelectedAddress(item)}
-                      className={`address_box ${
-                        item.addressId === selectedAddressId
-                          ? "address_box_active"
-                          : ""
-                      } ${
-                        item.addressId === allAddressData.defaultAddressId
-                          ? "default_address"
-                          : ""
-                      }`}
-                    >
-                      <p>
-                        {item.address} {item.zipCode}
-                        {item.addressId === allAddressData.defaultAddressId && (
-                          <span className="roundDiv">Default</span>
-                        )}
-                      </p>
-
-                      <div className="address_box_bottom">
-                      <img
+        {sortedAddresses?.length > 0 ? (
+          sortedAddresses.map((item, index) => (
+            <Grid key={index} item xs={12} lg={4} md={6} sm={6}>
+              {item?.addressId === selectedAddressId &&
+              allAddressApiLoader.status === status.IN_PROGRESS ? (
+                Loader.commonLoader()
+              ) : (
+                <Box
+                  onClick={() => this.handleSelectedAddress(item)}
+                  className={`address_box ${
+                    item.addressId === selectedAddressId
+                      ? "address_box_active"
+                      : ""
+                  } ${
+                    item.addressId === allAddressData.defaultAddressId
+                      ? "default_address"
+                      : ""
+                  }`}
+                >
+                  <div>
+                    <span>{item.address_type}</span>
+                    {item.addressId === allAddressData.defaultAddressId ? (
+                      <button className="defaultdiv">Default</button>
+                    ) : (
+                      <button className="graydiv">Deliver here</button>
+                    )}
+                  </div>
+                  <p>
+                    {item.house_number} {item.landmark_area} {item.address},{" "}
+                    {item.zipCode}
+                  </p>
+                  <div className="address_box_bottom">
+                    {item.addressId !== allAddressData.defaultAddressId && (
+                      <>
+                        <img
                           src={penciEditIcon}
                           aria-label="edit"
                           className={
@@ -213,19 +232,18 @@ class AllAddresses extends React.Component {
                             this.handleDeleteClick(item.addressId); // Open delete modal
                           }}
                         />
-                      </div>
-                    </Box>
-                  )}
-                </Grid>
-              ))
-            ) : (
-              <Box className="empty_address">
-                you don’t have <br /> save address with us
-              </Box>
-            )}
-          </>
+                      </>
+                    )}
+                  </div>
+                </Box>
+              )}
+            </Grid>
+          ))
+        ) : (
+          <div  className="box">
+            <CircularProgress color="success"/>
+          </div>
         )}
-
         <Dialog
           open={open}
           onClose={this.handleClose}
@@ -259,7 +277,7 @@ class AllAddresses extends React.Component {
               disabled={deleteAddressApiLoader}
               endIcon={
                 deleteAddressApiLoader ? (
-                  <CircularProgress className="common-loader delete" />
+                  <CircularProgress className="common-loader delete" color="success"/>
                 ) : null
               }
             >
@@ -287,18 +305,18 @@ class AllAddresses extends React.Component {
               <button
                 className="confirmbutton"
                 variant="contained"
-                onClick={this.handleConfirmDelete} // Confirm deletion
+                onClick={this.handleConfirmDelete}
               >
                 Confirm
               </button>
             </Box>
           </Box>
         </Modal>
-        {this.state.openAddAddressModal && (
+        {openAddAddressModal && (
           <AddAddressModal
-            open={this.state.openAddAddressModal}
-            handleClose={this.handleAddAddressModalClose}
-            addressData={this.state.addressToEdit} // Pass address data to prefill
+            open={openAddAddressModal}
+            handleClose={this.handleAddAddressModalClose} // Pass updated handler
+            addressData={addressToEdit} // Prefilled data for edit
           />
         )}
       </>

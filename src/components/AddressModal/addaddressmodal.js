@@ -147,13 +147,11 @@ class AddAddressModal extends Component {
   
     try {
       console.log("Sending API request:", requestBody);
-  
       if (addressId) {
         requestBody.addressId = addressId;
         const response = await this.props.updateAddress(requestBody);
         console.log("Update Address API Response:", response);
       } else {
-        // If addressId does not exist, call postAddress API
         const response = await this.props.postAddress(requestBody);
         const newAddressId = response?.payload?.addressId;
         if (!newAddressId) {
@@ -162,7 +160,6 @@ class AddAddressModal extends Component {
           return;
         }
         console.log("Post Address API Response Address ID:", newAddressId);
-  
         if (isDefaultChecked || !this.state.isDefaultAddressPresent) {
           console.log(
             `Setting address ${newAddressId} as default for user ${userId}.`
@@ -170,7 +167,7 @@ class AddAddressModal extends Component {
           await this.props.setDefaultAddress({ userId, addressId: newAddressId });
           console.log("Set Default Address API called successfully.");
           const fetchDefaultAddressResponse =
-            await this.props.fetchDefaultAddress(userId); // Pass userId here
+            await this.props.fetchDefaultAddress(userId); 
           if (fetchDefaultAddressResponse?.payload) {
             const newDefaultAddress = fetchDefaultAddressResponse.payload;
             if (!newDefaultAddress) {
@@ -196,12 +193,12 @@ class AddAddressModal extends Component {
     } catch (error) {
       console.error("Error in API call:", error);
       this.setState({ isSubmitting: false });
+
     }
+    window.location.reload();
+
   };
   
-  
-  
-
   validateForm = () => {
     const { fullName, flatNumber, landmark, phone, area, pincode } = this.state;
     const errors = {};

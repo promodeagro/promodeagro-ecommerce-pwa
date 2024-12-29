@@ -114,7 +114,6 @@ gap: 16px;
   
   }
   
-  
   .address-modal-content {
     padding-left: 20px; /* Adds padding to the left side of the content */
     display: flex;
@@ -159,7 +158,6 @@ gap: 16px;
     text-decoration-skip-ink: none !important;
     color: #2A3A31 !important; /* Default text color for unselected tabs */
     text-transform: none !important; 
-
   }
   
   .css-1ujykiq-MuiButtonBase-root-MuiTab-root.Mui-selected {
@@ -174,14 +172,12 @@ gap: 16px;
     color: #1F9151 !important;
   }
   
-
 .newaddressmodal{
   width: 600px;
-  height: 450px;
+  height: 460px;
   border-radius: 10px;
   padding: 1rem;
   justify-content: center;
-
 }
 
 .deletemodal{
@@ -378,6 +374,37 @@ color: black;
   font-weight: 600;
 }
 
+
+.graydiv{
+  border-radius: 10px;    /* Makes the div rounded */
+  background-color: #f0eaea; /* Green color */
+  text-align: center;     /* Center the text inside the div */
+  color: black;           /* Text color */
+  font-size: 10px;        /* Adjust font size */
+  font-weight: 500;
+  justify-content: center;
+  border: 0;
+  height: 20px;
+  width: 80px;
+}
+
+.defaultdiv{
+  border-radius: 14px;    /* Makes the div rounded */
+  background-color: #1f9151; /* Green color */
+  text-align: center;     /* Center the text inside the div */
+  color: white;           /* Text color */
+  font-size: 10px;        /* Adjust font size */
+  font-weight: 500;
+  justify-content: center;
+  border: 0;
+  height: 20px;
+  width: 70px;
+}
+
+.noslot{
+  font-size: 14px;
+  font-weight: 400;
+}
 
 
 
