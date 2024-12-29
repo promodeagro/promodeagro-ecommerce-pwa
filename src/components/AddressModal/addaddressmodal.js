@@ -196,7 +196,6 @@ class AddAddressModal extends Component {
 
     }
     window.location.reload();
-
   };
   
   validateForm = () => {
