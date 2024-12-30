@@ -167,11 +167,88 @@ class DeliverySlots extends Component {
               variant="fullWidth"
               sx={{ marginBottom: 2 }}
             >
-              <Tab sx={{color:'#1F9151'}} label="All Slots" />
-              <Tab label="Morning" />
-              <Tab label="Afternoon" />
-              <Tab label="Evening" />
-              <Tab label="Night" />
+              <Tab 
+               sx={{
+                textTransform: "none",
+                fontFamily: "Poppins",
+                fontSize: "14px",
+                fontWeight: 400,
+                lineHeight: "21px",
+                textAlign: "left",
+                textUnderlinePosition: "from-font",
+                textDecorationSkipInk: "none",
+                color: "#A09797",
+                "&.Mui-selected": {
+                  color: "#1F9151", // Custom color for the selected state
+                },
+              }} 
+              label="All Slots" />
+              <Tab
+               sx={{
+                textTransform: "none",
+                fontFamily: "Poppins",
+                fontSize: "14px",
+                fontWeight: 400,
+                lineHeight: "21px",
+                textAlign: "left",
+                textUnderlinePosition: "from-font",
+                textDecorationSkipInk: "none",
+                color: "#A09797",
+                "&.Mui-selected": {
+                  color: "#1F9151", // Custom color for the selected state
+                },
+                "& .MuiTabs-indicator": {
+                  backgroundColor: "red", // Custom underline color
+                },
+              }} 
+              label="Morning" />
+              <Tab 
+               sx={{
+                textTransform: "none",
+                fontFamily: "Poppins",
+                fontSize: "14px",
+                fontWeight: 400,
+                lineHeight: "21px",
+                textAlign: "left",
+                textUnderlinePosition: "from-font",
+                textDecorationSkipInk: "none",
+                color: "#A09797",
+                "&.Mui-selected": {
+                  color: "#1F9151", // Custom color for the selected state
+                },
+              }} 
+              label="Afternoon" />
+              <Tab
+               sx={{
+                textTransform: "none",
+                fontFamily: "Poppins",
+                fontSize: "14px",
+                fontWeight: 400,
+                lineHeight: "21px",
+                textAlign: "left",
+                textUnderlinePosition: "from-font",
+                textDecorationSkipInk: "none",
+                color: "#A09797",
+                "&.Mui-selected": {
+                  color: "#1F9151", // Custom color for the selected state
+                },
+              }} 
+              label="Evening" />
+              <Tab 
+               sx={{
+                textTransform: "none",
+                fontFamily: "Poppins",
+                fontSize: "14px",
+                fontWeight: 400,
+                lineHeight: "21px",
+                textAlign: "left",
+                textUnderlinePosition: "from-font",
+                textDecorationSkipInk: "none",
+                color: "#A09797",
+                "&.Mui-selected": {
+                  color: "#1F9151", // Custom color for the selected state
+                },
+              }}  label="Night" />
             </Tabs>
             {status === "IN_PROGRESS" ? (
               <div className="box">
