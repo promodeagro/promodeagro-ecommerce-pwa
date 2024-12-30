@@ -461,6 +461,7 @@ class MyCart extends Component {
                           )}
                         </span>
                       </Box>
+                      <div className="payment_container">
                       <Box className="Payment_methods_box">
                         <h2>Payment Method</h2>
                         <div
@@ -520,6 +521,7 @@ class MyCart extends Component {
                           Place Order
                         </Button>
                       </Grid>
+                      </div>
                     </>
                   ) : (
                     <></>
@@ -707,7 +709,6 @@ class MyCart extends Component {
     );
   }
 }
-
 function mapStateToProps(state) {
   const { cartItems, deleteItems, updateItems, addListOfItemRes } =
     state.cartitem;

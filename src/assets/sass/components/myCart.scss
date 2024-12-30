@@ -9,9 +9,17 @@ height: 100vh;
     .my_cart_container{
        
     .my_cart{
+        position: sticky;
 display: flex;
+margin: -20px;
 justify-content: space-between;
-
+padding-left: 21px;
+    padding-right: 21px;
+    padding-top: 17px;
+    padding-bottom: 17px;
+    background-color: #fff;
+    top: 0px;
+    z-index: 2000;
 h2{
     font-family: Poppins;
 font-size: 18px;
@@ -634,7 +642,8 @@ color: #1F9151;
         top: 0;
         left: 0;
         right: 0;
-        background-color: #005F41;
+        background-color: #005F41 !important;
+        z-index: 2000;
         h2{
             color: #FFFFFF !important;
         }
@@ -1124,4 +1133,14 @@ span{
     align-items: center;
 
 
+}
+
+
+.payment_container{
+    bottom: 0px;
+    width: 100%;
+    z-index: 2000;
+    position: sticky;
+    background-color: #fff;
+    padding-top: 1px;
 }
