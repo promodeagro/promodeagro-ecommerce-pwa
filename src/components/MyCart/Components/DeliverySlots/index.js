@@ -181,6 +181,9 @@ class DeliverySlots extends Component {
                 "&.Mui-selected": {
                   color: "#1F9151", // Custom color for the selected state
                 },
+                "& .MuiTabs-indicator": {
+                  backgroundColor: "#1F9151", // Your custom color
+                },
               }} 
               label="All Slots" />
               <Tab
@@ -198,7 +201,7 @@ class DeliverySlots extends Component {
                   color: "#1F9151", // Custom color for the selected state
                 },
                 "& .MuiTabs-indicator": {
-                  backgroundColor: "red", // Custom underline color
+                  backgroundColor: "#1F9151", // Your custom color
                 },
               }} 
               label="Morning" />
@@ -216,6 +219,9 @@ class DeliverySlots extends Component {
                 "&.Mui-selected": {
                   color: "#1F9151", // Custom color for the selected state
                 },
+                "& .MuiTabs-indicator": {
+                  backgroundColor: "#1F9151", // Your custom color
+                },
               }} 
               label="Afternoon" />
               <Tab
@@ -232,6 +238,9 @@ class DeliverySlots extends Component {
                 "&.Mui-selected": {
                   color: "#1F9151", // Custom color for the selected state
                 },
+                "& .MuiTabs-indicator": {
+                  backgroundColor: "#1F9151", // Your custom color
+                },
               }} 
               label="Evening" />
               <Tab 
@@ -247,6 +256,9 @@ class DeliverySlots extends Component {
                 color: "#A09797",
                 "&.Mui-selected": {
                   color: "#1F9151", // Custom color for the selected state
+                },
+                "& .MuiTabs-indicator": {
+                  backgroundColor: "#1F9151", // Your custom color
                 },
               }}  label="Night" />
             </Tabs>
