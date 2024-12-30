@@ -265,7 +265,7 @@ class MyCart extends Component {
     const { selectedPaymentMethod, itemListArr } = this.state;
     const Data = {
       addressId: addressId ? addressId : "f9858f86-95e3-4437-affa-93216b4ca4f9",
-      deliverySlotId: "1bff6d72",
+      deliverySlotId: "bddb7f20",
       items: itemListArr,
       paymentDetails: {
         method: selectedPaymentMethod,
