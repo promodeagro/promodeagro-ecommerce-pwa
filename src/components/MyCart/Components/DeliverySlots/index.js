@@ -93,7 +93,8 @@ class DeliverySlots extends Component {
     this.setState({ selectedSlot });
   
     if (this.props.onSlotSelect) {
-      this.props.onSlotSelect(selectedSlot);
+      this.props.onSlotSelect(selectedSlotData);
+      // this.props.onSlotSelect(selectedSlot);
     }
   };
   

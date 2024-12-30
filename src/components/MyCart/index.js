@@ -265,7 +265,7 @@ class MyCart extends Component {
     const { selectedPaymentMethod, itemListArr } = this.state;
     const Data = {
       addressId: addressId ? addressId : "f9858f86-95e3-4437-affa-93216b4ca4f9",
-      deliverySlotId: "bddb7f20",
+      deliverySlotId: this.state.selectedSlot ? this.state.selectedSlot.id : "" ,
       items: itemListArr,
       paymentDetails: {
         method: selectedPaymentMethod,
@@ -425,7 +425,7 @@ class MyCart extends Component {
                           <strong>Grand Total</strong>{" "}
                           <strong>₹{this.state.totalPrice}</strong>
                         </div>
-                        {console.log(this.state.cartListArr, "Gaaand Total")}
+                       
                       </div>
 
                       <Box className="select_delivery_slot">
@@ -440,7 +440,7 @@ class MyCart extends Component {
                           >
                             <span>
                               {this.state.selectedSlot
-                                ? `${this.state.selectedSlot}`
+                                ? `${this.state.selectedSlot.start  +  " - " + this.state.selectedSlot.end}`
                                 : "Select Slot"}
                             </span>
 
@@ -694,6 +694,9 @@ class MyCart extends Component {
             />
           </>
         </Modal>
+        {
+          console.log(this.state.selectedSlot , 'slotttt id')
+        }
          {isAddAddressModalOpen && (
                   <AddAddressModal
                     open={isAddAddressModalOpen}
