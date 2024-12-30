@@ -167,7 +167,7 @@ class DeliverySlots extends Component {
               variant="fullWidth"
               sx={{ marginBottom: 2 }}
             >
-              <Tab label="All Slots" />
+              <Tab sx={{color:'#1F9151'}} label="All Slots" />
               <Tab label="Morning" />
               <Tab label="Afternoon" />
               <Tab label="Evening" />
