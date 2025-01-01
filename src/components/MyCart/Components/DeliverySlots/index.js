@@ -165,7 +165,9 @@ class DeliverySlots extends Component {
               indicatorColor="primary"
               aria-label="delivery slot tabs"
               variant="fullWidth"
-              sx={{ marginBottom: 2 }}
+              sx={{ marginBottom: 2 , "& .MuiTabs-indicator": {
+                backgroundColor: "#1F9151", // Custom color for the underline
+              },}}
             >
               <Tab 
                sx={{
