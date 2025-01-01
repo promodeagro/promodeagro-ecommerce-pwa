@@ -79,13 +79,10 @@ class DeliverySlots extends Component {
 
   handleSlotChange = (event) => {
     const selectedSlot = event.target.value;
-  
-    // Find the slot object corresponding to the selected value
-    const selectedSlotData = this.getFilteredSlots().find(
+      const selectedSlotData = this.getFilteredSlots().find(
       (slot) => `${slot.start} - ${slot.end}` === selectedSlot
     );
   
-    // Log the slot ID
     if (selectedSlotData) {
       console.log("Selected Slot ID:", selectedSlotData.id);
     }
@@ -96,7 +93,7 @@ class DeliverySlots extends Component {
       this.props.onSlotSelect(selectedSlot);
     }
   };
-  
+  //getfilterslots
 
   getFilteredSlots = () => {
     const { slots } = this.props;
