@@ -186,7 +186,8 @@ gap: 16px;
 }
 
 .deletemodal{
-  width: 400px;
+  max-width: 400px;
+  width: 90%;
   height: 200px;
   border-radius: 10px;
   padding: 1rem;
@@ -409,4 +410,20 @@ color: black;
 .noslot{
   font-size: 14px;
   font-weight: 400;
+}
+
+
+
+
+
+
+
+@media screen and (max-width:800px) {
+  .btn_parent{
+    width: 100%;
+  }
+  .smallbutton1{
+    width: 100%;
+  }
+   
 }
