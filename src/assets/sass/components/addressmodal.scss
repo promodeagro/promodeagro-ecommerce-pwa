@@ -424,3 +424,23 @@ color: black;
   }
    
 }
+
+
+
+@media screen and (max-width:600px) {
+  .address-modal {
+    position: fixed; /* Fixed positioning relative to the viewport */
+    top: auto; /* Position from the top */
+    left: auto; /* Margin of 4px from the left side */
+    z-index: 10; /* Ensures modal stays on top */
+    width: 100%; /* Modal width */
+    background-color: #ffffff; /* White background */
+    box-shadow: 0px 12px 16px 0px #10182814; /* Shadow for depth */
+    padding: 0.8rem; /* Internal padding */
+    border-radius: 8px; /* Smooth rounded corners */
+    height: 70vh; /* Removed fixed height */
+    max-height: 80vh; /* Optional: Limits the height of the modal */
+    overflow-y: auto; /* Ensures scrolling if content overflows */
+    bottom: 0;
+  }
+}

@@ -435,9 +435,10 @@ class Header extends Component {
             {currentAddress?.address && loginDetails()?.userId && (
               <Box
                 className="mobile-deliver-box"
-                onClick={() =>
-                  this.props.navigate("/my-profile/manage-addresses")
-                }
+                // onClick={() =>
+                //   this.props.navigate("/my-profile/manage-addresses")
+                // }
+                onClick={this.toggleAddressModal}
               >
                 {currentAddress?.address} <KeyboardArrowDownIcon />
               </Box>
