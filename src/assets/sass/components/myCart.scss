@@ -518,6 +518,7 @@ padding-bottom: 20px;
     .select_your_address_popup{
         display: none;
     }
+
 }
 .css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected , .css-1xfw5x-MuiButtonBase-root-MuiTab-root.Mui-selected {
     color: #1F9151 !important;
@@ -1145,4 +1146,11 @@ span{
     position: sticky;
     background-color: #fff;
     padding-top: 1px;
+}
+
+
+@media screen and (max-width:800px) {
+    .Payment_methods_box div{
+        height: 50px;
+    }
 }
