@@ -401,7 +401,6 @@ text-align: left !important;
 text-underline-position: from-font !important;
 text-decoration-skip-ink: none !important;
 color: #16191F !important;
-
 }
 padding: 0.8rem; /* Internal padding */
 max-width: 520px;
@@ -420,9 +419,7 @@ scrollbar-width: none; /* Hides scrollbar for Firefox */
 &::-webkit-scrollbar {
   display: none; /* Hides scrollbar in Chrome, Safari, and other Webkit-based browsers */
 }
-      
-      /* Ensure the scrollable area works */
-      .delevery_slot_modal:focus {
+            .delevery_slot_modal:focus {
         outline: none; /* Optional: removes outline when focused */
       }
       
@@ -496,9 +493,6 @@ color: var(--black-40, #1C1C1C66);
     
 }
 
-
-
-// select your address Modal
 .select_your_address_popup{
     max-width: 800px;
     width:90% ;
@@ -507,7 +501,6 @@ gap: 24px;
 display: flex;
 flex-direction: column;
 border-radius: 12px ;
-
 background: #FFFFFF;
 padding-top: 20px;
 padding-left: 20px;

@@ -52,6 +52,12 @@ const addressValidationSchema = {
       type: ValidationEngine.type.MANDATORY,
     },
   ],
+  selectedAddressType: [
+    {
+      message: "Please select a delivery type",
+      type: ValidationEngine.type.MANDATORY,
+    },
+  ],
 };
 
 class AddAddressModal extends Component {
@@ -198,8 +204,8 @@ class AddAddressModal extends Component {
   };
   
   validateForm = () => {
-    const { fullName, flatNumber, landmark, phone, area, pincode } = this.state;
-  const errors = {};
+    const { fullName, flatNumber, landmark, phone, area, pincode, selectedAddressType } = this.state;
+    const errors = {};
   Object.keys(addressValidationSchema).forEach((field) => {
     const fieldValidators = addressValidationSchema[field];
     fieldValidators.forEach((validator) => {
@@ -244,35 +250,47 @@ class AddAddressModal extends Component {
           </div>
           <p className="saveaddressas">Save Address As</p>
           <div className="iconcontainer">
-            {["Home", "Work", "Other"].map((type) => (
-              <a
-                key={type}
-                className="icons-wrapper"
-                onClick={() => this.handleAddressTypeSelection(type)}
-              >
-                <img
-                  src={
-                    type === "Home"
-                      ? Homeicon
-                      : type === "Work"
-                      ? Workicon
-                      : Othericon
-                  }
-                  alt={type}
-                  className="icon"
-                />
-                <span
-                  className="icontext"
-                  style={{
-                    color: selectedAddressType === type ? "#1F9151" : "gray",
-                    fontWeight: selectedAddressType === type ? "600" : "400",
-                  }}
-                >
-                  {type}
-                </span>
-              </a>
-            ))}
-          </div>
+  {["Home", "Work", "Other"].map((type) => (
+    <a
+      key={type}
+      className="icons-wrapper"
+      onClick={() => this.handleAddressTypeSelection(type)}
+    >
+      <img
+        src={
+          type === "Home"
+            ? Homeicon
+            : type === "Work"
+            ? Workicon
+            : Othericon
+        }
+        alt={type}
+        className="icon"
+      />
+      <span
+        className="icontext"
+        style={{
+          color:
+            this.state.selectedAddressType === type
+              ? "#1F9151"
+              : this.state.validationErrors?.selectedAddressType
+              ? "red"
+              : "gray",
+          fontWeight: this.state.selectedAddressType === type ? "600" : "400",
+        }}
+      >
+        {type}
+      </span>
+    </a>
+  ))}
+  {/* {this.state.validationErrors?.selectedAddressType && (
+    <p style={{ color: "red", marginTop: "5px" }}>
+      {this.state.validationErrors.selectedAddressType}
+    </p>
+  )} */}
+</div>
+
+
           <Grid container spacing={2}>
             <Grid xs={12} sm={6} item >
               <Box className="labelform">
