@@ -19,11 +19,22 @@ const OrderPlaced = (props) => {
     window.addEventListener("popstate", function (event) {
       window.location.replace("/");
     });
+
+   
   }, []);
+
+  if (id) {
+    // If 'id' exists in the URL, clear the cart from localStorage
+    localStorage.removeItem('cartItem'); // Replace 'cart' with your cart's key
+    localStorage.removeItem('address'); // Replace 'cart' with your cart's key
+    console.log('Cart cleared from localStorage because ID is present in the URL.');
+  }
+
 
   return (
 
     <>
+   
     
     {/* <Container>
       <Box
@@ -132,7 +143,7 @@ const OrderPlaced = (props) => {
 
 
 <Box sx={{marginTop:"20px" , marginBottom:"20px"}}>
-  
+   <h1 style={{color:"black"}}>{id} ID</h1>
   <Button  onClick={()=> navigate("/")} className="common-btn">
   Continue Shopping
   </Button>
