@@ -274,7 +274,7 @@ class AddAddressModal extends Component {
             ))}
           </div>
           <Grid container spacing={2}>
-            <Grid item xs={6}>
+            <Grid xs={12} sm={6} item >
               <Box className="labelform">
                 <span className="para">
                   Full Name<p className="para1">*</p>
@@ -312,7 +312,7 @@ class AddAddressModal extends Component {
                 />
               </Box>
             </Grid>
-            <Grid item xs={6}>
+            <Grid  xs={12} sm={6} item>
               <Box className="labelform">
                 <span className="para">
                   Phone No.<p className="para1">*</p>

@@ -632,9 +632,9 @@ color: #1F9151;
     padding-right: 21px;
     padding-top: 17px;
     
-    margin-left: -21px;
-    margin-right: -21px;
-    margin-top: -17px;
+    // margin-left: -21px;
+    // margin-right: -21px;
+    // margin-top: -17px;
         position: sticky;
         height: 56px;
         align-items: center;
@@ -669,8 +669,9 @@ color: #1F9151;
 }
 
 .tab_popup_new_address{
-    width: 100%;
+    width: 100%;  
  height: 80vh;
+ border-radius:12px 12px 0px 0px ;
     // padding: 24px 24px 24px 24px;
     gap: 0px;
     background-color: #fff;
