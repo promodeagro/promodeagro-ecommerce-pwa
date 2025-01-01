@@ -577,10 +577,7 @@ class MyCart extends Component {
           }}
         >
           <Box
-            sx={{
-              borderRadius: "12px 12px 0 0", // Rounded top corners
-              overflow: "hidden", // Prevents child content from overflowing the border radius
-            }}
+           
             className="tab_popup"
           >
             <Box className="tab_select_delivery_container">
