@@ -418,11 +418,11 @@ class Header extends Component {
                       className="profile-icon"
                       onClick={() =>
                         loginDetails()?.userId
-                          ? this.props.navigate("/my-profile/manage-addresses")
+                          ? this.props.navigate("/account")
                           : this.setState({ authModalOpen: true })
                       }
                     >
-                      <AccountCircleOutlinedIcon />
+                      <AccountCircleOutlinedIcon sx={{cursor:"pointer"}} />
                     </Box>
                   )}
                 </Box>

@@ -13,6 +13,11 @@ const PageNotFound = lazy(() => import("../components/PageNotFound"));
 const PrivacyPolicy = lazy(() => import("./../Views/PostLogin/privacyPolicy"));
 const ReturnRefund = lazy(() => import("./../Views/PostLogin/returnRefund"));
 
+
+const Account = lazy(() =>
+  import("./../Views/PostLogin/account")
+);
+
 const PersonalInformation = lazy(() =>
   import("./../Views/PostLogin/myProfile/personalInformation")
 );
@@ -75,6 +80,7 @@ const Views = () => {
   
       {!isLoggedIn && (
         <>
+        <Route path={`/account`} element={<Navigate to="/" replace />} />
           <Route path={`/my-order`} element={<Navigate to="/" replace />} />
           <Route path={`/mycart`} element={<Navigate to="/" replace />} />
           <Route
@@ -149,6 +155,7 @@ const Views = () => {
       <Route exact path={`/terms-condition`} element={<TermsCondition />} />
       <Route exact path={`/privacy-policy`} element={<PrivacyPolicy />} />
       <Route exact path={`/return-refund`} element={<ReturnRefund />} />
+      <Route exact path={`/account`} element={<Account />} />
       <Route
         exact
         path={`/my-profile/personal-information`}
