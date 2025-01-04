@@ -572,7 +572,7 @@ class MyCart extends Component {
                         <Button 
                           onClick={(e) => {
                             e.stopPropagation(); // Prevent click from bubbling up to Box
-                            this.toggleAddAddressModal(e); // Pass the event explicitly
+                            this.toggleAddNewAddressModal(e); // Pass the event explicitly
                           }}
                          sx={{
                           borderRadius:"9px",
@@ -637,7 +637,7 @@ class MyCart extends Component {
                         <Button 
                           onClick={(e) => {
                             e.stopPropagation(); // Prevent click from bubbling up to Box
-                            this.toggleAddAddressModal(e); // Pass the event explicitly
+                            this.toggleAddNewAddressModal(e); // Pass the event explicitly
                           }}
                          sx={{
                           borderRadius:"9px",
