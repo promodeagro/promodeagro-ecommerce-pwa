@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Box, Modal } from "@mui/material";
+import { Box, Drawer, Modal } from "@mui/material";
 import Deleteicon from "../../assets/img/trash-2.png";
 import Editicon from "../../assets/img/editicon.svg";
 import {
@@ -153,7 +153,8 @@ class AddressModal extends Component {
       (address) => address.addressId !== defaultAddressId
     );
 
-    return open ? (
+    return  (
+          <Drawer anchor="bottom" open={open}>
       <div className="address_modal_par">
         <div className="address-modal-bg" onClick={handleClose}></div>
         <Box className="address-modal" onClose={handleClose}>
@@ -279,7 +280,8 @@ class AddressModal extends Component {
           </Box>
         </Modal>
       </div>
-    ) : null;
+      </Drawer>
+    ) 
   }
 }
 

@@ -20,6 +20,7 @@ const Config = {
   DELETE_ADDRESS: `${BASE_URL}/deleteAddress`,
   UPDATE_ADDRESS: `${BASE_URL}/updateAddress`,
   PLACE_ORDER: `${BASE_URL}/order`,
+  ORDER_BY_ID: `${BASE_URL}/getOrderById`,
   FORGOT_PASSWORD: `${BASE_URL}/forgetPassword`,
   GLOBAL_SEARCH: `${BASE_URL}/products/search`,
   CATEGOREIS: `${BASE_URL}/getAllCategories`,
