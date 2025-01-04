@@ -18,7 +18,7 @@ import closeModal from "../../assets/img/closeModalIcon.svg";
 import BackArrow from "../../assets/img/backArrow.svg";
 import cashIcon from "../../assets/img/cashIcon.svg";
 import { Link } from "react-router-dom";
-import AddAddressModal from "../../../src/components/AddressModal/addaddressmodal";
+import AddNewAddressModal from "../../../src/components/AddressModal/addnewaddressmodal";
 import {
   ErrorMessages,
   Loader,
@@ -321,18 +321,18 @@ class MyCart extends Component {
     return "No Address Selected"; // Default message if there's no default address in local storage
   }
 
-  toggleAddAddressModal = (e) => {
+  toggleAddNewAddressModal = (e) => {
     if (e?.stopPropagation) {
       e.stopPropagation(); // Prevent click from bubbling up to parent element
     }
     this.setState((prevState) => ({
-      isAddAddressModalOpen: !prevState.isAddAddressModalOpen,
+      isAddNewAddressModalOpen: !prevState.isAddNewAddressModalOpen,
     }));
   };
 
-  handleAddAddressClose = () => {
+  handleAddNewAddressClose = () => {
     this.setState({
-      isAddAddressModalOpen: false, // Close the AddAddressModal
+      isAddNewAddressModalOpen: false, // Close the AddAddressModal
     });
   };
 
@@ -341,7 +341,7 @@ class MyCart extends Component {
     const { matches, dataId, isUpdateIncrease, selectedPaymentMethod } =
       this.state;
     const { open, handleClose } = this.props;
-    const { isAddAddressModalOpen } = this.state;
+    const { isAddNewAddressModalOpen } = this.state;
 
 
     return (
@@ -546,7 +546,7 @@ class MyCart extends Component {
                   <div
                    onClick={(e) => {
                     e.stopPropagation(); // Prevent click from bubbling up to Box
-                    this.toggleAddAddressModal(e); // Pass the event explicitly
+                    this.toggleAddNewAddressModal(e); // Pass the event explicitly
                   }}
                     className="add_new_address_btn"
                   >
@@ -586,7 +586,7 @@ class MyCart extends Component {
             <Button
                onClick={(e) => {
                 e.stopPropagation(); // Prevent click from bubbling up to Box
-                this.toggleAddAddressModal(e); // Pass the event explicitly
+                this.toggleAddNewAddressModal(e); // Pass the event explicitly
               }}
               className="tab_address_btn"
             >
@@ -696,10 +696,10 @@ class MyCart extends Component {
         {
           console.log(this.state.selectedSlot , 'slotttt id')
         }
-         {isAddAddressModalOpen && (
-                  <AddAddressModal
-                    open={isAddAddressModalOpen}
-                    handleClose={this.handleAddAddressClose} 
+         {isAddNewAddressModalOpen && (
+                  <AddNewAddressModal
+                    open={isAddNewAddressModalOpen}
+                    handleClose={this.handleAddNewAddressClose} 
                   />
                 )} 
       </>

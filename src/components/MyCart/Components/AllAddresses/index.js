@@ -23,7 +23,7 @@ import {
 import status from "../../../../Redux/Constants";
 import penciEditIcon from "../../../../assets/img/pencilEditIcon.svg";
 import deleteBinIcon from "../../../../assets/img/deleteBinIcon.svg";
-import AddAddressModal from "../../../../../src/components/AddressModal/addaddressmodal";
+import AddNewAddressModal from "../../../../../src/components/AddressModal/addnewaddressmodal";
 
 class AllAddresses extends React.Component {
   constructor(props) {
@@ -34,7 +34,7 @@ class AllAddresses extends React.Component {
       deleteAddressApiLoader: false,
       openDeleteModal: false, // For confirming delete
       addressToEdit: null, // Store the address data to be edited
-      openAddAddressModal: false,
+      openAddNewAddressModal: false,
       addressId: "",
       selectedAddressId: localStorage.getItem("address") || "",
     };
@@ -44,20 +44,33 @@ class AllAddresses extends React.Component {
     const items = loginDetails();
     this.setState({ allAddressApiLoader: true });
     this.props.getAllAddress({ userId: items.userId });
+    
+    // Ensure the default address is selected when no address is set
+    if (!this.state.selectedAddressId && this.props.allAddressData.defaultAddressId) {
+      this.setDefaultAddress(this.props.allAddressData.defaultAddressId);
+    }
   }
-
+  
   componentDidUpdate(prevProps) {
     const { allAddressData, deleteAddresses } = this.props;
+    
+    // If address data has changed and no address is selected, set default address
     if (allAddressData.defaultAddressId && !this.state.selectedAddressId) {
       this.setDefaultAddress(allAddressData.defaultAddressId);
     }
-    if (
-      deleteAddresses.status === status.SUCCESS &&
-      this.state.deleteAddressApiLoader
-    ) {
+  
+    // Handle address deletion status
+    if (deleteAddresses.status === status.SUCCESS && this.state.deleteAddressApiLoader) {
       this.handlePostDelete();
     }
   }
+  
+  setDefaultAddress = (defaultAddressId) => {
+    // Update state and local storage to reflect default address
+    this.setState({ selectedAddressId: defaultAddressId });
+    localStorage.setItem("address", defaultAddressId);
+  };
+  
 
   setDefaultAddress = (defaultAddressId) => {
     this.setState({ selectedAddressId: defaultAddressId });
@@ -65,17 +78,16 @@ class AllAddresses extends React.Component {
   };
 
   handleEditClick = (address) => {
-    this.setState({ openAddAddressModal: true, addressToEdit: address });
+    this.setState({ openAddNewAddressModal: true, addressToEdit: address });
   };
 
-  handleAddAddressModalClose = () => {
+  handleAddNewAddressModalClose = () => {
     const items = loginDetails();
-    this.setState({ openAddAddressModal: false, addressToEdit: null }, () => {
+    this.setState({ openAddNewAddressModal: false, addressToEdit: null }, () => {
       // Call API to fetch all addresses after closing the modal
-      this.props
-        .getAllAddress({ userId: items.userId })
+      this.props.getAllAddress({ userId: items.userId })
         .then(() => {
-          // Display success message after fetching the addresses
+          // Success: Optionally show a success message
           // ErrorMessages.success("Address updated successfully!");
         })
         .catch((error) => {
@@ -85,13 +97,13 @@ class AllAddresses extends React.Component {
         });
     });
   };
-
+  
   handlePostDelete = () => {
     const items = loginDetails();
     this.setState({ allAddressApiLoader: true, deleteAddressApiLoader: false });
     this.props.getDefaultAddress();
     this.props.getAllAddress({ userId: items.userId });
-    // ErrorMessages.success("Address Delete Successfully");
+    //  ErrorMessages.success("Address Delete Successfully");
     this.setState({ open: false });
   };
 
@@ -155,7 +167,7 @@ class AllAddresses extends React.Component {
       deleteAddressApiLoader,
       selectedAddressId,
     } = this.state;
-    const { openAddAddressModal, addressToEdit } = this.state;
+    const { openAddNewAddressModal, addressToEdit } = this.state;
 
     const sortedAddresses = allAddressData.addresses
       ? [
@@ -312,10 +324,10 @@ class AllAddresses extends React.Component {
             </Box>
           </Box>
         </Modal>
-        {openAddAddressModal && (
-          <AddAddressModal
-            open={openAddAddressModal}
-            handleClose={this.handleAddAddressModalClose} // Pass updated handler
+        {openAddNewAddressModal && (
+          <AddNewAddressModal
+            open={openAddNewAddressModal}
+            handleClose={this.handleAddNewAddressModalClose} // Pass updated handler
             addressData={addressToEdit} // Prefilled data for edit
           />
         )}
