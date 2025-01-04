@@ -60,7 +60,7 @@ const addressValidationSchema = {
   ],
 };
 
-class AddAddressModal extends Component {
+class AddNewAddressModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -202,7 +202,6 @@ class AddAddressModal extends Component {
       console.error("Error in API call:", error);
       this.setState({ isSubmitting: false });
     }
-    window.location.reload();
   };
 
   validateForm = () => {
@@ -419,4 +418,4 @@ const mapDispatchToProps = (dispatch) => ({
   fetchDefaultAddress: (params) => dispatch(fetchDefaultAddress(params)), // Ensure this is defined
 });
 
-export default connect(null, mapDispatchToProps)(AddAddressModal);
+export default connect(null, mapDispatchToProps)(AddNewAddressModal);
