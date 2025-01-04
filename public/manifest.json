@@ -45,6 +45,12 @@
   },
   "related_applications": [],
   "prefer_related_applications": false,
-  "iarc_rating_id": "e.g., AAA-1234-5678",
-  "app_id": "com.promodeagrofarms.webapp"
+  "iarc_rating_id": "AAA-1234-5678", 
+  "app_id": "com.promodeagrofarms.webapp",
+  "scope_extensions": [
+    {
+      "origin": "https://promodeagrofarms.com",
+      "scope": "/"
+    }
+  ]
 }
