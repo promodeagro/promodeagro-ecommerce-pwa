@@ -8,8 +8,7 @@
       "type": "image/x-icon"
     },
     {
-   
-      "src": "https://www.promodeagro.com/static/media/logo.c1e5427f5e7b082d02f0.png",
+      "src": "logo192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
@@ -22,5 +21,5 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#005f41"
+  "background_color": "#ffffff"
 }

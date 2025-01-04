@@ -41,7 +41,7 @@ import AllAddresses from "./Components/AllAddresses";
 import AddNewAddress from "./Components/AddNewAddress";
 import DeliverySlots from "./Components/DeliverySlots";
 import CartItems from "./Components/CartItems";
-
+import AddIcon from '@mui/icons-material/Add';
 class MyCart extends Component {
   constructor(props) {
     super(props);
@@ -252,9 +252,26 @@ class MyCart extends Component {
           this.setState({
             paymentLink: this.props.placeOrderData.data.paymentLink,
           });
-          if (this.state.paymentLink) {
-            window.open(this.state.paymentLink, "_blank");
+          
+             //   for Online Paymentz
+
+        const openPaymentLink = async () => {
+          if (this.props.placeOrderData.data?.paymentLink) {
+            await new Promise((resolve) => {
+              this.setState(
+                {
+                  paymentLink: this.props.placeOrderData.data.paymentLink,
+                },
+                resolve
+              );
+            });
+        
+            if (this.state.paymentLink) {
+              window.open(this.state.paymentLink, "_blank");
+            }
           }
+        };
+        openPaymentLink()
         }
       }
     }
@@ -543,16 +560,44 @@ class MyCart extends Component {
                   <h2>Select Delivery Address</h2>
                 </Box>
                 <Box className="select_delivery_slot">
-                  <div
-                   onClick={(e) => {
-                    e.stopPropagation(); // Prevent click from bubbling up to Box
-                    this.toggleAddAddressModal(e); // Pass the event explicitly
-                  }}
-                    className="add_new_address_btn"
-                  >
-                    <img src={greenPlusIcon} alt="" />
-                    <span>Add New Address</span>
-                  </div>
+ 
+                  <Grid
+                        
+                        item
+                        xs={6}
+                        lg={4}
+                        md={6}
+                        sm={6}
+                      >
+                        <Button 
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent click from bubbling up to Box
+                            this.toggleAddAddressModal(e); // Pass the event explicitly
+                          }}
+                         sx={{
+                          borderRadius:"9px",
+                          height:"60px",
+                          background:"rgba(0, 178, 7, 0.1019607843)",
+                          justifyContent:"start",
+                          color:"#1f9151",
+                          fontWeight:600,
+                          textTransform:"none",
+                          fontSize:'16px'
+                         }}
+                          fullWidth
+                          disabled={
+                            this.props.placeOrderData.status ===
+                            status.IN_PROGRESS
+                          }
+                          startIcon={
+                            <AddIcon fontSize="28px" />
+                          }
+                        >
+                       Add New Address
+                        </Button>
+                      </Grid>
+
+
                 </Box>
                 <Box className="delivery_slots_container">
                   <h2>Select An Address</h2>
@@ -577,22 +622,48 @@ class MyCart extends Component {
           }}
         >
           <Box
-           
+           sx={{borderRadius:"12px 12px 0px 0px"}}
             className="tab_popup"
           >
             <Box className="tab_select_delivery_container">
               <h2>Select Delivery Address</h2>
             </Box>
-            <Button
-               onClick={(e) => {
-                e.stopPropagation(); // Prevent click from bubbling up to Box
-                this.toggleAddAddressModal(e); // Pass the event explicitly
-              }}
-              className="tab_address_btn"
-            >
-              <img alt="" src={greenPlusIcon} />
-              <span style={{ textTransform: "none" }}>Add New Address</span>
-            </Button>
+            <Grid
+                        
+                        item
+                        xs={6}
+                        lg={4}
+                        md={6}
+                        sm={6}
+                      >
+                        <Button 
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent click from bubbling up to Box
+                            this.toggleAddAddressModal(e); // Pass the event explicitly
+                          }}
+                         sx={{
+                          borderRadius:"9px",
+                          height:"50px",
+                          background:"rgba(0, 178, 7, 0.1019607843)",
+                          justifyContent:"start",
+                          color:"#1f9151",
+                          fontWeight:600,
+                          textTransform:"none",
+                          fontSize:'16px',
+                          marginTop:"15px"
+                         }}
+                          fullWidth
+                          disabled={
+                            this.props.placeOrderData.status ===
+                            status.IN_PROGRESS
+                          }
+                          startIcon={
+                            <AddIcon fontSize="large" />
+                          }
+                        >
+                       Add New Address
+                        </Button>
+                      </Grid>
 
             <AllAddresses  onAddressSelect={(address) =>
                       this.setState({ selectedAddress: address })

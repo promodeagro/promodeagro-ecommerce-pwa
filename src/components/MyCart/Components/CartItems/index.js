@@ -188,9 +188,15 @@ class Carts extends Component {
                         height: 60,
                         borderRadius: 1,
                         marginRight: 2,
+                        overflow:"hidden",
+                        border:"1px solid #F0F0F0",
+                        padding:"2px",
+                        display:"flex",
+                        alignItems:"center",
+                        justifyContent:"center"
                       }}
                     >
-                      <img src={item?.productImage} alt="product-cart-img" />
+                      <img  style={{objectFit:"cover" , width:"100%" , height:"100%"}} src={item?.productImage} alt="product-cart-img" />
                     </Box>
           
                     {/* Product Details */}

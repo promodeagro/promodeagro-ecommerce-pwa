@@ -25,7 +25,7 @@ export const fetchAllorders = createAsyncThunk("allorders", async (userId) => {
 
 export const fetchOrderById = createAsyncThunk("orderbyid", async (orderId) => {
   try {
-    let url = config.PLACE_ORDER + `/${orderId}`;
+    let url = config.ORDER_BY_ID + `/${orderId}`;
     const response = await postLoginService.get(url);
     return response.data;
   } catch (error) {
