@@ -45,6 +45,10 @@ console.log(placedOrderDetails.message , 'order details by id')
     console.log('Cart cleared from localStorage because ID is present in the URL.');
   }
 
+  // Scroll to top when the component loads
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
 
