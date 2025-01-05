@@ -37,7 +37,7 @@ class DeliverySlots extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { slots } = this.props;
+    const { slots, allAddressData } = this.props;
     const deliveryType = slots?.[0]?.deliveryType || "same day";
 
     if (deliveryType !== prevState.deliveryType) {
@@ -47,31 +47,45 @@ class DeliverySlots extends Component {
       });
     }
 
-    const { allAddressData } = this.props;
     const addressDetail = loginDetails();
+    let zipCode = null;
 
-    if (allAddressData.length > 0 && addressDetail?.address) {
-      const filtered = allAddressData.filter(
-        (address) => address.addressId === addressDetail.address // Filter by addressId
-      );
+    if (allAddressData.length > 0) {
+      if (addressDetail?.address) {
+        const filtered = allAddressData.filter(
+          (address) => address.addressId === addressDetail.address
+        );
 
-      if (filtered.length > 0) {
-        const zipCode = filtered[0].zipCode;
+        if (filtered.length > 0) {
+          zipCode = filtered[0].zipCode;
+          if (
+            filtered[0] !== prevState.filteredAddress ||
+            zipCode !== prevState.zipCode
+          ) {
+            this.setState({ filteredAddress: filtered[0], zipCode }, () => {
+              if (zipCode) {
+                const { dispatch } = this.props;
+                dispatch(fetchDeliverySlots({ zipCode })); // Call API with zipCode
+              }
+            });
+          }
+        }
+      } else {
+        const defaultAddress = localStorage.getItem("defaultAddress");
+        if (defaultAddress) {
+          zipCode = JSON.parse(defaultAddress)?.zipCode;
 
-        if (
-          filtered[0] !== prevState.filteredAddress ||
-          zipCode !== prevState.zipCode
-        ) {
-          this.setState({ filteredAddress: filtered[0], zipCode }, () => {
-            if (zipCode) {
+          if (zipCode && zipCode !== prevState.zipCode) {
+            this.setState({ zipCode }, () => {
               const { dispatch } = this.props;
-              dispatch(fetchDeliverySlots({ zipCode })); // Call API with zipCode
-            }
-          });
+              dispatch(fetchDeliverySlots({ zipCode })); // Call API with default zipCode
+            });
+          }
         }
       }
     }
   }
+
 
   handleTabChange = (event, newValue) => {
     this.setState({ selectedTab: newValue });
