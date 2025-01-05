@@ -12,6 +12,7 @@ import { fetchOrderById } from "../../../../../Redux/Order/PlaceOrderThunk";
 import { useDispatch, useSelector } from "react-redux";
 import { Loader } from "Views/Utills/helperFunctions";
 import status from "../../../../../Redux/Constants";
+import { LocalStorageCartService } from "Services/localStorageCartService";
 
 const OrderPlaced = (props) => {
   const [value, setValue] = useState(0);
@@ -42,6 +43,7 @@ console.log(placedOrderDetails.message , 'order details by id')
     // If 'id' exists in the URL, clear the cart from localStorage
     localStorage.removeItem('cartItem'); // Replace 'cart' with your cart's key
     localStorage.removeItem('address'); // Replace 'cart' with your cart's key
+    LocalStorageCartService.saveData({});
     console.log('Cart cleared from localStorage because ID is present in the URL.');
   }
 
