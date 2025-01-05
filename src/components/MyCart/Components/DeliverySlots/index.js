@@ -310,8 +310,9 @@ class DeliverySlots extends Component {
                 </Grid>
               </Box>
             ) : (
-              <div className="noslot">No Slots Available</div>
-            )}
+              <div className="box">
+              <CircularProgress color="success" />
+            </div>            )}
           </Box>
         </Box>
       </Box>
