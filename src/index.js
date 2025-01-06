@@ -8,7 +8,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import * as serviceWorkerRegistration from './serviceWorkerRegistration'; // Import service worker registration
+// import * as serviceWorkerRegistration from './serviceWorkerRegistration'; // Import service worker registration
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -21,7 +21,7 @@ root.render(
 AOS.init();
 
 // Register service worker to make it a PWA
-serviceWorkerRegistration.register();
+// serviceWorkerRegistration.register();
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
