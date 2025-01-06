@@ -26,20 +26,19 @@ const isLocalhost = Boolean(
       });
   }
   function checkValidServiceWorker(swUrl) {
-    fetch(swUrl)
+    return fetch(swUrl)
       .then((response) => {
-        if (
-          response.status === 404 ||
-          response.headers.get('content-type').indexOf('javascript') === -1
-        ) {
-          navigator.serviceWorker.ready.then((registration) => {
-            registration.unregister();
-          });
+        if (response.status === 404 || !response.headers.get('content-type').includes('javascript')) {
+          navigator.serviceWorker.ready
+            .then((registration) => registration.unregister())
+            .catch((error) => console.error('Error during service worker unregistration:', error));
         } else {
           registerValidSW(swUrl);
         }
       })
-      .catch(() => {
-        console.log('No internet connection found. App is running in offline mode.');
+      .catch((error) => {
+        console.error('Error fetching the service worker:', error);
+        console.log('App is running in offline mode.');
       });
   }
+  
