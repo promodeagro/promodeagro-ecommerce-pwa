@@ -1,7 +1,6 @@
 {
   "short_name": "Promodeagrofarms",
-  "name": "Promode Agro Farms",
-  "description": "Promode Agro Farms - Bringing fresh and organic products to your doorstep.",
+  "name": "Promode agro farms",
   "icons": [
     {
       "src": "favicon.ico",
@@ -19,38 +18,8 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "/",
-  "scope": "/",
+  "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff",
-  "orientation": "portrait",
-  "categories": ["shopping", "lifestyle", "business"],
-  "screenshots": [
-    {
-      "src": "screenshot1.png",
-      "sizes": "1080x1920",
-      "type": "image/png"
-    },
-    {
-      "src": "screenshot2.png",
-      "sizes": "1080x1920",
-      "type": "image/png"
-    }
-  ],
-  "lang": "en",
-  "dir": "ltr",
-  "launch_handler": {
-    "client_mode": "navigate-existing"
-  },
-  "related_applications": [],
-  "prefer_related_applications": false,
-  "iarc_rating_id": "AAA-1234-5678", 
-  "app_id": "com.promodeagrofarms.webapp",
-  "scope_extensions": [
-    {
-      "origin": "https://promodeagrofarms.com",
-      "scope": "/"
-    }
-  ]
+  "background_color": "#ffffff"
 }
