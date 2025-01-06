@@ -280,9 +280,10 @@ class MyCart extends Component {
   handlePlaceOrder = () => {
     let login = loginDetails();
     let addressId = localStorage.getItem("address");
+    let defaultAddress =  JSON.parse(localStorage.getItem("defaultAddress")).addressId;
     const { selectedPaymentMethod, itemListArr } = this.state;
     const Data = {
-      addressId: addressId ? addressId : "f9858f86-95e3-4437-affa-93216b4ca4f9",
+      addressId: addressId ? addressId : defaultAddress,
       deliverySlotId: this.state.selectedSlot ? this.state.selectedSlot.id : "" ,
       items: itemListArr,
       paymentDetails: {
