@@ -229,6 +229,7 @@ class MyCart extends Component {
           localStorage.removeItem("address");
           LocalStorageCartService.saveData({});
           this.setState({selectedSlot:""})
+          this.setState({selectedPaymentMethod:"online"})
           // Dispatch actions to update cart in Redux and fetch fresh cart data
           let login = loginDetails();
           if (login?.userId) {
