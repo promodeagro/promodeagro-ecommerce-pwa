@@ -457,10 +457,10 @@ class MyCart extends Component {
                                 slotOpen: true, // Open the slot selection modal
                               });
                             }}
-                          >
+                          > 
                             <span>
                               {this.state.selectedSlot
-                                ? `${this.state.selectedSlot.start  +  " - " + this.state.selectedSlot.end}`
+                                ? `${this.state.selectedSlot.start} ${this.state.selectedSlot.startAmPm} - ${this.state.selectedSlot.end} ${this.state.selectedSlot.endAmPm}`
                                 : "Select Slot"}
                             </span>
 

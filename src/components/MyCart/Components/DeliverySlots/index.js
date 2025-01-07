@@ -95,6 +95,7 @@ class DeliverySlots extends Component {
     const selectedSlot = event.target.value;
       const selectedSlotData = this.getFilteredSlots().find(
       (slot) => `${slot.start} - ${slot.end}` === selectedSlot
+      
     );
   
     if (selectedSlotData) {
@@ -107,6 +108,12 @@ class DeliverySlots extends Component {
       this.props.onSlotSelect(selectedSlotData);
       // this.props.onSlotSelect(selectedSlot);
     }
+
+    setTimeout(() => {
+      this.props.handleClose();
+    }, 100);  
+
+
   };
   //getfilterslots
 
@@ -284,6 +291,7 @@ class DeliverySlots extends Component {
                 sx={{
                   border: "1px solid #e0e0e0",
                   borderRadius: 2,
+                  minHeight:"240px"
                 }}
               >
                 <Grid container spacing={0}>
