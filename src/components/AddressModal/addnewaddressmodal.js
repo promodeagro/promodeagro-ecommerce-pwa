@@ -71,7 +71,7 @@ class AddNewAddressModal extends Component {
       area: "",
       pincode: "",
       isSubmitting: false,
-      selectedAddressType: "",
+      selectedAddressType: "Home", // Set "Home" as the default selected address type
       addressId: "",
       initialLoad: true, // Ensures props are loaded only once
       isDefaultChecked: false, // To track if the checkbox is checked
@@ -198,6 +198,8 @@ class AddNewAddressModal extends Component {
 
       this.setState({ isSubmitting: false });
       this.props.handleClose();
+                 window.location.reload();
+
     } catch (error) {
       console.error("Error in API call:", error);
       this.setState({ isSubmitting: false });

@@ -36,8 +36,13 @@ const addressValidationSchema = {
   ],
   phone: [
     {
-      message: "Please enter a phone number",
       type: ValidationEngine.type.MANDATORY,
+      message: "Phone number is required.",
+    },
+    {
+      type: ValidationEngine.type.REGEX,
+      regex: ValidationEngine.MOBILE_NUMBER_REGEX,
+      message: "Enter a valid 10-digit phone number.",
     },
   ],
   area: [
@@ -48,8 +53,13 @@ const addressValidationSchema = {
   ],
   pincode: [
     {
-      message: "Please enter your pincode",
       type: ValidationEngine.type.MANDATORY,
+      message: "Pincode is required.",
+    },
+    {
+      type: ValidationEngine.type.REGEX,
+      regex: ValidationEngine.ZIP_CODE_REGEX,
+      message: "Enter a valid 6-digit pincode.",
     },
   ],
   selectedAddressType: [
@@ -71,7 +81,7 @@ class AddAddressModal extends Component {
       area: "",
       pincode: "",
       isSubmitting: false,
-      selectedAddressType: "",
+      selectedAddressType: "Home", // Set "Home" as the default selected address type
       addressId: "",
       initialLoad: true, // Ensures props are loaded only once
       isDefaultChecked: false, // To track if the checkbox is checked
@@ -111,11 +121,11 @@ class AddAddressModal extends Component {
 
   handleAddressSubmit = async (e) => {
     e.preventDefault();
-    const { isValid } = this.validateForm(); // Validate form
+    const { isValid, errors } = this.validateForm(); // Validate form
     if (!isValid) {
-      return; // Stop if form is invalid
+      console.log("Validation failed:", errors); // Log validation errors
+      return; // Stop submission if invalid
     }
-
     const {
       fullName,
       flatNumber,
@@ -223,7 +233,14 @@ class AddAddressModal extends Component {
           validator.type === ValidationEngine.type.MANDATORY &&
           !this.state[field]
         ) {
-          errors[field] = validator.message; // Capture validation error
+          if (!errors[field]) errors[field] = validator.message; // Assign a string, not an object
+        }
+        if (
+          validator.type === ValidationEngine.type.REGEX &&
+          this.state[field] &&
+          !validator.regex.test(this.state[field])
+        ) {
+          errors[field] = validator.message; // Add regex error
         }
       });
     });
@@ -261,9 +278,9 @@ class AddAddressModal extends Component {
           <p className="saveaddressas">Save Address As</p>
           <div className="iconcontainer">
             {["Home", "Work", "Other"].map((type) => (
-              <a
+              <button
                 key={type}
-                className="icons-wrapper"
+                className="button1"
                 onClick={() => this.handleAddressTypeSelection(type)}
               >
                 <img
@@ -274,11 +291,12 @@ class AddAddressModal extends Component {
                       ? Workicon
                       : Othericon
                   }
+                  onClick={() => this.handleAddressTypeSelection(type)}
                   alt={type}
-                  className="icon"
                 />
                 <span
                   className="icontext"
+                  onClick={() => this.handleAddressTypeSelection(type)}
                   style={{
                     color:
                       this.state.selectedAddressType === type
@@ -292,10 +310,9 @@ class AddAddressModal extends Component {
                 >
                   {type}
                 </span>
-              </a>
+              </button>
             ))}
           </div>
-
           <Grid container spacing={2}>
             <Grid xs={12} sm={6} item>
               <Box className="labelform">
@@ -305,8 +322,12 @@ class AddAddressModal extends Component {
                 <TextField
                   fullWidth
                   value={fullName}
-                  onChange={(e) => this.setState({ fullName: e.target.value })}
-                  error={!!this.state.validationErrors?.fullName}
+                  onChange={(e) => {
+                    this.setState({
+                      fullName: e.target.value,
+                      validationErrors: { ...this.state.validationErrors, fullName: "" }, // Clear error when typing
+                    });
+                  }}                  error={!!this.state.validationErrors?.fullName}
                 />
               </Box>
               <Box className="labelform">
@@ -316,9 +337,12 @@ class AddAddressModal extends Component {
                 <TextField
                   fullWidth
                   value={flatNumber}
-                  onChange={(e) =>
-                    this.setState({ flatNumber: e.target.value })
-                  }
+                  onChange={(e) => {
+                    this.setState({
+                      flatNumber: e.target.value,
+                      validationErrors: { ...this.state.validationErrors, flatNumber: "" }, // Clear error when typing
+                    });
+                  }}
                   error={!!this.state.validationErrors?.flatNumber}
                 />
               </Box>
@@ -329,8 +353,12 @@ class AddAddressModal extends Component {
                 <TextField
                   fullWidth
                   value={landmark}
-                  onChange={(e) => this.setState({ landmark: e.target.value })}
-                  error={!!this.state.validationErrors?.landmark}
+                  onChange={(e) => {
+                    this.setState({
+                      landmark: e.target.value,
+                      validationErrors: { ...this.state.validationErrors, landmark: "" }, // Clear error when typing
+                    });
+                  }}                  error={!!this.state.validationErrors?.landmark}
                 />
               </Box>
             </Grid>
@@ -342,8 +370,32 @@ class AddAddressModal extends Component {
                 <TextField
                   fullWidth
                   value={phone}
-                  onChange={(e) => this.setState({ phone: e.target.value })}
+                  onInput={(e) => {
+                    e.target.value = e.target.value.replace(/[^0-9]/g, ""); // Allow only numbers
+                  }}
+                  onChange={(e) => {
+                    this.setState({
+                      phone: e.target.value,
+                      validationErrors: { ...this.state.validationErrors, phone: "" }, // Clear error when typing
+                    });
+                  }}
+                  onBlur={() => {
+                    const phoneValue = this.state.phone;
+                    const errors = ValidationEngine.validate(
+                      addressValidationSchema,
+                      {
+                        phone: phoneValue,
+                      }
+                    );
+                    this.setState({
+                      validationErrors: {
+                        ...this.state.validationErrors,
+                        phone: errors?.phone?.message || "", // Set validation error only on blur
+                      },
+                    });
+                  }}
                   error={!!this.state.validationErrors?.phone}
+                  helperText={this.state.validationErrors?.phone || ""}
                 />
               </Box>
               <Box className="labelform">
@@ -353,8 +405,12 @@ class AddAddressModal extends Component {
                 <TextField
                   fullWidth
                   value={area}
-                  onChange={(e) => this.setState({ area: e.target.value })}
-                  error={!!this.state.validationErrors?.area}
+                  onChange={(e) => {
+                    this.setState({
+                      area: e.target.value,
+                      validationErrors: { ...this.state.validationErrors, area: "" }, // Clear error when typing
+                    });
+                  }}                  error={!!this.state.validationErrors?.area}
                 />
               </Box>
               <Box className="labelform">
@@ -364,8 +420,32 @@ class AddAddressModal extends Component {
                 <TextField
                   fullWidth
                   value={pincode}
-                  onChange={(e) => this.setState({ pincode: e.target.value })}
+                  onInput={(e) => {
+                    e.target.value = e.target.value.replace(/[^0-9]/g, ""); // Allow only numbers
+                  }}
+                  onChange={(e) => {
+                    this.setState({
+                      pincode: e.target.value,
+                      validationErrors: { ...this.state.validationErrors, pincode: "" }, // Clear error when typing
+                    });
+                  }}
+                  onBlur={() => {
+                    const pincodevalue = this.state.pincode;
+                    const errors = ValidationEngine.validate(
+                      addressValidationSchema,
+                      {
+                        pincode: pincodevalue,
+                      }
+                    );
+                    this.setState({
+                      validationErrors: {
+                        ...this.state.validationErrors,
+                        pincode: errors?.pincode?.message || "", // Set validation error only on blur
+                      },
+                    });
+                  }}
                   error={!!this.state.validationErrors?.pincode}
+                  helperText={this.state.validationErrors?.pincode || ""}
                 />
               </Box>
             </Grid>
