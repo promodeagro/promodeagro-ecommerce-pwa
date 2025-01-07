@@ -623,7 +623,6 @@ class MyCart extends Component {
           }}
         >
           <Box
-           sx={{borderRadius:"12px 12px 0px 0px"}}
             className="tab_popup"
           >
             <Box className="tab_select_delivery_container">
