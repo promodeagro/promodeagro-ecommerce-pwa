@@ -44,29 +44,21 @@ class AllAddresses extends React.Component {
     const items = loginDetails();
     this.setState({ allAddressApiLoader: true });
     this.props.getAllAddress({ userId: items.userId });
-    
-    // Ensure the default address is selected when no address is set
-    if (!this.state.selectedAddressId && this.props.allAddressData.defaultAddressId) {
+        if (!this.state.selectedAddressId && this.props.allAddressData.defaultAddressId) {
       this.setDefaultAddress(this.props.allAddressData.defaultAddressId);
     }
   }
   
   componentDidUpdate(prevProps) {
     const { allAddressData, deleteAddresses } = this.props;
-    
-    // If address data has changed and no address is selected, set default address
-    if (allAddressData.defaultAddressId && !this.state.selectedAddressId) {
+        if (allAddressData.defaultAddressId && !this.state.selectedAddressId) {
       this.setDefaultAddress(allAddressData.defaultAddressId);
     }
-  
-    // Handle address deletion status
-    if (deleteAddresses.status === status.SUCCESS && this.state.deleteAddressApiLoader) {
+      if (deleteAddresses.status === status.SUCCESS && this.state.deleteAddressApiLoader) {
       this.handlePostDelete();
     }
   }
-  
   setDefaultAddress = (defaultAddressId) => {
-    // Update state and local storage to reflect default address
     this.setState({ selectedAddressId: defaultAddressId });
     localStorage.setItem("address", defaultAddressId);
   };
@@ -84,7 +76,6 @@ class AllAddresses extends React.Component {
   handleAddNewAddressModalClose = () => {
     const items = loginDetails();
     this.setState({ openAddNewAddressModal: false, addressToEdit: null }, () => {
-      // Call API to fetch all addresses after closing the modal
       this.props.getAllAddress({ userId: items.userId })
         .then(() => {
           // Success: Optionally show a success message
@@ -214,39 +205,57 @@ class AllAddresses extends React.Component {
                     {item.zipCode}
                   </p>
                   <div className="address_box_bottom">
-                    {item.addressId !== allAddressData.defaultAddressId && (
-                      <>
-                        <img
-                          src={penciEditIcon}
-                          aria-label="edit"
-                          className={
-                            item.addressId === selectedAddressId
-                              ? "address-btn active"
-                              : "address-btn"
-                          }
-                          alt="edit"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            this.handleEditClick(item); // Open AddAddressModal with prefilled data
-                          }}
-                        />
-                        <img
-                          src={deleteBinIcon}
-                          aria-label="delete"
-                          className={
-                            item.addressId === selectedAddressId
-                              ? "address-btn active"
-                              : "address-btn"
-                          }
-                          alt="delete"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            this.handleDeleteClick(item.addressId); // Open delete modal
-                          }}
-                        />
-                      </>
-                    )}
-                  </div>
+  {item.addressId !== allAddressData.defaultAddressId && (
+    <>
+      <img
+        src={penciEditIcon}
+        aria-label="edit"
+        className={
+          item.addressId === selectedAddressId
+            ? "address-btn active"
+            : "address-btn"
+        }
+        alt="edit"
+        onClick={(event) => {
+          event.stopPropagation();
+          this.handleEditClick(item); // Open AddAddressModal with prefilled data
+        }}
+      />
+      <img
+        src={deleteBinIcon}
+        aria-label="delete"
+        className={
+          item.addressId === selectedAddressId
+            ? "address-btn active"
+            : "address-btn"
+        }
+        alt="delete"
+        onClick={(event) => {
+          event.stopPropagation();
+          this.handleDeleteClick(item.addressId); // Open delete modal
+        }}
+      />
+    </>
+  )}
+  {/* Show only Edit button for default address */}
+  {item.addressId === allAddressData.defaultAddressId && (
+    <img
+      src={penciEditIcon}
+      aria-label="edit"
+      className={
+        item.addressId === selectedAddressId
+          ? "address-btn active"
+          : "address-btn"
+      }
+      alt="edit"
+      onClick={(event) => {
+        event.stopPropagation();
+        this.handleEditClick(item); // Open AddAddressModal with prefilled data
+      }}
+    />
+  )}
+</div>
+
                 </Box>
               )}
             </Grid>
