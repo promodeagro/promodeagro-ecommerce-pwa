@@ -212,7 +212,7 @@ class AddAddressModal extends Component {
       console.error("Error in API call:", error);
       this.setState({ isSubmitting: false });
     }
-    window.location.reload();
+    // window.location.reload();
   };
 
   validateForm = () => {
@@ -325,9 +325,13 @@ class AddAddressModal extends Component {
                   onChange={(e) => {
                     this.setState({
                       fullName: e.target.value,
-                      validationErrors: { ...this.state.validationErrors, fullName: "" }, // Clear error when typing
+                      validationErrors: {
+                        ...this.state.validationErrors,
+                        fullName: "",
+                      }, // Clear error when typing
                     });
-                  }}                  error={!!this.state.validationErrors?.fullName}
+                  }}
+                  error={!!this.state.validationErrors?.fullName}
                 />
               </Box>
               <Box className="labelform">
@@ -340,7 +344,10 @@ class AddAddressModal extends Component {
                   onChange={(e) => {
                     this.setState({
                       flatNumber: e.target.value,
-                      validationErrors: { ...this.state.validationErrors, flatNumber: "" }, // Clear error when typing
+                      validationErrors: {
+                        ...this.state.validationErrors,
+                        flatNumber: "",
+                      }, // Clear error when typing
                     });
                   }}
                   error={!!this.state.validationErrors?.flatNumber}
@@ -356,9 +363,13 @@ class AddAddressModal extends Component {
                   onChange={(e) => {
                     this.setState({
                       landmark: e.target.value,
-                      validationErrors: { ...this.state.validationErrors, landmark: "" }, // Clear error when typing
+                      validationErrors: {
+                        ...this.state.validationErrors,
+                        landmark: "",
+                      }, // Clear error when typing
                     });
-                  }}                  error={!!this.state.validationErrors?.landmark}
+                  }}
+                  error={!!this.state.validationErrors?.landmark}
                 />
               </Box>
             </Grid>
@@ -376,7 +387,10 @@ class AddAddressModal extends Component {
                   onChange={(e) => {
                     this.setState({
                       phone: e.target.value,
-                      validationErrors: { ...this.state.validationErrors, phone: "" }, // Clear error when typing
+                      validationErrors: {
+                        ...this.state.validationErrors,
+                        phone: "",
+                      }, // Clear error when typing
                     });
                   }}
                   onBlur={() => {
@@ -408,9 +422,13 @@ class AddAddressModal extends Component {
                   onChange={(e) => {
                     this.setState({
                       area: e.target.value,
-                      validationErrors: { ...this.state.validationErrors, area: "" }, // Clear error when typing
+                      validationErrors: {
+                        ...this.state.validationErrors,
+                        area: "",
+                      }, // Clear error when typing
                     });
-                  }}                  error={!!this.state.validationErrors?.area}
+                  }}
+                  error={!!this.state.validationErrors?.area}
                 />
               </Box>
               <Box className="labelform">
@@ -426,7 +444,10 @@ class AddAddressModal extends Component {
                   onChange={(e) => {
                     this.setState({
                       pincode: e.target.value,
-                      validationErrors: { ...this.state.validationErrors, pincode: "" }, // Clear error when typing
+                      validationErrors: {
+                        ...this.state.validationErrors,
+                        pincode: "",
+                      }, // Clear error when typing
                     });
                   }}
                   onBlur={() => {
@@ -472,7 +493,7 @@ class AddAddressModal extends Component {
               <span className="checkboxspan">Set this Address as default</span>
             </>
           ) : null}
-          <Box sx={{ marginTop: "16px" }}>
+          <Box sx={{ marginTop: "8px" }}>
             {isSubmitting ? (
               <CircularProgress color="success" />
             ) : (

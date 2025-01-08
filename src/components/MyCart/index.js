@@ -41,7 +41,7 @@ import AllAddresses from "./Components/AllAddresses";
 import AddNewAddress from "./Components/AddNewAddress";
 import DeliverySlots from "./Components/DeliverySlots";
 import CartItems from "./Components/CartItems";
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from "@mui/icons-material/Add";
 class MyCart extends Component {
   constructor(props) {
     super(props);
@@ -138,7 +138,6 @@ class MyCart extends Component {
         cartListArr: cartListData,
         itemListArr: itemListData,
         totalPrice: this.props.cartItems.data.subTotal,
-
         loaderCount: 1,
       });
     } else if (this.props.cartItems.status === status.FAILURE) {
@@ -218,7 +217,6 @@ class MyCart extends Component {
       this.props.placeOrderData.status === status.SUCCESS
     ) {
       if (this.props.placeOrderData.data?.statuscode === 200) {
-        // for Cash orderz
         if (this.props.placeOrderData.data?.orderId) {
           ErrorMessages.success(this.props?.placeOrderData?.data?.message);
           this.props.navigate(
@@ -228,52 +226,43 @@ class MyCart extends Component {
           localStorage.removeItem("cartItem");
           localStorage.removeItem("address");
           LocalStorageCartService.saveData({});
-          this.setState({selectedSlot:""})
-          this.setState({selectedPaymentMethod:"online"})
-          // Dispatch actions to update cart in Redux and fetch fresh cart data
+          this.setState({ selectedSlot: "" });
+          this.setState({ selectedPaymentMethod: "online" });
           let login = loginDetails();
           if (login?.userId) {
-              this.props.addListOfItemsToCartReq({
-                  userId: login.userId,
-                  cartItems: [],
-              });
-              this.props.fetchCartItems({
-                  userId: login.userId,
-              });
+            this.props.addListOfItemsToCartReq({
+              userId: login.userId,
+              cartItems: [],
+            });
+            this.props.fetchCartItems({
+              userId: login.userId,
+            });
           }
-          // Clear cart in the component's state
           this.setState({ cartList: [] });
         }
         if (!this.props.placeOrderData.data?.orderId) {
           ErrorMessages.error(this.props?.placeOrderData?.data?.error);
         }
-
-        //   for Online Paymentz
-
         if (this.props.placeOrderData.data?.paymentLink) {
           this.setState({
             paymentLink: this.props.placeOrderData.data.paymentLink,
           });
-          
-             //   for Online Paymentz
-
-        const openPaymentLink = async () => {
-          if (this.props.placeOrderData.data?.paymentLink) {
-            await new Promise((resolve) => {
-              this.setState(
-                {
-                  paymentLink: this.props.placeOrderData.data.paymentLink,
-                },
-                resolve
-              );
-            });
-        
-            if (this.state.paymentLink) {
-              window.open(this.state.paymentLink, "_blank");
+          const openPaymentLink = async () => {
+            if (this.props.placeOrderData.data?.paymentLink) {
+              await new Promise((resolve) => {
+                this.setState(
+                  {
+                    paymentLink: this.props.placeOrderData.data.paymentLink,
+                  },
+                  resolve
+                );
+              });
+              if (this.state.paymentLink) {
+                window.open(this.state.paymentLink, "_blank");
+              }
             }
-          }
-        };
-        openPaymentLink()
+          };
+          openPaymentLink();
         }
       }
     }
@@ -281,11 +270,13 @@ class MyCart extends Component {
   handlePlaceOrder = () => {
     let login = loginDetails();
     let addressId = localStorage.getItem("address");
-    let defaultAddress =  JSON.parse(localStorage.getItem("defaultAddress")).addressId;
+    let defaultAddress = JSON.parse(
+      localStorage.getItem("defaultAddress")
+    ).addressId;
     const { selectedPaymentMethod, itemListArr } = this.state;
     const Data = {
       addressId: addressId ? addressId : defaultAddress,
-      deliverySlotId: this.state.selectedSlot ? this.state.selectedSlot.id : "" ,
+      deliverySlotId: this.state.selectedSlot ? this.state.selectedSlot.id : "",
       items: itemListArr,
       paymentDetails: {
         method: selectedPaymentMethod,
@@ -293,7 +284,6 @@ class MyCart extends Component {
       userId: login.userId,
     };
     this.props.placeOrder(Data);
-
   };
 
   handleQuantityChange(id, increment, productQuantity = 0, qty) {
@@ -341,6 +331,14 @@ class MyCart extends Component {
     return "No Address Selected"; // Default message if there's no default address in local storage
   }
 
+  getDefaultAddresstype() {
+    const defaultAddress = JSON.parse(localStorage.getItem("defaultAddress"));
+    if (defaultAddress) {
+      return `${defaultAddress.address_type}`;
+    }
+    return "No Address Selected"; // Default message if there's no default address in local storage
+  }
+
   toggleAddNewAddressModal = (e) => {
     if (e?.stopPropagation) {
       e.stopPropagation(); // Prevent click from bubbling up to parent element
@@ -356,17 +354,14 @@ class MyCart extends Component {
     });
   };
 
-
   render() {
     const { matches, dataId, isUpdateIncrease, selectedPaymentMethod } =
       this.state;
     const { open, handleClose } = this.props;
     const { isAddNewAddressModalOpen } = this.state;
 
-
     return (
       <>
-
         <Drawer anchor={"right"} open={open} onClose={handleClose}>
           <Box className="cart_popup">
             {this.state.showAddressPopup ? (
@@ -378,7 +373,12 @@ class MyCart extends Component {
                 <Box className="my_cart_bottom_address">
                   <img src={LocationIcon} alt="" />
                   <Box>
-                    <span>Delivering to Home</span>
+                    <span>
+                      Delivering to{" "}
+                      {this.state.selectedAddress
+                        ? this.state.selectedAddress.address_type
+                        : this.getDefaultAddresstype()}
+                    </span>
                     <span>
                       {
                         this.state.selectedAddress
@@ -422,125 +422,120 @@ class MyCart extends Component {
                     </Link>
                   )}
                 </Box>
+                <Box className="select_delivery_slot">
+                  <h2>Select Delivery Slot</h2>
+                  <span className="select_delivery_slot_wrapper">
+                    <div
+                      onClick={() => {
+                        this.setState({
+                          slotOpen: true, // Open the slot selection modal
+                        });
+                      }}
+                    >
+                      <span>
+                        {this.state.selectedSlot
+                          ? `${this.state.selectedSlot.start} ${this.state.selectedSlot.startAmPm} - ${this.state.selectedSlot.end} ${this.state.selectedSlot.endAmPm}`
+                          : "Select Slot"}
+                      </span>
+                      <img src={ArrowDown} alt="Open Slots" />
+                    </div>
+                    {matches && (
+                      <Button
+                        onClick={() => {
+                          this.setState({
+                            slotOpen: true,
+                          });
+                        }}
+                        className="common-btn select_slot_btn"
+                      >
+                        Select Slot
+                      </Button>
+                    )}
+                  </span>
+                </Box>
                 <Box className="item_details_container">
                   <h2>Item Details</h2>
                   <CartItems />
-
                   {this.state.cartList?.length > 0 ? (
                     <>
                       <div className="bill_details">
                         <strong>Bill details</strong>
                         <div>
-                          <span>Item total</span>{" "}
+                          <span>Item total</span>
                           <strong>₹{this.state.totalPrice}</strong>
                         </div>
                         <div>
-                          <span>Delivery Charges</span>{" "}
+                          <span>Delivery Charges</span>
                           <div>
-                            <span className="mrp">₹25</span>{" "}
-                            <span className="free">Free</span>{" "}
+                            <span className="mrp">₹25</span>
+                            <span className="free">Free</span>
                           </div>
                         </div>
                         <div>
                           <strong>Grand Total</strong>{" "}
                           <strong>₹{this.state.totalPrice}</strong>
                         </div>
-                       
                       </div>
-
-                      <Box className="select_delivery_slot">
-                        <h2>Select Delivery Slot</h2>
-                        <span className="select_delivery_slot_wrapper">
-                          <div
-                            onClick={() => {
-                              this.setState({
-                                slotOpen: true, // Open the slot selection modal
-                              });
-                            }}
-                          > 
-                            <span>
-                              {this.state.selectedSlot
-                                ? `${this.state.selectedSlot.start} ${this.state.selectedSlot.startAmPm} - ${this.state.selectedSlot.end} ${this.state.selectedSlot.endAmPm}`
-                                : "Select Slot"}
-                            </span>
-
-                            <img src={ArrowDown} alt="Open Slots" />
-                          </div>
-
-                          {matches && (
-                            <Button
-                              onClick={() => {
-                                this.setState({
-                                  slotOpen: true,
-                                });
-                              }}
-                              className="common-btn select_slot_btn"
-                            >
-                              Select Slot
-                            </Button>
-                          )}
-                        </span>
-                      </Box>
                       <div className="payment_container">
-                      <Box className="Payment_methods_box">
-                        <h2>Payment Method</h2>
-                        <div
-                          onClick={() =>
-                            this.setState({ selectedPaymentMethod: "online" })
-                          }
+                        <Box className="Payment_methods_box">
+                          <h2>Payment Method</h2>
+                          <div
+                            onClick={() =>
+                              this.setState({ selectedPaymentMethod: "online" })
+                            }
+                          >
+                            <span>
+                              <span>Online Payment Options</span>
+                            </span>
+                            <Radio
+                              checked={selectedPaymentMethod === "online"}
+                              color="success"
+                            />
+                          </div>
+                          <div
+                            onClick={() =>
+                              this.setState({ selectedPaymentMethod: "cash" })
+                            }
+                          >
+                            <span>
+                              <img src={cashIcon} alt="" />
+                              <span>Cash on Delivery</span>
+                            </span>
+                            <Radio
+                              checked={selectedPaymentMethod === "cash"}
+                              color="success"
+                            />
+                          </div>
+                        </Box>
+                        <Grid
+                          sx={{ paddingBottom: "20px" }}
+                          item
+                          xs={6}
+                          lg={4}
+                          md={6}
+                          sm={6}
                         >
-                          <span>
-                            <span>Online Payment Options</span>
-                          </span>
-                          <Radio
-                            checked={selectedPaymentMethod === "online"}
-                            color="success"
-                          />
-                        </div>
-                        <div
-                          onClick={() =>
-                            this.setState({ selectedPaymentMethod: "cash" })
-                          }
-                        >
-                          <span>
-                            <img src={cashIcon} alt="" />
-                            <span>Cash on Delivery</span>
-                          </span>
-                          <Radio
-                            checked={selectedPaymentMethod === "cash"}
-                            color="success"
-                          />
-                        </div>
-                      </Box>
-                      <Grid
-                        sx={{ paddingBottom: "20px" }}
-                        item
-                        xs={6}
-                        lg={4}
-                        md={6}
-                        sm={6}
-                      >
-                        <Button
-                          variant="contained"
-                          fullWidth
-                          className="common-btn pay_now_btn"
-                          onClick={this.handlePlaceOrder}
-                          disabled={
-                            this.props.placeOrderData.status ===
-                            status.IN_PROGRESS
-                          }
-                          endIcon={
-                            this.props.placeOrderData.status ===
-                            status.IN_PROGRESS ? (
-                              <CircularProgress className="common-loader" />
-                            ) : (
-                              <></>
-                            )
-                          }
-                        >
-                          Place Order
-                        </Button>
-                      </Grid>
+                          <Button
+                            variant="contained"
+                            fullWidth
+                            className="common-btn pay_now_btn"
+                            onClick={this.handlePlaceOrder}
+                            disabled={
+                              this.props.placeOrderData.status ===
+                              status.IN_PROGRESS
+                            }
+                            endIcon={
+                              this.props.placeOrderData.status ===
+                              status.IN_PROGRESS ? (
+                                <CircularProgress className="common-loader" />
+                              ) : (
+                                <></>
+                              )
+                            }
+                          >
+                            Place Order
+                          </Button>
+                        </Grid>
                       </div>
                     </>
                   ) : (
@@ -563,42 +558,31 @@ class MyCart extends Component {
                   <h2>Select Delivery Address</h2>
                 </Box>
                 <Box className="select_delivery_slot">
- 
-                  <Grid
-                        
-                        item
-                        xs={6}
-                        lg={4}
-                        md={6}
-                        sm={6}
-                      >
-                        <Button 
-                          onClick={(e) => {
-                            e.stopPropagation(); // Prevent click from bubbling up to Box
-                            this.toggleAddNewAddressModal(e); // Pass the event explicitly
-                          }}
-                         sx={{
-                          borderRadius:"9px",
-                          height:"60px",
-                          background:"rgba(0, 178, 7, 0.1019607843)",
-                          justifyContent:"start",
-                          color:"#1f9151",
-                          fontWeight:600,
-                          textTransform:"none",
-                          fontSize:'16px'
-                         }}
-                          fullWidth
-                          disabled={
-                            this.props.placeOrderData.status ===
-                            status.IN_PROGRESS
-                          }
-                          startIcon={
-                            <AddIcon fontSize="28px" />
-                          }
-                        >
-                       Add New Address
-                        </Button>
-                      </Grid>
+                  <Grid item xs={6} lg={4} md={6} sm={6}>
+                    <Button
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent click from bubbling up to Box
+                        this.toggleAddNewAddressModal(e); // Pass the event explicitly
+                      }}
+                      sx={{
+                        borderRadius: "9px",
+                        height: "60px",
+                        background: "rgba(0, 178, 7, 0.1019607843)",
+                        justifyContent: "start",
+                        color: "#1f9151",
+                        fontWeight: 600,
+                        textTransform: "none",
+                        fontSize: "16px",
+                      }}
+                      fullWidth
+                      disabled={
+                        this.props.placeOrderData.status === status.IN_PROGRESS
+                      }
+                      startIcon={<AddIcon fontSize="28px" />}
+                    >
+                      Add New Address
+                    </Button>
+                  </Grid>
                 </Box>
                 <Box className="delivery_slots_container">
                   <h2>Select An Address</h2>
@@ -612,7 +596,6 @@ class MyCart extends Component {
             )}
           </Box>
         </Drawer>
-
         <Drawer
           open={this.state.TabSelectAddressPopupOpen}
           anchor="bottom"
@@ -622,55 +605,43 @@ class MyCart extends Component {
             });
           }}
         >
-          <Box
-            className="tab_popup"
-          >
+          <Box className="tab_popup">
             <Box className="tab_select_delivery_container">
               <h2>Select Delivery Address</h2>
             </Box>
-            <Grid
-                        
-                        item
-                        xs={6}
-                        lg={4}
-                        md={6}
-                        sm={6}
-                      >
-                        <Button 
-                          onClick={(e) => {
-                            e.stopPropagation(); // Prevent click from bubbling up to Box
-                            this.toggleAddNewAddressModal(e); // Pass the event explicitly
-                          }}
-                         sx={{
-                          borderRadius:"9px",
-                          height:"50px",
-                          background:"rgba(0, 178, 7, 0.1019607843)",
-                          justifyContent:"start",
-                          color:"#1f9151",
-                          fontWeight:600,
-                          textTransform:"none",
-                          fontSize:'16px',
-                          marginTop:"15px"
-                         }}
-                          fullWidth
-                          disabled={
-                            this.props.placeOrderData.status ===
-                            status.IN_PROGRESS
-                          }
-                          startIcon={
-                            <AddIcon fontSize="large" />
-                          }
-                        >
-                       Add New Address
-                        </Button>
-                      </Grid>
-
-            <AllAddresses  onAddressSelect={(address) =>
-                      this.setState({ selectedAddress: address })
-                    } />
+            <Grid item xs={6} lg={4} md={6} sm={6}>
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent click from bubbling up to Box
+                  this.toggleAddNewAddressModal(e); // Pass the event explicitly
+                }}
+                sx={{
+                  borderRadius: "9px",
+                  height: "50px",
+                  background: "rgba(0, 178, 7, 0.1019607843)",
+                  justifyContent: "start",
+                  color: "#1f9151",
+                  fontWeight: 600,
+                  textTransform: "none",
+                  fontSize: "16px",
+                  marginTop: "15px",
+                }}
+                fullWidth
+                disabled={
+                  this.props.placeOrderData.status === status.IN_PROGRESS
+                }
+                startIcon={<AddIcon fontSize="large" />}
+              >
+                Add New Address
+              </Button>
+            </Grid>
+            <AllAddresses
+              onAddressSelect={(address) =>
+                this.setState({ selectedAddress: address })
+              }
+            />
           </Box>
         </Drawer>
-
         <Drawer
           open={this.state.TabAddNewAddressOpen}
           anchor="bottom"
@@ -698,7 +669,6 @@ class MyCart extends Component {
             />
           </Box>
         </Drawer>
-
         <Modal
           open={this.state.AddNewAddressOpen}
           onClose={() => {
@@ -717,7 +687,6 @@ class MyCart extends Component {
             />
           </Box>
         </Modal>
-
         {/* <Modal
           open={this.state.paymentLink}
           aria-describedby="modal-modal-description"
@@ -744,7 +713,6 @@ class MyCart extends Component {
             </Box>
           </Box>
         </Modal> */}
-
         <Modal
           open={this.state.slotOpen}
           onClose={() => {
@@ -764,15 +732,13 @@ class MyCart extends Component {
             />
           </>
         </Modal>
-        {
-          console.log(this.state.selectedSlot , 'slotttt id')
-        }
-         {isAddNewAddressModalOpen && (
-                  <AddNewAddressModal
-                    open={isAddNewAddressModalOpen}
-                    handleClose={this.handleAddNewAddressClose} 
-                  />
-                )} 
+        {console.log(this.state.selectedSlot, "slotttt id")}
+        {isAddNewAddressModalOpen && (
+          <AddNewAddressModal
+            open={isAddNewAddressModalOpen}
+            handleClose={this.handleAddNewAddressClose}
+          />
+        )}
       </>
     );
   }

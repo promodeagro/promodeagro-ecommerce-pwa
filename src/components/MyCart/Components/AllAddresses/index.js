@@ -43,12 +43,15 @@ class AllAddresses extends React.Component {
   componentDidMount() {
     const items = loginDetails();
     this.setState({ allAddressApiLoader: true });
-    this.props.getAllAddress({ userId: items.userId });
-        if (!this.state.selectedAddressId && this.props.allAddressData.defaultAddressId) {
-      this.setDefaultAddress(this.props.allAddressData.defaultAddressId);
-    }
+    this.props.getAllAddress({ userId: items.userId }).then(() => {
+      // Ensure default address gets selected
+      const { defaultAddressId } = this.props.allAddressData;
+      if (!this.state.selectedAddressId && defaultAddressId) {
+        this.setDefaultAddress(defaultAddressId);
+      }
+    });
   }
-  
+    
   componentDidUpdate(prevProps) {
     const { allAddressData, deleteAddresses } = this.props;
         if (allAddressData.defaultAddressId && !this.state.selectedAddressId) {
