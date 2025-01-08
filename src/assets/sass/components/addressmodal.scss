@@ -208,7 +208,7 @@ gap: 20px;
 
 .labelform{
   font-size: 12px;  
-  height: 90px;
+  height: 84px;
 }
 
 .para{
@@ -411,7 +411,10 @@ color: black;
 
 
 
-
+.containerheight{
+  height: 70%;
+  // background-color: gray;
+}
 
 
 
@@ -454,4 +457,18 @@ color: black;
    background-color: white;
   height: 30px;
   cursor: pointer;
+}
+
+.roundDiv1 {
+  width: 100px;            /* Set width */
+  height: 20px;           /* Set height */
+  border-radius: 10px;    /* Makes the div rounded */
+  background-color: #927c7c; /* Green color */
+  display: inline-block;  /* Keep it inline with the address text */
+  text-align: center;     /* Center the text inside the div */
+  color: white;           /* Text color */
+  font-size: 10px;        /* Adjust font size */
+  line-height: 20px;      /* Vertically center the text */
+  margin-left: 4px;   
+  font-weight: normal;    /* Ensure text is not bold */
 }

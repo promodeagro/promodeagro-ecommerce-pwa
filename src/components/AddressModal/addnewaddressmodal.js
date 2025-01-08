@@ -36,8 +36,13 @@ const addressValidationSchema = {
   ],
   phone: [
     {
-      message: "Please enter a phone number",
       type: ValidationEngine.type.MANDATORY,
+      message: "Phone number is required.",
+    },
+    {
+      type: ValidationEngine.type.REGEX,
+      regex: ValidationEngine.MOBILE_NUMBER_REGEX,
+      message: "Enter a valid 10-digit phone number.",
     },
   ],
   area: [
@@ -48,8 +53,13 @@ const addressValidationSchema = {
   ],
   pincode: [
     {
-      message: "Please enter your pincode",
       type: ValidationEngine.type.MANDATORY,
+      message: "Pincode is required.",
+    },
+    {
+      type: ValidationEngine.type.REGEX,
+      regex: ValidationEngine.ZIP_CODE_REGEX,
+      message: "Enter a valid 6-digit pincode.",
     },
   ],
   selectedAddressType: [
@@ -198,8 +208,7 @@ class AddNewAddressModal extends Component {
 
       this.setState({ isSubmitting: false });
       this.props.handleClose();
-                 window.location.reload();
-
+      window.location.reload();
     } catch (error) {
       console.error("Error in API call:", error);
       this.setState({ isSubmitting: false });
@@ -207,35 +216,42 @@ class AddNewAddressModal extends Component {
   };
 
   validateForm = () => {
-    const {
-      fullName,
-      flatNumber,
-      landmark,
-      phone,
-      area,
-      pincode,
-      selectedAddressType,
-    } = this.state;
-    const errors = {};
-    Object.keys(addressValidationSchema).forEach((field) => {
-      const fieldValidators = addressValidationSchema[field];
-      fieldValidators.forEach((validator) => {
-        if (
-          validator.type === ValidationEngine.type.MANDATORY &&
-          !this.state[field]
-        ) {
-          errors[field] = validator.message; // Capture validation error
-        }
+      const {
+        fullName,
+        flatNumber,
+        landmark,
+        phone,
+        area,
+        pincode,
+        selectedAddressType,
+      } = this.state;
+      const errors = {};
+      Object.keys(addressValidationSchema).forEach((field) => {
+        const fieldValidators = addressValidationSchema[field];
+        fieldValidators.forEach((validator) => {
+          if (
+            validator.type === ValidationEngine.type.MANDATORY &&
+            !this.state[field]
+          ) {
+            if (!errors[field]) errors[field] = validator.message; // Assign a string, not an object
+          }
+          if (
+            validator.type === ValidationEngine.type.REGEX &&
+            this.state[field] &&
+            !validator.regex.test(this.state[field])
+          ) {
+            errors[field] = validator.message; // Add regex error
+          }
+        });
       });
-    });
-
-    const isValid = Object.keys(errors).length === 0;
-    this.setState({ validationErrors: errors }); // Update state with errors
-    return {
-      isValid,
-      errors,
+  
+      const isValid = Object.keys(errors).length === 0;
+      this.setState({ validationErrors: errors }); // Update state with errors
+      return {
+        isValid,
+        errors,
+      };
     };
-  };
 
   render() {
     const { open, handleClose } = this.props;
@@ -343,8 +359,35 @@ class AddNewAddressModal extends Component {
                 <TextField
                   fullWidth
                   value={phone}
-                  onChange={(e) => this.setState({ phone: e.target.value })}
+                  onInput={(e) => {
+                    e.target.value = e.target.value.replace(/[^0-9]/g, ""); // Allow only numbers
+                  }}
+                  onChange={(e) => {
+                    this.setState({
+                      phone: e.target.value,
+                      validationErrors: {
+                        ...this.state.validationErrors,
+                        phone: "",
+                      }, // Clear error when typing
+                    });
+                  }}
+                  onBlur={() => {
+                    const phoneValue = this.state.phone;
+                    const errors = ValidationEngine.validate(
+                      addressValidationSchema,
+                      {
+                        phone: phoneValue,
+                      }
+                    );
+                    this.setState({
+                      validationErrors: {
+                        ...this.state.validationErrors,
+                        phone: errors?.phone?.message || "", // Set validation error only on blur
+                      },
+                    });
+                  }}
                   error={!!this.state.validationErrors?.phone}
+                  helperText={this.state.validationErrors?.phone || ""}
                 />
               </Box>
               <Box className="labelform">
@@ -365,8 +408,35 @@ class AddNewAddressModal extends Component {
                 <TextField
                   fullWidth
                   value={pincode}
-                  onChange={(e) => this.setState({ pincode: e.target.value })}
+                  onInput={(e) => {
+                    e.target.value = e.target.value.replace(/[^0-9]/g, ""); // Allow only numbers
+                  }}
+                  onChange={(e) => {
+                    this.setState({
+                      pincode: e.target.value,
+                      validationErrors: {
+                        ...this.state.validationErrors,
+                        pincode: "",
+                      }, // Clear error when typing
+                    });
+                  }}
+                  onBlur={() => {
+                    const pincodevalue = this.state.pincode;
+                    const errors = ValidationEngine.validate(
+                      addressValidationSchema,
+                      {
+                        pincode: pincodevalue,
+                      }
+                    );
+                    this.setState({
+                      validationErrors: {
+                        ...this.state.validationErrors,
+                        pincode: errors?.pincode?.message || "", // Set validation error only on blur
+                      },
+                    });
+                  }}
                   error={!!this.state.validationErrors?.pincode}
+                  helperText={this.state.validationErrors?.pincode || ""}
                 />
               </Box>
             </Grid>

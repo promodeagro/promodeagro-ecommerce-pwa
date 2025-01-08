@@ -207,15 +207,14 @@ class AddressModal extends Component {
               <Box className="alladdressbox">
                 {otherAddresses.length > 0 ? (
                   otherAddresses.map((address) => (
-                    <a
-                      key={address.addressId}
-                      className="address-item"
-                      onClick={() =>
-                        this.handleSetDefaultAddress(address.addressId)
-                      }
-                    >
+                    <div key={address.addressId} className="address-item">
                       <Box className="iconcontainer1">
-                        <span>
+                        <span
+                          style={{ width: "80%" }}
+                          onClick={() =>
+                            this.handleSetDefaultAddress(address.addressId)
+                          }
+                        >
                           <span className="underlinetext">
                             {address.address_type || "No address type"}
                           </span>
@@ -237,11 +236,17 @@ class AddressModal extends Component {
                           />
                         </Box>
                       </Box>
-                      <Box sx={{ marginTop: "8px" }}>
-                        {address.house_number} {address.landmark_area}{" "}
+                      <Box
+                        sx={{ marginTop: "8px" }}
+                        className="containerheight"
+                        onClick={() =>
+                          this.handleSetDefaultAddress(address.addressId)
+                        }
+                      >
+                        {address.house_number} {address.landmark_area}
                         {address.address}, {address.zipCode}
                       </Box>
-                    </a>
+                    </div>
                   ))
                 ) : (
                   <></>
@@ -291,11 +296,11 @@ class AddressModal extends Component {
                 >
                   {isDeleting ? (
                     <>
+                      Confirm
                       <CircularProgress
-                        size={24}
-                        style={{ marginRight: "8px" }}
+                        size={20} // Adjust the size as needed
+                        style={{ marginLeft: "8px" }} // Add spacing between text and spinner
                       />
-                      Deleting...
                     </>
                   ) : (
                     "Confirm"
