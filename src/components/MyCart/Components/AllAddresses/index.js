@@ -81,13 +81,9 @@ class AllAddresses extends React.Component {
     this.setState({ openAddNewAddressModal: false, addressToEdit: null }, () => {
       this.props.getAllAddress({ userId: items.userId })
         .then(() => {
-          // Success: Optionally show a success message
-          // ErrorMessages.success("Address updated successfully!");
         })
         .catch((error) => {
-          // Handle error if the address fetch fails
           console.error("Failed to fetch addresses after edit:", error);
-          // ErrorMessages.error("Failed to update addresses.");
         });
     });
   };
@@ -97,7 +93,6 @@ class AllAddresses extends React.Component {
     this.setState({ allAddressApiLoader: true, deleteAddressApiLoader: false });
     this.props.getDefaultAddress();
     this.props.getAllAddress({ userId: items.userId });
-    //  ErrorMessages.success("Address Delete Successfully");
     this.setState({ open: false });
   };
 
@@ -126,7 +121,6 @@ class AllAddresses extends React.Component {
           this.setState({ openDeleteModal: false, addressToDelete: null }); // Close modal after deletion
           const items = loginDetails(); // Ensure loginDetails is available
           this.props.getAllAddress({ userId: items.userId }); // Call the address API again
-          // ErrorMessages.success("Address Deleted Successfully");
         })
         .catch((error) => {
           console.error("Failed to delete address:", error);

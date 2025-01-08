@@ -50,7 +50,6 @@ class MyCart extends Component {
       showAddressPopup: true,
       TabSelectAddressPopupOpen: false,
       TabAddNewAddressOpen: false,
-      // carts
       cartList: [],
       dataId: "",
       isUpdateIncrease: null,
