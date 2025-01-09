@@ -121,11 +121,11 @@ class AddNewAddressModal extends Component {
 
   handleAddressSubmit = async (e) => {
     e.preventDefault();
-    const { isValid } = this.validateForm(); // Validate form
+    const { isValid, errors } = this.validateForm(); // Validate form
     if (!isValid) {
-      return; // Stop if form is invalid
+      console.log("Validation failed:", errors); // Log validation errors
+      return; // Stop submission if invalid
     }
-
     const {
       fullName,
       flatNumber,
@@ -208,50 +208,50 @@ class AddNewAddressModal extends Component {
 
       this.setState({ isSubmitting: false });
       this.props.handleClose();
-      window.location.reload();
     } catch (error) {
       console.error("Error in API call:", error);
       this.setState({ isSubmitting: false });
     }
+    // window.location.reload();
   };
 
   validateForm = () => {
-      const {
-        fullName,
-        flatNumber,
-        landmark,
-        phone,
-        area,
-        pincode,
-        selectedAddressType,
-      } = this.state;
-      const errors = {};
-      Object.keys(addressValidationSchema).forEach((field) => {
-        const fieldValidators = addressValidationSchema[field];
-        fieldValidators.forEach((validator) => {
-          if (
-            validator.type === ValidationEngine.type.MANDATORY &&
-            !this.state[field]
-          ) {
-            if (!errors[field]) errors[field] = validator.message; // Assign a string, not an object
-          }
-          if (
-            validator.type === ValidationEngine.type.REGEX &&
-            this.state[field] &&
-            !validator.regex.test(this.state[field])
-          ) {
-            errors[field] = validator.message; // Add regex error
-          }
-        });
+    const {
+      fullName,
+      flatNumber,
+      landmark,
+      phone,
+      area,
+      pincode,
+      selectedAddressType,
+    } = this.state;
+    const errors = {};
+    Object.keys(addressValidationSchema).forEach((field) => {
+      const fieldValidators = addressValidationSchema[field];
+      fieldValidators.forEach((validator) => {
+        if (
+          validator.type === ValidationEngine.type.MANDATORY &&
+          !this.state[field]
+        ) {
+          if (!errors[field]) errors[field] = validator.message; // Assign a string, not an object
+        }
+        if (
+          validator.type === ValidationEngine.type.REGEX &&
+          this.state[field] &&
+          !validator.regex.test(this.state[field])
+        ) {
+          errors[field] = validator.message; // Add regex error
+        }
       });
-  
-      const isValid = Object.keys(errors).length === 0;
-      this.setState({ validationErrors: errors }); // Update state with errors
-      return {
-        isValid,
-        errors,
-      };
+    });
+
+    const isValid = Object.keys(errors).length === 0;
+    this.setState({ validationErrors: errors }); // Update state with errors
+    return {
+      isValid,
+      errors,
     };
+  };
 
   render() {
     const { open, handleClose } = this.props;
@@ -278,9 +278,9 @@ class AddNewAddressModal extends Component {
           <p className="saveaddressas">Save Address As</p>
           <div className="iconcontainer">
             {["Home", "Work", "Other"].map((type) => (
-              <a
+              <button
                 key={type}
-                className="icons-wrapper"
+                className="button1"
                 onClick={() => this.handleAddressTypeSelection(type)}
               >
                 <img
@@ -291,11 +291,12 @@ class AddNewAddressModal extends Component {
                       ? Workicon
                       : Othericon
                   }
+                  onClick={() => this.handleAddressTypeSelection(type)}
                   alt={type}
-                  className="icon"
                 />
                 <span
                   className="icontext"
+                  onClick={() => this.handleAddressTypeSelection(type)}
                   style={{
                     color:
                       this.state.selectedAddressType === type
@@ -309,10 +310,9 @@ class AddNewAddressModal extends Component {
                 >
                   {type}
                 </span>
-              </a>
+              </button>
             ))}
           </div>
-
           <Grid container spacing={2}>
             <Grid xs={12} sm={6} item>
               <Box className="labelform">
@@ -322,7 +322,15 @@ class AddNewAddressModal extends Component {
                 <TextField
                   fullWidth
                   value={fullName}
-                  onChange={(e) => this.setState({ fullName: e.target.value })}
+                  onChange={(e) => {
+                    this.setState({
+                      fullName: e.target.value,
+                      validationErrors: {
+                        ...this.state.validationErrors,
+                        fullName: "",
+                      }, // Clear error when typing
+                    });
+                  }}
                   error={!!this.state.validationErrors?.fullName}
                 />
               </Box>
@@ -333,9 +341,15 @@ class AddNewAddressModal extends Component {
                 <TextField
                   fullWidth
                   value={flatNumber}
-                  onChange={(e) =>
-                    this.setState({ flatNumber: e.target.value })
-                  }
+                  onChange={(e) => {
+                    this.setState({
+                      flatNumber: e.target.value,
+                      validationErrors: {
+                        ...this.state.validationErrors,
+                        flatNumber: "",
+                      }, // Clear error when typing
+                    });
+                  }}
                   error={!!this.state.validationErrors?.flatNumber}
                 />
               </Box>
@@ -346,7 +360,15 @@ class AddNewAddressModal extends Component {
                 <TextField
                   fullWidth
                   value={landmark}
-                  onChange={(e) => this.setState({ landmark: e.target.value })}
+                  onChange={(e) => {
+                    this.setState({
+                      landmark: e.target.value,
+                      validationErrors: {
+                        ...this.state.validationErrors,
+                        landmark: "",
+                      }, // Clear error when typing
+                    });
+                  }}
                   error={!!this.state.validationErrors?.landmark}
                 />
               </Box>
@@ -397,7 +419,15 @@ class AddNewAddressModal extends Component {
                 <TextField
                   fullWidth
                   value={area}
-                  onChange={(e) => this.setState({ area: e.target.value })}
+                  onChange={(e) => {
+                    this.setState({
+                      area: e.target.value,
+                      validationErrors: {
+                        ...this.state.validationErrors,
+                        area: "",
+                      }, // Clear error when typing
+                    });
+                  }}
                   error={!!this.state.validationErrors?.area}
                 />
               </Box>
@@ -463,7 +493,7 @@ class AddNewAddressModal extends Component {
               <span className="checkboxspan">Set this Address as default</span>
             </>
           ) : null}
-          <Box sx={{ marginTop: "16px" }}>
+          <Box sx={{ marginTop: "8px" }}>
             {isSubmitting ? (
               <CircularProgress color="success" />
             ) : (

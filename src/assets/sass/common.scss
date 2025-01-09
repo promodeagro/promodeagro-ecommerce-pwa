@@ -351,3 +351,10 @@ button {
     }
   }
 }
+
+.h2spacing{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+}

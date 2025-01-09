@@ -687,6 +687,7 @@ padding: 1rem;
    h2{
     font-family: Poppins;
 font-size: 16px;
+margin-bottom: 12px;
 font-weight: 600;
 line-height: 19.2px;
 text-align: left;
@@ -1132,6 +1133,14 @@ span{
     display: flex;
     align-items: center;
 }
+
+.circularprogressstyle{
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    margin-top: 6px;
+}
+
 
 .noslot{
     justify-content: center;
