@@ -170,6 +170,11 @@ class Carts extends Component {
     render() {
         const { dataId, isUpdateIncrease } = this.state;
         return (
+          <>
+                { this.props.cartItems.status === status.IN_PROGRESS ? (
+    Loader.commonLoader() // Show loader while data is being fetched
+  ) : (
+
             <div className="items_container">
             {this.state.cartList?.length > 0 ? (
               this.state.cartList.map((item) => {
@@ -280,7 +285,9 @@ class Carts extends Component {
                 <Box sx={{display:"flex" , justifyContent:"center" , minHeight:"100px" , alignItems:"center"}}>No Items In Cart</Box>
             )}
           </div>
-          
+
+)}
+          </>
         );
     }
 }
