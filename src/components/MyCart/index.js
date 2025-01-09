@@ -391,6 +391,8 @@ class MyCart extends Component {
                       onClick={() => {
                         this.setState({
                           showAddressPopup: false,
+                          selectedSlot: null, // Reset the selected slot to "Select Slot"
+
                         });
                       }}
                       href="#"
@@ -409,6 +411,8 @@ class MyCart extends Component {
                       onClick={() => {
                         this.setState({
                           TabSelectAddressPopupOpen: true,
+                          selectedSlot: null, // Reset the selected slot to "Select Slot"
+
                         });
                       }}
                       sx={{
@@ -428,6 +432,7 @@ class MyCart extends Component {
                       onClick={() => {
                         this.setState({
                           slotOpen: true, // Open the slot selection modal
+
                         });
                       }}
                     >
