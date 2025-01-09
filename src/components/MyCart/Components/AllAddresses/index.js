@@ -24,6 +24,7 @@ import status from "../../../../Redux/Constants";
 import penciEditIcon from "../../../../assets/img/pencilEditIcon.svg";
 import deleteBinIcon from "../../../../assets/img/deleteBinIcon.svg";
 import AddNewAddressModal from "../../../../../src/components/AddressModal/addnewaddressmodal";
+import AddIcon from "@mui/icons-material/Add";
 
 class AllAddresses extends React.Component {
   constructor(props) {
@@ -51,13 +52,16 @@ class AllAddresses extends React.Component {
       }
     });
   }
-    
+
   componentDidUpdate(prevProps) {
     const { allAddressData, deleteAddresses } = this.props;
-        if (allAddressData.defaultAddressId && !this.state.selectedAddressId) {
+    if (allAddressData.defaultAddressId && !this.state.selectedAddressId) {
       this.setDefaultAddress(allAddressData.defaultAddressId);
     }
-      if (deleteAddresses.status === status.SUCCESS && this.state.deleteAddressApiLoader) {
+    if (
+      deleteAddresses.status === status.SUCCESS &&
+      this.state.deleteAddressApiLoader
+    ) {
       this.handlePostDelete();
     }
   }
@@ -65,7 +69,6 @@ class AllAddresses extends React.Component {
     this.setState({ selectedAddressId: defaultAddressId });
     localStorage.setItem("address", defaultAddressId);
   };
-  
 
   setDefaultAddress = (defaultAddressId) => {
     this.setState({ selectedAddressId: defaultAddressId });
@@ -78,16 +81,19 @@ class AllAddresses extends React.Component {
 
   handleAddNewAddressModalClose = () => {
     const items = loginDetails();
-    this.setState({ openAddNewAddressModal: false, addressToEdit: null }, () => {
-      this.props.getAllAddress({ userId: items.userId })
-        .then(() => {
-        })
-        .catch((error) => {
-          console.error("Failed to fetch addresses after edit:", error);
-        });
-    });
+    this.setState(
+      { openAddNewAddressModal: false, addressToEdit: null },
+      () => {
+        this.props
+          .getAllAddress({ userId: items.userId })
+          .then(() => {})
+          .catch((error) => {
+            console.error("Failed to fetch addresses after edit:", error);
+          });
+      }
+    );
   };
-  
+
   handlePostDelete = () => {
     const items = loginDetails();
     this.setState({ allAddressApiLoader: true, deleteAddressApiLoader: false });
@@ -169,10 +175,32 @@ class AllAddresses extends React.Component {
       : [];
 
     return (
-      <>
+      <div>
+        <div  className="h2spacing">
+        <Button
+      onClick={() => this.setState({ openAddNewAddressModal: true })} // Add click handler
+
+          sx={{
+            borderRadius: "9px",
+            height: "60px",
+            background: "rgba(0, 178, 7, 0.1019607843)",
+            justifyContent: "start",
+            color: "#1f9151",
+            fontWeight: 600,
+            textTransform: "none",
+            fontSize: "16px",
+          }}
+          fullWidth
+          startIcon={<AddIcon fontSize="28px" />}
+        >
+          Add New Address
+        </Button>
+        {/* <h2>Select An Address</h2> */}
+        </div>
         {sortedAddresses?.length > 0 ? (
           sortedAddresses.map((item, index) => (
             <Grid key={index} item xs={12} lg={4} md={6} sm={6}>
+              
               {item?.addressId === selectedAddressId &&
               allAddressApiLoader.status === status.IN_PROGRESS ? (
                 Loader.commonLoader()
@@ -202,64 +230,63 @@ class AllAddresses extends React.Component {
                     {item.zipCode}
                   </p>
                   <div className="address_box_bottom">
-  {item.addressId !== allAddressData.defaultAddressId && (
-    <>
-      <img
-        src={penciEditIcon}
-        aria-label="edit"
-        className={
-          item.addressId === selectedAddressId
-            ? "address-btn active"
-            : "address-btn"
-        }
-        alt="edit"
-        onClick={(event) => {
-          event.stopPropagation();
-          this.handleEditClick(item); // Open AddAddressModal with prefilled data
-        }}
-      />
-      <img
-        src={deleteBinIcon}
-        aria-label="delete"
-        className={
-          item.addressId === selectedAddressId
-            ? "address-btn active"
-            : "address-btn"
-        }
-        alt="delete"
-        onClick={(event) => {
-          event.stopPropagation();
-          this.handleDeleteClick(item.addressId); // Open delete modal
-        }}
-      />
-    </>
-  )}
-  {/* Show only Edit button for default address */}
-  {item.addressId === allAddressData.defaultAddressId && (
-    <img
-      src={penciEditIcon}
-      aria-label="edit"
-      className={
-        item.addressId === selectedAddressId
-          ? "address-btn active"
-          : "address-btn"
-      }
-      alt="edit"
-      onClick={(event) => {
-        event.stopPropagation();
-        this.handleEditClick(item); // Open AddAddressModal with prefilled data
-      }}
-    />
-  )}
-</div>
-
+                    {item.addressId !== allAddressData.defaultAddressId && (
+                      <>
+                        <img
+                          src={penciEditIcon}
+                          aria-label="edit"
+                          className={
+                            item.addressId === selectedAddressId
+                              ? "address-btn active"
+                              : "address-btn"
+                          }
+                          alt="edit"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            this.handleEditClick(item); // Open AddAddressModal with prefilled data
+                          }}
+                        />
+                        <img
+                          src={deleteBinIcon}
+                          aria-label="delete"
+                          className={
+                            item.addressId === selectedAddressId
+                              ? "address-btn active"
+                              : "address-btn"
+                          }
+                          alt="delete"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            this.handleDeleteClick(item.addressId); // Open delete modal
+                          }}
+                        />
+                      </>
+                    )}
+                    {/* Show only Edit button for default address */}
+                    {item.addressId === allAddressData.defaultAddressId && (
+                      <img
+                        src={penciEditIcon}
+                        aria-label="edit"
+                        className={
+                          item.addressId === selectedAddressId
+                            ? "address-btn active"
+                            : "address-btn"
+                        }
+                        alt="edit"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          this.handleEditClick(item); // Open AddAddressModal with prefilled data
+                        }}
+                      />
+                    )}
+                  </div>
                 </Box>
               )}
             </Grid>
           ))
         ) : (
-          <div  className="box">
-            <CircularProgress color="success"/>
+          <div className="circularprogressstyle">
+            <CircularProgress color="success" />
           </div>
         )}
         <Dialog
@@ -295,7 +322,10 @@ class AllAddresses extends React.Component {
               disabled={deleteAddressApiLoader}
               endIcon={
                 deleteAddressApiLoader ? (
-                  <CircularProgress className="common-loader delete" color="success"/>
+                  <CircularProgress
+                    className="common-loader delete"
+                    color="success"
+                  />
                 ) : null
               }
             >
@@ -337,7 +367,7 @@ class AllAddresses extends React.Component {
             addressData={addressToEdit} // Prefilled data for edit
           />
         )}
-      </>
+      </div>
     );
   }
 }

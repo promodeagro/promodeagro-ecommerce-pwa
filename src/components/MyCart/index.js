@@ -557,34 +557,8 @@ class MyCart extends Component {
                   <h2>Select Delivery Address</h2>
                 </Box>
                 <Box className="select_delivery_slot">
-                  <Grid item xs={6} lg={4} md={6} sm={6}>
-                    <Button
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevent click from bubbling up to Box
-                        this.toggleAddNewAddressModal(e); // Pass the event explicitly
-                      }}
-                      sx={{
-                        borderRadius: "9px",
-                        height: "60px",
-                        background: "rgba(0, 178, 7, 0.1019607843)",
-                        justifyContent: "start",
-                        color: "#1f9151",
-                        fontWeight: 600,
-                        textTransform: "none",
-                        fontSize: "16px",
-                      }}
-                      fullWidth
-                      disabled={
-                        this.props.placeOrderData.status === status.IN_PROGRESS
-                      }
-                      startIcon={<AddIcon fontSize="28px" />}
-                    >
-                      Add New Address
-                    </Button>
-                  </Grid>
                 </Box>
                 <Box className="delivery_slots_container">
-                  <h2>Select An Address</h2>
                   <AllAddresses
                     onAddressSelect={(address) =>
                       this.setState({ selectedAddress: address })
@@ -606,34 +580,8 @@ class MyCart extends Component {
         >
           <Box className="tab_popup">
             <Box className="tab_select_delivery_container">
-              <h2>Select Delivery Address</h2>
+               <h2>Select Delivery Address</h2> 
             </Box>
-            <Grid item xs={6} lg={4} md={6} sm={6}>
-              <Button
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent click from bubbling up to Box
-                  this.toggleAddNewAddressModal(e); // Pass the event explicitly
-                }}
-                sx={{
-                  borderRadius: "9px",
-                  height: "50px",
-                  background: "rgba(0, 178, 7, 0.1019607843)",
-                  justifyContent: "start",
-                  color: "#1f9151",
-                  fontWeight: 600,
-                  textTransform: "none",
-                  fontSize: "16px",
-                  marginTop: "15px",
-                }}
-                fullWidth
-                disabled={
-                  this.props.placeOrderData.status === status.IN_PROGRESS
-                }
-                startIcon={<AddIcon fontSize="large" />}
-              >
-                Add New Address
-              </Button>
-            </Grid>
             <AllAddresses
               onAddressSelect={(address) =>
                 this.setState({ selectedAddress: address })
