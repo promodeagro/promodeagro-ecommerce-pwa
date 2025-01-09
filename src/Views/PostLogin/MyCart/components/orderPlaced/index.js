@@ -10,10 +10,10 @@ import TruckIcon from "../../../../../assets/img/TruckIcon.svg"
 import locationIcon from "../../../../../assets/img/LocationImg.svg"
 import { fetchOrderById } from "../../../../../Redux/Order/PlaceOrderThunk";
 import { useDispatch, useSelector } from "react-redux";
-import { Loader } from "Views/Utills/helperFunctions";
+import { Loader, loginDetails } from "Views/Utills/helperFunctions";
 import status from "../../../../../Redux/Constants";
 import { LocalStorageCartService } from "Services/localStorageCartService";
-
+import { addListOfItemsToCartReq } from "../../../../../Redux/Cart/CartThunk";
 const OrderPlaced = (props) => {
   const [value, setValue] = useState(0);
   const [apiLoader, setApiLoader] = useState(false);
@@ -23,12 +23,25 @@ const OrderPlaced = (props) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+ let login = loginDetails();
   useEffect(() => {
     setApiLoader(true);
     dispatch(
       fetchOrderById(id)
     );
+    if (id) {
+      // If 'id' exists in the URL, clear the cart from localStorage
+      localStorage.removeItem('cartItem'); // Replace 'cart' with your cart's key
+      localStorage.removeItem('address'); // Replace 'cart' with your cart's key
+      LocalStorageCartService.saveData({});
+      dispatch(
+        addListOfItemsToCartReq({
+          userId: login.userId,
+          cartItems: [],
+        })
+      );
+      console.log('Cart cleared from localStorage because ID is present in the URL.');
+    }
   }, []);
 console.log(placedOrderDetails.message , 'order details by id')
 
@@ -38,15 +51,7 @@ console.log(placedOrderDetails.message , 'order details by id')
       window.location.replace("/");
     });
   }, []);
-
-  if (id) {
-    // If 'id' exists in the URL, clear the cart from localStorage
-    localStorage.removeItem('cartItem'); // Replace 'cart' with your cart's key
-    localStorage.removeItem('address'); // Replace 'cart' with your cart's key
-    LocalStorageCartService.saveData({});
-    console.log('Cart cleared from localStorage because ID is present in the URL.');
-  }
-
+ 
   // Scroll to top when the component loads
   useEffect(() => {
     window.scrollTo(0, 0);
