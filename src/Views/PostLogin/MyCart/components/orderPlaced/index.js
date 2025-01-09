@@ -23,26 +23,32 @@ const OrderPlaced = (props) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
- let login = loginDetails();
+
+
   useEffect(() => {
     setApiLoader(true);
     dispatch(
       fetchOrderById(id)
     );
-    if (id) {
-      // If 'id' exists in the URL, clear the cart from localStorage
-      localStorage.removeItem('cartItem'); // Replace 'cart' with your cart's key
-      localStorage.removeItem('address'); // Replace 'cart' with your cart's key
-      LocalStorageCartService.saveData({});
-      dispatch(
-        addListOfItemsToCartReq({
-          userId: login.userId,
-          cartItems: [],
-        })
-      );
-      console.log('Cart cleared from localStorage because ID is present in the URL.');
-    }
   }, []);
+
+       if(id){
+        localStorage.removeItem("cartItem");
+        localStorage.removeItem("address");
+        LocalStorageCartService.saveData({});
+       }
+
+  useEffect(() => {
+     let login = loginDetails();
+    dispatch(
+      addListOfItemsToCartReq(
+       { userId: login.userId,
+        cartItems: [],}
+      )
+    );
+  }, []);
+
+
 console.log(placedOrderDetails.message , 'order details by id')
 
   useEffect(() => {
