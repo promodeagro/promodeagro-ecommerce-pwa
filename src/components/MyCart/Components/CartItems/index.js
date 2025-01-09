@@ -203,7 +203,6 @@ class Carts extends Component {
                     >
                       <img  style={{objectFit:"cover" , width:"100%" , height:"100%"}} src={item?.productImage} alt="product-cart-img" />
                     </Box>
-          
                     {/* Product Details */}
                     <Box className="item_details" flexGrow={1}>
                       <span>{item?.productName}</span>
