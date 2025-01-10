@@ -7,13 +7,12 @@ import {
   Tab,
   Tabs,
   Typography,
-  CircularProgress,
 } from "@mui/material";
 import closeModalIcon from "../../../../assets/img/closeModalIcon.svg";
 import { connect } from "react-redux";
 import { fetchDeliverySlots } from "../../../../Redux/Cart/CartThunk";
 import { getAllAddress } from "../../../../Redux/Address/AddressThunk";
-import { loginDetails } from "../../../../Views/Utills/helperFunctions";
+import { loginDetails, Loader } from "../../../../Views/Utills/helperFunctions";
 
 class DeliverySlots extends Component {
   constructor(props) {
@@ -283,10 +282,8 @@ class DeliverySlots extends Component {
               }}  label="Night" />
             </Tabs>
             {status === "IN_PROGRESS" ? (
-              <div className="box">
-                <CircularProgress color="success" />
-              </div>
-            ) : filteredSlots.length > 0 ? (
+  Loader.commonLoader() // Correct usage
+) : filteredSlots.length > 0 ? (
               <Box
                 sx={{
                   border: "1px solid #e0e0e0",

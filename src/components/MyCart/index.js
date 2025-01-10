@@ -4,15 +4,10 @@ import {
   CircularProgress,
   Drawer,
   Grid,
-  IconButton,
   Modal,
   Radio,
-  Typography,
 } from "@mui/material";
 import React, { Component } from "react";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import greenPlusIcon from "../../assets/img/greenPlusIcon.svg";
 import ArrowDown from "../../assets/img/ArrowDown.svg";
 import closeModal from "../../assets/img/closeModalIcon.svg";
 import BackArrow from "../../assets/img/backArrow.svg";
@@ -21,7 +16,6 @@ import { Link } from "react-router-dom";
 import AddNewAddressModal from "../../../src/components/AddressModal/addnewaddressmodal";
 import {
   ErrorMessages,
-  Loader,
   loginDetails,
 } from "Views/Utills/helperFunctions";
 import { LocalStorageCartService } from "Services/localStorageCartService";
@@ -41,7 +35,6 @@ import AllAddresses from "./Components/AllAddresses";
 import AddNewAddress from "./Components/AddNewAddress";
 import DeliverySlots from "./Components/DeliverySlots";
 import CartItems from "./Components/CartItems";
-import AddIcon from "@mui/icons-material/Add";
 class MyCart extends Component {
   constructor(props) {
     super(props);
@@ -327,7 +320,7 @@ class MyCart extends Component {
     if (defaultAddress) {
       return `${defaultAddress.address}, ${defaultAddress.zipCode}`;
     }
-    return "No Address Selected"; // Default message if there's no default address in local storage
+    return "No Address Selected"; 
   }
 
   getDefaultAddresstype() {
@@ -335,12 +328,12 @@ class MyCart extends Component {
     if (defaultAddress) {
       return `${defaultAddress.address_type}`;
     }
-    return "No Address Selected"; // Default message if there's no default address in local storage
+    return "No Address Selected"; 
   }
 
   toggleAddNewAddressModal = (e) => {
     if (e?.stopPropagation) {
-      e.stopPropagation(); // Prevent click from bubbling up to parent element
+      e.stopPropagation(); 
     }
     this.setState((prevState) => ({
       isAddNewAddressModalOpen: !prevState.isAddNewAddressModalOpen,
@@ -349,12 +342,12 @@ class MyCart extends Component {
 
   handleAddNewAddressClose = () => {
     this.setState({
-      isAddNewAddressModalOpen: false, // Close the AddAddressModal
+      isAddNewAddressModalOpen: false, 
     });
   };
 
   render() {
-    const { matches, dataId, isUpdateIncrease, selectedPaymentMethod } =
+    const { matches, selectedPaymentMethod } =
       this.state;
     const { open, handleClose } = this.props;
     const { isAddNewAddressModalOpen } = this.state;
@@ -373,7 +366,7 @@ class MyCart extends Component {
                   <img src={LocationIcon} alt="" />
                   <Box>
                     <span>
-                      Delivering to{" "}
+                      Delivering to
                       {this.state.selectedAddress
                         ? this.state.selectedAddress.address_type
                         : this.getDefaultAddresstype()}
@@ -382,7 +375,7 @@ class MyCart extends Component {
                       {
                         this.state.selectedAddress
                           ? `${this.state.selectedAddress.address}, ${this.state.selectedAddress.zipCode}`
-                          : this.getDefaultAddress() // Get default address from local storage if no address is selected
+                          : this.getDefaultAddress() 
                       }
                     </span>
                   </Box>
@@ -391,8 +384,7 @@ class MyCart extends Component {
                       onClick={() => {
                         this.setState({
                           showAddressPopup: false,
-                          selectedSlot: null, // Reset the selected slot to "Select Slot"
-
+                          selectedSlot: null, 
                         });
                       }}
                       href="#"
@@ -411,8 +403,7 @@ class MyCart extends Component {
                       onClick={() => {
                         this.setState({
                           TabSelectAddressPopupOpen: true,
-                          selectedSlot: null, // Reset the selected slot to "Select Slot"
-
+                          selectedSlot: null, 
                         });
                       }}
                       sx={{
@@ -431,8 +422,7 @@ class MyCart extends Component {
                     <div
                       onClick={() => {
                         this.setState({
-                          slotOpen: true, // Open the slot selection modal
-
+                          slotOpen: true, 
                         });
                       }}
                     >
@@ -605,8 +595,8 @@ class MyCart extends Component {
         >
           <Box
             sx={{
-              borderRadius: "12px 12px 0 0", // Rounded top corners
-              overflow: "scroll", // Prevents child content from overflowing the border radius
+              borderRadius: "12px 12px 0 0", 
+              overflow: "scroll", 
               padding: 0,
               background: "#fff",
             }}
@@ -639,32 +629,6 @@ class MyCart extends Component {
             />
           </Box>
         </Modal>
-        {/* <Modal
-          open={this.state.paymentLink}
-          aria-describedby="modal-modal-description"
-          data-aos="flip-left"
-        >
-          <Box
-            className="common-modal"
-            style={{ width: "300px", height: "150px" }}
-          >
-            <Box
-              className="modal-body d-flex align-items-center justify-content-center w-100"
-              style={{ height: "150px" }}
-            >
-              <Button
-                className="common-btn "
-                onClick={() => {
-                  if (this.state.paymentLink) {
-                    window.open(this.state.paymentLink, "_blank");
-                  }
-                }}
-              >
-                Pay
-              </Button>
-            </Box>
-          </Box>
-        </Modal> */}
         <Modal
           open={this.state.slotOpen}
           onClose={() => {
@@ -700,7 +664,7 @@ function mapStateToProps(state) {
     state.cartitem;
   const { loginData } = state.login;
   const { saveForLaterData } = state.allproducts;
-  const { placeOrderData, deliverySlotData } = state.placeorder;
+  const { placeOrderData } = state.placeorder;
   console.log(placeOrderData, "dsnviwdbuowb");
   return {
     cartItems,
@@ -720,7 +684,6 @@ const mapDispatchToProps = {
   saveForLater,
   addListOfItemsToCartReq,
 };
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps
