@@ -285,9 +285,7 @@ class AllAddresses extends React.Component {
             </Grid>
           ))
         ) : (
-          <div className="circularprogressstyle">
-            <CircularProgress color="success" />
-          </div>
+  Loader.commonLoader() 
         )}
         <Dialog
           open={open}
