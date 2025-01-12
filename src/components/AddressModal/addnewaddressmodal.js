@@ -440,18 +440,29 @@ class AddNewAddressModal extends Component {
             </>
           ) : null}
           <Box sx={{ marginTop: "8px" }}>
-            {isSubmitting ? (
-              <CircularProgress color="success" />
-            ) : (
-              <button
-                variant="contained"
-                className="smallbutton"
-                type="submit"
-                onClick={this.handleAddressSubmit}
-              >
-                Save
-              </button>
-            )}
+            <button
+              variant="contained"
+              className="smallbutton"
+              type="submit"
+              onClick={this.handleAddressSubmit}
+              disabled={isSubmitting} // Disable the button while submitting
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                position: "relative",
+                padding: "8px 16px",
+              }}
+            >
+              Save
+              {isSubmitting && (
+                <CircularProgress
+                  color="success"
+                  size={20}
+                  style={{ marginLeft: "4px" }} // Add space between spinner and text
+                />
+              )}
+            </button>
           </Box>
         </Box>
       </Modal>
