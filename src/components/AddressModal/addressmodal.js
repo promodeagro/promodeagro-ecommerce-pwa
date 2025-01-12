@@ -20,6 +20,8 @@ class AddressModal extends Component {
       openDeleteModal: false, // For confirming delete
       addressToDelete: null,
       addressToEdit: null, // Store the address data to be edited
+      isDeleting: false, // Add loading state for deletion
+
     };
   }
 
@@ -92,22 +94,29 @@ class AddressModal extends Component {
     const loginData = loginDetails();
     const userId = loginData?.userId;
     if (userId && addressToDelete) {
+      this.setState({ isDeleting: true });
       this.props
         .deleteAddress({
           userId: userId,
           addressId: addressToDelete,
         })
         .then(() => {
-          this.setState({ openDeleteModal: false, addressToDelete: null });
-          this.props.handleClose(); // Close the AddressModal after deletion
+          this.setState({
+            openDeleteModal: false,
+            addressToDelete: null,
+            isDeleting: false,
+          });
+          this.props.handleClose();
         })
         .catch((error) => {
+          this.setState({ isDeleting: false });
           console.error("Failed to delete address:", error);
         });
     } else {
       console.error("User ID or address ID is missing.");
     }
   };
+
 
   handleEditClick = (address) => {
     this.setState({
@@ -282,28 +291,28 @@ class AddressModal extends Component {
               </Box>
               <Box className="buttongap">
                 <button
-                  onClick={() => this.handleDeleteModalClose(false)} // Close modal on cancel
+                  onClick={() => this.handleDeleteModalClose(false)}
                   variant="outlined"
                   className="cancelbutton"
                 >
                   Cancel
                 </button>
                 <button
-                  onClick={this.handleConfirmDelete} // Triggers the actual deletion
+                  onClick={this.handleConfirmDelete}
                   className="confirmbutton"
                   variant="contained"
-                  disabled={isDeleting} // Disable the button during deletion
-                >
-                  {isDeleting ? (
-                    <>
-                      Confirm
-                      <CircularProgress
-                        size={20} // Adjust the size as needed
-                        style={{ marginLeft: "8px" }} // Add spacing between text and spinner
-                      />
-                    </>
-                  ) : (
-                    "Confirm"
+                  disabled={isDeleting}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >Confirm
+                  {isDeleting && (
+                    <CircularProgress
+                      size={20}
+                      style={{ marginLeft: "4px" }}
+                    />
                   )}
                 </button>
               </Box>

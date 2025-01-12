@@ -28,7 +28,7 @@ const addressValidationSchema = {
       type: ValidationEngine.type.MANDATORY,
     },
   ],
- 
+
   phone: [
     {
       type: ValidationEngine.type.MANDATORY,
@@ -40,7 +40,7 @@ const addressValidationSchema = {
       message: "Enter a valid 10-digit phone number.",
     },
   ],
-  
+
   pincode: [
     {
       type: ValidationEngine.type.MANDATORY,
@@ -91,8 +91,8 @@ class AddAddressModal extends Component {
       return {
         fullName: nextProps.addressData.name || "",
         flatNumber: nextProps.addressData.house_number || "",
-         phone: nextProps.addressData.phoneNumber || "",
-         pincode: nextProps.addressData.zipCode || "",
+        phone: nextProps.addressData.phoneNumber || "",
+        pincode: nextProps.addressData.zipCode || "",
         selectedAddressType: nextProps.addressData.address_type || "",
         addressId: nextProps.addressData.addressId || "",
         initialLoad: false,
@@ -117,8 +117,8 @@ class AddAddressModal extends Component {
     const {
       fullName,
       flatNumber,
-       phone,
-       
+      phone,
+
       pincode,
       selectedAddressType,
       isDefaultChecked,
@@ -138,7 +138,7 @@ class AddAddressModal extends Component {
         name: fullName,
         address: flatNumber,
         phoneNumber: phone,
-        
+
         zipCode: pincode,
         house_number: flatNumber,
         address_type: selectedAddressType,
@@ -203,13 +203,8 @@ class AddAddressModal extends Component {
   };
 
   validateForm = () => {
-    const {
-      fullName,
-      flatNumber,
-       phone,
-       pincode,
-      selectedAddressType,
-    } = this.state;
+    const { fullName, flatNumber, phone, pincode, selectedAddressType } =
+      this.state;
     const errors = {};
     Object.keys(addressValidationSchema).forEach((field) => {
       const fieldValidators = addressValidationSchema[field];
@@ -245,7 +240,7 @@ class AddAddressModal extends Component {
       flatNumber,
       landmark,
       phone,
-       pincode,
+      pincode,
       isSubmitting,
       selectedAddressType,
       isDefaultAddressPresent,
@@ -337,7 +332,6 @@ class AddAddressModal extends Component {
                   error={!!this.state.validationErrors?.flatNumber}
                 />
               </Box>
-              
             </Grid>
             <Grid xs={12} sm={6} item>
               <Box className="labelform">
@@ -378,7 +372,7 @@ class AddAddressModal extends Component {
                   helperText={this.state.validationErrors?.phone || ""}
                 />
               </Box>
-           
+
               <Box className="labelform">
                 <span className="para">
                   Pincode<p className="para1">*</p>
@@ -442,18 +436,29 @@ class AddAddressModal extends Component {
             </>
           ) : null}
           <Box sx={{ marginTop: "8px" }}>
-            {isSubmitting ? (
-              <CircularProgress color="success" />
-            ) : (
-              <button
-                variant="contained"
-                className="smallbutton"
-                type="submit"
-                onClick={this.handleAddressSubmit}
-              >
-                Save
-              </button>
-            )}
+            <button
+              variant="contained"
+              className="smallbutton"
+              type="submit"
+              onClick={this.handleAddressSubmit}
+              disabled={isSubmitting} // Disable the button while submitting
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                position: "relative",
+                padding: "8px 16px",
+              }}
+            >
+              Save
+              {isSubmitting && (
+                <CircularProgress
+                  color="success"
+                  size={20}
+                  style={{ marginLeft: "4px" }} // Add space between spinner and text
+                />
+              )}
+            </button>
           </Box>
         </Box>
       </Modal>

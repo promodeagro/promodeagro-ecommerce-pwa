@@ -38,6 +38,7 @@ class AllAddresses extends React.Component {
       openAddNewAddressModal: false,
       addressId: "",
       selectedAddressId: localStorage.getItem("address") || "",
+      confirmDeleteLoader: false, // Loader for the Confirm button in delete modal
     };
   }
 
@@ -121,15 +122,22 @@ class AllAddresses extends React.Component {
     const userId = loginData?.userId;
 
     if (userId && addressToDelete) {
+      this.setState({ confirmDeleteLoader: true }); // Show loader
       this.props
         .deleteAddress({ userId: userId, addressId: addressToDelete })
         .then(() => {
-          this.setState({ openDeleteModal: false, addressToDelete: null }); // Close modal after deletion
-          const items = loginDetails(); // Ensure loginDetails is available
-          this.props.getAllAddress({ userId: items.userId }); // Call the address API again
+          this.setState({
+            openDeleteModal: false,
+            addressToDelete: null,
+            confirmDeleteLoader: false, // Hide loader after successful deletion
+          });
+
+          const items = loginDetails();
+          this.props.getAllAddress({ userId: items.userId }); // Fetch updated addresses
         })
         .catch((error) => {
           console.error("Failed to delete address:", error);
+          this.setState({ confirmDeleteLoader: false }); // Hide loader on error
         });
     } else {
       console.error("User ID or address ID is missing.");
@@ -176,31 +184,28 @@ class AllAddresses extends React.Component {
 
     return (
       <div>
-        <div  className="h2spacing">
-        <Button
-      onClick={() => this.setState({ openAddNewAddressModal: true })} // Add click handler
-
-          sx={{
-            borderRadius: "9px",
-            height: "60px",
-            background: "rgba(0, 178, 7, 0.1019607843)",
-            justifyContent: "start",
-            color: "#1f9151",
-            fontWeight: 600,
-            textTransform: "none",
-            fontSize: "16px",
-          }}
-          fullWidth
-          startIcon={<AddIcon fontSize="28px" />}
-        >
-          Add New Address
-        </Button>
-        {/* <h2>Select An Address</h2> */}
+        <div className="h2spacing">
+          <Button
+            onClick={() => this.setState({ openAddNewAddressModal: true })} // Add click handler
+            sx={{
+              borderRadius: "9px",
+              height: "60px",
+              background: "rgba(0, 178, 7, 0.1019607843)",
+              justifyContent: "start",
+              color: "#1f9151",
+              fontWeight: 600,
+              textTransform: "none",
+              fontSize: "16px",
+            }}
+            fullWidth
+            startIcon={<AddIcon fontSize="28px" />}
+          >
+            Add New Address
+          </Button>
         </div>
         {sortedAddresses?.length > 0 ? (
           sortedAddresses.map((item, index) => (
             <Grid key={index} item xs={12} lg={4} md={6} sm={6}>
-              
               {item?.addressId === selectedAddressId &&
               allAddressApiLoader.status === status.IN_PROGRESS ? (
                 Loader.commonLoader()
@@ -262,7 +267,6 @@ class AllAddresses extends React.Component {
                         />
                       </>
                     )}
-                    {/* Show only Edit button for default address */}
                     {item.addressId === allAddressData.defaultAddressId && (
                       <img
                         src={penciEditIcon}
@@ -285,7 +289,13 @@ class AllAddresses extends React.Component {
             </Grid>
           ))
         ) : (
-  Loader.commonLoader() 
+          <div>
+            {allAddressApiLoader ? (
+              <Loader.commonLoader />
+            ) : (
+              "No addresses available"
+            )}
+          </div>
         )}
         <Dialog
           open={open}
@@ -352,8 +362,15 @@ class AllAddresses extends React.Component {
                 className="confirmbutton"
                 variant="contained"
                 onClick={this.handleConfirmDelete}
+                disabled={this.state.confirmDeleteLoader} // Disable button while loader is active
               >
                 Confirm
+                {this.state.confirmDeleteLoader && (
+                  <CircularProgress
+                    size={20}
+                     style={{ marginLeft: "4px"}}
+                  />
+                )}
               </button>
             </Box>
           </Box>
