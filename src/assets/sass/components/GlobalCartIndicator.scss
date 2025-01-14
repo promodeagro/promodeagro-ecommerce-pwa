@@ -1,0 +1,31 @@
+.global_cart{
+    
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    display: flex
+;
+    z-index: 1199;
+    background: #005f41;
+    bottom: 12px;
+    color: white;
+    border-radius: 12px;
+    padding: 8px 18px 8px 12px;
+     justify-content: space-between;
+    transition: transform 300ms linear;
+     opacity: 1;
+
+    .item_count{
+       
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 14px;
+        margin-bottom: 2px;
+    }
+    .items_rs{
+        
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 20px;
+     }
+}

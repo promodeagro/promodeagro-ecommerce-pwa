@@ -1153,11 +1153,14 @@ span{
 
 .payment_container{
     bottom: 0px;
+    left: 0;
     width: 100%;
     z-index: 2000;
-    // position: sticky;
+    
+    position: sticky;
     background-color: #fff;
     padding-top: 1px;
+    
 }
 
 

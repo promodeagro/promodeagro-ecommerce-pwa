@@ -293,7 +293,7 @@ class DeliverySlots extends Component {
               >
                 <Grid container spacing={0}>
                   {filteredSlots.map((slot, index) => (
-                    <Grid item xs={6} key={index}>
+                    <Grid item xs={12} sm={6} md={6}  key={index}>
                       <FormControlLabel
                         control={
                           <Radio

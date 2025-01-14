@@ -35,6 +35,7 @@ import AllAddresses from "./Components/AllAddresses";
 import AddNewAddress from "./Components/AddNewAddress";
 import DeliverySlots from "./Components/DeliverySlots";
 import CartItems from "./Components/CartItems";
+import { fetchDefaultAddress } from "../../Redux/Address/AddressThunk";
 class MyCart extends Component {
   constructor(props) {
     super(props);
@@ -57,15 +58,23 @@ class MyCart extends Component {
       itemListArr: [],
       cartListArr: [],
       totalPrice: "",
+      defaultSelectedAddress: {},
     };
   }
 
   componentDidMount() {
+   
     window
       .matchMedia("(max-width: 800px)")
       .addEventListener("change", (e) => this.setState({ matches: e.matches }));
 
     const items = loginDetails();
+
+    if (items?.userId) {
+      this.props.fetchDefaultAddress(items?.userId);
+    }
+
+
     if (items?.userId) {
       let cartData = LocalStorageCartService.getData() || {};
       this.props.addListOfItemsToCartReq({
@@ -84,6 +93,22 @@ class MyCart extends Component {
     const items = loginDetails();
 
     const { handleClose } = this.props;
+
+    if (
+      prevProps.defaultAddressData?.status !==
+        this.props?.defaultAddressData?.status &&
+      this.props?.defaultAddressData?.status === status.SUCCESS &&
+      this.props?.defaultAddressData?.data
+    ) {
+      this.setState({
+        defaultSelectedAddress: this.props?.defaultAddressData?.data,
+      });
+      // localStorage.setItem(
+      //   "address",
+      //   this.props?.defaultAddressData?.data?.addressId
+      // );
+    }
+
 
     if (
       prevProps.addListOfItemRes.status !== this.props.addListOfItemRes.status
@@ -345,12 +370,12 @@ class MyCart extends Component {
       isAddNewAddressModalOpen: false, 
     });
   };
-
+  
   render() {
     const { matches, selectedPaymentMethod } =
       this.state;
     const { open, handleClose } = this.props;
-    const { isAddNewAddressModalOpen } = this.state;
+    const { isAddNewAddressModalOpen , defaultSelectedAddress} = this.state;
 
     return (
       <>
@@ -359,10 +384,13 @@ class MyCart extends Component {
             {this.state.showAddressPopup ? (
               <Box className="my_cart_container">
                 <Box className="my_cart">
-                  <h2>My Cart</h2>
+                  <h2>My Cart</h2> 
                   <img onClick={handleClose} src={closeModal} alt="" />
                 </Box>
-                <Box className="my_cart_bottom_address">
+
+                {defaultSelectedAddress?.addressId ? (
+        <>
+           <Box className="my_cart_bottom_address">
                   <img src={LocationIcon} alt="" />
                   <Box>
                     <span>
@@ -447,6 +475,13 @@ class MyCart extends Component {
                     )}
                   </span>
                 </Box>
+        </>
+      ) : (
+        null
+      )}
+      
+             
+               
                 <Box className="item_details_container">
                   <h2>Item Details</h2>
                   <CartItems />
@@ -470,7 +505,11 @@ class MyCart extends Component {
                           <strong>₹{this.state.totalPrice}</strong>
                         </div>
                       </div>
-                      <div className="payment_container">
+
+                      {defaultSelectedAddress?.addressId ? (
+        <>
+             <div className="payment_container">
+
                         <Box className="Payment_methods_box">
                           <h2>Payment Method</h2>
                           <div
@@ -530,8 +569,32 @@ class MyCart extends Component {
                             Place Order
                           </Button>
                         </Grid>
+
+                        
                       </div>
-                    </>
+        </>
+      ) : (
+        <div className="payment_container">
+        <Grid
+        sx={{ paddingBottom: "20px" }}
+        item
+        xs={6}
+        lg={4}
+        md={6}
+        sm={6}
+      >
+        <Button
+          variant="contained"
+          fullWidth
+          className="common-btn pay_now_btn"
+          onClick={()=> this.setState({isAddNewAddressModalOpen:true})}
+        >
+      Add address to proceed
+        </Button>
+      </Grid>
+      </div>
+      )}
+                 </>
                   ) : (
                     <></>
                   )}
@@ -665,7 +728,8 @@ function mapStateToProps(state) {
   const { loginData } = state.login;
   const { saveForLaterData } = state.allproducts;
   const { placeOrderData } = state.placeorder;
-  console.log(placeOrderData, "dsnviwdbuowb");
+  const { allAddress, selectedAddressData, defaultAddressData } =
+  state.alladdress;
   return {
     cartItems,
     loginData,
@@ -674,6 +738,7 @@ function mapStateToProps(state) {
     saveForLaterData,
     placeOrderData,
     addListOfItemRes,
+    defaultAddressData,
   };
 }
 const mapDispatchToProps = {
@@ -681,6 +746,7 @@ const mapDispatchToProps = {
   fetchCartItems,
   deleteItemToCart,
   updateItemToCart,
+  fetchDefaultAddress,
   saveForLater,
   addListOfItemsToCartReq,
 };

@@ -391,9 +391,7 @@ class Header extends Component {
                     // }
                     onClick={() => {
                       if (loginDetails()?.userId) {
-                        if (!currentAddress?.address) {
-                          this.toggleAddAddressModal();
-                        } else {
+                         {
                           this.setState({ myCartOpen: true });
                         }
                       } else {

@@ -11,7 +11,8 @@ import { connect } from "react-redux";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-
+import GlobalCartIndicator from "components/GlobalCartIndicator";
+ 
 function App(props) {
   return (
     <Router>
@@ -19,6 +20,7 @@ function App(props) {
         <div className="app">
           <Header />
           <MainContent />
+          <GlobalCartIndicator/>
           <Footer />
           <ToastContainer
             position="top-right"
