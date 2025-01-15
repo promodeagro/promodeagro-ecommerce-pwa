@@ -219,6 +219,7 @@ class ProductItemView extends Component {
             <Link>{item?.name}</Link>
           </Box>
 
+
           <>
             {item?.unitPrices?.length > 0 ? (
               <Box className="select">
@@ -235,7 +236,8 @@ class ProductItemView extends Component {
                   {item?.unitPrices.map((unitItem, index) => {
                     return (
                       <option key={index} value={unitItem.qty}>
-                        {unitItem.qty} {item?.unit}
+                        {/* {unitItem.qty}  */}
+                        {item?.unit}
                       </option>
                     );
                   })}
@@ -446,10 +448,6 @@ class ProductItemView extends Component {
                 onClick={(event) => {
                   event.stopPropagation();
                   this.handleDeleteWishList(this.state.productId);
-                  // this.props.deleteAddress({
-                  //   userId: loginDetails()?.userId,
-                  //   addressId: this.state.addressId,
-                  // });
                 }}
                 disabled={
                   this.props.deleteBookMarkData.status == status.IN_PROGRESS
