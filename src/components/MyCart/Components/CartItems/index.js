@@ -203,18 +203,15 @@ class Carts extends Component {
                     >
                       <img  style={{objectFit:"cover" , width:"100%" , height:"100%"}} src={item?.productImage} alt="product-cart-img" />
                     </Box>
-                    {/* Product Details */}
                     <Box className="item_details" flexGrow={1}>
                       <span>{item?.productName}</span>
-                      <span>Piece</span>
+                      <span>{item?.QuantityUnits}</span>
                       <Box display="flex" alignItems="center">
                         <span className="price">₹ {item?.Price}</span>
                         <span className="mrp">{item?.Mrp}</span>
                       </Box>
                     </Box>
-          
-                    {/* Quantity Controls */}
-                    <Box
+                              <Box
                       display="flex"
                       alignItems="center"
                       borderRadius={1}

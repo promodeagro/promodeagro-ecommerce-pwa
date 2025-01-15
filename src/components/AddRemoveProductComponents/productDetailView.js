@@ -141,13 +141,15 @@ class ProductDetailCartUpdateView extends Component {
                 {productItem?.unitPrices?.map((unitItem, index) => {
                   return (
                     <option key={index} value={unitItem?.qty}>
-                      {unitItem?.qty} {productItem?.unit}
+                      {/* {unitItem?.qty} */}
+                       {productItem?.unit}
                     </option>
                   );
                 })}
               </NativeSelect>
             </FormControl>
           </Box>
+          
         ) : (
           <Box className="select">{productItem?.unit}</Box>
         )}
