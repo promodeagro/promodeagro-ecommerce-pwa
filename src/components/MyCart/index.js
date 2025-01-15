@@ -86,14 +86,13 @@ class MyCart extends Component {
       this.props.fetchCartItems({
         userId: items.userId,
       });
+      
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
     const items = loginDetails();
-
     const { handleClose } = this.props;
-
     if (
       prevProps.defaultAddressData?.status !==
         this.props?.defaultAddressData?.status &&
@@ -284,6 +283,7 @@ class MyCart extends Component {
       }
     }
   }
+
   handlePlaceOrder = () => {
     let login = loginDetails();
     let addressId = localStorage.getItem("address");
@@ -722,6 +722,7 @@ class MyCart extends Component {
     );
   }
 }
+
 function mapStateToProps(state) {
   const { cartItems, deleteItems, updateItems, addListOfItemRes } =
     state.cartitem;
@@ -741,6 +742,7 @@ function mapStateToProps(state) {
     defaultAddressData,
   };
 }
+
 const mapDispatchToProps = {
   placeOrder,
   fetchCartItems,
@@ -750,6 +752,7 @@ const mapDispatchToProps = {
   saveForLater,
   addListOfItemsToCartReq,
 };
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
