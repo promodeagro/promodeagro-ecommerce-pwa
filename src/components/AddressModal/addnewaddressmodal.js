@@ -28,7 +28,12 @@ const addressValidationSchema = {
       type: ValidationEngine.type.MANDATORY,
     },
   ],
-  
+  landmark: [
+    {
+      message: "Please enter a landmark",
+      type: ValidationEngine.type.MANDATORY,
+    },
+  ],
   phone: [
     {
       type: ValidationEngine.type.MANDATORY,
@@ -40,7 +45,12 @@ const addressValidationSchema = {
       message: "Enter a valid 10-digit phone number.",
     },
   ],
-   
+  area: [
+    {
+      message: "Please enter your area/locality",
+      type: ValidationEngine.type.MANDATORY,
+    },
+  ],
   pincode: [
     {
       type: ValidationEngine.type.MANDATORY,
@@ -91,8 +101,10 @@ class AddNewAddressModal extends Component {
       return {
         fullName: nextProps.addressData.name || "",
         flatNumber: nextProps.addressData.house_number || "",
-         phone: nextProps.addressData.phoneNumber || "",
-         pincode: nextProps.addressData.zipCode || "",
+        landmark: nextProps.addressData.landmark_area || "",
+        phone: nextProps.addressData.phoneNumber || "",
+        area: nextProps.addressData.address || "",
+        pincode: nextProps.addressData.zipCode || "",
         selectedAddressType: nextProps.addressData.address_type || "",
         addressId: nextProps.addressData.addressId || "",
         initialLoad: false,
@@ -117,8 +129,10 @@ class AddNewAddressModal extends Component {
     const {
       fullName,
       flatNumber,
-       phone,
-       pincode,
+      landmark,
+      phone,
+      area,
+      pincode,
       selectedAddressType,
       isDefaultChecked,
       addressId, // Include addressId in the state
@@ -135,10 +149,12 @@ class AddNewAddressModal extends Component {
       userId: userId,
       address: {
         name: fullName,
-        address: flatNumber,
+        address: area,
         phoneNumber: phone,
-         zipCode: pincode,
-         address_type: selectedAddressType,
+        landmark_area: landmark,
+        zipCode: pincode,
+        house_number: flatNumber,
+        address_type: selectedAddressType,
       },
     };
 
@@ -203,8 +219,10 @@ class AddNewAddressModal extends Component {
     const {
       fullName,
       flatNumber,
-       phone,
-       pincode,
+      landmark,
+      phone,
+      area,
+      pincode,
       selectedAddressType,
     } = this.state;
     const errors = {};
@@ -299,7 +317,7 @@ class AddNewAddressModal extends Component {
             <Grid xs={12} sm={6} item>
               <Box className="labelform">
                 <span className="para">
-                  Name<p className="para1">*</p>
+                  Full Name<p className="para1">*</p>
                 </span>
                 <TextField
                   fullWidth
@@ -318,7 +336,7 @@ class AddNewAddressModal extends Component {
               </Box>
               <Box className="labelform">
                 <span className="para">
-                  Address<p className="para1">*</p>
+                  Flat No./ House No./ Building No.<p className="para1">*</p>
                 </span>
                 <TextField
                   fullWidth
@@ -335,7 +353,25 @@ class AddNewAddressModal extends Component {
                   error={!!this.state.validationErrors?.flatNumber}
                 />
               </Box>
-              
+              <Box className="labelform">
+                <span className="para">
+                  Landmark<p className="para1">*</p>
+                </span>
+                <TextField
+                  fullWidth
+                  value={landmark}
+                  onChange={(e) => {
+                    this.setState({
+                      landmark: e.target.value,
+                      validationErrors: {
+                        ...this.state.validationErrors,
+                        landmark: "",
+                      }, // Clear error when typing
+                    });
+                  }}
+                  error={!!this.state.validationErrors?.landmark}
+                />
+              </Box>
             </Grid>
             <Grid xs={12} sm={6} item>
               <Box className="labelform">
@@ -376,7 +412,25 @@ class AddNewAddressModal extends Component {
                   helperText={this.state.validationErrors?.phone || ""}
                 />
               </Box>
-             
+              <Box className="labelform">
+                <span className="para">
+                  Area/Locality<p className="para1">*</p>
+                </span>
+                <TextField
+                  fullWidth
+                  value={area}
+                  onChange={(e) => {
+                    this.setState({
+                      area: e.target.value,
+                      validationErrors: {
+                        ...this.state.validationErrors,
+                        area: "",
+                      }, // Clear error when typing
+                    });
+                  }}
+                  error={!!this.state.validationErrors?.area}
+                />
+              </Box>
               <Box className="labelform">
                 <span className="para">
                   Pincode<p className="para1">*</p>

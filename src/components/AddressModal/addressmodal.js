@@ -209,8 +209,7 @@ class AddressModal extends Component {
                   />
                 </span>
                 <div style={{ marginTop: "8px" }}>
-                  {defaultAddress.house_number} {defaultAddress.landmark_area}{" "}
-                  {defaultAddress.address}, {defaultAddress.zipCode}
+                  {defaultAddress.house_number} {defaultAddress.landmark_area} {defaultAddress.address}, {defaultAddress.zipCode}
                 </div>
               </Box>
               <Box className="alladdressbox">
@@ -252,8 +251,7 @@ class AddressModal extends Component {
                           this.handleSetDefaultAddress(address.addressId)
                         }
                       >
-                        {address.house_number} {address.landmark_area}
-                        {address.address}, {address.zipCode}
+                        {address.house_number} {address.landmark_area} {address.address}, {address.zipCode}
                       </Box>
                     </div>
                   ))
