@@ -184,7 +184,8 @@ class SearchProductItemView extends Component {
                           {item?.unitPrices.map((unitItem, index) => {
                             return (
                               <option key={index} value={unitItem.qty}>
-                                {unitItem.qty} {item?.unit}
+                                {/* {unitItem.qty} */}
+                                 {item?.unit}
                               </option>
                             );
                           })}
