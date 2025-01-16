@@ -31,7 +31,7 @@ class DeliverySlots extends Component {
     dispatch(fetchDeliverySlots(this.state.selectedDay));
     const loginData = loginDetails();
     if (loginData && loginData.userId) {
-      dispatch(getAllAddress({ userId: loginData.userId })); 
+      dispatch(getAllAddress({ userId: loginData.userId }));
     }
   }
 
@@ -77,7 +77,7 @@ class DeliverySlots extends Component {
           if (zipCode && zipCode !== prevState.zipCode) {
             this.setState({ zipCode }, () => {
               const { dispatch } = this.props;
-              dispatch(fetchDeliverySlots({ zipCode })); // Call API with default zipCode
+              dispatch(fetchDeliverySlots({ zipCode }));
             });
           }
         }
@@ -85,36 +85,30 @@ class DeliverySlots extends Component {
     }
   }
 
-
   handleTabChange = (event, newValue) => {
     this.setState({ selectedTab: newValue });
   };
 
   handleSlotChange = (event) => {
     const selectedSlot = event.target.value;
-      const selectedSlotData = this.getFilteredSlots().find(
+    const selectedSlotData = this.getFilteredSlots().find(
       (slot) => `${slot.start} - ${slot.end}` === selectedSlot
-      
     );
-  
+
     if (selectedSlotData) {
       console.log("Selected Slot ID:", selectedSlotData.id);
     }
-  
+
     this.setState({ selectedSlot });
-  
+
     if (this.props.onSlotSelect) {
       this.props.onSlotSelect(selectedSlotData);
-      // this.props.onSlotSelect(selectedSlot);
     }
 
     setTimeout(() => {
       this.props.handleClose();
-    }, 100);  
-
-
+    }, 100);
   };
-  //getfilterslots
 
   getFilteredSlots = () => {
     const { slots } = this.props;
@@ -140,7 +134,6 @@ class DeliverySlots extends Component {
         }
       });
     });
-
     return filteredSlots;
   };
 
@@ -182,118 +175,143 @@ class DeliverySlots extends Component {
               indicatorColor="primary"
               aria-label="delivery slot tabs"
               variant="fullWidth"
-              sx={{ marginBottom: 2 , "& .MuiTabs-indicator": {
-                backgroundColor: "#1F9151", // Custom color for the underline
-              },}}
+              sx={{
+                marginBottom: 2,
+                "& .MuiTabs-indicator": {
+                  backgroundColor: "#1F9151", // Custom color for the underline
+                },
+              }}
             >
-              <Tab 
-               sx={{
-                textTransform: "none",
-                fontFamily: "Poppins",
-                fontSize: "14px",
-                fontWeight: 400,
-                lineHeight: "21px",
-                textAlign: "left",
-                textUnderlinePosition: "from-font",
-                textDecorationSkipInk: "none",
-                color: "#A09797",
-                "&.Mui-selected": {
-                  color: "#1F9151", // Custom color for the selected state
-                },
-                "&.MuiTabs-indicator": {
-                  backgroundColor: "#1F9151", // Your custom color
-                },
-              }} 
-              label="All Slots" />
               <Tab
-               sx={{
-                textTransform: "none",
-                fontFamily: "Poppins",
-                fontSize: "14px",
-                fontWeight: 400,
-                lineHeight: "21px",
-                textAlign: "left",
-                textUnderlinePosition: "from-font",
-                textDecorationSkipInk: "none",
-                color: "#A09797",
-                "&.Mui-selected": {
-                  color: "#1F9151", // Custom color for the selected state
-                },
-                "&.MuiTabs-indicator": {
-                  backgroundColor: "#1F9151", // Your custom color
-                },
-              }} 
-              label="Morning" />
-              <Tab 
-               sx={{
-                textTransform: "none",
-                fontFamily: "Poppins",
-                fontSize: "14px",
-                fontWeight: 400,
-                lineHeight: "21px",
-                textAlign: "left",
-                textUnderlinePosition: "from-font",
-                textDecorationSkipInk: "none",
-                color: "#A09797",
-                "&.Mui-selected": {
-                  color: "#1F9151", // Custom color for the selected state
-                },
-                "&.MuiTabs-indicator": {
-                  backgroundColor: "#1F9151", // Your custom color
-                },
-              }} 
-              label="Afternoon" />
+                sx={{
+                  textTransform: "none",
+                  fontFamily: "Poppins",
+                  fontSize: "14px",
+                  fontWeight: 400,
+                  lineHeight: "21px",
+                  textAlign: "left",
+                  textUnderlinePosition: "from-font",
+                  textDecorationSkipInk: "none",
+                  color: "#A09797",
+                  "&.Mui-selected": {
+                    color: "#1F9151", // Custom color for the selected state
+                  },
+                  "&.MuiTabs-indicator": {
+                    backgroundColor: "#1F9151", // Your custom color
+                  },
+                }}
+                label="All Slots"
+              />
               <Tab
-               sx={{
-                textTransform: "none",
-                fontFamily: "Poppins",
-                fontSize: "14px",
-                fontWeight: 400,
-                lineHeight: "21px",
-                textAlign: "left",
-                textUnderlinePosition: "from-font",
-                textDecorationSkipInk: "none",
-                color: "#A09797",
-                "&.Mui-selected": {
-                  color: "#1F9151", // Custom color for the selected state
-                },
-                "&.MuiTabs-indicator": {
-                  backgroundColor: "#1F9151", // Your custom color
-                },
-              }} 
-              label="Evening" />
-              <Tab 
-               sx={{
-                textTransform: "none",
-                fontFamily: "Poppins",
-                fontSize: "14px",
-                fontWeight: 400,
-                lineHeight: "21px",
-                textAlign: "left",
-                textUnderlinePosition: "from-font",
-                textDecorationSkipInk: "none",
-                color: "#A09797",
-                "&.Mui-selected": {
-                  color: "#1F9151", // Custom color for the selected state
-                },
-                "&.MuiTabs-indicator": {
-                  backgroundColor: "#1F9151", // Your custom color
-                },
-              }}  label="Night" />
+                sx={{
+                  textTransform: "none",
+                  fontFamily: "Poppins",
+                  fontSize: "14px",
+                  fontWeight: 400,
+                  lineHeight: "21px",
+                  textAlign: "left",
+                  textUnderlinePosition: "from-font",
+                  textDecorationSkipInk: "none",
+                  color: "#A09797",
+                  "&.Mui-selected": {
+                    color: "#1F9151", // Custom color for the selected state
+                  },
+                  "&.MuiTabs-indicator": {
+                    backgroundColor: "#1F9151", // Your custom color
+                  },
+                }}
+                label="Morning"
+              />
+              <Tab
+                sx={{
+                  textTransform: "none",
+                  fontFamily: "Poppins",
+                  fontSize: "14px",
+                  fontWeight: 400,
+                  lineHeight: "21px",
+                  textAlign: "left",
+                  textUnderlinePosition: "from-font",
+                  textDecorationSkipInk: "none",
+                  color: "#A09797",
+                  "&.Mui-selected": {
+                    color: "#1F9151", // Custom color for the selected state
+                  },
+                  "&.MuiTabs-indicator": {
+                    backgroundColor: "#1F9151", // Your custom color
+                  },
+                }}
+                label="Afternoon"
+              />
+              <Tab
+                sx={{
+                  textTransform: "none",
+                  fontFamily: "Poppins",
+                  fontSize: "14px",
+                  fontWeight: 400,
+                  lineHeight: "21px",
+                  textAlign: "left",
+                  textUnderlinePosition: "from-font",
+                  textDecorationSkipInk: "none",
+                  color: "#A09797",
+                  "&.Mui-selected": {
+                    color: "#1F9151", // Custom color for the selected state
+                  },
+                  "&.MuiTabs-indicator": {
+                    backgroundColor: "#1F9151", // Your custom color
+                  },
+                }}
+                label="Evening"
+              />
+              <Tab
+                sx={{
+                  textTransform: "none",
+                  fontFamily: "Poppins",
+                  fontSize: "14px",
+                  fontWeight: 400,
+                  lineHeight: "21px",
+                  textAlign: "left",
+                  textUnderlinePosition: "from-font",
+                  textDecorationSkipInk: "none",
+                  color: "#A09797",
+                  "&.Mui-selected": {
+                    color: "#1F9151", // Custom color for the selected state
+                  },
+                  "&.MuiTabs-indicator": {
+                    backgroundColor: "#1F9151", // Your custom color
+                  },
+                }}
+                label="Night"
+              />
             </Tabs>
             {status === "IN_PROGRESS" ? (
-  Loader.commonLoader() // Correct usage
-) : filteredSlots.length > 0 ? (
+              Loader.commonLoader()
+            ) : filteredSlots.length > 0 ? (
               <Box
                 sx={{
                   border: "1px solid #e0e0e0",
                   borderRadius: 2,
-                  minHeight:"240px"
+                  minHeight: "240px",
                 }}
               >
-                <Grid container spacing={0}>
+                <Grid
+                  container
+                  sx={{
+                    flexDirection: { xs: "column", sm: "row" }, // Stack items on small screens
+                    gap: 0, // Ensure no additional space between grid items
+                  }}
+                >
                   {filteredSlots.map((slot, index) => (
-                    <Grid item xs={12} sm={6} md={6}  key={index}>
+                    <Grid
+                      item
+                      xs={12}
+                      sm={6}
+                      md={6}
+                      key={index}
+                      sx={{
+                        padding: 0, // Remove extra padding for the grid items
+                        margin: 0, // Ensure no extra margins
+                      }}
+                    >
                       <FormControlLabel
                         control={
                           <Radio
@@ -309,6 +327,10 @@ class DeliverySlots extends Component {
                         label={
                           <Typography variant="body2">{`${slot.start} ${slot.startAmPm} - ${slot.end} ${slot.endAmPm}`}</Typography>
                         }
+                        sx={{
+                          width: "100%", // Ensure full width for each slot
+                          margin: 0, // Remove any margin between labels
+                        }}
                       />
                     </Grid>
                   ))}
@@ -316,7 +338,6 @@ class DeliverySlots extends Component {
               </Box>
             ) : (
               <div className="box">No Slots Available</div>
-         
             )}
           </Box>
         </Box>

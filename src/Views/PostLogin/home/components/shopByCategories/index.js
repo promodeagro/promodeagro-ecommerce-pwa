@@ -71,7 +71,7 @@ class ShopByCategories extends Component {
             )}
             {matches && (
               <Box className="view-all-link">
-                <Link to={""}>View All</Link>
+                {/* <Link to={""}>View All</Link> */}
               </Box>
             )}
           </Box>
