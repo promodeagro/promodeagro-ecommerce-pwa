@@ -558,6 +558,13 @@ import {
                                 justifyContent:'space-between',
                                 background:'#005F41',
                                 marginTop:'20px' 
+,
+                                '&:hover': {
+                                  background: '#007A55', // Change this to your desired hover color
+                                  boxShadow: 'none', 
+                                },
+
+                                
                             }}
                               variant="contained"
                               fullWidth 
@@ -574,7 +581,7 @@ import {
 
                                        <span style={{
                                         fontSize:'15px', fontWeight:"500", fontFamily:'sans-serif'
-                                    }}>₹ {this.state.totalPrice}</span>
+                                    }}>₹{this.state.totalPrice}</span>
                                     <span style={{
                                         fontSize:'11px' , fontWeight:'400' , opacity:0.8
                                     }}>Total</span>
@@ -590,7 +597,12 @@ import {
                                     , borderRadius:"8px"
                                 }}
                                 >
+                                <span style={{
+                                  fontSize:'16px'
+                                }}>
+
                               Place Order
+                                </span>
                                 
                                < ArrowForwardIosIcon />
                                

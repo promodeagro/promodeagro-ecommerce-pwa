@@ -82,6 +82,7 @@ const Views = () => {
   
       {!isLoggedIn && (
         <>
+        <Route path={`/cart`} element={<Navigate to="/" replace />} />
         <Route path={`/account`} element={<Navigate to="/" replace />} />
           <Route path={`/my-order`} element={<Navigate to="/" replace />} />
           <Route path={`/mycart`} element={<Navigate to="/" replace />} />

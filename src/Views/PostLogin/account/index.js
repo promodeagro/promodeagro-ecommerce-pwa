@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import "../../../assets/sass/pages/account.scss"
+import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 
 class Account extends Component {
     constructor(props) {
@@ -42,6 +43,8 @@ class Account extends Component {
                         onClick={() => {
 
                             localStorage.removeItem("login");
+                            localStorage.removeItem("defaultAddress");
+                            localStorage.removeItem("cartItem");
                             this.props.navigate("/");
                         }}
                     >
@@ -54,7 +57,7 @@ class Account extends Component {
         );
     }
 }
-export default Account;
+ 
 
 
-
+export default(navigateRouter(Account));

@@ -397,7 +397,8 @@ class Header extends Component {
                     onClick={() => {
                       if (loginDetails()?.userId) {
                          {
-                          this.setState({ myCartOpen: true });
+                          // this.setState({ myCartOpen: true });
+                          this.props.navigate("/cart")
                         }
                       } else {
                         this.setState({ authModalOpen: true });
