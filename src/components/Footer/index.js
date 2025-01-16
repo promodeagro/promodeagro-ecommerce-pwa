@@ -236,14 +236,14 @@ class Footer extends Component {
                           <Box className="footer-links">
                             <h3>My Account</h3>
                             <ul>
-                              <li>
+                              {/* <li>
                                 <Link
                                   to="/my-profile/personal-information"
                                   onClick={this.scrollToTop}
                                 >
                                   My Account
                                 </Link>
-                              </li>
+                              </li> */}
                               <li>
                                 <Link to="/my-order" onClick={this.scrollToTop}>
                                   Order History

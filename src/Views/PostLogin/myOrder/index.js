@@ -19,6 +19,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import {
   fetchAllorders,
   fetchOrderById,
@@ -31,6 +32,7 @@ import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import status from "../../../Redux/Constants";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
+import Invoice from "../myProfile/notification/invoice";
 
 TimeAgo.addDefaultLocale(en);
 
@@ -43,15 +45,16 @@ const dateFormatter = (d) => {
 };
 
 const customIcons = {
-  0: <Box className="icon order-placed"></Box>,
-  1: <Box className="icon in-process"></Box>,
-  2: <Box className="icon packed"></Box>,
-  3: <Box className="icon on-the-way"></Box>,
-  4: <Box className="icon delivered"></Box>,
+  0: <Box width={5} className="icon order-placed"></Box>,
+  1: <Box width={5} className="icon in-process"></Box>,
+  2: <Box width={5} className="icon packed"></Box>,
+  3: <Box width={5} className="icon on-the-way"></Box>,
+  4: <Box width={5} className="icon delivered"></Box>,
 };
 
 function CustomStepIcon(props) {
   const { icon, completed, active } = props;
+
   return (
     <Box className="custom-step-icon">
       {completed ? (
@@ -64,14 +67,14 @@ function CustomStepIcon(props) {
             icon === 1
               ? "icon order-placed active"
               : icon === 2
-                ? "icon in-process active"
-                : icon === 3
-                  ? "icon packed active"
-                  : icon === 4
-                    ? "icon on-the-way active"
-                    : icon === 5
-                      ? "icon delivered active"
-                      : "icon"
+              ? "icon in-process active"
+              : icon === 3
+              ? "icon packed active"
+              : icon === 4
+              ? "icon on-the-way active"
+              : icon === 5
+              ? "icon delivered active"
+              : "icon"
           }
         ></Box>
       ) : (
@@ -102,10 +105,14 @@ class MyOrder extends Component {
     if (items?.userId) {
       this.props.fetchAllorders(items?.userId);
     }
+    this.mediaQuery = window.matchMedia("(max-width: 600px)");
+    this.mediaQuery.addEventListener("change", this.handleMediaQueryChange);
+    this.handleMediaQueryChange(this.mediaQuery); // Set initial state
   }
 
   componentWillUnmount() {
-    this.props.navigate("/");
+    // this.props.navigate("/");
+    this.mediaQuery.removeEventListener("change", this.handleMediaQueryChange);
   }
 
   componentDidUpdate(prevProps) {
@@ -164,8 +171,16 @@ class MyOrder extends Component {
     //   userId:loginDetails()?.userId
     // })
   };
+  state = {
+    isMobile: false,
+  };
+
+  handleMediaQueryChange = (e) => {
+    this.setState({ isMobile: e.matches });
+  };
 
   render() {
+    const { isMobile } = this.state;
     const steps = [
       "Order placed",
       "In Process",
@@ -189,7 +204,7 @@ class MyOrder extends Component {
       Delivered: 4,
       Cancelled: -1, // Handle cancelled orders
     };
-
+    console.log(myOrdersList, "my");
     return (
       <Box className="main-container">
         <Container>
@@ -215,98 +230,247 @@ class MyOrder extends Component {
                         className="order-status-collapsed"
                         data-aos="zoom-in-right"
                       >
-                        <Box className="inner-order">
-                          <Grid container spacing={1} alignItems={"center"}>
-                            <Grid item xs={3}>
-                              <Box className="date-time-container order-progress">
-                                <AccessTimeIcon />
-                                <Box className="d-block">
-                                  <span className="d-block">
-                                    {item?.deliverySlot?.startTime}-
-                                    {item?.deliverySlot?.endTime}
-                                  </span>
+                        {!isMobile ? (
+                          <Box className="inner-order">
+                            <Grid container spacing={1} alignItems={"center"}>
+                              <Grid item xs={3}>
+                                <Box className="date-time-container order-progress">
+                                  <AccessTimeIcon />
+                                  <Box className="d-block">
+                                    <span className="d-block">
+                                      {item?.deliverySlot?.startTime}-
+                                      {item?.deliverySlot?.endTime}
+                                    </span>
+                                  </Box>
                                 </Box>
-                              </Box>
-                            </Grid>
-                            <Grid item xs={5}>
-                              <Box className="order-status-bar">
-                                <Stepper
-                                  activeStep={
-                                    statusToStepIndex[item?.status] !== undefined
-                                      ? statusToStepIndex[item?.status]
-                                      : 0
-                                  }
-                                  alternativeLabel
-                                >
-                                  {steps.map((label, index) => (
-                                    <Step key={label}>
-                                      <StepLabel
-                                        StepIconComponent={CustomStepIcon}
-                                        icon={index}
-                                      >
-                                        {label}
-                                      </StepLabel>
-                                    </Step>
-                                  ))}
-                                </Stepper>
-                              </Box>
-                            </Grid>
-                            <Grid item xs={1}>
-                              {item?.status === "Delivered" ? (
-                                <Box className="order-status-container delivered">
-                                  <span className="d-block">{item?.status}</span>
-                                </Box>
-                              ) : item?.status === "Cancelled" ? (
-                                <Box className="order-status-container cancelled">
-                                  <span className="d-block">{item?.status}</span>
-                                </Box>
-                              ) : null}
-                            </Grid>
-                            <Grid item xs={2}>
-                              <Box className="order-id-container order-progress">
-                                <span className="d-block title">Order ID:</span>
-                                <Box className="d-flex align-items-center">
-                                  <span className="d-block number">
-                                    {item?.id}
-                                  </span>
-                                  <Tooltip
-                                    title={
-                                      copiedOrderId === item?.id
-                                        ? "Copied!"
-                                        : "Copy Order ID"
+                              </Grid>
+
+                              <Grid item xs={5}>
+                                <Box className="order-status-bar">
+                                  <Stepper
+                                    activeStep={
+                                      statusToStepIndex[item?.status] !==
+                                      undefined
+                                        ? statusToStepIndex[item?.status]
+                                        : 0
                                     }
-                                    arrow
-                                    open={copiedOrderId === item?.id}
+                                    alternativeLabel
                                   >
-                                    <ContentCopyIcon
-                                      onClick={() =>
-                                        this.handleCopyOrderId(item?.id)
-                                      }
-                                    />
-                                  </Tooltip>
+                                    {steps.map((label, index) => (
+                                      <Step key={label}>
+                                        <StepLabel
+                                          StepIconComponent={CustomStepIcon}
+                                          icon={index}
+                                        >
+                                          {label}
+                                        </StepLabel>
+                                      </Step>
+                                    ))}
+                                  </Stepper>
                                 </Box>
-                              </Box>
-                            </Grid>
-                            <Grid
-                              item
-                              xs={1}
-                              display={"flex"}
-                              justifyContent={"center"}
-                            >
-                              <IconButton
-                                aria-label="arrow"
-                                onClick={() => this.handleToggleExpand(item)}
+                              </Grid>
+
+                              <Grid item xs={1}>
+                                {item?.status === "delivered" ? (
+                                  <Box className="order-status-container delivered">
+                                    <span className="d-block">
+                                      {item?.status}
+                                    </span>
+                                  </Box>
+                                ) : item?.status === "cancelled" ? (
+                                  <Box className="order-status-container cancelled">
+                                    <span className="d-block">
+                                      {item?.status}
+                                    </span>
+                                  </Box>
+                                ) : null}
+                              </Grid>
+
+                              <Grid item xs={2}>
+                                <Box className="order-id-container order-progress">
+                                  <span className="d-block title">
+                                    Order ID:
+                                  </span>
+                                
+                              
+                                  <Box className="d-flex align-items-center">
+                                    <span className="d-block number">
+                                      {item?.id}
+                                    </span>
+                                    <Tooltip
+                                      title={
+                                        copiedOrderId === item?.id
+                                          ? "Copied!"
+                                          : "Copy Order ID"
+                                      }
+                                      arrow
+                                      open={copiedOrderId === item?.id}
+                                    >
+                                      <ContentCopyIcon
+                                        onClick={() =>
+                                          this.handleCopyOrderId(item?.id)
+                                        }
+                                      />
+                                    </Tooltip>
+                                  </Box>
+                                </Box>
+                              </Grid>
+                              <Grid
+                                item
+                                xs={1}
+                                display={"flex"}
+                                justifyContent={"center"}
                               >
-                                {expandedOrderDetails === item ? (
-                                  <KeyboardArrowUpIcon />
-                                ) : (
-                                  <KeyboardArrowDownIcon />
-                                )}
-                              </IconButton>
+                                <IconButton
+                                  aria-label="arrow"
+                                  onClick={() => this.handleToggleExpand(item)}
+                                >
+                                  {expandedOrderDetails === item ? (
+                                    <KeyboardArrowUpIcon />
+                                  ) : (
+                                    <KeyboardArrowDownIcon />
+                                  )}
+                                </IconButton>
+                              </Grid>
                             </Grid>
-                          </Grid>
-                        </Box>
+                          </Box>
+                        ) : (
+                          <>
+                            <Grid item>
+                              <div style={{ display: "flex" }}>
+                                <Box
+                                  style={{ width: "320px", height: "100px" }}
+                                  className="order-id-container order-progress"
+                                >
+                                  {" "}
+                                  <div style={{display:'flex', justifyContent:'space-between'}}>
+
+                                  <div>
+                                  <span className="d-block title">
+                                    Order ID:
+                                  </span>
+                                  <div style={{ display: "flex" }}>
+                                    <span className="d-block number">
+                                      {item?.id}
+                                    </span>
+                                    <Tooltip
+                                      title={
+                                        copiedOrderId === item?.id
+                                          ? "Copied!"
+                                          : "Copy Order ID"
+                                      }
+                                      arrow
+                                      open={copiedOrderId === item?.id}
+                                    >
+                                      <ContentCopyIcon
+                                        onClick={() =>
+                                          this.handleCopyOrderId(item?.id)
+                                        }
+                                      />
+                                    </Tooltip>
+                                  </div>
+                                  </div>
+                                  <Grid item xs={1}>
+                                {item?.status === "delivered" ? (
+                                  <Box className="order-status-container delivered">
+                                    <span className="d-block">
+                                      {item?.status}
+                                    </span>
+                                  </Box>
+                                ) : item?.status === "cancelled" ? (
+                                  <Box className="order-status-container cancelled">
+                                    <span style={{paddingLeft:'5px',paddingRight:'5px'}} className="d-block">
+                                      {item?.status}
+                                    </span>
+                                  </Box>
+                                ) : null}
+                              </Grid>
+                              </div>
+
+                               
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      gap: "5px",
+                                    }}
+                                  >
+                                    <AccessTimeIcon style={{ margin: "0px" }} />
+
+                                    <span style={{ color: "#1f9151" }}>
+                                      {item?.deliverySlot?.startTime}-
+                                      {item?.deliverySlot?.endTime}
+                                    </span>{"  "}
+                                    <span style={{fontSize:'12px'}}>{item.createdAt.split("T")[0]}</span>
+                                    </div>
+                                </Box>
+
+                                {/* </Box> */}
+                                <Grid
+                                  item
+                                  xs={1}
+                                  display={"flex"}
+                                  justifyContent={"center"}
+                                >
+                                  <IconButton
+                                    aria-label="arrow"
+                                    onClick={() =>
+                                      this.handleToggleExpand(item)
+                                    }
+                                  >
+                                    {expandedOrderDetails === item ? (
+                                      <KeyboardArrowUpIcon />
+                                    ) : (
+                                      <KeyboardArrowDownIcon />
+                                    )}
+                                  </IconButton>
+                                </Grid>
+                              </div>
+                            </Grid>
+                            {expandedOrderDetails === item && (
+                              <Box
+                                sx={{
+                                  border: "0.5px solid #a8a8a8", // Adjust border color and size
+                                  borderRadius: "4px", // Rounded corners with 2px radius
+                                  padding: "16px", // Add padding if needed
+                                  width: "full", // Adjust width
+                                  height: "100px", // Adjust height
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  marginTop: "8px",
+                                }}
+                              >
+                                <Grid item xs={5}>
+                                  <Box className="order-status-bar">
+                                    <Stepper
+                                      activeStep={
+                                        statusToStepIndex[item?.status] !==
+                                        undefined
+                                          ? statusToStepIndex[item?.status]
+                                          : 0
+                                      }
+                                      alternativeLabel
+                                    >
+                                      {steps.map((label, index) => (
+                                        <Step key={label}>
+                                          <StepLabel
+                                            StepIconComponent={CustomStepIcon}
+                                            icon={index}
+                                          >
+                                            {label}
+                                          </StepLabel>
+                                        </Step>
+                                      ))}
+                                    </Stepper>
+                                  </Box>
+                                </Grid>
+                              </Box>
+                            )}
+                          </>
+                        )}
                       </Box>
+
                       {expandedOrderDetails === item && (
                         <Box
                           className="order-details-container"
@@ -315,6 +479,7 @@ class MyOrder extends Component {
                           <span className="d-block order-place-time">
                             {dateFormatter(item?.createdAt)}
                           </span>
+
                           <Grid container spacing={4}>
                             <Grid item xs={12} md={4}>
                               <Box className="delivery-address">
@@ -335,7 +500,9 @@ class MyOrder extends Component {
                                 <h3 className="d-block">Payment Information</h3>
                                 <span className="d-block info">
                                   Payment Status:{" "}
-                                  <strong className="payment-status">{item?.paymentDetails?.status}</strong>
+                                  <strong className="payment-status">
+                                    {item?.paymentDetails?.status}
+                                  </strong>
                                 </span>
                                 <span className="d-block info">
                                   Mode of Payment:{" "}
@@ -364,7 +531,7 @@ class MyOrder extends Component {
                                       Discount
                                     </span>
                                     {item?.discount}
-                                    <span className="d-block order-amount">
+                                    <span style={{width:'60px',textAlign:'start'}}  className="d-block order-amount">
                                       Rs. {item?.discount}
                                     </span>
                                   </Box>
@@ -372,14 +539,22 @@ class MyOrder extends Component {
                                   <></>
                                 )}
 
-                                <Box className="d-flex justify-content-between">
+                                <Box sx={{
+                                  
+                                }} className="d-flex justify-content-between ">
                                   <span className="d-block summary-title">
                                     Final Amount
                                   </span>
-                                  <span className="d-block order-amount">
-                                    Rs. {item?.totalPrice - (item?.discount || 0)}
+                                  <span style={{width:'60px',textAlign:'start'}} className="d-block order-amount">
+                                    Rs.{" "}
+                                    {item?.totalPrice - (item?.discount || 0)}
                                   </span>
                                 </Box>
+                                {/* {isMobile && ( */}
+                                
+                                  <Invoice  orderData={item}></Invoice>
+                                
+                                {/* )} */}
                               </Box>
                             </Grid>
                           </Grid>
@@ -394,7 +569,9 @@ class MyOrder extends Component {
                                 this.handleClickOpen();
                               }}
                             >
-                              <span className="d-block title">Cancel Order</span>
+                              <span className="d-block title">
+                                Request For Cancellation
+                              </span>
                               <span className="d-block sub-title">
                                 Cancel This Order
                               </span>
@@ -451,3 +628,4 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(navigateRouter(MyOrder));
+

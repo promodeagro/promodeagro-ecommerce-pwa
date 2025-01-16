@@ -148,12 +148,12 @@ const AuthModal = (props) => {
               <h2 className="auth_container_title">Login or Sign Up</h2>
               <Box>
                 <Box className="input_box">
-                  <label className="d-block">Login With Email/Phone</label>
+                  <label className="d-block">Login With Phone</label>
                   <TextField
                     value={emailOrNumber}
                     onChange={(e) => setEmailOrNumber(e.target.value)}
                     name="emailOrNumber"
-                    placeholder="Email or Number"
+                    placeholder=" Number"
                     className="input-textfield"
                     id="outlined-basic"
                     variant="outlined"

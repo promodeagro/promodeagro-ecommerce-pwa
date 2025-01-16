@@ -1,5 +1,8 @@
 .my-order-container {
   margin: 36px 0px 77px 0px;
+  .invoice-download:hover {
+    color: rgba(0, 0, 0, 0.87); /* MUI default hover color */
+  }
 
   .my-order-list {
     h2 {
@@ -311,21 +314,22 @@
       }
 
       .order-summary-container {
-        padding: 15px 50px 50px 12px;
+        padding: 15px;
         background-color: #1f91511a;
         overflow: hidden;
         position: relative;
         max-width: 300px;
+        border-radius: 5px;
 
         .title {
           font-weight: 500;
-          margin: 20px 0px 10px 0px;
+          margin-bottom:  10px;
         }
 
         .summary-title {
           font-size: 13px;
           line-height: 18px;
-          margin-top: 7px;
+          margin-bottom: 5px;
         }
 
         .order-amount {
@@ -333,7 +337,7 @@
           line-height: 20px;
           color: #000000;
           font-weight: 600;
-          margin-top: 7px;
+          margin-bottom: 7px;
         }
 
         .saving-amount {
@@ -341,7 +345,7 @@
           line-height: 20px;
           color: #1f9151;
           font-weight: 400;
-          margin-top: 7px;
+          // margin-top: 7px;
         }
 
         .top-cricle {
