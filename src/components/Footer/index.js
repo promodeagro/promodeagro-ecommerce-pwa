@@ -141,7 +141,8 @@ class Footer extends Component {
     const { currentPathName, matches } = this.state;
     return (
       <>
-        {currentPathName.includes("category/") && matches ? (
+        {/* {currentPathName.includes("category/") && matches ? ( */}
+        {currentPathName.includes("/cart") && matches ? (
           ""
         ) : (
           <>

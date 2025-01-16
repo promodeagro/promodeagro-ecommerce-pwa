@@ -17,7 +17,9 @@ const ReturnRefund = lazy(() => import("./../Views/PostLogin/returnRefund"));
 const Account = lazy(() =>
   import("./../Views/PostLogin/account")
 );
-
+const  Cart = lazy(() =>
+  import("./../Views/PostLogin/Cart")
+);
 const PersonalInformation = lazy(() =>
   import("./../Views/PostLogin/myProfile/personalInformation")
 );
@@ -231,6 +233,11 @@ const Views = () => {
         exact
         path={`/mycart/address/order-placed/:id`}
         element={<OrderPlaced />}
+      /> 
+      <Route
+        exact
+        path={`cart`}
+        element={< Cart />}
       />
       <Route path={`/my-order`} exact element={<MyOrder />} />
       <Route path="*" element={<PageNotFound />} />

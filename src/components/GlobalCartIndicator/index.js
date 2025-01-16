@@ -42,11 +42,12 @@ componentDidUpdate(prevProps){
 
   render() {
     const { noOfcartItemsInLS } = this.props;
+    const currentPath = window.location.pathname; 
+    
+  if (currentPath === "/cart" || noOfcartItemsInLS <= 0) {
+    return null;
+  }
 
-    // If the number of items in the cart is less than or equal to 0, return null to render nothing
-    if (noOfcartItemsInLS <= 0) {
-      return null;
-    }
 
     return (
       <>
@@ -72,7 +73,7 @@ componentDidUpdate(prevProps){
                          </Box>
                        </Box>
            
-                       <Box onClick={()=> this.setState({myCartOpen:true})} sx={{
+                       <Box onClick={()=> this.props.navigate("/cart")} sx={{
                          display: 'flex', cursor: "pointer", alignItems: 'center', gap: "4px"
                        }}>
                          View Cart

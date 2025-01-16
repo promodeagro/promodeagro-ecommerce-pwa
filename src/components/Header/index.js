@@ -244,6 +244,11 @@ class Header extends Component {
     const { isAddressModalOpen } = this.state;
     const { isAddAddressModalOpen } = this.state;
 
+    
+  if ( window.location.pathname === "/cart") {
+    return null;
+  }
+
     return (
       <>
         <Box className="header">

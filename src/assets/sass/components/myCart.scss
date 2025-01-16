@@ -1146,8 +1146,6 @@ span{
     justify-content: center;
     display: flex;
     align-items: center;
-
-
 }
 
 
@@ -1155,8 +1153,8 @@ span{
     bottom: 0px;
     left: 0;
     width: 100%;
-    z-index: 2000;
-    
+ 
+
     position: sticky;
     background-color: #fff;
     padding-top: 1px;
@@ -1168,4 +1166,9 @@ span{
     .Payment_methods_box div{
         height: 50px;
     }
+}
+
+
+.mob_placed_order_btn{
+    background-color: #005F41;
 }
