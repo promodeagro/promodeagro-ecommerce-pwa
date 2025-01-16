@@ -387,18 +387,13 @@ class Header extends Component {
                       )}
                     </Box>
                   )}
-                  <Box
-                    // onClick={
-                    //   () =>
-                    //     loginDetails()?.userId
-                    //       ? this.setState({ myCartOpen: true }) // Show MyCart modal
-                    //       : this.setState({ authModalOpen: true }) // Show Login modal
-                    // }
-                    onClick={() => {
+
+
+{!matches && (
+                  <Box        onClick={() => {
                       if (loginDetails()?.userId) {
                          {
-                          // this.setState({ myCartOpen: true });
-                          this.props.navigate("/cart")
+                          this.setState({ myCartOpen: true });
                         }
                       } else {
                         this.setState({ authModalOpen: true });
@@ -417,6 +412,35 @@ class Header extends Component {
                       <img src={cardIcon} alt="Shopping" /> <span>Cart</span>
                     </Link>
                   </Box>
+  )}
+                  {matches && (
+                     <Box
+                   
+                     onClick={() => {
+                       if (loginDetails()?.userId) {
+                          {
+                           this.props.navigate("/cart")
+                         }
+                       } else {
+                         this.setState({ authModalOpen: true });
+                       }
+                     }} 
+                     className="card"
+                   >
+                     <Link>
+                       {noOfcartItemsInLS ? (
+                         <p>{noOfcartItemsInLS}</p>
+                       ) : this.state.cartList?.length ? (
+                         <p>{this.state.cartList.length}</p>
+                       ) : (
+                         <></>
+                       )}
+                       <img src={cardIcon} alt="Shopping" /> <span>Cart</span>
+                     </Link>
+                   </Box>
+                  )}
+
+
                   {matches && (
                     <Box
                       className="profile-icon"
