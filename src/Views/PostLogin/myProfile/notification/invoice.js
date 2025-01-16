@@ -1,186 +1,39 @@
-import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Container,
-  Rating,
-  Button,
-  useMediaQuery,
-  Divider,
-  Typography,
-} from "@mui/material";
-import successImg from "../../../../../assets/img/success.png";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { Link } from "react-router-dom";
-import { useParams, useNavigate } from "react-router-dom";
-import PlaceOrderTick from "../../../../../assets/img/PlaceOrderTick.png";
-import TruckIcon from "../../../../../assets/img/TruckIcon.svg";
-import locationIcon from "../../../../../assets/img/LocationImg.svg";
-import { fetchOrderById } from "../../../../../Redux/Order/PlaceOrderThunk";
-import { useDispatch, useSelector } from "react-redux";
-import { Loader, loginDetails } from "Views/Utills/helperFunctions";
-import status from "../../../../../Redux/Constants";
-import { LocalStorageCartService } from "Services/localStorageCartService";
-import { addListOfItemsToCartReq } from "../../../../../Redux/Cart/CartThunk";
+import React, { useState } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import promodeicon from "../../../../../assets/img/Favicon Icon Promode.svg";
-const OrderPlaced = (props) => {
-  const [value, setValue] = useState(0);
-  const [apiLoader, setApiLoader] = useState(false);
+import promodeicon from "../../../../assets/img/Favicon Icon Promode.svg";
+import {
+    Button,
+    useMediaQuery,
+    Divider,
+    Typography,
+  } from "@mui/material";
+  import FileDownloadIcon from "@mui/icons-material/FileDownload";
 
-  const placedOrderDetails = useSelector(
-    (state) => state.placeorder.orderByIdData
-  );
 
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    setApiLoader(true);
-    dispatch(fetchOrderById(id));
-  }, []);
-
-  if (id) {
-    localStorage.removeItem("cartItem");
-    localStorage.removeItem("address");
-    LocalStorageCartService.saveData({});
-  }
-
-  useEffect(() => {
-    let login = loginDetails();
-    dispatch(addListOfItemsToCartReq({ userId: login.userId, cartItems: [] }));
-  }, []);
-
-  console.log(placedOrderDetails.message, "order details by id");
-
-  useEffect(() => {
-    window.history.pushState(null, null, document.URL);
-    window.addEventListener("popstate", function (event) {
-      window.location.replace("/");
-    });
-  }, []);
-
-  // Scroll to top when the component loads
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-  const orderData = useSelector(
-    (state) => state.placeorder.orderByIdData?.data?.order
-  );
-  const items = orderData?.items || [];
-  const [showInvoice, setShowInvoice] = useState(false);
-  const toggleInvoice = () => {
-    setShowInvoice((prev) => !prev);
-  };
-  const downloadPDF = () => {
-    const invoiceElement = document.getElementById("invoice-content");
-    html2canvas(invoiceElement).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      const imgProps = pdf.getImageProperties(imgData);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save("invoice.pdf");
-    });
-  };
-  const isMobile = useMediaQuery("(max-width:600px)"); // Detect mobile screen size
-  console.log(orderData, "order data");
-
+const Invoice = ({orderData}) => {
+      const items = orderData?.items || [];
+      const [showInvoice, setShowInvoice] = useState(false);
+      const toggleInvoice = () => {
+        setShowInvoice((prev) => !prev);
+      };
+      const isMobile = useMediaQuery("(max-width:600px)"); // Detect mobile screen size
+      const downloadPDF = () => {
+        const invoiceElement = document.getElementById("invoice-content");
+        html2canvas(invoiceElement).then((canvas) => {
+          const imgData = canvas.toDataURL("image/png");
+          const pdf = new jsPDF("p", "mm", "a4");
+          const imgProps = pdf.getImageProperties(imgData);
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    
+          pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+          pdf.save("invoice.pdf");
+        });
+      };
   return (
     <>
-      {fetchOrderById.status === status.IN_PROGRESS ? (
-        Loader.commonLoader() // Show loader while data is being fetched
-      ) : (
-        <Container
-          className="order_placed_container"
-          data-aos="zoom-in-right"
-          data-aos-offset="200"
-          data-aos-easing="ease-in-sine"
-          sx={{
-            minHeight: "80vh",
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Box
-            className="order_placed_box"
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <img src={PlaceOrderTick} alt="" />
-            <h2>Your Order Placed !</h2>
-
-            <Box className="rating_box rating d-flex align-items-center justify-content-center w-100">
-              <span className="rating-info">How was everything ?</span>
-              <Rating
-                name="simple-controlled"
-                value={value}
-                onChange={(event, newValue) => {
-                  setValue(newValue);
-                }}
-                size="large"
-              />
-            </Box>
-          </Box>
-
-          <Box className="Delivery_details_box w-100">
-            <Box className="select_delivery_address">
-              <span className="span_lite">
-                <img src={locationIcon} alt="" />
-                Delivery Address
-              </span>
-              <div className="line"></div>
-              <span>
-                {placedOrderDetails.data?.order?.address?.address_type}{" "}
-                {placedOrderDetails.data?.order?.address?.house_number},{" "}
-                {placedOrderDetails.data?.order?.address?.landmark_area},{" "}
-                {placedOrderDetails.data?.order?.address?.address}{" "}
-                {placedOrderDetails.data?.order?.address?.zipCode}
-              </span>
-            </Box>
-
-            <Box className="select_delivery_address">
-              <span className="span_lite">
-                <img src={TruckIcon} alt="" />
-                Shipment Time Slot
-              </span>
-              <div className="line"></div>
-              <span>{placedOrderDetails.data?.order?.items?.length} Items</span>
-              <div className="line"></div>
-              <span>
-                05 Nov, Tuesday{" "}
-                {placedOrderDetails.data?.order?.deliverySlot?.startTime} -{" "}
-                {placedOrderDetails.data?.order?.deliverySlot?.endTime}{" "}
-              </span>
-              <span>Rs {placedOrderDetails.data?.order?.totalPrice}</span>
-            </Box>
-
-            <Box className="payment_details_box">
-              <Box className="payment_details">
-                <div>
-                  Payment status{" "}
-                  <span className="cod">
-                    {placedOrderDetails.data?.order?.paymentDetails?.status}
-                  </span>
-                </div>
-                <div>
-                  Order amount{" "}
-                  <span className="amount">
-                    Rs. {placedOrderDetails.data?.order?.totalPrice}
-                  </span>
-                </div>
-              </Box>
-            </Box>
-            {!isMobile ? (
+         {/* {!isMobile ? (
               <Button
                 variant="contained"
                 color="primary"
@@ -189,16 +42,264 @@ const OrderPlaced = (props) => {
               >
                 {showInvoice ? "Hide Invoice" : "See Your Invoice"}
               </Button>
-            ) : (
+            ) : ( */}
               <Button
-                // variant="contained"
-                color="primary"
+
+                variant="outlined"
+                fullWidth
+                color="success"
                 onClick={downloadPDF}
-                sx={{ textTransform: "none" }}
+                sx={{ textTransform: "none",marginTop:"8px" }}
               >
+                                <FileDownloadIcon style={{color:'#1f9151'}} color="#1f9151" />
+
                 View Invoice
+
               </Button>
-            )}
+            {/* )} */}
+            
+                <style>
+                    {`
+.payment-details-box {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+.payment-method {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
+
+.grid-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.invoice-title {
+  font-size: 16px;
+  margin-bottom: 0;
+}
+
+.payment-details-box {
+  padding: 8px 16px; /* Padding inside the box */
+  border: 1px solid #ccc; /* Border around the box */
+  border-radius: 4px; /* Rounded corners */
+  background-color: #f9f9f9; /* Light background color */
+  display: inline-block; /* Adjust box width */
+  margin-bottom: 8px; /* Spacing below the box */
+}
+
+.payment-method {
+  font-size: 16px;
+  font-weight: 500; /* Semi-bold text */
+  margin-bottom: 0;
+}
+.invoice-content {
+  position: absolute;
+  top: -9999px; 
+  left: -9999px; 
+  width: 960px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+
+
+.watermark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.1;
+  font-size: 54px;
+  font-style: italic;
+  font-weight: 700;
+  color: rgba(0, 95, 65, 0.6);
+  z-index: 0;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+}
+
+.header1 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.header1 img {
+  width: 40px;
+  height: 40px;
+}
+
+.header1 h1 {
+  margin: 0;
+  font-weight: bold;
+}
+
+.header1 p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.divider {
+  border-bottom: 1.5px dashed black;
+  margin: 8px 0;
+}
+
+.details {
+  display: flex;
+  justify-content: space-between;
+}
+
+.details .left,
+.details .right {
+  width: 47%;
+}
+
+
+.details .left strong,
+.details .right strong {
+  display: inline-block;
+  width: 40%;
+}
+
+.details p {
+  margin: 5px 0;
+}
+
+.items {
+  margin-top: 20px;
+}
+
+.items table {
+  width: 100%;
+  border-collapse: collapse;
+}
+/* styles.css */
+
+.logo-container {
+  position: relative;
+  z-index: 1;
+}
+
+.logo-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px; /* Space between the logo and the text */
+}
+
+.logo-img {
+  width: 40px; /* Adjust size as needed */
+  height: 40px; /* Keep aspect ratio */
+}
+
+.text-box {
+  text-align: center; /* Centers the text within its own box */
+}
+
+.main-title {
+  font-weight: bold;
+  margin: 0; /* Remove margin to help with alignment */
+  line-height: 1.5; /* Adjust line height for tighter spacing */
+}
+
+.subtitle {
+  margin: 0; /* Remove margin for subtitle */
+  line-height: 1; /* Adjust line height for tighter spacing */
+}
+.items td {
+  padding: 10px;
+
+}
+
+
+.items tr {
+  padding: 40px;
+  text-align: center;
+}
+/* Apply gray background to even rows */
+.items tr:nth-child(even) {
+background-color: #f3f3f3; /* Light gray */
+}
+
+/* Optional: Reset the background for odd rows */
+.items tr:nth-child(odd) {
+background-color: #ffffff; /* White */
+}
+
+.items th {
+  padding: 10px;
+  text-align: center;
+  background-color: #f5f5f5;
+}
+
+.summary {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.summary p {
+  margin: 5px 0;
+}
+
+
+.footer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+}
+
+.footer-left,
+.footer-right {
+    display: inline-block;
+}
+
+.footer-content {
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+}
+
+.dashed-line {
+    flex: 1;
+    border-bottom: 1.5px dashed black;
+}
+
+.text-spacing {
+    margin: 0 8px;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+footer p {
+    text-align: center;
+    margin: 10px 0;
+}`}
+</style>
+            
 
             <div
               id="invoice-content"
@@ -378,7 +479,7 @@ const OrderPlaced = (props) => {
               </div>
             </div>
 
-            {showInvoice && !isMobile && (
+            {/* {showInvoice && !isMobile && (
               <Button
                 variant="contained"
                 color="secondary"
@@ -387,19 +488,9 @@ const OrderPlaced = (props) => {
               >
                 Download PDF
               </Button>
-            )}
-          </Box>
-
-          <Box sx={{ marginTop: "20px", marginBottom: "20px" }}>
-            <Button onClick={() => navigate("/")} className="common-btn">
-              Continue Shopping
-            </Button>
-          </Box>
-        </Container>
-      )}
+            )} */}
     </>
-  );
-};
+  )
+}
 
-export default OrderPlaced;
-
+export default Invoice
