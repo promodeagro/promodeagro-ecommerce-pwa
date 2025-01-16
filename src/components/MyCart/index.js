@@ -5,6 +5,7 @@ import {
   Drawer,
   Grid,
   Modal,
+  Typography,
   Radio,
 } from "@mui/material";
 import React, { Component } from "react";
@@ -287,22 +288,30 @@ class MyCart extends Component {
   handlePlaceOrder = () => {
     let login = loginDetails();
     let addressId = localStorage.getItem("address");
-    let defaultAddress = JSON.parse(
-      localStorage.getItem("defaultAddress")
-    ).addressId;
-    const { selectedPaymentMethod, itemListArr } = this.state;
+    let defaultAddress = JSON.parse(localStorage.getItem("defaultAddress")).addressId;
+  
+    const { selectedPaymentMethod, itemListArr, selectedSlot } = this.state;
+  
+    // Check if a slot is selected
+    if (!selectedSlot) {
+      this.setState({ showSlotError: true }); // Trigger the error state
+      ErrorMessages.error("Please select a delivery slot."); // Show error message
+      return;
+    }
+  
     const Data = {
       addressId: addressId ? addressId : defaultAddress,
-      deliverySlotId: this.state.selectedSlot ? this.state.selectedSlot.id : "",
+      deliverySlotId: selectedSlot.id,
       items: itemListArr,
       paymentDetails: {
         method: selectedPaymentMethod,
       },
       userId: login.userId,
     };
+  
     this.props.placeOrder(Data);
   };
-
+    
   handleQuantityChange(id, increment, productQuantity = 0, qty) {
     const items = loginDetails();
     if (increment < 0 && productQuantity != 0) {
@@ -445,36 +454,49 @@ class MyCart extends Component {
                   )}
                 </Box>
                 <Box className="select_delivery_slot">
-                  <h2>Select Delivery Slot</h2>
-                  <span className="select_delivery_slot_wrapper">
-                    <div
-                      onClick={() => {
-                        this.setState({
-                          slotOpen: true, 
-                        });
-                      }}
-                    >
-                      <span>
-                        {this.state.selectedSlot
-                          ? `${this.state.selectedSlot.start} ${this.state.selectedSlot.startAmPm} - ${this.state.selectedSlot.end} ${this.state.selectedSlot.endAmPm}`
-                          : "Select Slot"}
-                      </span>
-                      <img src={ArrowDown} alt="Open Slots" />
-                    </div>
-                    {matches && (
-                      <Button
-                        onClick={() => {
-                          this.setState({
-                            slotOpen: true,
-                          });
-                        }}
-                        className="common-btn select_slot_btn"
-                      >
-                        Select Slot
-                      </Button>
-                    )}
-                  </span>
-                </Box>
+  <h2>Select Delivery Slot</h2>
+  <span className="select_delivery_slot_wrapper">
+    <div
+      className={this.state.showSlotError ? "slot-error" : ""}
+      onClick={() => {
+        this.setState({
+          slotOpen: true,
+          showSlotError: false, // Reset error when opening the slot selection
+        });
+      }}
+    >
+      <span>
+        {this.state.selectedSlot
+          ? `${this.state.selectedSlot.start} ${this.state.selectedSlot.startAmPm} - ${this.state.selectedSlot.end} ${this.state.selectedSlot.endAmPm}`
+          : "Select Slot"}
+      </span>
+      <img src={ArrowDown} alt="Open Slots" />
+    </div>
+    {matches && (
+      <Button
+        onClick={() => {
+          this.setState({
+            slotOpen: true,
+            showSlotError: false, // Reset error when opening the slot selection
+          });
+        }}
+        className="common-btn select_slot_btn"
+      >
+        Select Slot
+      </Button>
+    )}
+  </span>
+
+  {/* Error message */}
+  {this.state.showSlotError && (
+    <Typography
+      variant="body2"
+      sx={{ color: "red", marginTop: "4px", fontSize: '12px' }}
+    >
+      Please select a delivery slot before placing the order.
+    </Typography>
+  )}
+</Box>
         </>
       ) : (
         null
