@@ -14,31 +14,31 @@ class Account extends Component {
         return (
             <Box className="account_page">
                 <ul>
-                    <li>
+                    {/* <li>
                         <Link to="/my-profile/personal-information">
                             <PermIdentityOutlinedIcon /> My Profile
                         </Link>
-                    </li>
+                    </li> */}
                     <li>
                         <Link to="/my-order">
-                            <PermIdentityOutlinedIcon /> Orders
+                            <PermIdentityOutlinedIcon />My Orders
                         </Link>
                     </li>
-                    <li>
+                    {/* <li>
                         <Link to="/my-profile/wish-list">
                             <PermIdentityOutlinedIcon /> Wish list
                         </Link>
-                    </li>
+                    </li> */}
                     <li >
                         <Link to="/contact-us">
                             <PermIdentityOutlinedIcon /> Contact Us
                         </Link>
                     </li>
-                    <li>
+                    {/* <li>
                         <Link to="/my-profile/notification">
                             <PermIdentityOutlinedIcon /> Notification
                         </Link>
-                    </li>
+                    </li> */}
                     <li
                         onClick={() => {
 

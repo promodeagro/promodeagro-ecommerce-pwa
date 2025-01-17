@@ -53,13 +53,22 @@ class SideBar extends Component {
             return (
               <li key={index}>
                 <Link to={subcatPath} className={isActive ? "active" : ""}>
-                  <span>
+                  <span
+                    style={{
+                      height: "45px",
+                      width: "45px",
+                      textAlign: "center",
+                    }}
+                  >
                     <img
+                      style={{ height: "40px", width: "40px" }}
                       src={subcat.image_url ? subcat.image_url : noImage}
                       alt={subcat.name}
                     />
                   </span>
-                  <strong>{subcat.name}</strong>
+                
+                    <strong>{subcat.name}</strong>
+                
                 </Link>
               </li>
             );
@@ -95,3 +104,4 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SideBar);
+

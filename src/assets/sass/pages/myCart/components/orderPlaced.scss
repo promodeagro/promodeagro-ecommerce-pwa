@@ -170,7 +170,7 @@
 
 .items tr {
   padding: 40px;
-  text-align: center;
+  text-align: left;
 }
 /* Apply gray background to even rows */
 .items tr:nth-child(even) {
@@ -184,7 +184,7 @@ background-color: #ffffff; /* White */
 
 .items th {
   padding: 10px;
-  text-align: center;
+  text-align: left;
   background-color: #f5f5f5;
 }
 
