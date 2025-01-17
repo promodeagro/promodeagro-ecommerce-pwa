@@ -96,7 +96,6 @@ class MyOrder extends Component {
       previousPath: null,
     };
   }
-
   componentDidMount() {
     window.history.pushState(null, null, window.location.pathname);
     window.addEventListener("popstate", this.onBackButtonEvent);
@@ -174,13 +173,15 @@ class MyOrder extends Component {
   state = {
     isMobile: false,
   };
-
   handleMediaQueryChange = (e) => {
     this.setState({ isMobile: e.matches });
   };
 
+
   render() {
     const { isMobile } = this.state;
+    const   HideDirectlySeeInvoice=false
+
     const steps = [
       "Order placed",
       "In Process",
@@ -552,7 +553,7 @@ class MyOrder extends Component {
                                 </Box>
                                 {/* {isMobile && ( */}
                                 
-                                  <Invoice  orderData={item}></Invoice>
+                                  <Invoice flag={HideDirectlySeeInvoice}  orderData={item}></Invoice>
                                 
                                 {/* )} */}
                               </Box>
