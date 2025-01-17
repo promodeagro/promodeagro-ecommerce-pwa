@@ -55,8 +55,8 @@ class SideBar extends Component {
                 <Link to={subcatPath} className={isActive ? "active" : ""}>
                   <span
                     style={{
-                      height: "45px",
-                      width: "45px",
+                      height: "46px",
+                      width: "46px",
                       textAlign: "center",
                     }}
                   >
