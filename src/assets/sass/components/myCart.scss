@@ -997,17 +997,20 @@ justify-content: center;
             .cart_popup .my_cart_container .select_delivery_slot div {
                 margin-top: 12px;
                 width: 100%;
-              
                 cursor: pointer;
                 padding: 19px 12px 17px 12px;
                 border-radius: 9px;
                 border: 1px solid #3bd488;
                 display: flex;
                 align-items: center;
-                font-size: 13p;
+                font-size: 13px;
                 justify-content: space-between;
+            
+                &.slot-error {
+                    border: 1px solid red !important;
+                }
             }
-            .cart_popup .my_cart_container .select_delivery_slot .select_delivery_slot_wrapper .select_slot_btn{
+                        .cart_popup .my_cart_container .select_delivery_slot .select_delivery_slot_wrapper .select_slot_btn{
                 display: none;
             }
             .cart_popup .my_cart_container .select_delivery_slot div img{
