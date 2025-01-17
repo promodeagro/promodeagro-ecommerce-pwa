@@ -351,6 +351,13 @@ import "../../../assets/sass/components/myCart.scss"
     }
     return "No Address Selected"; 
   }
+  getLoginKey() {
+    const login = JSON.parse(localStorage.getItem("login"));
+    if (login) {
+      return `${login?.token} `;
+    }
+    return "No Address Selected";
+  }
 
   getDefaultAddresstype() {
     const defaultAddress = JSON.parse(localStorage.getItem("defaultAddress"));
@@ -390,6 +397,9 @@ import "../../../assets/sass/components/myCart.scss"
               <Box className="my_cart_container">
                 <Box className="my_cart">
                   <h2>My Cart</h2> 
+                  {
+                  <span> {this.getLoginKey()}</span>
+                  }
                   <img onClick={()=> this.props.navigate("/")} src={closeModal} alt="" />
                 </Box>
 
@@ -613,8 +623,7 @@ import "../../../assets/sass/components/myCart.scss"
                        </Grid>
                      </div>
                    )}
-                 </>
-
+                 </> 
                   ) : (
                     <></>
                   )}

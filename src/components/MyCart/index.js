@@ -390,7 +390,8 @@ class MyCart extends Component {
                   <h2>My Cart</h2>
                   <img onClick={handleClose} src={closeModal} alt="" />
                 </Box>
-
+ 
+ 
                 {defaultSelectedAddress?.addressId ? (
                   <>
                     <Box className="my_cart_bottom_address">
