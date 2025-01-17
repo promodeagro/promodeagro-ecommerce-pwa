@@ -3,8 +3,9 @@
   "name": "Promode agro farms",
   "icons": [
     {
-      "src": "favicon.svg",
-      "sizes": "64x64 32x32 24x24 16x16",
+      
+     "src": "favicon.ico",
+      "sizes": "16x16 32x32 48x48 64x64",
       "type": "image/x-icon"
     },
     {
