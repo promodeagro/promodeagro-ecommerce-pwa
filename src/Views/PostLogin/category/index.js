@@ -106,10 +106,16 @@ function Category(props) {
               Loader.commonLoader()
             ) : (
               <>
-                <List
-                  currentCategory={subcategory ? subcategory : category}
-                  data={productsData ? productsData : []}
-                />
+                {productsData && productsData.length > 0 ? (
+                  <List
+                    currentCategory={subcategory ? subcategory : category}
+                    data={productsData}
+                  />
+                ) : (
+                  <div className="noproductdiv">
+                    Products Coming Soon...
+                  </div>
+                )}
               </>
             )}
           </Grid>

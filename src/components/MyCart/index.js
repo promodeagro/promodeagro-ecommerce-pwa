@@ -15,10 +15,7 @@ import BackArrow from "../../assets/img/backArrow.svg";
 import cashIcon from "../../assets/img/cashIcon.svg";
 import { Link } from "react-router-dom";
 import AddNewAddressModal from "../../../src/components/AddressModal/addnewaddressmodal";
-import {
-  ErrorMessages,
-  loginDetails,
-} from "Views/Utills/helperFunctions";
+import { ErrorMessages, loginDetails } from "Views/Utills/helperFunctions";
 import { LocalStorageCartService } from "Services/localStorageCartService";
 import status from "../../Redux/Constants";
 import {
@@ -64,7 +61,6 @@ class MyCart extends Component {
   }
 
   componentDidMount() {
-   
     window
       .matchMedia("(max-width: 800px)")
       .addEventListener("change", (e) => this.setState({ matches: e.matches }));
@@ -74,7 +70,6 @@ class MyCart extends Component {
     if (items?.userId) {
       this.props.fetchDefaultAddress(items?.userId);
     }
-
 
     if (items?.userId) {
       let cartData = LocalStorageCartService.getData() || {};
@@ -87,7 +82,6 @@ class MyCart extends Component {
       this.props.fetchCartItems({
         userId: items.userId,
       });
-      
     }
   }
 
@@ -108,7 +102,6 @@ class MyCart extends Component {
       //   this.props?.defaultAddressData?.data?.addressId
       // );
     }
-
 
     if (
       prevProps.addListOfItemRes.status !== this.props.addListOfItemRes.status
@@ -288,17 +281,19 @@ class MyCart extends Component {
   handlePlaceOrder = () => {
     let login = loginDetails();
     let addressId = localStorage.getItem("address");
-    let defaultAddress = JSON.parse(localStorage.getItem("defaultAddress")).addressId;
-  
+    let defaultAddress = JSON.parse(
+      localStorage.getItem("defaultAddress")
+    ).addressId;
+
     const { selectedPaymentMethod, itemListArr, selectedSlot } = this.state;
-  
+
     // Check if a slot is selected
     if (!selectedSlot) {
       this.setState({ showSlotError: true }); // Trigger the error state
       ErrorMessages.error("Please select a delivery slot."); // Show error message
       return;
     }
-  
+
     const Data = {
       addressId: addressId ? addressId : defaultAddress,
       deliverySlotId: selectedSlot.id,
@@ -308,10 +303,10 @@ class MyCart extends Component {
       },
       userId: login.userId,
     };
-  
+
     this.props.placeOrder(Data);
   };
-    
+
   handleQuantityChange(id, increment, productQuantity = 0, qty) {
     const items = loginDetails();
     if (increment < 0 && productQuantity != 0) {
@@ -354,7 +349,7 @@ class MyCart extends Component {
     if (defaultAddress) {
       return `${defaultAddress.address}, ${defaultAddress.zipCode}`;
     }
-    return "No Address Selected"; 
+    return "No Address Selected";
   }
 
   getDefaultAddresstype() {
@@ -362,12 +357,12 @@ class MyCart extends Component {
     if (defaultAddress) {
       return `${defaultAddress.address_type}`;
     }
-    return "No Address Selected"; 
+    return "No Address Selected";
   }
 
   toggleAddNewAddressModal = (e) => {
     if (e?.stopPropagation) {
-      e.stopPropagation(); 
+      e.stopPropagation();
     }
     this.setState((prevState) => ({
       isAddNewAddressModalOpen: !prevState.isAddNewAddressModalOpen,
@@ -376,15 +371,14 @@ class MyCart extends Component {
 
   handleAddNewAddressClose = () => {
     this.setState({
-      isAddNewAddressModalOpen: false, 
+      isAddNewAddressModalOpen: false,
     });
   };
-  
+
   render() {
-    const { matches, selectedPaymentMethod } =
-      this.state;
+    const { matches, selectedPaymentMethod } = this.state;
     const { open, handleClose } = this.props;
-    const { isAddNewAddressModalOpen , defaultSelectedAddress} = this.state;
+    const { isAddNewAddressModalOpen, defaultSelectedAddress } = this.state;
 
     return (
       <>
@@ -393,117 +387,118 @@ class MyCart extends Component {
             {this.state.showAddressPopup ? (
               <Box className="my_cart_container">
                 <Box className="my_cart">
-                  <h2>My Cart</h2> 
+                  <h2>My Cart</h2>
                   <img onClick={handleClose} src={closeModal} alt="" />
                 </Box>
 
                 {defaultSelectedAddress?.addressId ? (
-        <>
-           <Box className="my_cart_bottom_address">
-                  <img src={LocationIcon} alt="" />
-                  <Box>
-                    <span>
-                      Delivering to
-                      {this.state.selectedAddress
-                        ? this.state.selectedAddress.address_type
-                        : this.getDefaultAddresstype()}
-                    </span>
-                    <span>
-                      {
-                        this.state.selectedAddress
-                          ? `${this.state.selectedAddress.address}, ${this.state.selectedAddress.zipCode}`
-                          : this.getDefaultAddress() 
-                      }
-                    </span>
-                  </Box>
-                  {!matches && (
-                    <Link
-                      onClick={() => {
-                        this.setState({
-                          showAddressPopup: false,
-                          selectedSlot: null, 
-                        });
-                      }}
-                      href="#"
-                      sx={{
-                        marginLeft: "auto",
-                        color: "green",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Change
-                    </Link>
-                  )}
-                  {matches && (
-                    <Link
-                      href="#"
-                      onClick={() => {
-                        this.setState({
-                          TabSelectAddressPopupOpen: true,
-                          selectedSlot: null, 
-                        });
-                      }}
-                      sx={{
-                        marginLeft: "auto",
-                        color: "green",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Change
-                    </Link>
-                  )}
-                </Box>
-                <Box className="select_delivery_slot">
-  <h2>Select Delivery Slot</h2>
-  <span className="select_delivery_slot_wrapper">
-    <div
-      className={this.state.showSlotError ? "slot-error" : ""}
-      onClick={() => {
-        this.setState({
-          slotOpen: true,
-          showSlotError: false, // Reset error when opening the slot selection
-        });
-      }}
-    >
-      <span>
-        {this.state.selectedSlot
-          ? `${this.state.selectedSlot.start} ${this.state.selectedSlot.startAmPm} - ${this.state.selectedSlot.end} ${this.state.selectedSlot.endAmPm}`
-          : "Select Slot"}
-      </span>
-      <img src={ArrowDown} alt="Open Slots" />
-    </div>
-    {matches && (
-      <Button
-        onClick={() => {
-          this.setState({
-            slotOpen: true,
-            showSlotError: false, // Reset error when opening the slot selection
-          });
-        }}
-        className="common-btn select_slot_btn"
-      >
-        Select Slot
-      </Button>
-    )}
-  </span>
+                  <>
+                    <Box className="my_cart_bottom_address">
+                      <img src={LocationIcon} alt="" />
+                      <Box>
+                        <span>
+                          Delivering to
+                          {this.state.selectedAddress
+                            ? this.state.selectedAddress.address_type
+                            : this.getDefaultAddresstype()}
+                        </span>
+                        <span>
+                          {this.state.selectedAddress
+                            ? `${this.state.selectedAddress.address}, ${this.state.selectedAddress.zipCode}`
+                            : this.getDefaultAddress()}
+                        </span>
+                      </Box>
+                      {!matches && (
+                        <Link
+                          onClick={() => {
+                            this.setState({
+                              showAddressPopup: false,
+                              selectedSlot: null,
+                            });
+                          }}
+                          href="#"
+                          sx={{
+                            marginLeft: "auto",
+                            color: "green",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Change
+                        </Link>
+                      )}
+                      {matches && (
+                        <Link
+                          href="#"
+                          onClick={() => {
+                            this.setState({
+                              TabSelectAddressPopupOpen: true,
+                              selectedSlot: null,
+                            });
+                          }}
+                          sx={{
+                            marginLeft: "auto",
+                            color: "green",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Change
+                        </Link>
+                      )}
+                    </Box>
+                    <Box className="select_delivery_slot">
+                      <h2>Select Delivery Slot</h2>
+                      <span className="select_delivery_slot_wrapper">
+                        <div
+                          className={
+                            this.state.showSlotError ? "slot-error" : ""
+                          }
+                          onClick={() => {
+                            this.setState({
+                              slotOpen: true,
+                              showSlotError: false, // Reset error when opening the slot selection
+                            });
+                          }}
+                        >
+                          <span>
+                            {this.state.selectedSlot
+                              ? `${this.state.selectedSlot.start} ${this.state.selectedSlot.startAmPm} - ${this.state.selectedSlot.end} ${this.state.selectedSlot.endAmPm}`
+                              : "Select Slot"}
+                          </span>
+                          <img src={ArrowDown} alt="Open Slots" />
+                        </div>
+                        {matches && (
+                          <Button
+                            onClick={() => {
+                              this.setState({
+                                slotOpen: true,
+                                showSlotError: false, // Reset error when opening the slot selection
+                              });
+                            }}
+                            className="common-btn select_slot_btn"
+                          >
+                            Select Slot
+                          </Button>
+                        )}
+                      </span>
 
-  {/* Error message */}
-  {this.state.showSlotError && (
-    <Typography
-      variant="body2"
-      sx={{ color: "red", marginTop: "4px", fontSize: '12px' }}
-    >
-      Please select a delivery slot before placing the order.
-    </Typography>
-  )}
-</Box>
-        </>
-      ) : (
-        null
-      )}
-      
-             
-               
+                      {/* Error message */}
+                      {this.state.showSlotError && (
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: "red",
+                            marginTop: "4px",
+                            fontSize: "12px",
+                          }}
+                        >
+                          Please select a delivery slot before placing the
+                          order.
+                        </Typography>
+                      )}
+                    </Box>
+                  </>
+                ) : null}
+
                 <Box className="item_details_container">
                   <h2>Item Details</h2>
                   <CartItems />
@@ -529,94 +524,99 @@ class MyCart extends Component {
                       </div>
 
                       {defaultSelectedAddress?.addressId ? (
-        <>
-             <div className="payment_container">
-
-                        <Box className="Payment_methods_box">
-                          <h2>Payment Method</h2>
-                          <div
-                            onClick={() =>
-                              this.setState({ selectedPaymentMethod: "online" })
-                            }
-                          >
-                            <span>
-                              <span>Online Payment Options</span>
-                            </span>
-                            <Radio
-                              checked={selectedPaymentMethod === "online"}
-                              color="success"
-                            />
+                        <>
+                          <div className="payment_container">
+                            <Box className="Payment_methods_box">
+                              <h2>Payment Method</h2>
+                              <div
+                                onClick={() =>
+                                  this.setState({
+                                    selectedPaymentMethod: "online",
+                                  })
+                                }
+                              >
+                                <span>
+                                  <span>Online Payment Options</span>
+                                </span>
+                                <Radio
+                                  checked={selectedPaymentMethod === "online"}
+                                  color="success"
+                                />
+                              </div>
+                              <div
+                                onClick={() =>
+                                  this.setState({
+                                    selectedPaymentMethod: "cash",
+                                  })
+                                }
+                              >
+                                <span>
+                                  <img src={cashIcon} alt="" />
+                                  <span>Cash on Delivery</span>
+                                </span>
+                                <Radio
+                                  checked={selectedPaymentMethod === "cash"}
+                                  color="success"
+                                />
+                              </div>
+                            </Box>
+                            <Grid
+                              sx={{ paddingBottom: "20px" }}
+                              item
+                              xs={6}
+                              lg={4}
+                              md={6}
+                              sm={6}
+                            >
+                              <Button
+                                variant="contained"
+                                fullWidth
+                                className="common-btn pay_now_btn"
+                                onClick={this.handlePlaceOrder}
+                                disabled={
+                                  this.props.placeOrderData.status ===
+                                  status.IN_PROGRESS
+                                }
+                                endIcon={
+                                  this.props.placeOrderData.status ===
+                                  status.IN_PROGRESS ? (
+                                    <CircularProgress className="common-loader" />
+                                  ) : (
+                                    <></>
+                                  )
+                                }
+                              >
+                                Place Order
+                              </Button>
+                            </Grid>
                           </div>
-                          <div
-                            onClick={() =>
-                              this.setState({ selectedPaymentMethod: "cash" })
-                            }
+                        </>
+                      ) : (
+                        <div className="payment_container">
+                          <Grid
+                            sx={{ paddingBottom: "20px" }}
+                            item
+                            xs={6}
+                            lg={4}
+                            md={6}
+                            sm={6}
                           >
-                            <span>
-                              <img src={cashIcon} alt="" />
-                              <span>Cash on Delivery</span>
-                            </span>
-                            <Radio
-                              checked={selectedPaymentMethod === "cash"}
-                              color="success"
-                            />
-                          </div>
-                        </Box>
-                        <Grid
-                          sx={{ paddingBottom: "20px" }}
-                          item
-                          xs={6}
-                          lg={4}
-                          md={6}
-                          sm={6}
-                        >
-                          <Button
-                            variant="contained"
-                            fullWidth
-                            className="common-btn pay_now_btn"
-                            onClick={this.handlePlaceOrder}
-                            disabled={
-                              this.props.placeOrderData.status ===
-                              status.IN_PROGRESS
-                            }
-                            endIcon={
-                              this.props.placeOrderData.status ===
-                              status.IN_PROGRESS ? (
-                                <CircularProgress className="common-loader" />
-                              ) : (
-                                <></>
-                              )
-                            }
-                          >
-                            Place Order
-                          </Button>
-                        </Grid>
-
-                        
-                      </div>
-        </>
-      ) : (
-        <div className="payment_container">
-        <Grid
-        sx={{ paddingBottom: "20px" }}
-        item
-        xs={6}
-        lg={4}
-        md={6}
-        sm={6}
-      >
-        <Button
-          variant="contained"
-          fullWidth
-          className="common-btn pay_now_btn"
-          onClick={()=> this.setState({isAddNewAddressModalOpen:true})}
-        >
-      Add address to proceed
-        </Button>
-      </Grid>
-      </div>
-      )}
-                 </>
+                            <Button
+                              variant="contained"
+                              fullWidth
+                              className="common-btn pay_now_btn"
+                              onClick={() =>
+                                this.setState({
+                                  isAddNewAddressModalOpen: true,
+                                })
+                              }
+                            >
+                              Add address to proceed
+                            </Button>
+                          </Grid>
+                        </div>
+                      )}
+                    </>
                   ) : (
                     <></>
                   )}
@@ -635,8 +635,6 @@ class MyCart extends Component {
                     alt=""
                   />
                   <h2>Select Delivery Address</h2>
-                </Box>
-                <Box className="select_delivery_slot">
                 </Box>
                 <Box className="delivery_slots_container">
                   <AllAddresses
@@ -660,7 +658,7 @@ class MyCart extends Component {
         >
           <Box className="tab_popup">
             <Box className="tab_select_delivery_container">
-               <h2>Select Delivery Address</h2> 
+              <h2>Select Delivery Address</h2>
             </Box>
             <AllAddresses
               onAddressSelect={(address) =>
@@ -680,8 +678,8 @@ class MyCart extends Component {
         >
           <Box
             sx={{
-              borderRadius: "12px 12px 0 0", 
-              overflow: "scroll", 
+              borderRadius: "12px 12px 0 0",
+              overflow: "scroll",
               padding: 0,
               background: "#fff",
             }}
@@ -752,7 +750,7 @@ function mapStateToProps(state) {
   const { saveForLaterData } = state.allproducts;
   const { placeOrderData } = state.placeorder;
   const { allAddress, selectedAddressData, defaultAddressData } =
-  state.alladdress;
+    state.alladdress;
   return {
     cartItems,
     loginData,

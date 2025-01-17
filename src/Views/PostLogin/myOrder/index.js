@@ -35,12 +35,9 @@ import en from "javascript-time-ago/locale/en";
 import Invoice from "../myProfile/notification/invoice";
 
 TimeAgo.addDefaultLocale(en);
-
 const timeAgo = new TimeAgo("en-US");
-
 const dateFormatter = (d) => {
   const date = new Date(d);
-
   return timeAgo.format(date);
 };
 
@@ -101,7 +98,6 @@ class MyOrder extends Component {
     window.history.pushState(null, null, window.location.pathname);
     window.addEventListener("popstate", this.onBackButtonEvent);
     const items = loginDetails();
-
     if (items?.userId) {
       this.props.fetchAllorders(items?.userId);
     }

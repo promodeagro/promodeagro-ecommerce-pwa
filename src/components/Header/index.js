@@ -244,10 +244,9 @@ class Header extends Component {
     const { isAddressModalOpen } = this.state;
     const { isAddAddressModalOpen } = this.state;
 
-    
-  if ( window.location.pathname === "/cart") {
-    return null;
-  }
+    if (window.location.pathname === "/cart") {
+      return null;
+    }
 
     return (
       <>
@@ -271,8 +270,9 @@ class Header extends Component {
                         >
                           <strong>Deliver to</strong>
                           <span>
-                            {currentAddress?.landmark_area} {currentAddress?.house_number}, {currentAddress?.address}
-
+                            {currentAddress?.landmark_area}{" "}
+                            {currentAddress?.house_number},{" "}
+                            {currentAddress?.address}
                             <KeyboardArrowDownIcon />
                           </span>
                         </Box>
@@ -370,7 +370,12 @@ class Header extends Component {
                                 onClick={() => {
                                   this.handleProfileModal();
                                   localStorage.removeItem("login");
+                                  localStorage.removeItem("defaultAddress");
+                                  localStorage.removeItem("cartItem");
+                                  localStorage.removeItem("address");
+
                                   this.props.navigate("/");
+                                  window.location.reload(); // Add this line to reload the page
                                 }}
                               >
                                 <Link>
@@ -388,58 +393,56 @@ class Header extends Component {
                     </Box>
                   )}
 
-
-{!matches && (
-                  <Box        onClick={() => {
-                      if (loginDetails()?.userId) {
-                         {
-                          this.setState({ myCartOpen: true });
-                        }
-                      } else {
-                        this.setState({ authModalOpen: true });
-                      }
-                    }} 
-                    className="card"
-                  >
-                    <Link>
-                      {noOfcartItemsInLS ? (
-                        <p>{noOfcartItemsInLS}</p>
-                      ) : this.state.cartList?.length ? (
-                        <p>{this.state.cartList.length}</p>
-                      ) : (
-                        <></>
-                      )}
-                      <img src={cardIcon} alt="Shopping" /> <span>Cart</span>
-                    </Link>
-                  </Box>
-  )}
-                  {matches && (
-                     <Box
-                   
-                     onClick={() => {
-                       if (loginDetails()?.userId) {
+                  {!matches && (
+                    <Box
+                      onClick={() => {
+                        if (loginDetails()?.userId) {
                           {
-                           this.props.navigate("/cart")
-                         }
-                       } else {
-                         this.setState({ authModalOpen: true });
-                       }
-                     }} 
-                     className="card"
-                   >
-                     <Link>
-                       {noOfcartItemsInLS ? (
-                         <p>{noOfcartItemsInLS}</p>
-                       ) : this.state.cartList?.length ? (
-                         <p>{this.state.cartList.length}</p>
-                       ) : (
-                         <></>
-                       )}
-                       <img src={cardIcon} alt="Shopping" /> <span>Cart</span>
-                     </Link>
-                   </Box>
+                            this.setState({ myCartOpen: true });
+                          }
+                        } else {
+                          this.setState({ authModalOpen: true });
+                        }
+                      }}
+                      className="card"
+                    >
+                      <Link>
+                        {noOfcartItemsInLS ? (
+                          <p>{noOfcartItemsInLS}</p>
+                        ) : this.state.cartList?.length ? (
+                          <p>{this.state.cartList.length}</p>
+                        ) : (
+                          <></>
+                        )}
+                        <img src={cardIcon} alt="Shopping" /> <span>Cart</span>
+                      </Link>
+                    </Box>
                   )}
-
+                  {matches && (
+                    <Box
+                      onClick={() => {
+                        if (loginDetails()?.userId) {
+                          {
+                            this.props.navigate("/cart");
+                          }
+                        } else {
+                          this.setState({ authModalOpen: true });
+                        }
+                      }}
+                      className="card"
+                    >
+                      <Link>
+                        {noOfcartItemsInLS ? (
+                          <p>{noOfcartItemsInLS}</p>
+                        ) : this.state.cartList?.length ? (
+                          <p>{this.state.cartList.length}</p>
+                        ) : (
+                          <></>
+                        )}
+                        <img src={cardIcon} alt="Shopping" /> <span>Cart</span>
+                      </Link>
+                    </Box>
+                  )}
 
                   {matches && (
                     <Box
@@ -450,7 +453,7 @@ class Header extends Component {
                           : this.setState({ authModalOpen: true })
                       }
                     >
-                      <AccountCircleOutlinedIcon sx={{cursor:"pointer"}} />
+                      <AccountCircleOutlinedIcon sx={{ cursor: "pointer" }} />
                     </Box>
                   )}
                 </Box>
@@ -483,15 +486,15 @@ class Header extends Component {
         {isAddressModalOpen && (
           <AddressModal
             open={isAddressModalOpen}
-            handleClose={this.handleAddressClose} 
+            handleClose={this.handleAddressClose}
           />
         )}
         {isAddAddressModalOpen && (
           <AddAddressModal
             open={isAddAddressModalOpen}
-            handleClose={this.handleAddAddressClose} 
+            handleClose={this.handleAddAddressClose}
           />
-        )}      
+        )}
         <MyCart
           open={this.state.myCartOpen}
           handleClose={() => {

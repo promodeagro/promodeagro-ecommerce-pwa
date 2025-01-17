@@ -488,3 +488,14 @@
     }
   }
 }
+
+.noproductdiv {
+  display: flex; /* Enable Flexbox */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  color: #1f9151;
+  font-size: 16px;
+  font-weight: bold;
+  height: 100%; /* Ensure it takes the full height of its container */
+  margin-top: 80px;
+}
