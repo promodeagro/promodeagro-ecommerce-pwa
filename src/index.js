@@ -26,6 +26,9 @@ AOS.init();
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://cra.link/PWA
-serviceWorkerRegistration.register();
+
+
+// temperry removing service file for ios issue 
+// serviceWorkerRegistration.register();
 
 reportWebVitals();
