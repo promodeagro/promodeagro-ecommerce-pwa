@@ -15,6 +15,7 @@ import status from "../../Redux/Constants";
 import { connect } from "react-redux";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import CircularProgress from "@mui/material/CircularProgress";
+
 const mobileValidationSchema = {
   emailOrNumber: [
     {
@@ -69,7 +70,7 @@ const AuthModal = (props) => {
     if (props.loginData.status === status.SUCCESS && isSubmitMobOrEmail) {
       setSubmitMobOrEmail(false);
       if (props.loginData.data) {
-        if (props.loginData.data.statusCode == 200) {
+        if (props.loginData.data.statusCode === 200) {
           resetTimer();
           setFormType("otp");
         } else {
@@ -80,18 +81,17 @@ const AuthModal = (props) => {
   }, [props.loginData.status]);
 
   useEffect(() => {
-    if (props.validateOtpRes.status === status.SUCCESS && setSubmitMobOrEmail) {
-      setSubmitMobOrEmail(false);
+    if (props.validateOtpRes.status === status.SUCCESS && isOtpSubmitted) {
+      setOtpSubmitted(false);
       if (props.validateOtpRes?.data) {
-        if (props.validateOtpRes?.data?.statusCode == 200) {
+        if (props.validateOtpRes?.data?.statusCode === 200) {
           handleModalClose();
           localStorage.setItem(
             "login",
             JSON.stringify(props?.validateOtpRes?.data?.data)
           );
           props.handleDefaultAddress();
-
-          props.handleClose();
+          handleClose(); // Ensure modal closes properly
         } else {
           ErrorMessages.error(props.validateOtpRes?.data?.message);
         }
@@ -103,18 +103,13 @@ const AuthModal = (props) => {
     setSeconds(30);
     setIsActive(true);
   };
+
   const validateOtpForm = () => {
-    const error = ValidationEngine.validate(otpScreenValidationSchema, {
-      validateOtp,
-    });
-    return error;
+    return ValidationEngine.validate(otpScreenValidationSchema, { validateOtp });
   };
 
   const validateForm = () => {
-    const error = ValidationEngine.validate(mobileValidationSchema, {
-      emailOrNumber,
-    });
-    return error;
+    return ValidationEngine.validate(mobileValidationSchema, { emailOrNumber });
   };
 
   const handleRegisterForm = async (e) => {
@@ -137,8 +132,7 @@ const AuthModal = (props) => {
       });
     }
   };
-  const errorData = validateForm();
-  const otpScreenErrorData = validateOtpForm();
+
   const renderForm = () => {
     switch (formType) {
       case "login":
@@ -162,7 +156,7 @@ const AuthModal = (props) => {
                   />
                   {isSubmitMobOrEmail && (
                     <FormHelperText error>
-                      {errorData?.emailOrNumber?.message}
+                      {validateForm()?.emailOrNumber?.message}
                     </FormHelperText>
                   )}
                 </Box>
@@ -175,11 +169,11 @@ const AuthModal = (props) => {
                   className="common-btn login-btns"
                   disabled={
                     props.loginData.status === status.IN_PROGRESS &&
-                    setSubmitMobOrEmail
+                    isSubmitMobOrEmail
                   }
                   endIcon={
                     props.loginData.status === status.IN_PROGRESS &&
-                    setSubmitMobOrEmail ? (
+                    isSubmitMobOrEmail ? (
                       <CircularProgress className="common-loader" />
                     ) : (
                       <></>
@@ -224,8 +218,7 @@ const AuthModal = (props) => {
                             className="input_end_text"
                             disabled={isActive}
                           >
-                            {" "}
-                            Resend OTP{" "}
+                            Resend OTP
                           </Button>
                         </InputAdornment>
                       ),
@@ -233,7 +226,7 @@ const AuthModal = (props) => {
                   />
                   {isOtpSubmitted && (
                     <FormHelperText error>
-                      {otpScreenErrorData?.validateOtp?.message}
+                      {validateOtpForm()?.validateOtp?.message}
                     </FormHelperText>
                   )}
                 </Box>
@@ -274,8 +267,9 @@ const AuthModal = (props) => {
     setSubmitMobOrEmail(false);
     setOtpSubmitted(false);
     setValidateOtp("");
-    props.handleClose();
+    handleClose(); // Close the modal correctly
   };
+
   return (
     <Modal
       open={open}
@@ -299,7 +293,6 @@ const AuthModal = (props) => {
 
 function mapStateToProps(state) {
   const { loginData, validateOtpRes } = state.login;
-
   return { loginData, validateOtpRes };
 }
 
