@@ -90,7 +90,7 @@ class MyCart extends Component {
     const { handleClose } = this.props;
     if (
       prevProps.defaultAddressData?.status !==
-        this.props?.defaultAddressData?.status &&
+      this.props?.defaultAddressData?.status &&
       this.props?.defaultAddressData?.status === status.SUCCESS &&
       this.props?.defaultAddressData?.data
     ) {
@@ -147,7 +147,7 @@ class MyCart extends Component {
         ListData: this.props.cartItems.data.items,
         cartListArr: cartListData,
         itemListArr: itemListData,
-        totalPrice: this.props.cartItems.data.subTotal,
+        totalPrice: this.props.cartItems.data.finalTotal,
         loaderCount: 1,
       });
     } else if (this.props.cartItems.status === status.FAILURE) {
@@ -158,7 +158,7 @@ class MyCart extends Component {
     }
     if (
       prevProps.saveForLaterData.status !==
-        this.props.saveForLaterData.status &&
+      this.props.saveForLaterData.status &&
       this.props.saveForLaterData.status === status.SUCCESS
     ) {
       this.props.fetchCartItems({
@@ -504,17 +504,24 @@ class MyCart extends Component {
                   <CartItems />
                   {this.state.cartList?.length > 0 ? (
                     <>
+                    
                       <div className="bill_details">
                         <strong>Bill details</strong>
                         <div>
                           <span>Item total</span>
-                          <strong>₹{this.state.totalPrice}</strong>
+                          <strong>₹{this.props.cartItems.data?.subTotal}</strong>
                         </div>
                         <div>
                           <span>Delivery Charges</span>
                           <div>
-                            <span className="mrp">₹25</span>
-                            <span className="free">Free</span>
+                             {this.props.cartItems.data?.deliveryCharges <= 0 ? (
+                              <>
+                               <span className="mrp">₹50</span>
+                               <span className="free">Free</span>
+                              </>
+                            ) : (
+                              <strong style={{ marginLeft: "5px" }}>₹{this.props.cartItems.data?.deliveryCharges}</strong>
+                            )}
                           </div>
                         </div>
                         <div>
@@ -579,7 +586,7 @@ class MyCart extends Component {
                                 }
                                 endIcon={
                                   this.props.placeOrderData.status ===
-                                  status.IN_PROGRESS ? (
+                                    status.IN_PROGRESS ? (
                                     <CircularProgress className="common-loader" />
                                   ) : (
                                     <></>
