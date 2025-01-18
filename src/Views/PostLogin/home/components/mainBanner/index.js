@@ -14,7 +14,7 @@ class MainBanner extends Component {
 
   render() {
     var settings = {
-      dots: true,
+      dots: false,
       arrows: false,
       infinite: true,
       speed: 500,
@@ -56,7 +56,7 @@ class MainBanner extends Component {
                     >
                       <img
                         src={item?.imageUrl ? item?.imageUrl : noImage}
-                        alt="no image"
+                        alt="no"
                       />
                     </Link>
                   </Box>

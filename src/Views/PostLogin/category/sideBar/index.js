@@ -55,13 +55,13 @@ class SideBar extends Component {
                 <Link to={subcatPath} className={isActive ? "active" : ""}>
                   <span
                     style={{
-                      height: "46px",
-                      width: "46px",
+                      height: "50px",
+                      width: "50px",
                       textAlign: "center",
                     }}
                   >
                     <img
-                      style={{ height: "40px", width: "40px" }}
+                      style={{ height: "45px", width: "45px" }}
                       src={subcat.image_url ? subcat.image_url : noImage}
                       alt={subcat.name}
                     />
