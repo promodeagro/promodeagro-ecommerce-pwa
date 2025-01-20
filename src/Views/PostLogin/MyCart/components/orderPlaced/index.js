@@ -99,7 +99,7 @@ const OrderPlaced = (props) => {
             <h2>Your Order Placed !</h2>
 
             <Box className="rating_box rating d-flex align-items-center justify-content-center w-100">
-              <span className="rating-info">How was everything ?</span>
+              <span className="rating-info">Rate Your Experience!</span>
               <Rating
                 name="simple-controlled"
                 value={value}
@@ -133,18 +133,24 @@ const OrderPlaced = (props) => {
                 Shipment Time Slot
               </span>
               <div className="line"></div>
-              <span>{placedOrderDetails.data?.order?.items?.length} Items</span>
-              <div className="line"></div>
               <span>
                 05 Nov, Tuesday{" "}
                 {placedOrderDetails.data?.order?.deliverySlot?.startTime} -{" "}
                 {placedOrderDetails.data?.order?.deliverySlot?.endTime}{" "}
+                ({placedOrderDetails.data?.order?.items?.length} Items)
               </span>
-              <span>Rs {placedOrderDetails.data?.order?.totalPrice}</span>
+         
+             
             </Box>
 
             <Box className="payment_details_box">
               <Box className="payment_details">
+                <div>
+                  Payment method{" "}
+                  <span className="cod">
+                    {placedOrderDetails.data?.order?.paymentDetails?.method}
+                  </span>
+                </div>
                 <div>
                   Payment status{" "}
                   <span className="cod">
@@ -154,9 +160,10 @@ const OrderPlaced = (props) => {
                 <div>
                   Order amount{" "}
                   <span className="amount">
-                    Rs. {placedOrderDetails.data?.order?.totalPrice}
+                    Rs. {placedOrderDetails.data?.order?.finalTotal}
                   </span>
                 </div>
+               
               </Box>
             </Box>
           <Invoice flag={HideDirectlySeeInvoice} orderData={orderData}/>

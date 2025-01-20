@@ -180,6 +180,7 @@ const Invoice = ({ orderData,flag }) => {
 .items table {
   width: 100%;
   border-collapse: collapse;
+  
 }
 /* styles.css */
 
@@ -408,14 +409,14 @@ footer p {
             </table>
           </div>
           <div class="summary"></div>{" "}
-         
+
           <div class="footer-links">
             <span>Shipping Charges</span>
             <span> ₹{orderData?.deliveryCharges || "0.00"}</span>
           </div>
           <div class="footer-links">
             <span>Grand Total</span>
-            <span> ₹{orderData?.totalPrice || "0.00"}</span>
+            <span> ₹{orderData?.finalTotal || "0.00"}</span>
           </div>
           <div class="divider"></div>
           <div className="footer-links">
@@ -432,7 +433,7 @@ footer p {
             <span>
               ₹
               {orderData?.paymentDetails?.method === "cash"
-                ? orderData?.totalPrice // Display total price if cash
+                ? orderData?.finalTotal // Display total price if cash
                 : "0.00"}
             </span>
           </div>
