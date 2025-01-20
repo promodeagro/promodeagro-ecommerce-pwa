@@ -142,7 +142,7 @@ class Footer extends Component {
     return (
       <>
         {/* {currentPathName.includes("category/") && matches ? ( */}
-        {currentPathName.includes("/cart") && matches ? (
+        {currentPathName.includes("/category") ? (
           ""
         ) : (
           <>

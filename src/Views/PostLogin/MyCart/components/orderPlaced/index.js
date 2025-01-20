@@ -99,7 +99,7 @@ const OrderPlaced = (props) => {
             <h2>Your Order Placed !</h2>
 
             <Box className="rating_box rating d-flex align-items-center justify-content-center w-100">
-              <span className="rating-info">How was everything ?</span>
+              <span className="rating-info">Rate Your Experience!</span>
               <Rating
                 name="simple-controlled"
                 value={value}
@@ -137,15 +137,20 @@ const OrderPlaced = (props) => {
                 05 Nov, Tuesday{" "}
                 {placedOrderDetails.data?.order?.deliverySlot?.startTime} -{" "}
                 {placedOrderDetails.data?.order?.deliverySlot?.endTime}{" "}
+                ({placedOrderDetails.data?.order?.items?.length} Items)
               </span>
-            
-            <span>({placedOrderDetails.data?.order?.items?.length} Items)</span>
-             
+         
              
             </Box>
 
             <Box className="payment_details_box">
               <Box className="payment_details">
+                <div>
+                  Payment method{" "}
+                  <span className="cod">
+                    {placedOrderDetails.data?.order?.paymentDetails?.method}
+                  </span>
+                </div>
                 <div>
                   Payment status{" "}
                   <span className="cod">
@@ -158,9 +163,7 @@ const OrderPlaced = (props) => {
                     Rs. {placedOrderDetails.data?.order?.finalTotal}
                   </span>
                 </div>
-                {
-                  console.log(placedOrderDetails.data , 'placed order dataa')
-                }
+               
               </Box>
             </Box>
           <Invoice flag={HideDirectlySeeInvoice} orderData={orderData}/>
