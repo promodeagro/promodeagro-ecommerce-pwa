@@ -593,11 +593,11 @@ class MyOrder extends Component {
           <Dialog open={openOrderDialog} onClose={this.handleClickClose}>
             <DialogContent>
               <DialogContentText>
-                Do you want to cancel this order
+                Do you want to Send Request to cancel this order ?
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button color="success">Cancel Order</Button>
+              <Button color="success">Send Cancellation Request </Button>
             </DialogActions>
             <DialogActions>
               <Button onClick={this.handleClickClose} color="error">

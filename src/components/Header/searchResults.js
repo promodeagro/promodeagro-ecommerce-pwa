@@ -155,7 +155,7 @@ class SearchResults extends Component {
           </Box>):(
             <Box
             style={{
-              width:'90vw',
+              width:'95vw',
           
 
             }}
