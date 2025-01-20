@@ -133,14 +133,15 @@ const OrderPlaced = (props) => {
                 Shipment Time Slot
               </span>
               <div className="line"></div>
-              <span>{placedOrderDetails.data?.order?.items?.length} Items</span>
-              <div className="line"></div>
               <span>
                 05 Nov, Tuesday{" "}
                 {placedOrderDetails.data?.order?.deliverySlot?.startTime} -{" "}
                 {placedOrderDetails.data?.order?.deliverySlot?.endTime}{" "}
               </span>
-              <span>Rs {placedOrderDetails.data?.order?.totalPrice}</span>
+            
+            <span>({placedOrderDetails.data?.order?.items?.length} Items)</span>
+             
+             
             </Box>
 
             <Box className="payment_details_box">
@@ -154,9 +155,12 @@ const OrderPlaced = (props) => {
                 <div>
                   Order amount{" "}
                   <span className="amount">
-                    Rs. {placedOrderDetails.data?.order?.totalPrice}
+                    Rs. {placedOrderDetails.data?.order?.finalTotal}
                   </span>
                 </div>
+                {
+                  console.log(placedOrderDetails.data , 'placed order dataa')
+                }
               </Box>
             </Box>
           <Invoice flag={HideDirectlySeeInvoice} orderData={orderData}/>
