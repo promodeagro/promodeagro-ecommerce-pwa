@@ -6,6 +6,7 @@ import {
   Grid,
   Modal,
   Radio,
+  Typography
 } from "@mui/material";
 import React, { Component } from "react";
 import ArrowDown from "../../../assets/img/ArrowDown.svg";
@@ -294,7 +295,13 @@ import "../../../assets/sass/components/myCart.scss"
     let defaultAddress = JSON.parse(
       localStorage.getItem("defaultAddress")
     ).addressId;
-    const { selectedPaymentMethod, itemListArr } = this.state;
+    const { selectedPaymentMethod, itemListArr,selectedSlot } = this.state;
+      // Check if a slot is selected
+        if (!selectedSlot) {
+          this.setState({ showSlotError: true }); // Trigger the error state
+          ErrorMessages.error("Please select a delivery slot."); // Show error message
+          return;
+        }
     const Data = {
       addressId: addressId ? addressId : defaultAddress,
       deliverySlotId: this.state.selectedSlot ? this.state.selectedSlot.id : "",
@@ -399,7 +406,7 @@ import "../../../assets/sass/components/myCart.scss"
                   <img src={LocationIcon} alt="" />
                   <Box>
                     <span>
-                      Delivering to
+                      Delivering to {""}
                       {this.state.selectedAddress
                         ? this.state.selectedAddress.address_type
                         : this.getDefaultAddresstype()}
@@ -453,11 +460,15 @@ import "../../../assets/sass/components/myCart.scss"
                   <h2>Select Delivery Slot</h2>
                   <span className="select_delivery_slot_wrapper">
                     <div
-                      onClick={() => {
-                        this.setState({
-                          slotOpen: true, 
-                        });
-                      }}
+                    className={
+                      this.state.showSlotError ? "slot-error" : ""
+                    }
+                     onClick={() => {
+                      this.setState({
+                        slotOpen: true,
+                        showSlotError: false, // Reset error when opening the slot selection
+                      });
+                    }}
                     >
                       <span>
                         {this.state.selectedSlot
@@ -471,14 +482,31 @@ import "../../../assets/sass/components/myCart.scss"
                         onClick={() => {
                           this.setState({
                             slotOpen: true,
+                            showSlotError: false, // Reset error when opening the slot selection
                           });
                         }}
                         className="common-btn select_slot_btn"
                       >
-                        Select Slot
+                        Select Slot 123
                       </Button>
                     )}
+
                   </span>
+                                        {/* Error message */}
+                                        {this.state.showSlotError && (
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: "red",
+                            marginTop: "4px",
+                            fontSize: "12px",
+                          }}
+                        >
+                          Please select a delivery slot before placing the
+                          order.
+                        </Typography>
+                      )}
+
                 </Box>
         </>
       ) : (

@@ -120,7 +120,7 @@ class MyCart extends Component {
     ) {
       let cartListData = [];
       let itemListData = [];
-      this.props.cartItems.data.items.forEach((item) => {
+      this.props?.cartItems?.data?.items?.forEach((item) => {
         let data = {
           mrp: item.Mrp,
           price: item.Price,
@@ -397,7 +397,7 @@ class MyCart extends Component {
                       <img src={LocationIcon} alt="" />
                       <Box>
                         <span>
-                          Delivering to
+                          Delivering to  {" "}
                           {this.state.selectedAddress
                             ? this.state.selectedAddress.address_type
                             : this.getDefaultAddresstype()}
@@ -495,13 +495,21 @@ class MyCart extends Component {
                           order.
                         </Typography>
                       )}
+
                     </Box>
+                   
                   </>
                 ) : null}
 
                 <Box className="item_details_container">
+                  <div style={{display:'flex', justifyContent:'space-between'}}>
                   <h2>Item Details</h2>
+                   {/* <Link to={""} onClick={this.scrollToTop}>
+              Clear All 
+            </Link> */}
+            </div>
                   <CartItems />
+
                   {this.state.cartList?.length > 0 ? (
                     <>
                     

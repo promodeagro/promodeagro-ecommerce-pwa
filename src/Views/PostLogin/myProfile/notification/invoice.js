@@ -223,7 +223,7 @@ const Invoice = ({ orderData,flag }) => {
 
 .items tr {
   padding: 40px;
-  text-align: left;
+  text-align: center;
 }
 /* Apply gray background to even rows */
 .items tr:nth-child(even) {
@@ -237,7 +237,7 @@ background-color: #ffffff; /* White */
 
 .items th {
   padding: 10px;
-  text-align: left;
+  text-align: center;
   background-color: #f5f5f5;
 }
 
@@ -386,8 +386,8 @@ footer p {
               <thead>
                 <tr>
                   <th>S.No</th>
-                  <th>Product Name</th>
-                  <th>Quantity</th>
+                  <th  style={{textAlign:'left'}}>Product Name</th>
+                  <th  style={{textAlign:'left'}}>Quantity</th>
                   <th>Rate</th>
                   <th>Total Amount</th>
                 </tr>
@@ -396,9 +396,9 @@ footer p {
                 {items.map((item, index) => (
                   <tr key={index}>
                     <td> {index + 1}</td>
-                    <td> {item.productName}</td>
-                    <td>
-                      {" "}
+                    <td style={{textAlign:'left'}}> {item.productName}</td>
+                    <td style={{textAlign:'left'}}>
+                      
                       {item.quantity} {item.unit}
                     </td>
                     <td> ₹{item.price}</td>
@@ -409,10 +409,7 @@ footer p {
             </table>
           </div>
           <div class="summary"></div>{" "}
-          <div class="footer-links">
-            <span>Total Savings</span>
-            <span> ₹{orderData?.totalSavings || "0.00"}</span>
-          </div>
+
           <div class="footer-links">
             <span>Shipping Charges</span>
             <span> ₹{orderData?.deliveryCharges || "0.00"}</span>
@@ -440,12 +437,19 @@ footer p {
                 : "0.00"}
             </span>
           </div>
+          <div style={{ textAlign: "center",marginBottom:'5px' }}>
+  <span>
+   ** You Saved ₹{orderData?.totalSavings || "0.00"}/- On MRP **
+  </span>
+</div>
+
           <footer>
             <div class="footer-container">
               <span class="footer-left">&lt;</span>
 
               <div class="footer-content">
                 <div class="dashed-line"></div>
+                
 
                 <h3 class="text-spacing">Thank You</h3>
 

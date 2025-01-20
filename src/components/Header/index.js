@@ -14,6 +14,8 @@ import { loginDetails } from "Views/Utills/helperFunctions";
 import { getAllAddress } from "../../Redux/Address/AddressThunk";
 import SearchResults from "./searchResults";
 import _ from "lodash";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import { fetchDefaultAddress } from "../../Redux/Address/AddressThunk";
 import { fetchCartItems } from "../../Redux/Cart/CartThunk";
@@ -415,7 +417,12 @@ class Header extends Component {
                         ) : (
                           <></>
                         )}
-                        <img src={cardIcon} alt="Shopping" /> <span>Cart</span>
+                        {/* <img src={cardIcon} alt="Shopping" /> */}
+                        <ShoppingCartIcon  style={{color:'white'}}/>
+                        <span>Cart </span>
+                      
+                       
+                       
                       </Link>
                     </Box>
                   )}
@@ -440,7 +447,13 @@ class Header extends Component {
                         ) : (
                           <></>
                         )}
-                        <img src={cardIcon} alt="Shopping" /> <span>Cart</span>
+                        {/* <img src={cardIcon} alt="Shopping" /> */}
+                        <ShoppingCartIcon  style={{color:'white'}}/>
+
+                         <span>Cart</span>
+                      
+                      
+
                       </Link>
                     </Box>
                   )}

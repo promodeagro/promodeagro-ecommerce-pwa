@@ -194,12 +194,12 @@ class MyOrder extends Component {
     } = this.state;
 
     const statusToStepIndex = {
-      "Order placed": 0,
-      "In Process": 1,
-      Packed: 2,
-      "On the way": 3,
-      Delivered: 4,
-      Cancelled: -1, // Handle cancelled orders
+      "order placed": 0,
+      "in process": 1,
+      packed: 2,
+      "on the way": 3,
+      delivered: 4,
+      cancelled: -1, // Handle cancelled orders
     };
     console.log(myOrdersList, "my");
     return (
@@ -224,6 +224,10 @@ class MyOrder extends Component {
                   myOrdersList.map((item) => (
                     <Box key={item?.id}>
                       <Box
+                       style={{
+                        border: `1.5px solid ${item.status === "cancelled" ? "#d30606" : "#bfbfbf"}`,
+                       
+                      }} 
                         className="order-status-collapsed"
                         data-aos="zoom-in-right"
                       >
@@ -241,6 +245,7 @@ class MyOrder extends Component {
                                   </Box>
                                 </Box>
                               </Grid>
+                              
 
                               <Grid item xs={5}>
                                 <Box className="order-status-bar">
@@ -266,7 +271,6 @@ class MyOrder extends Component {
                                   </Stepper>
                                 </Box>
                               </Grid>
-
                               <Grid item xs={1}>
                                 {item?.status === "delivered" ? (
                                   <Box className="order-status-container delivered">
@@ -282,6 +286,8 @@ class MyOrder extends Component {
                                   </Box>
                                 ) : null}
                               </Grid>
+
+                              
 
                               <Grid item xs={2}>
                                 <Box className="order-id-container order-progress">

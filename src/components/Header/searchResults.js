@@ -25,6 +25,8 @@ class SearchResults extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      matches: window.matchMedia("(max-width: 600px)").matches,
+
       // addedProducts: [], // Track added products
       searchTerm: "", // Track search term
       dataId: "",
@@ -52,6 +54,11 @@ class SearchResults extends Component {
           (prevState.placeholderIndex + 1) % this.placeholderTexts.length,
       }));
     }, 3000);
+    window
+    .matchMedia("(max-width: 600px)")
+    .addEventListener("change", (e) => this.setState({ matches: e.matches }));
+
+    
   }
 
   componentWillUnmount() {
@@ -100,6 +107,7 @@ class SearchResults extends Component {
   render() {
     const { cartItemsData } = this.props;
     const {
+      matches,
       searchTerm,
       productsFiltersData,
       searchLoader,
@@ -125,7 +133,34 @@ class SearchResults extends Component {
             onChange={this.searchChange}
             placeholder={this.placeholderTexts[placeholderIndex]}
           />
+           {!matches?(
           <Box
+           
+          
+            className={`search-results ${
+              searchTerm && productsFiltersData ? "active" : ""
+            }`}
+          >
+            {showResult ? (
+              searchLoader ? (
+                <Box className="search-loader">
+                  <CircularProgress className="common-loader" />
+                </Box>
+              ) : searchTerm && productsFiltersData.length === 0 ? (
+                <p className="no-data">There is no data</p>
+              ) : (
+                <SearchProductItemView productList={productsFiltersData} />
+              )
+            ) : null}
+          </Box>):(
+            <Box
+            style={{
+              width:'90vw',
+          
+
+            }}
+          
+           
             className={`search-results ${
               searchTerm && productsFiltersData ? "active" : ""
             }`}
@@ -142,8 +177,11 @@ class SearchResults extends Component {
               )
             ) : null}
           </Box>
+
+          )}
         </Box>
         <Box
+       
           className={`search-results-bg ${
             searchTerm && productsFiltersData ? "active" : ""
           }`}

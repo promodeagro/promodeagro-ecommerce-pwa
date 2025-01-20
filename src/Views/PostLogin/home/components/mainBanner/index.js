@@ -14,7 +14,7 @@ class MainBanner extends Component {
 
   render() {
     var settings = {
-      dots: true,
+      dots: false,
       arrows: false,
       infinite: true,
       speed: 500,
