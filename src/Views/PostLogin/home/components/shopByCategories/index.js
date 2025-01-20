@@ -19,19 +19,20 @@ class ShopByCategories extends Component {
   scrollToTop = () => {
     window.scrollTo(0, 0);
   };
-
   render() {
     const { matches } = this.state;
     const { categories } = this.props;
+    console.log(categories,"cat");
+
 
     return (
       <Box className="shop-categories-container">
         <Container>
           <Box className="heading">
             <h2>Shop by Categories</h2>
-            <Link to={""} onClick={this.scrollToTop}>
+            {/* <Link to={""} onClick={this.scrollToTop}>
               View All <EastOutlinedIcon />
-            </Link>
+            </Link> */}
           </Box>
           <Box className="categories">
             {categories?.length > 0 ? (
