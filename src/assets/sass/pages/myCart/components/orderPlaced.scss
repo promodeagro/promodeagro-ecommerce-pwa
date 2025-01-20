@@ -442,6 +442,7 @@ color: var(--black-80, #1C1C1CCC);
 display: flex;
 align-items: center;justify-content: start;
 gap: 20px;
+width: 300px;
 img{
   width: 50px;
 height: auto;
@@ -470,7 +471,9 @@ text-underline-position: from-font;
 text-decoration-skip-ink: none;
 color: #000000;
 
+
 display: flex;
+justify-content: space-between;
 gap: 20px;
 .cod{
   font-family: Poppins;
@@ -481,11 +484,12 @@ text-align: left;
 text-underline-position: from-font;
 text-decoration-skip-ink: none;
 color: #D91515;
+ width: 100px;
 
 }
 .amount{
   color: var(--black-100, #1C1C1C);
-
+  width: 100px;
 }
   }
 }  

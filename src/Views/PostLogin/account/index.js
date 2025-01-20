@@ -41,8 +41,8 @@ class Account extends Component {
                     </li> */}
                     <li
                         onClick={() => {
-
-                            localStorage.removeItem("login");
+                            sessionStorage.removeItem("login");
+                            // localStorage.removeItem("login");
                             localStorage.removeItem("defaultAddress");
                             localStorage.removeItem("cartItem");
                             this.props.navigate("/");
