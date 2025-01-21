@@ -479,9 +479,9 @@ class MyOrder extends Component {
                           className="order-details-container"
                           data-aos="zoom-in-right"
                         >
-                          <span className="d-block order-place-time">
+                          {/* <span className="d-block order-place-time">
                             {dateFormatter(item?.createdAt)}
-                          </span>
+                          </span> */}
 
                           <Grid container spacing={4}>
                             <Grid item xs={12} md={4}>
