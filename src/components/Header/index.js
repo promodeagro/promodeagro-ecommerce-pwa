@@ -378,7 +378,7 @@ class Header extends Component {
                                   localStorage.removeItem("address");
 
                                   this.props.navigate("/");
-                                  window.location.reload(); // Add this line to reload the page
+                                  window.location.reload();  
                                 }}
                               >
                                 <Link>

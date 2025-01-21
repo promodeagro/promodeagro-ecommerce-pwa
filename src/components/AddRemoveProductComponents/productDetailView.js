@@ -129,30 +129,36 @@ class ProductDetailCartUpdateView extends Component {
         ) : (
           <></>
         )}
+
+
         {productItem?.unitPrices?.length > 0 ? (
-          <Box className="select">
-            <FormControl fullWidth>
-              <NativeSelect
-                value={this.state.qauntityUnits}
-                onChange={(event) =>
-                  this.handleQuantity(event, productItem, addedProducts)
-                }
-              >
-                {productItem?.unitPrices?.map((unitItem, index) => {
-                  return (
-                    <option key={index} value={unitItem?.qty}>
-                      {/* {unitItem?.qty} */}
-                       {productItem?.unit}
-                    </option>
-                  );
-                })}
-              </NativeSelect>
-            </FormControl>
-          </Box>
+          // <Box className="select">
+          //   <FormControl fullWidth>
+          //     <NativeSelect
+          //       value={this.state.qauntityUnits}
+          //       onChange={(event) =>
+          //         this.handleQuantity(event, productItem, addedProducts)
+          //       }
+          //     >
+          //       {productItem?.unitPrices?.map((unitItem, index) => {
+          //         return (
+          //           <option key={index} value={unitItem?.qty}>
+          //             {/* {unitItem?.qty} */}
+          //              {productItem?.unit}
+          //           </option>
+          //         );
+          //       })}
+          //     </NativeSelect>
+          //   </FormControl>
+          // </Box>
           
+          <></>
         ) : (
-          <Box className="select">{productItem?.unit}</Box>
+          // <Box className="select">{productItem?.unit}</Box>
+          <></>
         )}
+
+
         <Box className="product-cart-buttons">
           <Grid container spacing={2}>
             <Grid item xs={12} sm={8} md={6} lg={4}>

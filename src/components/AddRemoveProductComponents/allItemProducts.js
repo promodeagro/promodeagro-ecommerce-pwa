@@ -218,35 +218,6 @@ class ProductItemView extends Component {
           >
             <Link>{item?.name}</Link>
           </Box>
-
-
-          <>
-            {item?.unitPrices?.length > 0 ? (
-              <Box className="select">
-                <select
-                  value={
-                    qauntityUnits[item?.id] ||
-                    item?.cartItem?.QuantityUnits ||
-                    ""
-                  }
-                  onChange={(event) =>
-                    this.handleQuantity(event, item, addedProducts)
-                  }
-                >
-                  {item?.unitPrices.map((unitItem, index) => {
-                    return (
-                      <option key={index} value={unitItem.qty}>
-                        {/* {unitItem.qty}  */}
-                        {item?.unit}
-                      </option>
-                    );
-                  })}
-                </select>
-              </Box>
-            ) : (
-              <Box className="select">{item?.unit}</Box>
-            )}
-          </>
           <Box className="price-cart">
             <Box className="price">
               <strong>
@@ -487,3 +458,34 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(navigateRouter(ProductItemView));
+
+
+// producs unit code 
+
+// <>
+// {item?.unitPrices?.length > 0 ? (
+//   <Box className="select">
+//     <select
+//       value={
+//         qauntityUnits[item?.id] ||
+//         item?.cartItem?.QuantityUnits ||
+//         ""
+//       }
+//       onChange={(event) =>
+//         this.handleQuantity(event, item, addedProducts)
+//       }
+//     >
+//       {item?.unitPrices.map((unitItem, index) => {
+//         return (
+//           <option key={index} value={unitItem.qty}>
+//             {/* {unitItem.qty}  */}
+//             {item?.unit}
+//           </option>
+//         );
+//       })}
+//     </select>
+//   </Box>
+// ) : (
+//   <Box className="select">{item?.unit}</Box>
+// )}
+// </>
