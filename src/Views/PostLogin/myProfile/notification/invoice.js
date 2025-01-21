@@ -5,7 +5,7 @@ import promodeicon from "../../../../assets/img/Favicon Icon Promode.svg";
 import { Button, useMediaQuery, Divider, Typography } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 
-const Invoice = ({ orderData,flag }) => {
+const Invoice = ({ orderData, flag }) => {
   const items = orderData?.items || [];
   const [showInvoice, setShowInvoice] = useState(false);
   const toggleInvoice = () => {
@@ -28,26 +28,26 @@ const Invoice = ({ orderData,flag }) => {
   return (
     <>
       {!isMobile && flag ? (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={toggleInvoice}
-                sx={{ textTransform: "none" }}
-              >
-                {showInvoice ? "Hide Invoice" : "See Your Invoice"}
-              </Button>
-            ) : (
-      <Button
-        variant="outlined"
-        fullWidth
-        color="success"
-        onClick={downloadPDF}
-        sx={{ textTransform: "none", marginTop: "8px" }}
-      >
-        <FileDownloadIcon style={{ color: "#1f9151" }} color="#1f9151" />
-        View Invoice
-      </Button>
-      )} 
+        <Button
+          variant="text"
+          color="success"
+          onClick={toggleInvoice}
+          sx={{ textTransform: "none" }}
+        >
+          {showInvoice ? "Hide Invoice" : "See Your Invoice"}
+        </Button>
+      ) : (
+        <Button
+          variant="outlined"
+          fullWidth
+          color="success"
+          onClick={downloadPDF}
+          sx={{ textTransform: "none", marginTop: "8px" }}
+        >
+          <FileDownloadIcon style={{ color: "#1f9151" }} color="#1f9151" />
+          View Invoice
+        </Button>
+      )}
 
       <style>
         {`
@@ -386,8 +386,8 @@ footer p {
               <thead>
                 <tr>
                   <th>S.No</th>
-                  <th  style={{textAlign:'left'}}>Product Name</th>
-                  <th  style={{textAlign:'left'}}>Quantity</th>
+                  <th style={{ textAlign: "left" }}>Product Name</th>
+                  <th style={{ textAlign: "left" }}>Quantity</th>
                   <th>Rate</th>
                   <th>Total Amount</th>
                 </tr>
@@ -396,9 +396,8 @@ footer p {
                 {items.map((item, index) => (
                   <tr key={index}>
                     <td> {index + 1}</td>
-                    <td style={{textAlign:'left'}}> {item.productName}</td>
-                    <td style={{textAlign:'left'}}>
-                      
+                    <td style={{ textAlign: "left" }}> {item.productName}</td>
+                    <td style={{ textAlign: "left" }}>
                       {item.quantity} {item.unit}
                     </td>
                     <td> ₹{item.price}</td>
@@ -409,7 +408,6 @@ footer p {
             </table>
           </div>
           <div class="summary"></div>{" "}
-
           <div class="footer-links">
             <span>Shipping Charges</span>
             <span> ₹{orderData?.deliveryCharges || "0.00"}</span>
@@ -437,19 +435,15 @@ footer p {
                 : "0.00"}
             </span>
           </div>
-          <div style={{ textAlign: "center",marginBottom:'5px' }}>
-  <span>
-   ** You Saved ₹{orderData?.totalSavings || "0.00"}/- On MRP **
-  </span>
-</div>
-
+          <div style={{ textAlign: "center", marginBottom: "5px" }}>
+            <span>** You Saved ₹{orderData?.totalSavings || "0.00"} **</span>
+          </div>
           <footer>
             <div class="footer-container">
               <span class="footer-left">&lt;</span>
 
               <div class="footer-content">
                 <div class="dashed-line"></div>
-                
 
                 <h3 class="text-spacing">Thank You</h3>
 
@@ -472,18 +466,20 @@ footer p {
         </div>
       </div>
 
-      {(showInvoice && flag) && !isMobile && (
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={downloadPDF}
-                sx={{ textTransform: "none", marginTop: "20px" }}
-              >
-                Download PDF
-              </Button>
-            )} 
+      {showInvoice && flag && !isMobile && (
+        <Button
+          variant="outlined"
+          color="success"
+          onClick={downloadPDF}
+          sx={{ textTransform: "none", marginTop: "8px" }}
+        >
+          <FileDownloadIcon style={{ color: "#1f9151" }} color="#1f9151" />
+          Download PDF
+        </Button>
+      )}
     </>
   );
 };
 
 export default Invoice;
+
