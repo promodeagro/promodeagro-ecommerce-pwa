@@ -47,6 +47,7 @@ const Config = {
   CANCLE_ORDER_REQUEST: `${BASE_URL}/cancelOrderRequest`,
   All_PRODUCT_WITH_CATEGORY: `${BASE_URL}/homePageProducts`,
   DELIVERY_SLOTS: `${BASE_URL}/slots`,
+  CREATE_FEEDBACK: `${BASE_URL}/createFeedback`,
 };
 
 export default Config;

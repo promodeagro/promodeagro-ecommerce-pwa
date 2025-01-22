@@ -516,7 +516,18 @@ import "../../../assets/sass/components/myCart.scss"
              
                
                 <Box className="item_details_container">
-                  <h2>Item Details</h2>
+                <Box sx={{display:"flex" , justifyContent:"space-between"}}>
+                                   <h2>Item Details</h2>
+                                   <Button sx={{color:"#1f9151" , fontSize:"14px" , fontWeight:"500"}} onClick={()=> {
+                                    const login = loginDetails()
+                                       localStorage.removeItem("cartItem");
+                                       LocalStorageCartService.saveData({});
+                                       this.props.addListOfItemsToCartReq({
+                                        userId: login.userId,
+                                        cartItems: [],
+                                      });
+                                   }} >Clear Cart</Button>
+                                   </Box>
                   <CartItems />
                   {this.state.cartList?.length > 0 ? (
                    

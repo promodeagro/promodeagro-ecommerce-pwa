@@ -502,12 +502,18 @@ class MyCart extends Component {
                 ) : null}
 
                 <Box className="item_details_container">
-                  <div style={{display:'flex', justifyContent:'space-between'}}>
-                  <h2>Item Details</h2>
-                   {/* <Link to={""} onClick={this.scrollToTop}>
-              Clear All 
-            </Link> */}
-            </div>
+                  <Box sx={{display:"flex" ,alignItems:"center", justifyContent:"space-between"}}>
+                                                    <h2>Item Details</h2>
+                                                    <Button  sx={{color:"#1f9151" , fontSize:"14px" , fontWeight:"500"}} onClick={()=> {
+                                                     const login = loginDetails()
+                                                        localStorage.removeItem("cartItem");
+                                                        LocalStorageCartService.saveData({});
+                                                        this.props.addListOfItemsToCartReq({
+                                                         userId: login.userId,
+                                                         cartItems: [],
+                                                       });
+                                                    }} >Clear Cart</Button>
+                                                    </Box>
                   <CartItems />
 
                   {this.state.cartList?.length > 0 ? (
