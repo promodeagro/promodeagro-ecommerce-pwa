@@ -41,7 +41,7 @@ class ShopByCategories extends Component {
                   <Box
                     className={
                       item?.CategoryName === "Bengali Special"
-                        ? "special-category-box"
+                        ? "category-box"
                         : "category-box"
                     }
                   >

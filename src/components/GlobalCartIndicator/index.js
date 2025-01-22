@@ -11,7 +11,7 @@ class GlobalCartIndicator extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          matches: window.matchMedia("(max-width: 800px)").matches,
+          matches: window.matchMedia("(max-width: 600px)").matches,
           myCartOpen:false,
           totalPrice: "",
           showGlobalInicator:true
@@ -19,7 +19,7 @@ class GlobalCartIndicator extends Component {
       }
       componentDidMount(){
         window
-        .matchMedia("(max-width: 800px)")
+        .matchMedia("(max-width: 600px)")
         .addEventListener("change", (e) => this.setState({ matches: e.matches }));
       }
 
