@@ -70,16 +70,3 @@ self.addEventListener('message', (event) => {
 });
 
 // Any other custom service worker logic can go here.
-
-// Notify clients about updates
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    clients.claim().then(() => {
-      clients.matchAll({ type: 'window' }).then((clientsList) => {
-        clientsList.forEach((client) => {
-          client.postMessage({ type: 'SW_UPDATED' });
-        });
-      });
-    })
-  );
-});
