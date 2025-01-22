@@ -21,8 +21,9 @@ import { LocalStorageCartService } from "Services/localStorageCartService";
 import { addListOfItemsToCartReq } from "../../../../../Redux/Cart/CartThunk";
 
 import Invoice from "Views/PostLogin/myProfile/notification/invoice";
+
 const OrderPlaced = (props) => {
-  const HideDirectlySeeInvoice=true
+  const HideDirectlySeeInvoice = true;
   const [value, setValue] = useState(0);
   const [apiLoader, setApiLoader] = useState(false);
 
@@ -61,11 +62,17 @@ const OrderPlaced = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  // Function to format the date
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle null or undefined date
+    const [year, month, day] = date.split("-");
+    return `${day}-${month}-${year}`;
+  };
+
   const orderData = useSelector(
     (state) => state.placeorder.orderByIdData?.data?.order
   );
-  
-
 
   return (
     <>
@@ -117,14 +124,13 @@ const OrderPlaced = (props) => {
               </span>
               <div className="line"></div>
               <span>
-                {placedOrderDetails.data?.order?.address?.address_type}{" "}
+                {placedOrderDetails.data?.order?.address?.address_type},{" "}
                 {placedOrderDetails.data?.order?.address?.house_number},{" "}
                 {placedOrderDetails.data?.order?.address?.landmark_area},{" "}
                 {placedOrderDetails.data?.order?.address?.address}{" "}
                 {placedOrderDetails.data?.order?.address?.zipCode}
               </span>
             </Box>
-
             <Box className="select_delivery_address">
               <span className="span_lite">
                 <img src={TruckIcon} alt="" />
@@ -132,15 +138,16 @@ const OrderPlaced = (props) => {
               </span>
               <div className="line"></div>
               <span>
-                05 Nov, Tuesday{" "}
-                {placedOrderDetails.data?.order?.deliverySlot?.startTime} -{" "}
+                {formatDate(
+                  placedOrderDetails.data?.order?.deliverySlot?.date
+                )},{" "}
+                {placedOrderDetails.data?.order?.deliverySlot?.startTime}{" "}
+                {placedOrderDetails.data?.order?.deliverySlot?.startAmPm}-{" "}
                 {placedOrderDetails.data?.order?.deliverySlot?.endTime}{" "}
-                ({placedOrderDetails.data?.order?.items?.length} Items)
+                {placedOrderDetails.data?.order?.deliverySlot?.endAmPm} (
+                {placedOrderDetails.data?.order?.items?.length} Items)
               </span>
-         
-             
             </Box>
-
             <Box className="payment_details_box">
               <Box className="payment_details">
                 <div>
@@ -161,10 +168,9 @@ const OrderPlaced = (props) => {
                     Rs. {placedOrderDetails.data?.order?.finalTotal}
                   </span>
                 </div>
-               
               </Box>
             </Box>
-          <Invoice flag={HideDirectlySeeInvoice} orderData={orderData}/>
+            <Invoice flag={HideDirectlySeeInvoice} orderData={orderData} />
           </Box>
 
           <Box sx={{ marginTop: "20px", marginBottom: "20px" }}>
@@ -179,4 +185,3 @@ const OrderPlaced = (props) => {
 };
 
 export default OrderPlaced;
-

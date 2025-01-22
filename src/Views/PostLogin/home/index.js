@@ -370,8 +370,6 @@ class Home extends Component {
 </Container>
 </Box>
         </>
-
-          
         ) : (
           <>
             <MainBanner allOffersList={allOffersList} />
@@ -383,9 +381,8 @@ class Home extends Component {
               topSellCategoriesList={topSellCategoriesList}
               apiCalls={this.apiCalls}
             />
-
             <Service />
-            {/* <CustomersSays /> */}
+             <CustomersSays /> 
           </>
         )}
       </Box>

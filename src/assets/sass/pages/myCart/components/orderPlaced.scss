@@ -498,14 +498,12 @@ color: #D91515;
 
 
 @media screen and (max-width:800px) {
-
 .order_placed_box{
   gap: 10px;
   img{
     width: 70px;
   }
 }
-
 
 .rating_box{
   flex-direction: column;
@@ -527,7 +525,9 @@ color: #D91515;
     height: auto;
     .line{
       display: none;
+      
     }
+    
  .span_lite{
   img{
     width: 30px;

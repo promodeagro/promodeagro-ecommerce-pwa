@@ -11,13 +11,13 @@ class CustomersSays extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      matches: window.matchMedia("(max-width: 900px)").matches,
+      matches: window.matchMedia("(max-width: 600px)").matches,
       customersReviews: [
         {
           rating: 5,
           heading: "On Time Delivery",
           content:
-            "The home delivery of fruits and vegetables along with other Kolkata specific products from Promode Agro has been a blessing for me, I rarely need to go out these days. Their products are fresh,very fair pricing and delivery is always on time. Keep up the good work !",
+            "The home delivery of fruits and vegetables along with other Kolkata specific products from Promode Agro has been a blessing for me, I rarely need to go out these days. Their products are fresh, very fair pricing and delivery is always on time. Keep up the good work!",
           image: saysReviewImg1,
           name: "Indrani Patro",
           customer: "PBEL City",
@@ -35,7 +35,7 @@ class CustomersSays extends Component {
           rating: 5,
           heading: "On Time Delivery",
           content:
-            "Have been using Promote Agro' produces from the last 6 months. FIRST thing: The produces are of very high quality & tastes differently than that available in another shops. Secondly, the purpose of starting Promode Agro farm makes me to stay connected with them in order to help underprivileged youngsters. My take: With PROMODE AGRO, you ALWAYS GROW",
+            "Have been using Promote Agro's produces from the last 6 months. FIRST thing: The produces are of very high quality & tastes differently than that available in another shops. Secondly, the purpose of starting Promode Agro farm makes me to stay connected with them in order to help underprivileged youngsters. My take: With PROMODE AGRO, you ALWAYS GROW.",
           image: saysReviewImg3,
           name: "Md Juber Khan",
           customer: "PBEL City, Hyderabad",
@@ -43,26 +43,27 @@ class CustomersSays extends Component {
       ],
     };
   }
+
   componentDidMount() {
-    window
-      .matchMedia("(max-width: 900px)")
-      .addEventListener("change", (e) => this.setState({ matches: e.matches }));
+    const mediaQuery = window.matchMedia("(max-width: 600px)");
+    mediaQuery.addEventListener("change", (e) => this.setState({ matches: e.matches }));
   }
 
   render() {
-    const { customersReviews } = this.state;
+    const { customersReviews, matches } = this.state;
+
+    // Prevent rendering the component if the screen width is less than 600px
+    if (matches) {
+      return null;
+    }
+
     var settings = {
       dots: false,
-      arrows: this.state.matches
-        ? true
-        : customersReviews?.length > 3
-        ? true
-        : false,
+      arrows: customersReviews.length > 3,
       infinite: false,
       speed: 500,
       slidesToShow: 3,
       slidesToScroll: 1,
-      initialSlide: 0,
       responsive: [
         {
           breakpoint: 1024,
@@ -78,55 +79,46 @@ class CustomersSays extends Component {
           settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
-            initialSlide: 1,
-          },
-        },
-        {
-          breakpoint: 480,
-          settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1,
           },
         },
       ],
     };
+
     return (
       <Box className="customers-says-container">
         <Container>
           <Box className="heading">What our Customers Says</Box>
           <Box className="customers-container">
             <Slider {...settings}>
-              {customersReviews.map((item) => {
-                return (
-                  <Box className="customers-says">
-                    <Box className="customers-info">
-                      <Box className="ratting">
-                        <Rating
-                          defaultValue={item.rating}
-                          readOnly
-                          className="rating"
-                        />
-                      </Box>
-                      <Box className="name">{item.heading}</Box>
-                      <Tooltip arrow title={item.content}>
-                        <Box className="text">{item.content}</Box>
-                      </Tooltip>
-                      <Box className="customer-bg">
-                        <img src={customerBg} alt="" />
-                      </Box>
+              {customersReviews.map((item, index) => (
+                <Box className="customers-says" key={index}>
+                  <Box className="customers-info">
+                    <Box className="ratting">
+                      <Rating
+                        defaultValue={item.rating}
+                        readOnly
+                        className="rating"
+                      />
                     </Box>
-                    <Box className="customers-person">
-                      <Box className="icon">
-                        <img src={item.image} alt={item.name} />
-                      </Box>
-                      <Box className="info">
-                        <Box className="name">{item.name}</Box>
-                        <Box className="customer">{item.customer}</Box>
-                      </Box>
+                    <Box className="name">{item.heading}</Box>
+                    <Tooltip arrow title={item.content}>
+                      <Box className="text">{item.content}</Box>
+                    </Tooltip>
+                    <Box className="customer-bg">
+                      <img src={customerBg} alt="" />
                     </Box>
                   </Box>
-                );
-              })}
+                  <Box className="customers-person">
+                    <Box className="icon">
+                      <img src={item.image} alt={item.name} />
+                    </Box>
+                    <Box className="info">
+                      <Box className="name">{item.name}</Box>
+                      <Box className="customer">{item.customer}</Box>
+                    </Box>
+                  </Box>
+                </Box>
+              ))}
             </Slider>
           </Box>
         </Container>
