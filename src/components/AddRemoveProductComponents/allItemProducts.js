@@ -222,27 +222,28 @@ class ProductItemView extends Component {
 
           <>
             {item?.unitPrices?.length > 0 ? (
-              <Box className="select">
-                <select
-                  value={
-                    qauntityUnits[item?.id] ||
-                    item?.cartItem?.QuantityUnits ||
-                    ""
-                  }
-                  onChange={(event) =>
-                    this.handleQuantity(event, item, addedProducts)
-                  }
-                >
-                  {item?.unitPrices.map((unitItem, index) => {
-                    return (
-                      <option key={index} value={unitItem.qty}>
-                        {/* {unitItem.qty}  */}
-                        {item?.unit}
-                      </option>
-                    );
-                  })}
-                </select>
-              </Box>
+              <></>
+              // <Box className="select">
+              //   <select
+              //     value={
+              //       qauntityUnits[item?.id] ||
+              //       item?.cartItem?.QuantityUnits ||
+              //       ""
+              //     }
+              //     onChange={(event) =>
+              //       this.handleQuantity(event, item, addedProducts)
+              //     }
+              //   >
+              //     {item?.unitPrices.map((unitItem, index) => {
+              //       return (
+              //         <option key={index} value={unitItem.qty}>
+              //           {/* {unitItem.qty}  */}
+              //           {item?.unit}
+              //         </option>
+              //       );
+              //     })}
+              //   </select>
+              // </Box>
             ) : (
               <Box className="select">{item?.unit}</Box>
             )}

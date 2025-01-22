@@ -15,7 +15,9 @@ import { getAllAddress } from "../../Redux/Address/AddressThunk";
 import SearchResults from "./searchResults";
 import _ from "lodash";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-
+import logouticon from "../../assets/img/logouticon.svg"
+import filledicon from "../../assets/img/filledicon.svg"
+import callicon from "../../assets/img/callicon.svg"
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import { fetchDefaultAddress } from "../../Redux/Address/AddressThunk";
 import { fetchCartItems } from "../../Redux/Cart/CartThunk";
@@ -350,7 +352,7 @@ class Header extends Component {
                               </li> */}
                               <li onClick={() => this.handleProfileModal()}>
                                 <Link to="/my-order">
-                                  <PermIdentityOutlinedIcon /> My Orders
+                                <img src={filledicon} alt="Order Icon" /> My Orders
                                 </Link>
                               </li>
                               {/* <li onClick={() => this.handleProfileModal()}>
@@ -360,7 +362,7 @@ class Header extends Component {
                               </li> */}
                               <li onClick={() => this.handleProfileModal()}>
                                 <Link to="/contact-us">
-                                  <PermIdentityOutlinedIcon /> Contact Us
+                                <img src={callicon} alt="Contact Icon" /> Contact Us
                                 </Link>
                               </li>
                               {/* <li onClick={() => this.handleProfileModal()}>
@@ -382,7 +384,7 @@ class Header extends Component {
                                 }}
                               >
                                 <Link>
-                                  <PermIdentityOutlinedIcon /> Logout
+                                <img src={logouticon} alt="Logout Icon" /> Logout
                                 </Link>
                               </li>
                             </ul>

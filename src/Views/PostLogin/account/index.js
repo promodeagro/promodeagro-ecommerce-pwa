@@ -4,7 +4,9 @@ import { Link } from "react-router-dom";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import "../../../assets/sass/pages/account.scss"
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
-
+import logouticon from "../../../assets/img/logouticon.svg"
+import filledicon from "../../../assets/img/filledicon.svg"
+import callicon from "../../../assets/img/callicon.svg"
 class Account extends Component {
     constructor(props) {
         super(props);
@@ -21,7 +23,7 @@ class Account extends Component {
                     </li> */}
                     <li>
                         <Link to="/my-order">
-                            <PermIdentityOutlinedIcon />My Orders
+                        <img src={filledicon} alt="Order Icon" /> My Orders
                         </Link>
                     </li>
                     {/* <li>
@@ -31,7 +33,7 @@ class Account extends Component {
                     </li> */}
                     <li >
                         <Link to="/contact-us">
-                            <PermIdentityOutlinedIcon /> Contact Us
+                        <img src={callicon} alt="Contact Icon" /> Contact Us
                         </Link>
                     </li>
                     {/* <li>
@@ -49,7 +51,7 @@ class Account extends Component {
                         }}
                     >
                         <Link>
-                            <PermIdentityOutlinedIcon /> Logout
+                        <img src={logouticon} alt="Logout Icon" /> Logout
                         </Link>
                     </li>
                 </ul>
