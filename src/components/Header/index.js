@@ -449,13 +449,21 @@ class Header extends Component {
                       className="card"
                     >
                       <Link>
-                        {noOfcartItemsInLS ? (
+
+                      {noOfcartItemsInLS ? (
+                               <p>{noOfcartItemsInLS}</p>
+                             ) : (
+                               <></>
+                             )}
+
+                        {/* {noOfcartItemsInLS ? (
                           <p>{noOfcartItemsInLS}</p>
                         ) : this.state.cartList?.length ? (
                           <p>{this.state.cartList.length}</p>
                         ) : (
                           <></>
-                        )}
+                        )} */}
+                        
                         {/* <img src={cardIcon} alt="Shopping" /> */}
                         <ShoppingCartIcon  style={{color:'white'}}/>
 
