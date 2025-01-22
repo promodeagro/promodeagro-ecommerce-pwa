@@ -385,7 +385,7 @@ class Home extends Component {
             />
 
             <Service />
-            <CustomersSays />
+            {/* <CustomersSays /> */}
           </>
         )}
       </Box>

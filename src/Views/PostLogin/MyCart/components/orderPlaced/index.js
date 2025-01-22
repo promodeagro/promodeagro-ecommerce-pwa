@@ -50,8 +50,6 @@ const OrderPlaced = (props) => {
     dispatch(addListOfItemsToCartReq({ userId: login.userId, cartItems: [] }));
   }, []);
 
-  console.log(placedOrderDetails.message, "order details by id");
-
   useEffect(() => {
     window.history.pushState(null, null, document.URL);
     window.addEventListener("popstate", function (event) {
