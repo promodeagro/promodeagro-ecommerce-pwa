@@ -6,6 +6,7 @@ import { Button, useMediaQuery, Divider, Typography } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 
 const Invoice = ({ orderData, flag }) => {
+  // console.log(orderData,"order from invoice");
   const items = orderData?.items || [];
   const [showInvoice, setShowInvoice] = useState(false);
   const toggleInvoice = () => {
@@ -363,7 +364,7 @@ footer p {
             <div class="right">
               <div style={{ display: "flex" }}>
                 <strong style={{ width: "146px" }}>Biller Name:</strong>
-                <div>Uttam Chavan</div>
+                <div>Promode Agro Farm</div>
               </div>
               <div style={{ display: "flex" }}>
                 <strong style={{ width: "315px" }}>Billing Address:</strong>
@@ -409,9 +410,14 @@ footer p {
           </div>
           <div class="summary"></div>{" "}
           <div class="footer-links">
+            <span>Sub Total</span>
+            <span> ₹{orderData?.subTotal || "0.00"}</span>
+          </div>
+          <div class="footer-links">
             <span>Shipping Charges</span>
             <span> ₹{orderData?.deliveryCharges || "0.00"}</span>
           </div>
+          <div class="divider"></div>
           <div class="footer-links">
             <span>Grand Total</span>
             <span> ₹{orderData?.finalTotal || "0.00"}</span>
