@@ -586,34 +586,82 @@ import "../../../assets/sass/components/myCart.scss"
                            </div>
                          </Box>
                          <Grid
-                           sx={{ paddingBottom: "20px" }}
-                           item
-                           xs={6}
-                           lg={4}
-                           md={6}
-                           sm={6}
-                         >
-                           <Button
-                             variant="contained"
-                             fullWidth
-                             className="common-btn pay_now_btn"
-                             onClick={this.handlePlaceOrder}
-                             disabled={
-                               this.props.placeOrderData.status ===
-                               status.IN_PROGRESS
-                             }
-                             endIcon={
-                               this.props.placeOrderData.status ===
-                                 status.IN_PROGRESS ? (
-                                 <CircularProgress className="common-loader" />
-                               ) : (
-                                 <></>
-                               )
-                             }
-                           >
-                             Place Order
-                           </Button>
-                         </Grid>
+                            sx={{ paddingBottom: "20px" }}
+                            item
+                            xs={6}
+                            lg={4}
+                            md={6}
+                            sm={6}
+                          >
+                            <Button 
+                            sx={{
+                                justifyContent:'space-between',
+                                background:'#1F9151',
+                                marginTop:'20px' 
+,
+                                '&:hover': {
+                                  background: '#007A55', // Change this to your desired hover color
+                                  boxShadow: 'none', 
+                                },
+
+                                
+                            }}
+                              variant="contained"
+                              fullWidth 
+                              onClick={this.handlePlaceOrder}
+                              disabled={
+                                this.props.placeOrderData.status ===
+                                status.IN_PROGRESS
+                              }
+                              startIcon={
+                                <Box sx={{
+                                    display:'flex',
+                                    flexDirection:'column'
+                                }}>
+
+                                       <span style={{
+                                        fontSize:'15px', fontWeight:"500", fontFamily:'sans-serif'
+                                    }}>₹{this.state.totalPrice}</span>
+                                    <span style={{
+                                        fontSize:'11px' , fontWeight:'400' , opacity:0.8
+                                    }}>Total</span>
+
+
+                                 
+                                </Box>
+                              }
+                              endIcon={
+                                <Box  
+                                sx={{
+                                    display:'flex', alignItems:"center" , textTransform:"none" 
+                                    , borderRadius:"8px"
+                                }}
+                                >
+                                <span style={{
+                                  fontSize:'16px'
+                                }}>
+
+                              Place Order
+                                </span>
+                                
+                               < ArrowForwardIosIcon />
+                               
+                                </Box>
+                              }
+                            >
+                                
+                                {
+                                      this.props.placeOrderData.status ===
+                                status.IN_PROGRESS ? (
+                                  <CircularProgress className="common-loader" />
+                                ) : (
+                                 null
+                                )
+                                }
+ 
+                            </Button>
+                                    
+                          </Grid>
                        </div>
                      </>
                    ) : (
