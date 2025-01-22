@@ -85,7 +85,11 @@ const AuthModal = (props) => {
       if (props.validateOtpRes?.data) {
         if (props.validateOtpRes?.data?.statusCode == 200) {
           handleModalClose();
-          localStorage.setItem(
+          // localStorage.setItem(
+          //   "login",
+          //   JSON.stringify(props?.validateOtpRes?.data?.data)
+          // );
+           sessionStorage.setItem(
             "login",
             JSON.stringify(props?.validateOtpRes?.data?.data)
           );
