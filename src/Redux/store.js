@@ -8,7 +8,7 @@ import AllAddress from "./Address/AddressSlice";
 import PlaceOrderReducer from "./Order/PlaceOrderSlice";
 import ForgotPasswordReducer from "./ForgotPassword/ForgotPasswordSlice";
 import AllProductsFiltersSlice from "./ProductFilters/ProductFiltersSlice";
-
+import FeedBackSlice from "./FeedBack/feedBackSlice"
 const store = configureStore({
   reducer: {
     home: HomeReducer,
@@ -20,6 +20,7 @@ const store = configureStore({
     placeorder: PlaceOrderReducer,
     forgotpassword: ForgotPasswordReducer,
     allproductsfilters: AllProductsFiltersSlice,
+    feedBack: FeedBackSlice,
   },
 });
 

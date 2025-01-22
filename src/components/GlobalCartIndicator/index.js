@@ -17,8 +17,6 @@ class GlobalCartIndicator extends Component {
           showGlobalInicator:true
         };
       }
-
-
       componentDidMount(){
         window
         .matchMedia("(max-width: 800px)")
@@ -55,11 +53,12 @@ componentDidUpdate(prevProps){
                  <div>
                  {this.state.showGlobalInicator ? (
                    <Box sx={{
-                       display: "flex", alignItems: "center", justifyContent: "space-between"
+                       display: "flex", alignItems: "center",height:"50px", justifyContent: "space-between"
                      }} className="global_cart">
                        <Box sx={{ display: "flex", gap: "4px", alignItems: "center" }}>
                          <ShoppingCartIcon />
                          <Box sx={{ display: "flex", flexDirection: "column" }}>
+                          
                            <span style={{ display: "flex", gap: "2px" }} className='item_count'>
                              {noOfcartItemsInLS ? (
                                <p>{noOfcartItemsInLS}</p>
@@ -67,9 +66,11 @@ componentDidUpdate(prevProps){
                                <></>
                              )} Item
                            </span>
-                           <span>
+
+                           {/* <span>
                              ₹ {this.totalPrice} 230
-                           </span>
+                           </span> */}
+                         
                          </Box>
                        </Box>
            

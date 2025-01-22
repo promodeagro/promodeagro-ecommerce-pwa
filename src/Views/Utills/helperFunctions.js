@@ -148,9 +148,8 @@ export const ErrorMessages = {
 };
 
 export const loginDetails = () => {
-  // const items = JSON.parse(localStorage.getItem("login"));
-  const items = JSON.parse(sessionStorage.getItem("login"));
-  const address = localStorage.getItem("address");
+  const items = JSON.parse(localStorage.getItem("login"));
+   const address = localStorage.getItem("address");
   return { ...items, address };
 };
 

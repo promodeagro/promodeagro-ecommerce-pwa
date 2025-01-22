@@ -205,7 +205,7 @@ class Carts extends Component {
                     </Box>
                     <Box className="item_details" flexGrow={1}>
                       <span>{item?.productName}</span>
-                      <span>{item?.QuantityUnits}</span>
+                      {/* <span>{item?.QuantityUnits}</span> */}
                       <Box display="flex" alignItems="center">
                         <span className="price">₹ {item?.Price}</span>
                         <span className="mrp">{item?.Mrp}</span>
