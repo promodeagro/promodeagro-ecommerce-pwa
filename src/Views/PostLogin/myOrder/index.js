@@ -23,10 +23,10 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import {
   fetchAllorders,
   fetchOrderById,
-  cancleOrder,
+  cancleOrder,cancleOrderRequest
 } from "../../../Redux/Order/PlaceOrderThunk";
 import { connect } from "react-redux";
-import { Loader, loginDetails } from "Views/Utills/helperFunctions";
+import { ErrorMessages, Loader, loginDetails } from "Views/Utills/helperFunctions";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 
 import status from "../../../Redux/Constants";
@@ -128,6 +128,13 @@ class MyOrder extends Component {
       this.props.cancelOrderData?.data
     ) {
     } else if (this.props.cancelOrderData.status === status.FAILURE) {
+    }
+    if (
+      prevProps.cancelOrderRequestData.status !== this.props.cancelOrderData.status &&
+      this.props.cancelOrderRequestData.status === status.SUCCESS &&
+      this.props.cancelOrderRequestData?.data
+    ) {
+    } else if (this.props.cancelOrderRequestData.status === status.FAILURE) {
     }
   }
 
@@ -597,7 +604,13 @@ class MyOrder extends Component {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button color="success">Send Cancellation Request </Button>
+              <Button onClick={()=> {
+                 this.props.cancleOrderRequest({
+                    orderId:expandedOrderDetails?.id
+                  })
+                  this.handleClickClose()
+                   ErrorMessages.success("Cancel Request Sent")
+              }} color="success">Send Cancellation Request </Button>
             </DialogActions>
             <DialogActions>
               <Button onClick={this.handleClickClose} color="error">
@@ -612,12 +625,12 @@ class MyOrder extends Component {
 }
 
 function mapStateToProps(state) {
-  const { allOrdersData, orderByIdData, cancelOrderData } = state.placeorder;
-
+  const { allOrdersData, orderByIdData,cancelOrderRequestData, cancelOrderData } = state.placeorder;
   return {
     allOrdersData,
     orderByIdData,
     cancelOrderData,
+    cancelOrderRequestData
   };
 }
 
@@ -625,6 +638,7 @@ const mapDispatchToProps = {
   fetchAllorders,
   fetchOrderById,
   cancleOrder,
+  cancleOrderRequest
 };
 
 export default connect(

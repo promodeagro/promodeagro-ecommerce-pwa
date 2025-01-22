@@ -5,6 +5,7 @@ import {
   fetchOrderById,
   fetchAvailableDeliverySlot,
   cancleOrder,
+  cancleOrderRequest
 } from "./PlaceOrderThunk";
 import status from "../Constants";
 
@@ -24,6 +25,8 @@ const PlaceOrderSlice = createSlice({
       status: false,
     },
     cancelOrderData: {
+      status: false,
+    }, cancelOrderRequestData: {
       status: false,
     },
   },
@@ -160,6 +163,31 @@ const PlaceOrderSlice = createSlice({
         return {
           ...state,
           cancelOrderData: {
+            status: status.FAILURE,
+          },
+        };
+      })
+      .addCase(cancleOrderRequest.pending.toString(), (state, action) => {
+        return {
+          ...state,
+          cancelOrderRequestData: {
+            status: status.IN_PROGRESS,
+          },
+        };
+      })
+      .addCase(cancleOrderRequest.fulfilled.toString(), (state, { payload }) => {
+        return {
+          ...state,
+          cancelOrderRequestData: {
+            status: status.SUCCESS,
+            data: payload,
+          },
+        };
+      })
+      .addCase(cancleOrderRequest.rejected.toString(), (state, action) => {
+        return {
+          ...state,
+          cancelOrderRequestData: {
             status: status.FAILURE,
           },
         };
