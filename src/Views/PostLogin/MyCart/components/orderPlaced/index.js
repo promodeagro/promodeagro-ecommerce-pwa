@@ -158,7 +158,7 @@ const OrderPlaced = (props) => {
       color:
         placedOrderDetails.data?.order?.paymentDetails?.method === "COD"
           ? "red"
-          : "green",
+          : "#1f9151",
     }}
   >
     {placedOrderDetails.data?.order?.paymentDetails?.method}
