@@ -12,8 +12,8 @@ import { LocalStorageCartService } from "Services/localStorageCartService";
 import { fetchCategories } from "../../Redux/AllProducts/AllProductthunk";
 import { fetchDefaultAddress } from "../../Redux/Address/AddressThunk";
 import { fetchPersonalDetails } from "../../Redux/Signin/SigninThunk";
-
-class SearchProductItemView extends Component {
+import AuthModal from "../../components/ModalLogin/LoginModal"
+ class SearchProductItemView extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,6 +24,7 @@ class SearchProductItemView extends Component {
       unitIdPrices: [],
       authModalOpen: false,
       quantities: "",
+      
     };
   }
 
@@ -39,7 +40,11 @@ class SearchProductItemView extends Component {
           : qty,
       });
     } else {
-      this.props.navigate("/signin");
+
+      this.setState({
+        authModalOpen: true,
+      });
+     
     }
   }
 
@@ -297,6 +302,15 @@ class SearchProductItemView extends Component {
         ) : (
           <p className="no-data">There is no data</p>
         )}
+
+         <AuthModal
+                  open={this.state.authModalOpen}
+                  handleClose={() => {
+                    this.setState({
+                      authModalOpen: false,
+                    });
+                  }}
+                />
       </>
     );
   }

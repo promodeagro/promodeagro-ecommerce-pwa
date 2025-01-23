@@ -89,6 +89,8 @@ const AuthModal = (props) => {
           //   "login",
           //   JSON.stringify(props?.validateOtpRes?.data?.data)
           // );
+
+          // document.cookie = `login=${JSON.stringify(props?.validateOtpRes?.data?.data)}; path=/; max-age=3600`;
            sessionStorage.setItem(
             "login",
             JSON.stringify(props?.validateOtpRes?.data?.data)
