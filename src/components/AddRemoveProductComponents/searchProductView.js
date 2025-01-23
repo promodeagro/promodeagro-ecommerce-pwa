@@ -12,8 +12,8 @@ import { LocalStorageCartService } from "Services/localStorageCartService";
 import { fetchCategories } from "../../Redux/AllProducts/AllProductthunk";
 import { fetchDefaultAddress } from "../../Redux/Address/AddressThunk";
 import { fetchPersonalDetails } from "../../Redux/Signin/SigninThunk";
-import AuthModal from "../../components/ModalLogin/LoginModal"
- class SearchProductItemView extends Component {
+import AuthModal from "../../components/ModalLogin/LoginModal";
+class SearchProductItemView extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,7 +24,6 @@ import AuthModal from "../../components/ModalLogin/LoginModal"
       unitIdPrices: [],
       authModalOpen: false,
       quantities: "",
-      
     };
   }
 
@@ -40,11 +39,9 @@ import AuthModal from "../../components/ModalLogin/LoginModal"
           : qty,
       });
     } else {
-
       this.setState({
         authModalOpen: true,
       });
-     
     }
   }
 
@@ -190,11 +187,11 @@ import AuthModal from "../../components/ModalLogin/LoginModal"
                             return (
                               <option key={index} value={unitItem.qty}>
                                 {/* {unitItem.qty} */}
-                                 {/* {item?.unit} */}
-                              {/* </option> */}
-                            {/* );
+                        {/* {item?.unit} */}
+                        {/* </option> */}
+                        {/* );
                           })}
-                        </select> */} 
+                        </select> */}
                       </Box>
                     ) : (
                       <Box className="select">{item.unit}</Box>
@@ -303,14 +300,14 @@ import AuthModal from "../../components/ModalLogin/LoginModal"
           <p className="no-data">There is no data</p>
         )}
 
-         <AuthModal
-                  open={this.state.authModalOpen}
-                  handleClose={() => {
-                    this.setState({
-                      authModalOpen: false,
-                    });
-                  }}
-                />
+        <AuthModal
+          open={this.state.authModalOpen}
+          handleClose={() => {
+            this.setState({
+              authModalOpen: false,
+            });
+          }}
+        />
       </>
     );
   }
