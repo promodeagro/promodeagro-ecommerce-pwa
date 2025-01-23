@@ -120,7 +120,7 @@ const OrderPlaced = (props) => {
             <Box className="select_delivery_address">
               <span className="span_lite">
                 <img src={locationIcon} alt="" />
-                Delivery Address
+               <h3> Delivery Address</h3>
               </span>
               <div className="line"></div>
               <span>
@@ -134,7 +134,7 @@ const OrderPlaced = (props) => {
             <Box className="select_delivery_address">
               <span className="span_lite">
                 <img src={TruckIcon} alt="" />
-                Shipment Time Slot
+               <h3> Shipment Time Slot</h3>
               </span>
               <div className="line"></div>
               <span>
@@ -150,20 +150,29 @@ const OrderPlaced = (props) => {
             </Box>
             <Box className="payment_details_box">
               <Box className="payment_details">
+              <div>
+  <h3>Payment method</h3>
+  <span
+    className="amount"
+    style={{
+      color:
+        placedOrderDetails.data?.order?.paymentDetails?.method === "COD"
+          ? "red"
+          : "green",
+    }}
+  >
+    {placedOrderDetails.data?.order?.paymentDetails?.method}
+  </span>
+</div>
                 <div>
-                  Payment method{" "}
-                  <span className="cod">
-                    {placedOrderDetails.data?.order?.paymentDetails?.method}
-                  </span>
-                </div>
-                <div>
-                  Payment status{" "}
-                  <span className="cod">
+                  <h3>Payment status</h3>
+                  <span className="amount">
                     {placedOrderDetails.data?.order?.paymentDetails?.status}
                   </span>
                 </div>
                 <div>
-                  Order amount{" "}
+                  <h3>
+                  Order amount</h3>
                   <span className="amount">
                     Rs. {placedOrderDetails.data?.order?.finalTotal}
                   </span>
@@ -172,7 +181,6 @@ const OrderPlaced = (props) => {
             </Box>
             <Invoice flag={HideDirectlySeeInvoice} orderData={orderData} />
           </Box>
-
           <Box sx={{ marginTop: "20px", marginBottom: "20px" }}>
             <Button onClick={() => navigate("/")} className="common-btn">
               Continue Shopping

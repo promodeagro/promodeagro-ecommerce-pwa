@@ -171,7 +171,7 @@ class SearchProductItemView extends Component {
                     </Box>
                     {item?.unitPrices?.length > 0 ? (
                       <Box className="select">
-                        <select
+                        {/* <select
                           value={
                             qauntityUnits[item?.id] ||
                             item?.cartItem?.QuantityUnits ||
@@ -185,11 +185,11 @@ class SearchProductItemView extends Component {
                             return (
                               <option key={index} value={unitItem.qty}>
                                 {/* {unitItem.qty} */}
-                                 {item?.unit}
-                              </option>
-                            );
+                                 {/* {item?.unit} */}
+                              {/* </option> */}
+                            {/* );
                           })}
-                        </select>
+                        </select> */} 
                       </Box>
                     ) : (
                       <Box className="select">{item.unit}</Box>
