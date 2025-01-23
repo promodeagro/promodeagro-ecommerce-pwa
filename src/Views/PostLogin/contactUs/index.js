@@ -9,8 +9,12 @@ import {
   MenuItem,
   Button,
 } from "@mui/material";
-import { ErrorMessages, ValidationEngine } from "../../Utills/helperFunctions";
+import { ErrorMessages, loginDetails, ValidationEngine } from "../../Utills/helperFunctions";
+import { createFeedback } from "../../../Redux/FeedBack/FeedBackThunk";
 
+import { connect } from "react-redux";
+import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
+import status from "../../../Redux/Constants";
 const validationSchema = {
   typeOfEnquiry: [
     {
@@ -68,6 +72,7 @@ class ContactUs extends Component {
     };
   }
 
+ 
   validateForm = () => {
     const { name, email, feedback, mobileNumber, typeOfEnquiry } = this.state;
     const error = ValidationEngine.validate(validationSchema, {
@@ -87,11 +92,28 @@ class ContactUs extends Component {
   };
 
   handleSubmit = () => {
+    
     const errorData = this.validateForm();
+    
     this.setState({
       isSubmit: true,
-    });
-    if (errorData.isValid) {
+    }); 
+    this.props.createFeedback({
+      typeOfEnquiry:this.state.typeOfEnquiry,
+      name:this.state.name,
+      email:this.state.email , contact:this.state.mobileNumber, feedback:this.state.feedback
+        })
+        if (errorData.isValid) {
+     
+      ErrorMessages.success("Thank you for The Feedback")
+      this.setState({
+        name: "",
+        email: "",
+        feedback: "",
+        mobileNumber: "",
+        typeOfEnquiry: "",
+        isSubmit: false,
+      });
     }
   };
 
@@ -100,6 +122,7 @@ class ContactUs extends Component {
       activeTab: tab,
     });
   };
+  
 
   render() {
     const errorData = this.validateForm();
@@ -193,6 +216,7 @@ class ContactUs extends Component {
                   </Box>
                 )}
                 {activeTab === "feedback" && (
+                  <form>
                   <Box className="feedback-from">
                     <Grid container spacing={2} alignItems={"center"}>
                       <Grid item xs={12} lg={6} md={6} sm={6}>
@@ -309,13 +333,14 @@ class ContactUs extends Component {
                         <Button
                           className="common-btn submit-btn"
                           variant="contained"
-                          onClick={() => this.handleSubmit()}
+                          onClick={()=> this.handleSubmit()}
                         >
                           Submit
                         </Button>
                       </Grid>
                     </Grid>
                   </Box>
+                  </form>
                 )}
               </Grid>
             </Grid>
@@ -326,4 +351,21 @@ class ContactUs extends Component {
   }
 }
 
-export default ContactUs;
+function mapStateToProps(state) {
+ 
+  // const { allAddress, selectedAddressData, defaultAddressData } =
+  // state.alladdress;
+  const {feedBackData} = state.feedBack
+  return {
+    feedBackData 
+  };
+}
+
+const mapDispatchToProps = {
+  createFeedback
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(navigateRouter(ContactUs));
