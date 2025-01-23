@@ -341,7 +341,7 @@ class DeliverySlots extends Component {
                 </Grid>
               </Box>
             ) : (
-              <div className="box">No Slots Available</div>
+              <div className="box">Shop Closed. We'll be back soon!</div>
             )}
           </Box>
         </Box>
