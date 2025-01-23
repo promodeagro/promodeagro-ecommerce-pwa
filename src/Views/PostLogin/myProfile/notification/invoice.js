@@ -6,11 +6,13 @@ import { Button, useMediaQuery, Divider, Typography } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 
 const Invoice = ({ orderData, flag }) => {
+  // console.log(orderData,"order from invoice");
   const items = orderData?.items || [];
   const [showInvoice, setShowInvoice] = useState(false);
   const toggleInvoice = () => {
     setShowInvoice((prev) => !prev);
   };
+  console.log(orderData,"invoice")
   const isMobile = useMediaQuery("(max-width:600px)"); // Detect mobile screen size
   const downloadPDF = () => {
     const invoiceElement = document.getElementById("invoice-content");
@@ -363,7 +365,7 @@ footer p {
             <div class="right">
               <div style={{ display: "flex" }}>
                 <strong style={{ width: "146px" }}>Biller Name:</strong>
-                <div>Uttam Chavan</div>
+                <div>Promode Agro Farm</div>
               </div>
               <div style={{ display: "flex" }}>
                 <strong style={{ width: "315px" }}>Billing Address:</strong>
@@ -409,9 +411,14 @@ footer p {
           </div>
           <div class="summary"></div>{" "}
           <div class="footer-links">
+            <span>Sub Total</span>
+            <span> ₹{orderData?.subTotal || "0.00"}</span>
+          </div>
+          <div class="footer-links">
             <span>Shipping Charges</span>
             <span> ₹{orderData?.deliveryCharges || "0.00"}</span>
           </div>
+          <div class="divider"></div>
           <div class="footer-links">
             <span>Grand Total</span>
             <span> ₹{orderData?.finalTotal || "0.00"}</span>
@@ -421,8 +428,8 @@ footer p {
             <span>Received</span>
             <span>
               ₹
-              {orderData?.paymentDetails?.method === "online"
-                ? orderData?.totalPrice // Display total price if online
+              {orderData?.paymentDetails?.method === "Prepaid"
+                ? orderData?.finalTotal // Display total price if online
                 : "0.00"}
             </span>
           </div>
@@ -430,7 +437,7 @@ footer p {
             <span>Balanced</span>
             <span>
               ₹
-              {orderData?.paymentDetails?.method === "cash"
+              {orderData?.paymentDetails?.method === "COD"
                 ? orderData?.finalTotal // Display total price if cash
                 : "0.00"}
             </span>

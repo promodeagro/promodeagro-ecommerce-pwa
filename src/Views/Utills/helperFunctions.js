@@ -147,8 +147,18 @@ export const ErrorMessages = {
     }),
 };
 
+const getCookie = (name) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+  return null;
+};
+
+
 export const loginDetails = () => {
-  const items = JSON.parse(localStorage.getItem("login"));
+    const items = JSON.parse(getCookie("login"));
+  // const items = JSON.parse(localStorage.getItem("login"));
+  // const items = JSON.parse(localStorage.getItem("login"));
    const address = localStorage.getItem("address");
   return { ...items, address };
 };

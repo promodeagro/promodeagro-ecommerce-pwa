@@ -55,7 +55,9 @@ function CustomStepIcon(props) {
   return (
     <Box className="custom-step-icon">
       {completed ? (
-        <Box className="icon completed">
+        <Box
+         style={{ opacity: 1}}
+        className="icon completed">
           <CheckOutlinedIcon />
         </Box>
       ) : active ? (

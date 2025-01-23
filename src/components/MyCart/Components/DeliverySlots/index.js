@@ -179,7 +179,11 @@ class DeliverySlots extends Component {
                 marginBottom: 2,
                 "& .MuiTabs-indicator": {
                   backgroundColor: "#1F9151", // Custom color for the underline
+                }, 
+                "& .css-heg063-MuiTabs-flexContainer":{
+                  overflowY:"scroll !important"
                 },
+                 
               }}
             >
               <Tab

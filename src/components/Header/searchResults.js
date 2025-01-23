@@ -155,10 +155,11 @@ class SearchResults extends Component {
           </Box>):(
             <Box
             sx={{
-              marginLeft:'-38px'
+              marginLeft:'-10px',
+               marginRight:'-10px'
             }}
             style={{
-              width:'95vw',
+              width:'88vw',
             
           
 
