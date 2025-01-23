@@ -156,9 +156,9 @@ const getCookie = (name) => {
 
 
 export const loginDetails = () => {
-    // const items = JSON.parse(getCookie("login"));
+    const items = JSON.parse(getCookie("login"));
   // const items = JSON.parse(localStorage.getItem("login"));
-  const items = JSON.parse(sessionStorage.getItem("login"));
+  // const items = JSON.parse(localStorage.getItem("login"));
    const address = localStorage.getItem("address");
   return { ...items, address };
 };

@@ -840,3 +840,16 @@
     padding-bottom:60px ;
      }
 }
+
+
+@keyframes moveText {
+  0% {
+    transform: translateX(100%); /* Start from the right side */
+  }
+  99.9% {
+    transform: translateX(-100%); /* Move to the left */
+  }
+  100% {
+    transform: translateX(100%); /* Instantly jump back to the right side */
+  }
+}

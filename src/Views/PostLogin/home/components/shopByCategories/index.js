@@ -22,9 +22,7 @@ class ShopByCategories extends Component {
   render() {
     const { matches } = this.state;
     const { categories } = this.props;
-    console.log(categories,"cat");
-
-
+    
     return (
       <Box className="shop-categories-container">
         <Container>
@@ -35,13 +33,14 @@ class ShopByCategories extends Component {
             </Link> */}
           </Box>
           <Box className="categories">
+            
             {categories?.length > 0 ? (
               categories?.map((item) => {
                 return (
                   <Box
                     className={
                       item?.CategoryName === "Bengali Special"
-                        ? "category-box"
+                        ? "special-category-box"
                         : "category-box"
                     }
                   >
