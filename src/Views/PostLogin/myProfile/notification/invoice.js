@@ -12,6 +12,7 @@ const Invoice = ({ orderData, flag }) => {
   const toggleInvoice = () => {
     setShowInvoice((prev) => !prev);
   };
+  console.log(orderData,"invoice")
   const isMobile = useMediaQuery("(max-width:600px)"); // Detect mobile screen size
   const downloadPDF = () => {
     const invoiceElement = document.getElementById("invoice-content");
@@ -427,8 +428,8 @@ footer p {
             <span>Received</span>
             <span>
               ₹
-              {orderData?.paymentDetails?.method === "online"
-                ? orderData?.totalPrice // Display total price if online
+              {orderData?.paymentDetails?.method === "Prepaid"
+                ? orderData?.finalTotal // Display total price if online
                 : "0.00"}
             </span>
           </div>
@@ -436,7 +437,7 @@ footer p {
             <span>Balanced</span>
             <span>
               ₹
-              {orderData?.paymentDetails?.method === "cash"
+              {orderData?.paymentDetails?.method === "COD"
                 ? orderData?.finalTotal // Display total price if cash
                 : "0.00"}
             </span>
