@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Container,
-  Rating,
-  Button,
-} from "@mui/material";
+import { Box, Container, Rating, Button } from "@mui/material";
 import successImg from "../../../../../assets/img/success.png";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -102,7 +97,6 @@ const OrderPlaced = (props) => {
           >
             <img src={PlaceOrderTick} alt="" />
             <h2>Your Order Placed !</h2>
-
             <Box className="rating_box rating d-flex align-items-center justify-content-center w-100">
               <span className="rating-info">Rate Your Experience!</span>
               <Rating
@@ -120,7 +114,7 @@ const OrderPlaced = (props) => {
             <Box className="select_delivery_address">
               <span className="span_lite">
                 <img src={locationIcon} alt="" />
-               <h3> Delivery Address</h3>
+                <h3> Delivery Address</h3>
               </span>
               <div className="line"></div>
               <span>
@@ -134,14 +128,12 @@ const OrderPlaced = (props) => {
             <Box className="select_delivery_address">
               <span className="span_lite">
                 <img src={TruckIcon} alt="" />
-               <h3> Shipment Time Slot</h3>
+                <h3> Shipment Time Slot</h3>
               </span>
               <div className="line"></div>
               <span>
-                {formatDate(
-                  placedOrderDetails.data?.order?.deliverySlot?.date
-                )},{" "}
-                {placedOrderDetails.data?.order?.deliverySlot?.startTime}{" "}
+                {formatDate(placedOrderDetails.data?.order?.deliverySlot?.date)}
+                , {placedOrderDetails.data?.order?.deliverySlot?.startTime}{" "}
                 {placedOrderDetails.data?.order?.deliverySlot?.startAmPm}-{" "}
                 {placedOrderDetails.data?.order?.deliverySlot?.endTime}{" "}
                 {placedOrderDetails.data?.order?.deliverySlot?.endAmPm} (
@@ -150,20 +142,21 @@ const OrderPlaced = (props) => {
             </Box>
             <Box className="payment_details_box">
               <Box className="payment_details">
-              <div>
-  <h3>Payment method</h3>
-  <span
-    className="amount"
-    style={{
-      color:
-        placedOrderDetails.data?.order?.paymentDetails?.method === "COD"
-          ? "red"
-          : "#1f9151",
-    }}
-  >
-    {placedOrderDetails.data?.order?.paymentDetails?.method}
-  </span>
-</div>
+                <div>
+                  <h3>Payment method</h3>
+                  <span
+                    className="amount"
+                    style={{
+                      color:
+                        placedOrderDetails.data?.order?.paymentDetails
+                          ?.method === "COD"
+                          ? "red"
+                          : "#1f9151",
+                    }}
+                  >
+                    {placedOrderDetails.data?.order?.paymentDetails?.method}
+                  </span>
+                </div>
                 <div>
                   <h3>Payment status</h3>
                   <span className="amount">
@@ -171,8 +164,7 @@ const OrderPlaced = (props) => {
                   </span>
                 </div>
                 <div>
-                  <h3>
-                  Order amount</h3>
+                  <h3>Order amount</h3>
                   <span className="amount">
                     Rs. {placedOrderDetails.data?.order?.finalTotal}
                   </span>
