@@ -499,3 +499,11 @@
   height: 100%; /* Ensure it takes the full height of its container */
   margin-top: 80px;
 }
+
+@media screen and (max-width:600px) {
+  .listing-container{
+    .products{
+      margin-bottom:60px ;
+    }
+  }
+}

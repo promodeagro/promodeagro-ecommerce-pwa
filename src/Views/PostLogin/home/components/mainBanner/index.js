@@ -45,23 +45,14 @@ class MainBanner extends Component {
     const { allOffersList } = this.props;
     return (
       <Box className="main-banner-container">
-         {/* <Box sx={{
-        marginBottom:"15px",
-        borderRadius:'8px',
-        background:"#e6f8e7",
-        height:"40px",
-         fontWeight:"600",
-         fontStyle:"italic",
-        color:"rgba(114, 114, 114, 0.8)",
-        display:"flex" , alignItems:"center" , justifyContent:'center'
-        ,
-      }}>
-<span style={{ display: "inline-block", whiteSpace: "nowrap", 
-    // animation: "moveText 15s linear infinite"
-    }}> Focused on Hyderabad – Serving You, Right Where You Are!</span>
-      </Box> */}
+         
         <Container>
-       
+        <Box
+        className="hyderabad_tag_line"
+        >
+  {/* Focused on Hyderabad – Serving You, Right Where You Are!  */}
+  Now delivering exclusively in Hyderabad! 
+      </Box>
           <Slider {...settings}>
             {allOffersList?.length > 0 ? (
               allOffersList?.map((item) => {

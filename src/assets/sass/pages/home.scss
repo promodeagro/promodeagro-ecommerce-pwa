@@ -834,22 +834,36 @@
   }
 }
 
-
+.hyderabad_tag_line{
+  margin-bottom: 15px;
+  margin-top: 10px;
+  background: #e6f8e7;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  font-style: italic;
+  color: rgba(114, 114, 114, 0.8);
+  padding: 8px;
+  text-align: center;
+}
 @media screen and (max-width:600px) {
+  .hyderabad_tag_line{
+    margin-bottom: 15px;
+    margin-top: 0px;
+    background: #e6f8e7;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-style: italic;
+    color: rgba(114, 114, 114, 0.8);
+    padding: 8px;
+    text-align: center;
+  }
+
+
   .top-selling-categories-container { 
     padding-bottom:60px ;
      }
 }
 
 
-@keyframes moveText {
-  0% {
-    transform: translateX(100%); /* Start from the right side */
-  }
-  99.9% {
-    transform: translateX(-100%); /* Move to the left */
-  }
-  100% {
-    transform: translateX(100%); /* Instantly jump back to the right side */
-  }
-}
