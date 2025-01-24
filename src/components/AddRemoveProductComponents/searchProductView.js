@@ -155,9 +155,7 @@ class SearchProductItemView extends Component {
                           : prices?.price?.price
                           ? prices?.price?.price
                           : item?.price}
-
                         <span>
-                          {" "}
                           {item?.cartItem?.selectedQuantityUnitMrp
                             ? item?.cartItem?.selectedQuantityUnitMrp
                             : prices?.price?.mrp

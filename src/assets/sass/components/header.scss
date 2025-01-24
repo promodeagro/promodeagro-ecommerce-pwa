@@ -109,17 +109,24 @@
       width: 100%;
       position: relative;
       z-index: 100;
-
+    
       .search {
         width: 100%;
-
+    
         input {
           padding-top: 10px;
           padding-bottom: 8px;
           transition: opacity 1.5s ease-in-out;
         }
       }
-
+    
+      // Media query for smaller screens
+      @media (max-width: 768px) {
+        position: static; // Make position static on small screens
+        
+      }
+    
+    
       .MuiInputBase-root {
         background-color: #ffffff;
         border-radius: 10px;

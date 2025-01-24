@@ -155,17 +155,13 @@ class SearchResults extends Component {
           </Box>):(
             <Box
             sx={{
-              marginLeft:'-10px',
-               marginRight:'-10px'
+              //  marginLeft:'-px',
+              //  marginRight:'-10px',
+              marginTop: '14px',
             }}
             style={{
-              width:'88vw',
-            
-          
-
+              width:'100vw',
             }}
-          
-           
             className={`search-results ${
               searchTerm && productsFiltersData ? "active" : ""
             }`}
