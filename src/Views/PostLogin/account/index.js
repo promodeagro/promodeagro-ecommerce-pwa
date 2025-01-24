@@ -43,8 +43,7 @@ class Account extends Component {
                     </li> */}
                     <li
                         onClick={() => {
-                            sessionStorage.removeItem("login");
-                            // localStorage.removeItem("login");
+                            document.cookie = "login=; path=/; max-age=0";
                             localStorage.removeItem("defaultAddress");
                             localStorage.removeItem("cartItem");
                             this.props.navigate("/");
