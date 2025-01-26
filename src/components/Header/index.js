@@ -373,8 +373,6 @@ class Header extends Component {
                               <li
                                 onClick={() => {
                                   this.handleProfileModal();
-                                  // localStorage.removeItem("login");
-                                  sessionStorage.removeItem("login");
                                   localStorage.removeItem("defaultAddress");
                                   localStorage.removeItem("cartItem");
                                   localStorage.removeItem("address");
