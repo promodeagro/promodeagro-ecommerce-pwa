@@ -43,7 +43,7 @@ class Account extends Component {
                     </li> */}
                     <li
                         onClick={() => {
-                            document.cookie = "login=; path=/; max-age=0";
+                            document.cookie = "login=; path=/; domain=.promodeagro.com; max-age=0";
                             localStorage.removeItem("defaultAddress");
                             localStorage.removeItem("cartItem");
                             this.props.navigate("/");
