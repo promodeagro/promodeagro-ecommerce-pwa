@@ -90,7 +90,7 @@ const AuthModal = (props) => {
           //   JSON.stringify(props?.validateOtpRes?.data?.data)
           // );
 
-          document.cookie = `login=${JSON.stringify(props?.validateOtpRes?.data?.data)}; path=/; domain=.promodeagro.com; max-age=3600`;
+          document.cookie = `login=${JSON.stringify(props?.validateOtpRes?.data?.data)}; path=/; max-age=3600`;
           // document.cookie = `login=${JSON.stringify(props?.validateOtpRes?.data?.data)}; path=/; domain=.promodeagro.com; max-age=3600`;
           //  sessionStorage.setItem(
           //   "login",
