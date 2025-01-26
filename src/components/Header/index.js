@@ -373,10 +373,12 @@ class Header extends Component {
                               <li
                                 onClick={() => {
                                   this.handleProfileModal();
+                                  // localStorage.removeItem("login");
+                                  sessionStorage.removeItem("login");
                                   localStorage.removeItem("defaultAddress");
                                   localStorage.removeItem("cartItem");
                                   localStorage.removeItem("address");
-                                  document.cookie = "login=; path=/; domain=.promodeagro.com; max-age=0";
+                                  document.cookie = "login=; path=/; max-age=0";
                                   this.props.navigate("/");
                                   window.location.reload();  
                                 }}

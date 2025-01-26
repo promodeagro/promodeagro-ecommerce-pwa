@@ -23,10 +23,15 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import {
   fetchAllorders,
   fetchOrderById,
-  cancleOrder,cancleOrderRequest
+  cancleOrder,
+  cancleOrderRequest,
 } from "../../../Redux/Order/PlaceOrderThunk";
 import { connect } from "react-redux";
-import { ErrorMessages, Loader, loginDetails } from "Views/Utills/helperFunctions";
+import {
+  ErrorMessages,
+  Loader,
+  loginDetails,
+} from "Views/Utills/helperFunctions";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 
 import status from "../../../Redux/Constants";
@@ -55,9 +60,7 @@ function CustomStepIcon(props) {
   return (
     <Box className="custom-step-icon">
       {completed ? (
-        <Box
-         style={{ opacity: 1}}
-        className="icon completed">
+        <Box style={{ opacity: 1 }} className="icon completed">
           <CheckOutlinedIcon />
         </Box>
       ) : active ? (
@@ -132,7 +135,8 @@ class MyOrder extends Component {
     } else if (this.props.cancelOrderData.status === status.FAILURE) {
     }
     if (
-      prevProps.cancelOrderRequestData.status !== this.props.cancelOrderData.status &&
+      prevProps.cancelOrderRequestData.status !==
+        this.props.cancelOrderData.status &&
       this.props.cancelOrderRequestData.status === status.SUCCESS &&
       this.props.cancelOrderRequestData?.data
     ) {
@@ -182,10 +186,9 @@ class MyOrder extends Component {
     this.setState({ isMobile: e.matches });
   };
 
-
   render() {
     const { isMobile } = this.state;
-    const   HideDirectlySeeInvoice=false
+    const HideDirectlySeeInvoice = false;
 
     const steps = [
       "Order placed",
@@ -233,10 +236,11 @@ class MyOrder extends Component {
                   myOrdersList.map((item) => (
                     <Box key={item?.id}>
                       <Box
-                       style={{
-                        border: `1.5px solid ${item.status === "cancelled" ? "#d30606" : "#bfbfbf"}`,
-                       
-                      }} 
+                        style={{
+                          border: `1.5px solid ${
+                            item.status === "cancelled" ? "#d30606" : "#bfbfbf"
+                          }`,
+                        }}
                         className="order-status-collapsed"
                         data-aos="zoom-in-right"
                       >
@@ -245,17 +249,23 @@ class MyOrder extends Component {
                             <Grid container spacing={1} alignItems={"center"}>
                               <Grid item xs={3}>
                                 <Box className="date-time-container order-progress">
-                                  <AccessTimeIcon />
+                                  <Box className='iconmargin'>
+                                    <AccessTimeIcon />
+                                  </Box>
                                   <Box className="d-block">
                                     <span className="d-block">
-                                      {item?.deliverySlot?.startTime}-
-                                      {item?.deliverySlot?.endTime}
+                                    {item?.deliverySlot?.date
+                                        ? new Date(item.deliverySlot.date)
+                                            .toLocaleDateString("en-GB")
+                                            .replace(/\//g, "-") // Replace slashes with dashes
+                                        : ""}
+                                      <br />
+                                      {item?.deliverySlot?.startTime} {item?.deliverySlot?.startAmPm}-
+                                      {item?.deliverySlot?.endTime} {item?.deliverySlot?.endAmPm}
                                     </span>
                                   </Box>
                                 </Box>
                               </Grid>
-                              
-
                               <Grid item xs={5}>
                                 <Box className="order-status-bar">
                                   <Stepper
@@ -295,16 +305,11 @@ class MyOrder extends Component {
                                   </Box>
                                 ) : null}
                               </Grid>
-
-                              
-
                               <Grid item xs={2}>
                                 <Box className="order-id-container order-progress">
                                   <span className="d-block title">
                                     Order ID:
                                   </span>
-                                
-                              
                                   <Box className="d-flex align-items-center">
                                     <span className="d-block number">
                                       {item?.id}
@@ -319,6 +324,7 @@ class MyOrder extends Component {
                                       open={copiedOrderId === item?.id}
                                     >
                                       <ContentCopyIcon
+                                      className="ordercopyicon"
                                         onClick={() =>
                                           this.handleCopyOrderId(item?.id)
                                         }
@@ -354,52 +360,60 @@ class MyOrder extends Component {
                                   style={{ width: "320px", height: "100px" }}
                                   className="order-id-container order-progress"
                                 >
-                                  {" "}
-                                  <div style={{display:'flex', justifyContent:'space-between'}}>
-
-                                  <div>
-                                  <span className="d-block title">
-                                    Order ID:
-                                  </span>
-                                  <div style={{ display: "flex" }}>
-                                    <span className="d-block number">
-                                      {item?.id}
-                                    </span>
-                                    <Tooltip
-                                      title={
-                                        copiedOrderId === item?.id
-                                          ? "Copied!"
-                                          : "Copy Order ID"
-                                      }
-                                      arrow
-                                      open={copiedOrderId === item?.id}
-                                    >
-                                      <ContentCopyIcon
-                                        onClick={() =>
-                                          this.handleCopyOrderId(item?.id)
-                                        }
-                                      />
-                                    </Tooltip>
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      justifyContent: "space-between",
+                                    }}
+                                  >
+                                    <div>
+                                      <span className="d-block title">
+                                        Order ID:
+                                      </span>
+                                      <div style={{ display: "flex" }}>
+                                        <span className="d-block number">
+                                          {item?.id}
+                                        </span>
+                                        <Tooltip
+                                          title={
+                                            copiedOrderId === item?.id
+                                              ? "Copied!"
+                                              : "Copy Order ID"
+                                          }
+                                          arrow
+                                          open={copiedOrderId === item?.id}
+                                        >
+                                          <ContentCopyIcon
+                                          className="ordercopyicon"
+                                            onClick={() =>
+                                              this.handleCopyOrderId(item?.id)
+                                            }
+                                          />
+                                        </Tooltip>
+                                      </div>
+                                    </div>
+                                    <Grid item xs={1}>
+                                      {item?.status === "delivered" ? (
+                                        <Box className="order-status-container delivered">
+                                          <span className="d-block">
+                                            {item?.status}
+                                          </span>
+                                        </Box>
+                                      ) : item?.status === "cancelled" ? (
+                                        <Box className="order-status-container cancelled">
+                                          <span
+                                            style={{
+                                              paddingLeft: "5px",
+                                              paddingRight: "5px",
+                                            }}
+                                            className="d-block"
+                                          >
+                                            {item?.status}
+                                          </span>
+                                        </Box>
+                                      ) : null}
+                                    </Grid>
                                   </div>
-                                  </div>
-                                  <Grid item xs={1}>
-                                {item?.status === "delivered" ? (
-                                  <Box className="order-status-container delivered">
-                                    <span className="d-block">
-                                      {item?.status}
-                                    </span>
-                                  </Box>
-                                ) : item?.status === "cancelled" ? (
-                                  <Box className="order-status-container cancelled">
-                                    <span style={{paddingLeft:'5px',paddingRight:'5px'}} className="d-block">
-                                      {item?.status}
-                                    </span>
-                                  </Box>
-                                ) : null}
-                              </Grid>
-                              </div>
-
-                               
                                   <div
                                     style={{
                                       display: "flex",
@@ -408,15 +422,16 @@ class MyOrder extends Component {
                                     }}
                                   >
                                     <AccessTimeIcon style={{ margin: "0px" }} />
-
                                     <span style={{ color: "#1f9151" }}>
                                       {item?.deliverySlot?.startTime}-
                                       {item?.deliverySlot?.endTime}
-                                    </span>{"  "}
-                                    <span style={{fontSize:'12px'}}>{item.createdAt.split("T")[0]}</span>
-                                    </div>
+                                    </span>
+                                    {"  "}
+                                    <span style={{ fontSize: "12px" }}>
+                                      {item.createdAt.split("T")[0]}
+                                    </span>
+                                  </div>
                                 </Box>
-
                                 {/* </Box> */}
                                 <Grid
                                   item
@@ -482,7 +497,6 @@ class MyOrder extends Component {
                           </>
                         )}
                       </Box>
-
                       {expandedOrderDetails === item && (
                         <Box
                           className="order-details-container"
@@ -491,7 +505,6 @@ class MyOrder extends Component {
                           {/* <span className="d-block order-place-time">
                             {dateFormatter(item?.createdAt)}
                           </span> */}
-
                           <Grid container spacing={4}>
                             <Grid item xs={12} md={4}>
                               <Box className="delivery-address">
@@ -543,7 +556,13 @@ class MyOrder extends Component {
                                       Discount
                                     </span>
                                     {item?.discount}
-                                    <span style={{width:'60px',textAlign:'start'}}  className="d-block order-amount">
+                                    <span
+                                      style={{
+                                        width: "60px",
+                                        textAlign: "start",
+                                      }}
+                                      className="d-block order-amount"
+                                    >
                                       Rs. {item?.discount}
                                     </span>
                                   </Box>
@@ -551,43 +570,58 @@ class MyOrder extends Component {
                                   <></>
                                 )}
 
-                                <Box sx={{
-                                  
-                                }} className="d-flex justify-content-between ">
+                                <Box
+                                  sx={{}}
+                                  className="d-flex justify-content-between "
+                                >
                                   <span className="d-block summary-title">
                                     Final Amount
                                   </span>
-                                  <span style={{width:'60px',textAlign:'start'}} className="d-block order-amount">
+                                  <span
+                                    style={{
+                                      width: "60px",
+                                      textAlign: "start",
+                                    }}
+                                    className="d-block order-amount"
+                                  >
                                     Rs.{" "}
                                     {item?.totalPrice - (item?.discount || 0)}
                                   </span>
                                 </Box>
-                                {/* {isMobile && ( */}
-                                
-                                  <Invoice flag={HideDirectlySeeInvoice}  orderData={item}></Invoice>
-                                
-                                {/* )} */}
+                                <Invoice
+                                  flag={HideDirectlySeeInvoice}
+                                  orderData={item}
+                                ></Invoice>
                               </Box>
                             </Grid>
                           </Grid>
                           <Box className="more-order-details">
-                            <span className="d-block text">
-                              More with this order
-                            </span>
-                            <Button
-                              variant="outlined"
-                              className="d-block"
-                              onClick={() => {
-                                this.handleClickOpen();
-                              }}
-                            >
-                              <span className="d-block title">
-                                Request For Cancellation
+                            {item.status === "order placed" && (
+                              <span className="d-block text">
+                                More with this order
                               </span>
-                              <span className="d-block sub-title">
-                                Cancel This Order
+                            )}
+                            {item.status === "order placed" && (
+                              <Button
+                                variant="outlined"
+                                className="d-block"
+                                onClick={() => {
+                                  this.handleClickOpen();
+                                }}
+                              >
+                                <span className="d-block title">
+                                  Request For Cancellation
+                                </span>
+                                <span className="d-block sub-title">
+                                  Cancel This Order
+                                </span>
+                              </Button>
+                            )}
+                            {item.status === "Request for Cancellation" && (
+                              <span className="ordercencellationrequest">
+                                Order Cancellation Request Sent!
                               </span>
-                            </Button>
+                            )}
                           </Box>
                         </Box>
                       )}
@@ -606,13 +640,18 @@ class MyOrder extends Component {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={()=> {
-                 this.props.cancleOrderRequest({
-                    orderId:expandedOrderDetails?.id
-                  })
-                  this.handleClickClose()
-                   ErrorMessages.success("Cancel Request Sent")
-              }} color="success">Send Cancellation Request </Button>
+              <Button
+                onClick={() => {
+                  this.props.cancleOrderRequest({
+                    orderId: expandedOrderDetails?.id,
+                  });
+                  this.handleClickClose();
+                  ErrorMessages.success("Cancel Request Sent");
+                }}
+                color="success"
+              >
+                Send Cancellation Request{" "}
+              </Button>
             </DialogActions>
             <DialogActions>
               <Button onClick={this.handleClickClose} color="error">
@@ -627,12 +666,17 @@ class MyOrder extends Component {
 }
 
 function mapStateToProps(state) {
-  const { allOrdersData, orderByIdData,cancelOrderRequestData, cancelOrderData } = state.placeorder;
+  const {
+    allOrdersData,
+    orderByIdData,
+    cancelOrderRequestData,
+    cancelOrderData,
+  } = state.placeorder;
   return {
     allOrdersData,
     orderByIdData,
     cancelOrderData,
-    cancelOrderRequestData
+    cancelOrderRequestData,
   };
 }
 
@@ -640,11 +684,10 @@ const mapDispatchToProps = {
   fetchAllorders,
   fetchOrderById,
   cancleOrder,
-  cancleOrderRequest
+  cancleOrderRequest,
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(navigateRouter(MyOrder));
-
