@@ -42,12 +42,18 @@ class Account extends Component {
                         </Link>
                     </li> */}
                     <li
-                        onClick={() => {
-                            document.cookie = "login=; path=/; domain=.promodeagro.com; max-age=0";
-                            localStorage.removeItem("defaultAddress");
-                            localStorage.removeItem("cartItem");
-                            this.props.navigate("/");
-                        }}
+                      onClick={() => {
+                        if (window.location.hostname === "localhost") {
+                          document.cookie = "login=; path=/; max-age=0";
+                        }
+                        localStorage.removeItem("defaultAddress");
+                        localStorage.removeItem("cartItem");
+                        localStorage.removeItem("address");
+                        document.cookie = "login=; path=/; domain=.promodeagro.com; max-age=0";
+                        this.props.navigate("/");
+                        window.location.reload();
+                      }}
+
                     >
                         <Link>
                         <img src={logouticon} alt="Logout Icon" /> Logout

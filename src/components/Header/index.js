@@ -109,7 +109,7 @@ class Header extends Component {
     }
     if (
       prevProps.personalDetailsData.status !==
-        this.props.personalDetailsData.status &&
+      this.props.personalDetailsData.status &&
       this.props.personalDetailsData.status === status.SUCCESS &&
       this.props.personalDetailsData?.data
     ) {
@@ -129,7 +129,7 @@ class Header extends Component {
     }
     if (
       prevProps.defaultAddressData.status !==
-        this.props.defaultAddressData.status &&
+      this.props.defaultAddressData.status &&
       this.props.defaultAddressData.status === status.SUCCESS &&
       this.props.defaultAddressData.data
     ) {
@@ -303,20 +303,19 @@ class Header extends Component {
                   </Box>
                 </Grid>
               )}
-              <Grid item xs={9} sm={4} md={4} lg={6}>
+              <Grid item xs={11} sm={4} md={4} lg={6}>
                 <Box className="search-box">
                   <Box
                     onClick={() => this.props.navigate("/")}
-                    className={`back-button ${
-                      currentPathName === "/" ? "none" : ""
-                    }`}
+                    className={`back-button ${currentPathName === "/" ? "none" : ""
+                      }`}
                   >
                     <ArrowBackIosNewOutlinedIcon />
                   </Box>
                   <SearchResults cartItemsData={cartList} />
                 </Box>
               </Grid>
-              <Grid item xs={3} sm={3} md={3} lg={2}>
+              <Grid item xs={1} sm={3} md={3} lg={2}>
                 <Box
                   width={"100%"}
                   display={"flex"}
@@ -352,7 +351,7 @@ class Header extends Component {
                               </li> */}
                               <li onClick={() => this.handleProfileModal()}>
                                 <Link to="/my-order">
-                                <img src={filledicon} alt="Order Icon" /> My Orders
+                                  <img src={filledicon} alt="Order Icon" /> My Orders
                                 </Link>
                               </li>
                               {/* <li onClick={() => this.handleProfileModal()}>
@@ -362,7 +361,7 @@ class Header extends Component {
                               </li> */}
                               <li onClick={() => this.handleProfileModal()}>
                                 <Link to="/contact-us">
-                                <img src={callicon} alt="Contact Icon" /> Contact Us
+                                  <img src={callicon} alt="Contact Icon" /> Contact Us
                                 </Link>
                               </li>
                               {/* <li onClick={() => this.handleProfileModal()}>
@@ -373,18 +372,19 @@ class Header extends Component {
                               <li
                                 onClick={() => {
                                   this.handleProfileModal();
-                                  // localStorage.removeItem("login");
-                                  sessionStorage.removeItem("login");
+                                  if (window.location.hostname === "localhost") {
+                                    document.cookie = "login=; path=/; max-age=0";
+                                  }
                                   localStorage.removeItem("defaultAddress");
                                   localStorage.removeItem("cartItem");
                                   localStorage.removeItem("address");
                                   document.cookie = "login=; path=/; domain=.promodeagro.com; max-age=0";
                                   this.props.navigate("/");
-                                  window.location.reload();  
+                                  window.location.reload();
                                 }}
                               >
                                 <Link>
-                                <img src={logouticon} alt="Logout Icon" /> Logout
+                                  <img src={logouticon} alt="Logout Icon" /> Logout
                                 </Link>
                               </li>
                             </ul>
@@ -420,61 +420,22 @@ class Header extends Component {
                           <></>
                         )} */}
 
-{noOfcartItemsInLS ? (
-                               <p>{noOfcartItemsInLS}</p>
-                             ) : (
-                               <></>
-                             )}
-
-                        {/* <img src={cardIcon} alt="Shopping" /> */}
-                        <ShoppingCartIcon  style={{color:'white'}}/>
-                        <span>Cart </span>
-                      
-                       
-                       
-                      </Link>
-                    </Box>
-                  )}
-                  {matches && (
-                    <Box
-                      onClick={() => {
-                        if (loginDetails()?.userId) {
-                          {
-                            this.props.navigate("/cart");
-                          }
-                        } else {
-                          this.setState({ authModalOpen: true });
-                        }
-                      }}
-                      className="card"
-                    >
-                      <Link>
-
-                      {noOfcartItemsInLS ? (
-                               <p>{noOfcartItemsInLS}</p>
-                             ) : (
-                               <></>
-                             )}
-
-                        {/* {noOfcartItemsInLS ? (
+                        {noOfcartItemsInLS ? (
                           <p>{noOfcartItemsInLS}</p>
-                        ) : this.state.cartList?.length ? (
-                          <p>{this.state.cartList.length}</p>
                         ) : (
                           <></>
-                        )} */}
-                        
-                        {/* <img src={cardIcon} alt="Shopping" /> */}
-                        <ShoppingCartIcon  style={{color:'white'}}/>
+                        )}
 
-                         <span>Cart</span>
-                      
-                      
+                        {/* <img src={cardIcon} alt="Shopping" /> */}
+                        <ShoppingCartIcon style={{ color: 'white' }} />
+                        <span>Cart </span>
+
+
 
                       </Link>
                     </Box>
                   )}
-
+                  
                   {matches && (
                     <Box
                       className="profile-icon"
@@ -508,9 +469,8 @@ class Header extends Component {
           </>
         )}
         <Box
-          className={`categories-container ${
-            currentPathName.includes("category/") ? "category" : ""
-          }`}
+          className={`categories-container ${currentPathName.includes("category/") ? "category" : ""
+            }`}
         >
           <Container>{this.renderCategories()}</Container>
         </Box>
