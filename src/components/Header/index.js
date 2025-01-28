@@ -272,10 +272,8 @@ class Header extends Component {
                           className="deliver-box"
                           onClick={this.toggleAddressModal}
                         >
-                          <strong>Deliver to</strong>
+                          <strong>Deliver Now</strong>
                           <span>
-                            {currentAddress?.landmark_area}{" "}
-                            {currentAddress?.house_number},{" "}
                             {currentAddress?.address}
                             <KeyboardArrowDownIcon />
                           </span>
