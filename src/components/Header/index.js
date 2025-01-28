@@ -336,7 +336,7 @@ class Header extends Component {
                       onClick={() => this.handleProfileModal()}
                       className="login profile_modal_par"
                     >
-                      {currentAddress?.name || "User"} <KeyboardArrowDownIcon />
+                      {"Account" || "User"} <KeyboardArrowDownIcon />
                       {profileModal && (
                         <>
                           <Box
@@ -344,24 +344,25 @@ class Header extends Component {
                             ref={this.profileModalRef}
                           >
                             <ul>
-                              {/* <li onClick={() => this.handleProfileModal()}>
-                                <Link to="/my-profile/personal-information">
-                                  <PermIdentityOutlinedIcon /> My Profile
-                                </Link>
-                              </li> */}
                               <li onClick={() => this.handleProfileModal()}>
-                                <Link to="/my-order">
-                                  <img src={filledicon} alt="Order Icon" /> My Orders
+                                <Link to="/my-profile/personal-information">
+                                <p>                                   My Account
+                                  <div className="smalltext">{currentAddress?.phoneNumber}</div> </p>
                                 </Link>
                               </li>
-                              {/* <li onClick={() => this.handleProfileModal()}>
-                                <Link to="/my-profile/wish-list">
-                                  <PermIdentityOutlinedIcon /> Wish list
+                              <li onClick={() => this.handleProfileModal()}>
+                                <Link to="/my-order">
+                                 Orders
                                 </Link>
-                              </li> */}
+                              </li>
+                              <li onClick={() => this.handleProfileModal()}>
+                                <Link to="/my-profile/wish-list">
+                                Save Addresses
+                                </Link>
+                              </li>
                               <li onClick={() => this.handleProfileModal()}>
                                 <Link to="/contact-us">
-                                  <img src={callicon} alt="Contact Icon" /> Contact Us
+                                  Customer Support
                                 </Link>
                               </li>
                               {/* <li onClick={() => this.handleProfileModal()}>
@@ -384,7 +385,7 @@ class Header extends Component {
                                 }}
                               >
                                 <Link>
-                                  <img src={logouticon} alt="Logout Icon" /> Logout
+                                   Logout
                                 </Link>
                               </li>
                             </ul>
