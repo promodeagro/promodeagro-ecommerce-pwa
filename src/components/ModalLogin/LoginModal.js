@@ -274,7 +274,7 @@ const AuthModal = (props) => {
                         />
                       </Box>
                       {isSubmitMobOrEmail && (
-                        <div style={{display:'flex',justifyContent:'left', marginLeft:'62px'}}>
+                        <div style={{display:'flex',justifyContent:'left', marginLeft:'52px'}}>
                         <FormHelperText error>
                           {errorData?.emailOrNumber?.message}
                         </FormHelperText>
