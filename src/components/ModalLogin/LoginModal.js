@@ -274,7 +274,7 @@ const AuthModal = (props) => {
                         />
                       </Box>
                       {isSubmitMobOrEmail && (
-                        <div style={{display:'flex',justifyContent:'center'}}>
+                        <div style={{display:'flex',justifyContent:'left'}}>
                         <FormHelperText error>
                           {errorData?.emailOrNumber?.message}
                         </FormHelperText>
@@ -324,6 +324,7 @@ const AuthModal = (props) => {
                         borderRadius: "6px",
                         marginTop: "15px",
                         width: "280px",
+                        marginBottom:'10px'
                       }}
                       // fullWidth
                       // className="common-btn login-btns"
