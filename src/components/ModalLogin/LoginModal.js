@@ -420,7 +420,7 @@ const AuthModal = (props) => {
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
-                  justifyContent: "center",
+                  // justifyContent: "center",
                   height: "100vh",
                   padding: "20px",
                 }}
