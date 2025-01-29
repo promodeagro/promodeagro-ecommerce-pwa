@@ -261,7 +261,7 @@ const AuthModal = (props) => {
                           sx={{
                             borderRadius: "16px",
                             marginTop: "10px",
-                            width: "338px",
+                            width: "280px",
                           }}
                           value={emailOrNumber}
                           onChange={(e) => setEmailOrNumber(e.target.value)}
@@ -270,13 +270,15 @@ const AuthModal = (props) => {
                           className="input-textfield"
                           id="outlined-basic"
                           variant="outlined"
-                          type="text"
+                          type="tel"
                         />
                       </Box>
                       {isSubmitMobOrEmail && (
+                        <div style={{display:'flex',justifyContent:'center'}}>
                         <FormHelperText error>
                           {errorData?.emailOrNumber?.message}
                         </FormHelperText>
+                        </div>
                       )}
                     </>
                   )}
@@ -315,17 +317,19 @@ const AuthModal = (props) => {
                     <Button
                       type="submit"
                       variant="contained"
+                      color="success"
                       sx={{
-                        backgroundColor: isMobileValid ? "#1F9151" : "#9BA7B6", // Step 3: Success color if valid
+                        backgroundColor: isMobileValid ? "#1F9151" : "#9BA7B6", 
+                        // Step 3: Success color if valid
                         borderRadius: "6px",
                         marginTop: "15px",
-                        width: "338px",
+                        width: "280px",
                       }}
                       // fullWidth
                       // className="common-btn login-btns"
                       disabled={
                         props.loginData.status === status.IN_PROGRESS &&
-                        setSubmitMobOrEmail
+                        setSubmitMobOrEmail 
                       }
                       endIcon={
                         props.loginData.status === status.IN_PROGRESS &&
@@ -366,7 +370,7 @@ const AuthModal = (props) => {
                       id="outlined-basic"
                       variant="outlined"
                       fullWidth
-                      type="number"
+                      type="tel"
                       InputProps={{
                         endAdornment: (
                           <InputAdornment position="end">
@@ -442,7 +446,10 @@ const AuthModal = (props) => {
                       inputRef={(el) => (inputRefs.current[index] = el)}
                       variant="outlined"
                       size="small"
-                      type="text"
+                      type="tel"
+                      
+                      inputMode="numeric"  // Force numeric keyboard
+                      pattern="[0-9]"      // Ensure the input is a number
                       inputProps={{
                         maxLength: 1,
                         style: { textAlign: "center", fontSize: "18px" },
@@ -571,7 +578,7 @@ const AuthModal = (props) => {
                     style={{
                       color: "#005F41",
                       margin: "10px",
-                      fontSize: "24px",
+                      fontSize: "22px",
                       fontFamily: '"IBM Plex Mono", monospace',
                     }}
                   >
