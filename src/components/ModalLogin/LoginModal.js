@@ -274,7 +274,7 @@ const AuthModal = (props) => {
                         />
                       </Box>
                       {isSubmitMobOrEmail && (
-                        <div style={{display:'flex',justifyContent:'left'}}>
+                        <div style={{display:'flex',justifyContent:'left', marginLeft:'62px'}}>
                         <FormHelperText error>
                           {errorData?.emailOrNumber?.message}
                         </FormHelperText>
@@ -561,7 +561,9 @@ const AuthModal = (props) => {
             {/* Render images only if formType is not 'otp' */}
             {formType !== "otp" ? (
               <>
-                <img src={loginimage} alt="logo" />
+                <img
+                 style={{height:'370px',width:'100%'}} 
+                src={loginimage} alt="logo" />
 
                 <div style={{ textAlign: "center" }}>
                   <img
