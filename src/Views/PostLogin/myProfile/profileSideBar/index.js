@@ -10,6 +10,7 @@ import customersupportimage from "../../../../assets/img/customersupportimage.pn
 import accountprivacy from "../../../../assets/img/accountprivacyimage.png";
 import logoutimage from "../../../../assets/img/logoutimage.png";
 
+
 class ProfileSideBar extends Component {
   constructor(props) {
     super(props);
@@ -54,6 +55,7 @@ class ProfileSideBar extends Component {
     const { sections } = this.state;
 
     return (
+      <Box className="profilewrap" sx={{marginLeft:"none", marginTop:"none"}}>
       <Box
         className="profile-sidebar"
       >
@@ -92,7 +94,7 @@ class ProfileSideBar extends Component {
             </Box>
           </Box>
         ))}
-      </Box>
+      </Box></Box>
     );
   }
 }

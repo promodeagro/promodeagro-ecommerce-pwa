@@ -2,19 +2,24 @@
   display: flex;
   align-items: flex-start;
   width: 90%;
-  border: 1px solid #bfbfbf;
+  border: 1px solid #E6e6e6;
   margin-top: 20px;
   border-radius: 5px;
   margin-left: 60px;
   height: 100vh; /* Full screen height */
+  // background-color: #E6e6e6;
 
 
+  .profilewrap{
+    border: 1px solid #E6e6e6;
+    height: 100%;
+
+  }
   .profile-sidebar {
     display: inline-flex;
-     width: 280px;
+     width: 270px;
     flex-wrap: wrap;
     // border-radius: 5px;
-    // border: 1px solid #bfbfbf;
 
     .heading {
       display: flex;
@@ -684,7 +689,7 @@
   justify-content: space-between;
   margin-bottom: 20px;
   width: 100%;
-  border-bottom: 1px solid #bfbfbf;
+  border-bottom: 1px solid #E6e6e6;
   // padding: 0px 0px 10px 0px;
   height: fit-content;
 }

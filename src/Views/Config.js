@@ -46,7 +46,7 @@ const Config = {
   CANCLE_ORDER: `${BASE_URL}/cancleorder`,
   CANCLE_ORDER_REQUEST: `${BASE_URL}/cancelOrderRequest`,
   All_PRODUCT_WITH_CATEGORY: `${BASE_URL}/homePageProducts`,
-  DELIVERY_SLOTS: `${BASE_URL}/slots`,
+  DELIVERY_SLOTS: `${BASE_URL}/slot`,
   CREATE_FEEDBACK: `${BASE_URL}/createFeedback`,
 };
 
