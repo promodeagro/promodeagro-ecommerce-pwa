@@ -14,10 +14,10 @@ import { loginDetails } from "Views/Utills/helperFunctions";
 import { getAllAddress } from "../../Redux/Address/AddressThunk";
 import SearchResults from "./searchResults";
 import _ from "lodash";
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import logouticon from "../../assets/img/logouticon.svg"
-import filledicon from "../../assets/img/filledicon.svg"
-import callicon from "../../assets/img/callicon.svg"
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import logouticon from "../../assets/img/logouticon.svg";
+import filledicon from "../../assets/img/filledicon.svg";
+import callicon from "../../assets/img/callicon.svg";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import { fetchDefaultAddress } from "../../Redux/Address/AddressThunk";
 import { fetchCartItems } from "../../Redux/Cart/CartThunk";
@@ -109,7 +109,7 @@ class Header extends Component {
     }
     if (
       prevProps.personalDetailsData.status !==
-      this.props.personalDetailsData.status &&
+        this.props.personalDetailsData.status &&
       this.props.personalDetailsData.status === status.SUCCESS &&
       this.props.personalDetailsData?.data
     ) {
@@ -129,7 +129,7 @@ class Header extends Component {
     }
     if (
       prevProps.defaultAddressData.status !==
-      this.props.defaultAddressData.status &&
+        this.props.defaultAddressData.status &&
       this.props.defaultAddressData.status === status.SUCCESS &&
       this.props.defaultAddressData.data
     ) {
@@ -305,8 +305,9 @@ class Header extends Component {
                 <Box className="search-box">
                   <Box
                     onClick={() => this.props.navigate("/")}
-                    className={`back-button ${currentPathName === "/" ? "none" : ""
-                      }`}
+                    className={`back-button ${
+                      currentPathName === "/" ? "none" : ""
+                    }`}
                   >
                     <ArrowBackIosNewOutlinedIcon />
                   </Box>
@@ -344,24 +345,24 @@ class Header extends Component {
                             <ul>
                               <li onClick={() => this.handleProfileModal()}>
                                 <Link to="/my-profile/personal-information">
-                                <p>                                   My Account
-                                  <div className="smalltext">{currentAddress?.phoneNumber}</div> </p>
+                                  <p>
+                                    My Account
+                                    <div className="smalltext">
+                                      {currentAddress?.phoneNumber}
+                                    </div>
+                                  </p>
                                 </Link>
                               </li>
                               <li onClick={() => this.handleProfileModal()}>
-                                <Link to="/my-order">
-                                 Orders
+                                <Link to="/my-order">Orders</Link>
+                              </li>
+                              <li onClick={() => this.handleProfileModal()}>
+                                <Link to="/my-profile/manage-addresses">
+                                  Address Book
                                 </Link>
                               </li>
                               <li onClick={() => this.handleProfileModal()}>
-                                <Link to="/my-profile/wish-list">
-                                Save Addresses
-                                </Link>
-                              </li>
-                              <li onClick={() => this.handleProfileModal()}>
-                                <Link to="/contact-us">
-                                  Customer Support
-                                </Link>
+                                <Link to="/contact-us">Customer Support</Link>
                               </li>
                               {/* <li onClick={() => this.handleProfileModal()}>
                                 <Link to="/my-profile/notification">
@@ -371,20 +372,22 @@ class Header extends Component {
                               <li
                                 onClick={() => {
                                   this.handleProfileModal();
-                                  if (window.location.hostname === "localhost") {
-                                    document.cookie = "login=; path=/; max-age=0";
+                                  if (
+                                    window.location.hostname === "localhost"
+                                  ) {
+                                    document.cookie =
+                                      "login=; path=/; max-age=0";
                                   }
                                   localStorage.removeItem("defaultAddress");
                                   localStorage.removeItem("cartItem");
                                   localStorage.removeItem("address");
-                                  document.cookie = "login=; path=/; domain=.promodeagro.com; max-age=0";
+                                  document.cookie =
+                                    "login=; path=/; domain=.promodeagro.com; max-age=0";
                                   this.props.navigate("/");
                                   window.location.reload();
                                 }}
                               >
-                                <Link>
-                                   Logout
-                                </Link>
+                                <Link>Logout</Link>
                               </li>
                             </ul>
                           </Box>
@@ -396,7 +399,6 @@ class Header extends Component {
                       )}
                     </Box>
                   )}
-
                   {!matches && (
                     <Box
                       onClick={() => {
@@ -419,22 +421,15 @@ class Header extends Component {
                           <></>
                         )} */}
 
-                        {noOfcartItemsInLS ? (
-                          <p>{noOfcartItemsInLS}</p>
-                        ) : (
-                          <></>
-                        )}
+                        {noOfcartItemsInLS ? <p>{noOfcartItemsInLS}</p> : <></>}
 
                         {/* <img src={cardIcon} alt="Shopping" /> */}
-                        <ShoppingCartIcon style={{ color: 'white' }} />
+                        <ShoppingCartIcon style={{ color: "white" }} />
                         <span>Cart </span>
-
-
-
                       </Link>
                     </Box>
                   )}
-                  
+
                   {matches && (
                     <Box
                       className="profile-icon"
@@ -468,8 +463,9 @@ class Header extends Component {
           </>
         )}
         <Box
-          className={`categories-container ${currentPathName.includes("category/") ? "category" : ""
-            }`}
+          className={`categories-container ${
+            currentPathName.includes("category/") ? "category" : ""
+          }`}
         >
           <Container>{this.renderCategories()}</Container>
         </Box>

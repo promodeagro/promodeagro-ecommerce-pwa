@@ -4,11 +4,6 @@ import {
   Button,
   Container,
   Grid,
-  IconButton,
-  TextField,
-  FormHelperText,
-  FormControlLabel,
-  Checkbox,
   Dialog,
   DialogContent,
   DialogContentText,
@@ -16,9 +11,10 @@ import {
   CircularProgress,
 } from "@mui/material";
 import ProfileSideBar from "../profileSideBar";
-import BorderColorIcon from "@mui/icons-material/BorderColor";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { connect } from "react-redux";
+import Deleteicon from "../../../../assets/img/trash-2.png";
+import Editicon from "../../../../assets/img/editicon.svg";
+
 import {
   ErrorMessages,
   Loader,
@@ -33,6 +29,7 @@ import {
 import status from "../../../../Redux/Constants";
 import AddNewAddress from "./Components/AddNewAddress";
 import { loginDetails } from "../../../Utills/helperFunctions";
+
 class ManageAddresses extends Component {
   constructor(props) {
     super(props);
@@ -52,6 +49,7 @@ class ManageAddresses extends Component {
       addressId: "",
     };
   }
+
   componentDidMount() {
     this.setState({
       loaderStatus: true,
@@ -82,6 +80,7 @@ class ManageAddresses extends Component {
       });
       this.apiCalls();
     }
+
     if (
       prevProps.allAddress?.status !== this.props?.allAddress?.status &&
       this.props?.allAddress?.status === status.SUCCESS &&
@@ -101,13 +100,13 @@ class ManageAddresses extends Component {
       this.props.fetchDefaultAddress(items?.userId);
     }
   }
+
   handleAddAddress = () => {
     const { addAddressModal, isSubmit } = this.state;
     this.setState({
       addAddressModal: !addAddressModal,
       isSubmit: false,
     });
-    // this.props.navigate("/my-profile/manage-addresses/add-new-address");
   };
 
   handleModal = (status, defualtApisStatus) => {
@@ -131,6 +130,7 @@ class ManageAddresses extends Component {
       }
     );
   };
+
   handleClickOpen = (item) => {
     this.setState({
       addressId: item.addressId,
@@ -146,8 +146,6 @@ class ManageAddresses extends Component {
     });
   };
 
-
-
   render() {
     const { addAddressModal, defaultAddressId, loaderStatus } = this.state;
     return (
@@ -160,9 +158,9 @@ class ManageAddresses extends Component {
               <Box className="profile-left">
                 <ProfileSideBar />
               </Box>
-              <Box className="profile-right">
+              <Box className="profile-right" style={{ borderBottom: "none" }}>
                 <Box className="heading">
-                  <h2>{addAddressModal?"Add Address":"Manage Addresses"}</h2>
+                  <h2>{addAddressModal ? "Add Address" : "Addressess Book"}</h2>
                   <Button
                     className={
                       addAddressModal
@@ -172,89 +170,69 @@ class ManageAddresses extends Component {
                     variant="contained"
                     onClick={() => this.handleAddAddress()}
                   >
-                    {addAddressModal ? <>Cancel</> : <>Add Address</>}
+                    {addAddressModal ? <>Cancel</> : <>+ Add Address</>}
                   </Button>
                 </Box>
                 {addAddressModal ? (
-                  <AddNewAddress   handleModal={this.handleModal}/>
+                  <AddNewAddress handleModal={this.handleModal} />
                 ) : (
-                  <Box className="address-container">
-                    <Grid container spacing={4} alignItems={"center"}>
-                      {this.state.allAddresses?.length > 0 ? (
-                        this.state.allAddresses?.map((item) => {
-                          return (
-                            <Grid item xs={12} lg={4} md={6} sm={6}>
-                              <Box className="address-card-container">
-                                <Box className="d-flex align-items-center">
-                                  <IconButton
-                                    aria-label="edit"
-                                    className="address-btn"
-                                    onClick={(event) =>
-                                      this.handleEdit(event, item)
-                                    }
-                                  >
-                                    <BorderColorIcon />
-                                  </IconButton>
-                                  <IconButton
-                                    aria-label="delete"
-                                    className="address-btn"
-                                    onClick={(event) => {
-                                      event.stopPropagation();
-                                      this.handleClickOpen(item);
-                                    }}
-                                    // onClick={() => {
-
-                                    //   this.setState({
-                                    //     deleteId: item?.addressId,
-                                    //   });
-                                    //   this.props.deleteAddress({
-                                    //     userId: loginDetails()?.userId,
-                                    //     addressId: item?.addressId,
-                                    //   });
-                                    // }}
-                                  >
-                                    <DeleteIcon />
-                                  </IconButton>
-                                </Box>
-                                <h3 className="person-name">
-                                  {item?.name}{" "}
-                                  {item.addressId === defaultAddressId ? (
-                                    <span>Default</span>
-                                  ) : (
-                                    <></>
-                                  )}
-                                </h3>
-                                <address>{item?.address}</address>
-                                <Box className="d-block contact-number">
-                                  <span className="d-block contact-heading">
-                                    Contact
-                                  </span>
-                                  <Box className="d-flex align-items-center">
-                                    <span className="d-block title">Phone</span>
-                                    <span className="d-block details">
-                                      {item?.phoneNumber}
-                                    </span>
-                                  </Box>
-                                  <Box className="d-flex align-items-center">
-                                    <span className="d-block title">Email</span>
-                                    <span className="d-block details">
-                                      {item?.email}
-                                    </span>
-                                  </Box>
-                                </Box>
-                              </Box>
-                            </Grid>
-                          );
-                        })
-                      ) : (
-                        <Box className="no-data">There Is No Address Found</Box>
-                      )}
-                    </Grid>
-                  </Box>
+                  <>
+                    {this.state.allAddresses?.length > 0 ? (
+                      this.state.allAddresses?.map((item) => {
+                        return (
+                          <Box
+                            className="manageaddressmodal"
+                            key={item.addressId}
+                          >
+                            <Box
+                              className="manageaddress-info"
+                              style={{ borderLeft: "none" }}
+                            >
+                              <h3>
+                                {item?.address_type}
+                                {item.addressId === defaultAddressId ? (
+                                  <p className="roundDiv">Default</p>
+                                ) : (
+                                  <></>
+                                )}
+                              </h3>
+                              <p>{item?.name}</p>
+                              <span>
+                                {item?.house_number}, {item?.landmark_area},{" "}
+                                {item?.address}, {item?.zipCode}
+                              </span>
+                            </Box>
+                            <Box className="manageaddress-icons">
+                              {item.addressId !== defaultAddressId && (
+                                <img
+                                  src={Deleteicon}
+                                  alt="Delete"
+                                  className="deleteiconn"
+                                  onClick={(event) => {
+                                    event.stopPropagation();
+                                    this.handleClickOpen(item);
+                                  }}
+                                />
+                              )}
+                              <img
+                                src={Editicon}
+                                alt="Edit"
+                                className="manageaddressicons"
+                                onClick={(event) =>
+                                  this.handleEdit(event, item)
+                                }
+                              />
+                            </Box>
+                          </Box>
+                        );
+                      })
+                    ) : (
+                      <Box className="no-data">There Is No Address Found</Box>
+                    )}
+                  </>
                 )}
               </Box>
             </Box>
-
             <Dialog
               open={this.state.open}
               onClose={this.handleClose}
@@ -272,17 +250,9 @@ class ManageAddresses extends Component {
                 <Button
                   variant="outlined"
                   className="outline-common-btn"
-                  onClick={this.handleClose}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  variant="outlined"
-                  className="outline-common-btn"
                   color="error"
                   onClick={(event) => {
                     event.stopPropagation();
-
                     this.props.deleteAddress({
                       userId: loginDetails()?.userId,
                       addressId: this.state.addressId,
@@ -300,6 +270,13 @@ class ManageAddresses extends Component {
                   }
                 >
                   Delete
+                </Button>
+                <Button
+                  variant="outlined"
+                  className="outline-common-btn"
+                  onClick={this.handleClose}
+                >
+                  Cancel
                 </Button>
               </DialogActions>
             </Dialog>
