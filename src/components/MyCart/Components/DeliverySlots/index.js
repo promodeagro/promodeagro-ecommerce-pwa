@@ -112,28 +112,29 @@ class DeliverySlots extends Component {
 
   getFilteredSlots = () => {
     const { slots } = this.props;
-    const { selectedTab } = this.state;
-    let filteredSlots = [];
+    const { selectedDay, selectedTab } = this.state;
 
-    slots.forEach((slotData) => {
-      slotData.shifts.forEach((shift) => {
-        if (selectedTab === 0) {
-          filteredSlots = [...filteredSlots, ...shift.slots]; // All slots
-        }
-        if (selectedTab === 1 && shift.name === "morning") {
-          filteredSlots = [...filteredSlots, ...shift.slots]; // Morning
-        }
-        if (selectedTab === 2 && shift.name === "afternoon") {
-          filteredSlots = [...filteredSlots, ...shift.slots]; // Afternoon
-        }
-        if (selectedTab === 3 && shift.name === "evening") {
-          filteredSlots = [...filteredSlots, ...shift.slots]; // Evening
-        }
-        if (selectedTab === 4 && shift.name === "night") {
-          filteredSlots = [...filteredSlots, ...shift.slots]; // Night
-        }
-      });
+    let filteredSlots = [];
+    const slotData = slots?.[0] || {};
+
+    const daySlots =
+      selectedDay === "today" ? slotData.sameDaySlots : slotData.nextDaySlots;
+
+    if (!Array.isArray(daySlots)) return filteredSlots;
+
+    daySlots.forEach((shift) => {
+      if (selectedTab === 0) {
+        filteredSlots = [...filteredSlots, ...shift.slots];
+      } else if (
+        (selectedTab === 1 && shift.name === "morning") ||
+        (selectedTab === 2 && shift.name === "afternoon") ||
+        (selectedTab === 3 && shift.name === "evening") ||
+        (selectedTab === 4 && shift.name === "night")
+      ) {
+        filteredSlots = [...filteredSlots, ...shift.slots];
+      }
     });
+
     return filteredSlots;
   };
 
@@ -151,14 +152,13 @@ class DeliverySlots extends Component {
             <img src={closeModalIcon} alt="Close Modal" onClick={handleClose} />
           </div>
           <Box className="delevery_slot_modal_days">
-            {this.state.deliveryType === "same day" ? (
-              <span
-                className={selectedDay === "today" ? "active" : ""}
-                onClick={() => this.setState({ selectedDay: "today" })}
-              >
-                Today
-              </span>
-            ) : (
+            <span
+              className={selectedDay === "today" ? "active" : ""}
+              onClick={() => this.setState({ selectedDay: "today" })}
+            >
+              Today
+            </span>
+            {slots?.[0]?.nextDaySlots?.length > 0 && (
               <span
                 className={selectedDay === "tomorrow" ? "active" : ""}
                 onClick={() => this.setState({ selectedDay: "tomorrow" })}
@@ -179,11 +179,10 @@ class DeliverySlots extends Component {
                 marginBottom: 2,
                 "& .MuiTabs-indicator": {
                   backgroundColor: "#1F9151", // Custom color for the underline
-                }, 
-                "& .css-heg063-MuiTabs-flexContainer":{
-                  overflowY:"scroll !important"
                 },
-                 
+                "& .css-heg063-MuiTabs-flexContainer": {
+                  overflowY: "scroll !important",
+                },
               }}
             >
               <Tab
@@ -319,7 +318,6 @@ class DeliverySlots extends Component {
                       <FormControlLabel
                         control={
                           <Radio
-                            sx={{ ml: 1 }}
                             checked={
                               selectedSlot === `${slot.start} - ${slot.end}`
                             }
@@ -341,7 +339,7 @@ class DeliverySlots extends Component {
                 </Grid>
               </Box>
             ) : (
-              <div className="box">Shop Closed. We'll be back soon!</div>
+              <div className="box">No Slots Available</div>
             )}
           </Box>
         </Box>
