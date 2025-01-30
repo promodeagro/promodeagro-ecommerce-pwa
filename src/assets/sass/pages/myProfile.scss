@@ -1,22 +1,29 @@
 .profile-container {
   display: flex;
   align-items: flex-start;
-  width: 100%;
-  padding: 30px 0 30px 0;
+  width: 90%;
+  border: 1px solid #bfbfbf;
+  margin-top: 20px;
+  border-radius: 5px;
+  margin-left: 60px;
+  height: 100vh; /* Full screen height */
+
 
   .profile-sidebar {
     display: inline-flex;
-    width: 220px;
+     width: 280px;
     flex-wrap: wrap;
     // border-radius: 5px;
-    border: 1px solid #bfbfbf;
+    // border: 1px solid #bfbfbf;
 
     .heading {
       display: flex;
-      align-items: center;
+      // align-items: center;
       justify-content: space-between;
+      font-weight: 700;
       width: 100%;
       // border-bottom: 1px solid #bfbfbf;
+      padding: 10px;
 
       a {
         width: 100%;
@@ -116,9 +123,12 @@
   .profile-right {
     display: flex;
     flex-wrap: wrap;
-    width: calc(100% - 220px);
+    // width: calc(100% - 320px);
+    // height: 100%;
+
     // padding-left: 30px;
-        border: 1px solid #bfbfbf;
+        // border: 1px solid #bfbfbf;  
+        
 
 
     .heading {
@@ -127,6 +137,7 @@
       justify-content: space-between;
       width: 100%;
       padding: 20px;
+      height: fit-content;
 
     
       h2 {
@@ -134,7 +145,7 @@
         font-size: 20px;
         line-height: 24px;
         font-weight: 600;
-        color: #000000;
+        color: #383636;
       }
 
       .edit-btn {
@@ -298,7 +309,8 @@
 
           .details {
             width: calc(100% - 60px);
-            font-size: 14px;
+            font-size: 12px;
+            font-family: monasans;
             line-height: 24px;
             font-weight: 400;
             color: #6d6d6d;
@@ -661,8 +673,8 @@
 }
 
 .imageofheader{
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   margin-left: 10px;
   margin-top: 10px;
 }
@@ -673,7 +685,8 @@
   margin-bottom: 20px;
   width: 100%;
   border-bottom: 1px solid #bfbfbf;
-  padding: 0px 0px 10px 0px;
+  // padding: 0px 0px 10px 0px;
+  height: fit-content;
 }
 
 .manageaddress-icons{
@@ -692,6 +705,9 @@
 .manageaddress-info {
   width: 80%;
   margin-left: 20px;
+  // height: 20%;
+  margin-top: 0;
+  margin-bottom: 10px;
 
   h3 {
     font-size: 16px;
@@ -701,8 +717,15 @@
     text-decoration-color: black; /* Optional: Change the underline color */
   }
   span{
-    font-size: 14px;
+    font-size: 13px;
+    font-weight: 400;
   }
+  p{
+    font-size: 13px;
+    margin-top: 4px;
+    font-weight: 400;
+  }
+
 }
 
 .deleteiconn{

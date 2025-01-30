@@ -56,17 +56,9 @@ class ProfileSideBar extends Component {
     return (
       <Box
         className="profile-sidebar"
-        style={{ borderBottom: "none", borderRight: "none" }}
       >
         <Box
           className="heading"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            marginTop: '6px'
-          }}
         >
           <img className="imageofheader" src={profileimage} alt="Profile" />
           <Link to={"/my-order"}><p style={{marginTop: '6px'}}>7989786093</p></Link>
