@@ -153,14 +153,14 @@ class DeliverySlots extends Component {
           </div>
           <Box className="delevery_slot_modal_days">
             <span
-              className={selectedDay === "today" ? "active" : ""}
+              className={selectedDay === "today" ? "active_day" : ""}
               onClick={() => this.setState({ selectedDay: "today" })}
             >
               Today
             </span>
             {slots?.[0]?.nextDaySlots?.length > 0 && (
               <span
-                className={selectedDay === "tomorrow" ? "active" : ""}
+                className={selectedDay === "tomorrow" ? "active_day" : ""}
                 onClick={() => this.setState({ selectedDay: "tomorrow" })}
               >
                 Tomorrow

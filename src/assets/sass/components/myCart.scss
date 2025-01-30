@@ -462,22 +462,7 @@ color: var(--black-80, #1C1C1CCC);
         align-items: center;
         gap: 20px;
         margin-top: 10px;
-        span:nth-child(1){    
-            cursor: pointer;
-padding: 8px 16px 8px 16px;
-background: #1F91511A;
-border-radius: 100px;
-font-family: Poppins;
-font-size: 14px;
-font-weight: 500;
-line-height: 16.8px;
-letter-spacing: 0.08em;
-text-align: left;
-text-underline-position: from-font;
-text-decoration-skip-ink: none;
-color: #1F9151;
-        }
-        span:nth-child(2) , span:nth-child(3){   
+        span{      
 padding: 8px 16px 8px 16px;
 cursor: pointer;
 // background: #1F91511A;
@@ -492,6 +477,21 @@ text-underline-position: from-font;
 text-decoration-skip-ink: none;
 color: var(--black-40, #1C1C1C66);
 
+        }
+        .active_day{  
+cursor: pointer;
+padding: 8px 16px 8px 16px;
+background: #1F91511A;
+border-radius: 100px;
+font-family: Poppins;
+font-size: 14px;
+font-weight: 500;
+line-height: 16.8px;
+letter-spacing: 0.08em;
+text-align: left;
+text-underline-position: from-font;
+text-decoration-skip-ink: none;
+color: #1F9151;
         }
     }
     
