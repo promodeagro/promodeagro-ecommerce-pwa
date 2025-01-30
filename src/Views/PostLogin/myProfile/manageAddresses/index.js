@@ -155,12 +155,10 @@ class ManageAddresses extends Component {
         ) : (
           <Container>
             <Box className="profile-container">
-              <Box className="profile-left">
                 <ProfileSideBar />
-              </Box>
               <Box className="profile-right" style={{ borderBottom: "none" }}>
                 <Box className="heading">
-                  <h2>{addAddressModal ? "Add Address" : "Addressess Book"}</h2>
+                  <h2>{addAddressModal ? "Add Address" : "Address Book"}</h2>
                   <Button
                     className={
                       addAddressModal
@@ -186,12 +184,11 @@ class ManageAddresses extends Component {
                           >
                             <Box
                               className="manageaddress-info"
-                              style={{ borderLeft: "none" }}
                             >
                               <h3>
                                 {item?.address_type}
                                 {item.addressId === defaultAddressId ? (
-                                  <p className="roundDiv">Default</p>
+                                  <div className="roundDiv" style={{marginLeft:"10px"}}>Default</div>
                                 ) : (
                                   <></>
                                 )}
