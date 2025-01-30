@@ -1,93 +1,77 @@
 import React, { Component } from "react";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import { Link } from "react-router-dom";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
-import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import { connect } from "react-redux";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
-// import myOrder from "Views/PostLogin/myOrder";
+import profileimage from "../../../../assets/img/profileimage.png";
+
 class ProfileSideBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
       sections: [
         {
-          heading: "Account Setting",
           links: [
-            {
-              name: "Personal Information",
-              to: "/my-profile/personal-information",
-            },
-            { name: "Manage Addresses", to: "/my-profile/manage-addresses" },
-            { name: "Change Password", to: "/my-profile/change-password" },
-          ],
-        },
-        {
-          heading: "Payment",
-          links: [
-            { name: "UPI", to: "#" },
-            { name: "Cards", to: "#" },
-            { name: "Gift Cards", to: "#" },
-          ],
-        },
-        {
-          heading: "Alerts & Privacy",
-          links: [
-            // { name: "Wish list", to: "/my-profile/wish-list" },
-            { name: "Notification", to: "/my-profile/notification" },
-            { name: "Account Privacy", to: "/my-profile/account-privacy" },
+            { name: "Orders", to: "/my-profile/personal-information" },
+            { name: "Address Book", to: "/my-profile/manage-addresses" },
+            { name: "Customer Support", to: "/my-profile/change-password" },
+            { name: "Account Privacy", to: "/my-profile/change-password" },
+            { name: "Logout", to: "#" }, // '#' for non-navigable placeholder
           ],
         },
       ],
     };
   }
 
+  handleLogout = () => {
+    localStorage.removeItem("login");
+    this.props.navigate("/");
+  };
+
   render() {
     const path = window.location.pathname;
-
     const { sections } = this.state;
 
     return (
-      <Box className="profile-sidebar">
-        <Box className="heading">
+      <Box className="profile-sidebar" style={{ borderBottom: "none", borderRight: "none" }}>
+        <Box
+          className="heading"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
+          <img
+          className="imageofheader"
+            src={profileimage}
+            alt="Profile"
+          />
           <Link to={"/my-order"}>
-            My Orders <ChevronRightOutlinedIcon />
+            My Orders
           </Link>
         </Box>
         {sections.map((section, index) => (
           <Box className="profile-links" key={index}>
-            <Box className="sab-heading">
-              <span>
-                <PermIdentityOutlinedIcon />
-              </span>
-              {section.heading}
-            </Box>
             <Box className="links">
               <ul>
                 {section.links.map((link, idx) => (
                   <li className={link.to === path ? "active" : ""} key={idx}>
-                    <Link to={link.to}>{link.name}</Link>
+                    {link.name === "Logout" ? (
+                      <a onClick={this.handleLogout} href="#">
+                        {link.name}
+                      </a>
+                    ) : (
+                      <Link to={link.to}>{link.name}</Link>
+                    )}
                   </li>
                 ))}
               </ul>
             </Box>
           </Box>
         ))}
-        <Box className="profile-links">
-          <Box className="sab-heading">
-            <span>
-              <PermIdentityOutlinedIcon />
-            </span>
-            <Button
-              onClick={() => {
-                localStorage.removeItem("login");
-                this.props.navigate("/");
-              }}
-            >
-              Logout 
-            </Button>
-          </Box>
-        </Box>
       </Box>
     );
   }
@@ -98,8 +82,4 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(navigateRouter(ProfileSideBar));
+export default connect(mapStateToProps, mapDispatchToProps)(navigateRouter(ProfileSideBar));

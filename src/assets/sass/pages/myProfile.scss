@@ -8,7 +8,7 @@
     display: inline-flex;
     width: 220px;
     flex-wrap: wrap;
-    border-radius: 5px;
+    // border-radius: 5px;
     border: 1px solid #bfbfbf;
 
     .heading {
@@ -16,7 +16,7 @@
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      border-bottom: 1px solid #bfbfbf;
+      // border-bottom: 1px solid #bfbfbf;
 
       a {
         width: 100%;
@@ -116,15 +116,18 @@
     display: flex;
     flex-wrap: wrap;
     width: calc(100% - 220px);
-    padding-left: 30px;
+    // padding-left: 30px;
+        border: 1px solid #bfbfbf;
+
 
     .heading {
       display: flex;
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      padding: 0;
+      padding: 20px;
 
+    
       h2 {
         display: inline-flex;
         font-size: 20px;
@@ -144,7 +147,10 @@
       }
 
       .address-btn {
-        font-size: 13px;
+        font-size: 12px;
+        height: 36px;
+         width: 110px;
+         padding: 0;
       }
 
       .address-cancel-btn {
@@ -215,6 +221,8 @@
     .address-container {
       display: flex;
       width: 100%;
+      margin-top: 0;
+
 
       .address-card-container {
         padding: 18px 20px;
@@ -649,4 +657,53 @@
       }
     }
   }
+}
+
+.imageofheader{
+  width: 50px;
+  height: 50px;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+.manageaddressmodal {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  width: 100%;
+  border-bottom: 1px solid #bfbfbf;
+  padding: 0px 0px 10px 0px;
+}
+
+.manageaddress-icons{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 20%;
+  gap: 20px;
+}
+
+.manageaddressicons{
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.manageaddress-info {
+  width: 80%;
+  margin-left: 20px;
+
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: 2px; /* Adjust the thickness */
+    text-decoration-color: black; /* Optional: Change the underline color */
+  }
+  span{
+    font-size: 14px;
+  }
+}
+
+.deleteiconn{
+  cursor: pointer;
 }
