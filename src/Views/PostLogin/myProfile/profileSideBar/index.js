@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import { Box } from "@mui/material";
 import { Link } from "react-router-dom";
-import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 import { connect } from "react-redux";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import profileimage from "../../../../assets/img/profileimage.png";
+import orderimage from "../../../../assets/img/orderimage.png";
+import addressbookimage from "../../../../assets/img/addressbookimage.png";
+import customersupportimage from "../../../../assets/img/customersupportimage.png";
+import accountprivacy from "../../../../assets/img/accountprivacyimage.png";
+import logoutimage from "../../../../assets/img/logoutimage.png";
 
 class ProfileSideBar extends Component {
   constructor(props) {
@@ -13,11 +17,27 @@ class ProfileSideBar extends Component {
       sections: [
         {
           links: [
-            { name: "Orders", to: "/my-profile/personal-information" },
-            { name: "Address Book", to: "/my-profile/manage-addresses" },
-            { name: "Customer Support", to: "/my-profile/change-password" },
-            { name: "Account Privacy", to: "/my-profile/change-password" },
-            { name: "Logout", to: "#" }, // '#' for non-navigable placeholder
+            {
+              name: "Orders",
+              to: "/my-profile/personal-information",
+              icon: orderimage,
+            },
+            {
+              name: "Address Book",
+              to: "/my-profile/manage-addresses",
+              icon: addressbookimage,
+            },
+            {
+              name: "Customer Support",
+              to: "/my-profile/change-password",
+              icon: customersupportimage,
+            },
+            {
+              name: "Account Privacy",
+              to: "/my-profile/change-password",
+              icon: accountprivacy,
+            },
+            { name: "Logout", to: "#", icon: logoutimage },
           ],
         },
       ],
@@ -34,7 +54,10 @@ class ProfileSideBar extends Component {
     const { sections } = this.state;
 
     return (
-      <Box className="profile-sidebar" style={{ borderBottom: "none", borderRight: "none" }}>
+      <Box
+        className="profile-sidebar"
+        style={{ borderBottom: "none", borderRight: "none" }}
+      >
         <Box
           className="heading"
           style={{
@@ -42,30 +65,35 @@ class ProfileSideBar extends Component {
             justifyContent: "center",
             alignItems: "center",
             width: "100%",
+            marginTop: '6px'
           }}
         >
-          <img
-          className="imageofheader"
-            src={profileimage}
-            alt="Profile"
-          />
-          <Link to={"/my-order"}>
-            My Orders
-          </Link>
+          <img className="imageofheader" src={profileimage} alt="Profile" />
+          <Link to={"/my-order"}><p style={{marginTop: '6px'}}>7989786093</p></Link>
         </Box>
         {sections.map((section, index) => (
           <Box className="profile-links" key={index}>
             <Box className="links">
               <ul>
                 {section.links.map((link, idx) => (
-                  <li className={link.to === path ? "active" : ""} key={idx}>
-                    {link.name === "Logout" ? (
-                      <a onClick={this.handleLogout} href="#">
-                        {link.name}
-                      </a>
-                    ) : (
-                      <Link to={link.to}>{link.name}</Link>
-                    )}
+                  <li
+                    className={link.to === path ? "active" : ""}
+                    key={idx}
+                    style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+                  >
+                    <Link to={link.to}>
+                    <div style={{display: 'flex', gap: '6px'}}>
+                    <img
+                        src={link.icon}
+                        alt={link.name}
+                        style={{
+                          width: "22px",
+                          height: "22px",
+                        }}
+                      />
+                      <span style={{marginTop: '2px'}}>{link.name}</span>
+                    </div>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -82,4 +110,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {};
-export default connect(mapStateToProps, mapDispatchToProps)(navigateRouter(ProfileSideBar));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(navigateRouter(ProfileSideBar));
