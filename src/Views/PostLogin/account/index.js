@@ -3,26 +3,48 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import "../../../assets/sass/pages/account.scss";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
+import profileimage from "../../../assets/img/profileimage.png";
+import orderimage from "../../../assets/img/orderimage.png";
+import addressbookimage from "../../../assets/img/addressbookimage.png";
+import customersupportimage from "../../../assets/img/customersupportimage.png";
+import accountprivacy from "../../../assets/img/accountprivacyimage.png";
+import logoutimage from "../../../assets/img/logoutimage.png";
+import sideiconimage from "../../../assets/img/sideicon.png"
+
 class Account extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
   render() {
     return (
       <Box className="account_page">
         <ul>
           <li>
-            <Link to="/my-profile/personal-information">Account</Link>
+            <Link to="/my-profile/personal-information" className="gapinthespan">
+              <img src={profileimage} alt="Account" className="account-image" />
+              <span>Account</span>
+            </Link>
           </li>
           <li>
-            <Link to="/my-order">Orders</Link>
+            <Link to="/my-order" className="gapinthespan">
+              <img src={orderimage} alt="Orders" />
+              <span>Orders</span>
+            </Link>
           </li>
           <li>
-            <Link to="/my-profile/wish-list">Save Addresses</Link>
+            <Link to="/my-profile/wish-list" className="gapinthespan">
+              <img src={addressbookimage} alt="Address Book" />
+              <span>Address Book</span>
+            </Link>
           </li>
           <li>
-            <Link to="/contact-us">Customer Support</Link>
+            <Link to="/my-profile/wish-list" className="gapinthespan">
+              <img src={accountprivacy} alt="Account Privacy" />
+              <span>Account Privacy</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/contact-us" className="gapinthespan">
+              <img src={customersupportimage} alt="Customer Support" />
+              <span>Customer Support</span>
+            </Link>
           </li>
           <li
             onClick={() => {
@@ -38,7 +60,10 @@ class Account extends Component {
               window.location.reload();
             }}
           >
-            <Link>Logout</Link>
+            <Link className="gapinthespan">
+              <img src={logoutimage} alt="Logout" />
+              <span>Logout</span>
+            </Link>
           </li>
         </ul>
       </Box>
