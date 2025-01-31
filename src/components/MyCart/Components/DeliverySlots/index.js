@@ -183,6 +183,9 @@ class DeliverySlots extends Component {
                 "& .css-heg063-MuiTabs-flexContainer": {
                   overflowY: "scroll !important",
                 },
+                // "& .css-heg063-MuiTabs-flexContainer": {
+                //   overflowX: "scroll !important",
+                // },
               }}
             >
               <Tab
