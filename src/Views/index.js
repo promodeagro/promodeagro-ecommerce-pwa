@@ -30,6 +30,8 @@ const ChangePassword = lazy(() =>
   import("./../Views/PostLogin/myProfile/changePassword")
 );
 const WishList = lazy(() => import("./../Views/PostLogin/myProfile/wishList"));
+const AllAddress = lazy(() => import("./../Views/PostLogin/myProfile/addaddress"));
+
 const Notification = lazy(() =>
   import("./../Views/PostLogin/myProfile/notification")
 );
@@ -124,6 +126,13 @@ const Views = () => {
             path={`/my-profile/wish-list`}
             element={<Navigate to="/" replace />}
           />
+                    <Route
+            path={`/my-profile/alladdress
+              `}
+            element={<Navigate to="/" replace />}
+          />
+
+          
           <Route
             path={`/my-profile/manage-addresses`}
             element={<Navigate to="/" replace />}
@@ -140,6 +149,11 @@ const Views = () => {
             path={`/my-profile/wish-list`}
             element={<Navigate to="/" replace />}
           />
+                    <Route
+            path={`/my-profile/alladdress`}
+            element={<Navigate to="/" replace />}
+          />
+
           <Route
             path={`/my-profile/notification`}
             element={<Navigate to="/" replace />}
@@ -175,6 +189,8 @@ const Views = () => {
         element={<ChangePassword />}
       />
       <Route exact path={`/my-profile/wish-list`} element={<WishList />} />
+      <Route exact path={`/my-profile/alladdress`} element={<AllAddress />} />
+
       <Route
         exact
         path={`/my-profile/notification`}

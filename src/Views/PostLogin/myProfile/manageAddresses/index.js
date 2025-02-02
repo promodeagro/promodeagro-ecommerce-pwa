@@ -3,12 +3,8 @@ import {
   Box,
   Button,
   Container,
-  Grid,
-  Dialog,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
   CircularProgress,
+  Modal
 } from "@mui/material";
 import ProfileSideBar from "../profileSideBar";
 import { connect } from "react-redux";
@@ -29,6 +25,7 @@ import {
 import status from "../../../../Redux/Constants";
 import AddNewAddress from "./Components/AddNewAddress";
 import { loginDetails } from "../../../Utills/helperFunctions";
+import AddAddressModal from "../../../../components/AddressModal/addaddressmodal";
 
 class ManageAddresses extends Component {
   constructor(props) {
@@ -41,12 +38,17 @@ class ManageAddresses extends Component {
       zipCode: "",
       isSubmit: false,
       addAddressModal: false,
-      defaultAddressId: {},
+      defaultAddressId: null, // Will store the default address ID
       allAddresses: [],
       deleteId: "",
       loaderStatus: false,
       open: false,
       addressId: "",
+      submitAddress: false, // For adding or editing an address
+      openDeleteModal: false, // For confirming delete
+      addressToDelete: null,
+      addressToEdit: null, // Store the address data to be edited
+      isDeleting: false, // Add loading state for deletion
     };
   }
 
@@ -101,14 +103,6 @@ class ManageAddresses extends Component {
     }
   }
 
-  handleAddAddress = () => {
-    const { addAddressModal, isSubmit } = this.state;
-    this.setState({
-      addAddressModal: !addAddressModal,
-      isSubmit: false,
-    });
-  };
-
   handleModal = (status, defualtApisStatus) => {
     this.setState({
       addAddressModal: status,
@@ -121,77 +115,118 @@ class ManageAddresses extends Component {
     }
   };
 
-  handleEdit = (event, address) => {
+  // Updated handleEditClick to accept event and address
+  handleEditClick = (event, address) => {
     event.stopPropagation();
-    this.props.navigate(
-      `/mycart/address/updated-address/${address?.addressId}`,
-      {
-        state: { address },
-      }
-    );
-  };
-
-  handleClickOpen = (item) => {
     this.setState({
-      addressId: item.addressId,
-      open: true,
-      deleteId: item?.addressId,
+      addressToEdit: address, // Set the address data to be edited
+      submitAddress: true,  // Open the AddAddressModal
     });
   };
 
-  handleClose = () => {
-    this.setState({
-      addressId: "",
-      open: false,
-    });
+  // For delete modal: when clicking the delete icon, set openDeleteModal true
+  handleDeleteClick = (addressId) => {
+    this.setState({ openDeleteModal: true, addressToDelete: addressId });
+  };
+
+  // Close the delete modal
+  handleDeleteModalClose = () => {
+    this.setState({ openDeleteModal: false, addressToDelete: null });
+  };
+
+  handleConfirmDelete = () => {
+    const { addressToDelete } = this.state;
+    const loginData = loginDetails();
+    const userId = loginData?.userId;
+    if (userId && addressToDelete) {
+      this.setState({ isDeleting: true });
+      this.props
+        .deleteAddress({
+          userId: userId,
+          addressId: addressToDelete,
+        })
+        .then(() => {
+          this.setState({
+            openDeleteModal: false,
+            addressToDelete: null,
+            isDeleting: false,
+          });
+          this.apiCalls();
+        })
+        .catch((error) => {
+          this.setState({ isDeleting: false });
+          console.error("Failed to delete address:", error);
+        });
+    } else {
+      console.error("User ID or address ID is missing.");
+    }
   };
 
   render() {
-    const { addAddressModal, defaultAddressId, loaderStatus } = this.state;
+    const {
+      addAddressModal,
+      defaultAddressId,
+      loaderStatus,
+      submitAddress,
+      openDeleteModal,
+      addressToEdit,
+      isDeleting,
+      allAddresses
+    } = this.state;
+
+    // If there are multiple addresses, sort them so that the default address comes first.
+    let sortedAddresses = allAddresses;
+    if (allAddresses && allAddresses.length > 1 && defaultAddressId) {
+      sortedAddresses = allAddresses.slice().sort((a, b) => {
+        if (a.addressId === defaultAddressId) return -1;
+        if (b.addressId === defaultAddressId) return 1;
+        return 0;
+      });
+    }
+
     return (
       <Box className="main-container">
-        {this.props.allAddress?.status == status.IN_PROGRESS ? (
-          Loader.commonLoader()
-        ) : (
-          <Container>
-            <Box className="profile-container">
-                <ProfileSideBar />
+        <Container>
+          <Box className="profile-container">
+            <ProfileSideBar />
+            {this.props.allAddress?.status === status.IN_PROGRESS ? (
+              Loader.commonLoader()
+            ) : (
               <Box className="profile-right" style={{ borderBottom: "none" }}>
                 <Box className="heading">
-                  <h2>{addAddressModal ? "Add Address" : "Address Book"}</h2>
+                  <h2>Address Book</h2>
                   <Button
-                    className={
-                      addAddressModal
-                        ? "common-btn address-cancel-btn"
-                        : "common-btn address-btn"
-                    }
+                    className="common-btn address-btn"
                     variant="contained"
-                    onClick={() => this.handleAddAddress()}
+                    onClick={() =>
+                      this.setState({ submitAddress: true, addressToEdit: null })
+                    }
                   >
-                    {addAddressModal ? <>Cancel</> : <>+ Add Address</>}
+                    + Add Address
                   </Button>
                 </Box>
                 {addAddressModal ? (
                   <AddNewAddress handleModal={this.handleModal} />
                 ) : (
                   <>
-                    {this.state.allAddresses?.length > 0 ? (
-                      this.state.allAddresses?.map((item) => {
+                    {sortedAddresses && sortedAddresses.length > 0 ? (
+                      sortedAddresses.map((item) => {
                         return (
                           <Box
                             className="manageaddressmodal"
                             key={item.addressId}
                           >
-                            <Box
-                              className="manageaddress-info"
-                            >
+                            <Box className="manageaddress-info">
                               <h3>
                                 {item?.address_type}
                                 {item.addressId === defaultAddressId ? (
-                                  <div className="roundDiv" style={{marginLeft:"10px"}}>Default</div>
-                                ) : (
-                                  <></>
-                                )}
+                                  <div
+                                    className="roundDiv"
+                                    style={{ marginLeft: "10px" }}
+                                  >
+                                    Default
+                                  </div>
+                                ) : null}
                               </h3>
                               <p>{item?.name}</p>
                               <span>
@@ -207,7 +242,7 @@ class ManageAddresses extends Component {
                                   className="deleteiconn"
                                   onClick={(event) => {
                                     event.stopPropagation();
-                                    this.handleClickOpen(item);
+                                    this.handleDeleteClick(item.addressId);
                                   }}
                                 />
                               )}
@@ -216,7 +251,7 @@ class ManageAddresses extends Component {
                                 alt="Edit"
                                 className="manageaddressicons"
                                 onClick={(event) =>
-                                  this.handleEdit(event, item)
+                                  this.handleEditClick(event, item)
                                 }
                               />
                             </Box>
@@ -229,56 +264,58 @@ class ManageAddresses extends Component {
                   </>
                 )}
               </Box>
-            </Box>
-            <Dialog
-              open={this.state.open}
-              onClose={this.handleClose}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                  Are you sure you want to delete this address?
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions
-                style={{ justifyContent: "center", paddingBottom: "24px" }}
-              >
-                <Button
+            )}
+          </Box>
+
+          <AddAddressModal
+            open={submitAddress}
+            handleClose={() => {
+              this.setState({ submitAddress: false, addressToEdit: null });
+              // Call the address API again when the modal is closed
+              this.apiCalls();
+            }}
+            addressData={addressToEdit} // This prop will be used to pre-fill the form data
+          />
+          <Modal
+            open={openDeleteModal}
+            onClose={this.handleDeleteModalClose}
+          >
+            <Box className="common-modal deletemodal">
+              <Box className="delete-text">Confirm Deletion</Box>
+              <Box className="delete-subtext">
+                Are you sure you want to delete this address?
+              </Box>
+              <Box className="buttongap">
+                <button
+                  onClick={this.handleDeleteModalClose}
                   variant="outlined"
-                  className="outline-common-btn"
-                  color="error"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    this.props.deleteAddress({
-                      userId: loginDetails()?.userId,
-                      addressId: this.state.addressId,
-                    });
-                  }}
-                  disabled={
-                    this.props.deleteAddresses.status == status.IN_PROGRESS
-                  }
-                  endIcon={
-                    this.props.deleteAddresses.status === status.IN_PROGRESS ? (
-                      <CircularProgress className="common-loader delete" />
-                    ) : (
-                      <></>
-                    )
-                  }
-                >
-                  Delete
-                </Button>
-                <Button
-                  variant="outlined"
-                  className="outline-common-btn"
-                  onClick={this.handleClose}
+                  className="cancelbutton"
                 >
                   Cancel
-                </Button>
-              </DialogActions>
-            </Dialog>
-          </Container>
-        )}
+                </button>
+                <button
+                  onClick={this.handleConfirmDelete}
+                  className="confirmbutton"
+                  variant="contained"
+                  disabled={isDeleting}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Confirm
+                  {isDeleting && (
+                    <CircularProgress
+                      size={20}
+                      style={{ marginLeft: "4px" }}
+                    />
+                  )}
+                </button>
+              </Box>
+            </Box>
+          </Modal>
+        </Container>
       </Box>
     );
   }
