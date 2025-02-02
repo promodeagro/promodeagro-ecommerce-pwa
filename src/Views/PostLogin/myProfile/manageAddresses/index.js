@@ -159,7 +159,6 @@ class ManageAddresses extends Component {
                     </Box>
                   </Box>
                 )}
-
                 {otherAddresses.length > 0 &&
                   otherAddresses.map((address) => (
                     <Box className="manageaddressmodal" key={address.addressId}>
