@@ -364,6 +364,10 @@ class Header extends Component {
                               <li onClick={() => this.handleProfileModal()}>
                                 <Link to="/contact-us">Customer Support</Link>
                               </li>
+                              <li onClick={() => this.handleProfileModal()}>
+                                <Link to="/contact-us">Account Privacy</Link>
+                              </li>
+
                               {/* <li onClick={() => this.handleProfileModal()}>
                                 <Link to="/my-profile/notification">
                                   <PermIdentityOutlinedIcon /> Notification

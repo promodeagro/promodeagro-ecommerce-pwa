@@ -9,7 +9,7 @@ import addressbookimage from "../../../assets/img/addressbookimage.png";
 import customersupportimage from "../../../assets/img/customersupportimage.png";
 import accountprivacy from "../../../assets/img/accountprivacyimage.png";
 import logoutimage from "../../../assets/img/logoutimage.png";
-import sideiconimage from "../../../assets/img/sideicon.png"
+import sideiconimage from "../../../assets/img/sideicon.png";
 
 class Account extends Component {
   render() {
@@ -26,24 +26,44 @@ class Account extends Component {
             <Link to="/my-order" className="gapinthespan">
               <img src={orderimage} alt="Orders" />
               <span>Orders</span>
+              <img
+                src={sideiconimage}
+                alt="Side Icon"
+                className="imagehw"
+              />
             </Link>
           </li>
           <li>
-            <Link to="/my-profile/wish-list" className="gapinthespan">
+            <Link to="/my-profile/alladdress" className="gapinthespan">
               <img src={addressbookimage} alt="Address Book" />
               <span>Address Book</span>
+              <img
+                src={sideiconimage}
+                alt="Side Icon"
+                className="imagehw"
+              />
             </Link>
           </li>
           <li>
             <Link to="/my-profile/wish-list" className="gapinthespan">
               <img src={accountprivacy} alt="Account Privacy" />
               <span>Account Privacy</span>
+              <img
+                src={sideiconimage}
+                alt="Side Icon"
+                className="imagehw"
+              />
             </Link>
           </li>
           <li>
             <Link to="/contact-us" className="gapinthespan">
               <img src={customersupportimage} alt="Customer Support" />
               <span>Customer Support</span>
+              <img
+                src={sideiconimage}
+                alt="Side Icon"
+                className="imagehw"
+              />
             </Link>
           </li>
           <li
@@ -63,6 +83,11 @@ class Account extends Component {
             <Link className="gapinthespan">
               <img src={logoutimage} alt="Logout" />
               <span>Logout</span>
+              <img
+                src={sideiconimage}
+                alt="Side Icon"
+                className="imagehw"
+              />
             </Link>
           </li>
         </ul>
