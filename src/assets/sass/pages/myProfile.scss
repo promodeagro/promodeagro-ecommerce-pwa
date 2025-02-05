@@ -128,12 +128,7 @@
   .profile-right {
     display: flex;
     flex-wrap: wrap;
-    // width: calc(100% - 320px);
-    // height: 100%;
-
-    // padding-left: 30px;
-        // border: 1px solid #bfbfbf;  
-        
+    width: 100%;        
 
 
     .heading {
@@ -735,4 +730,10 @@
 
 .deleteiconn{
   cursor: pointer;
+}
+
+.marginintheheader{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }

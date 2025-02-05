@@ -13,13 +13,8 @@ const PageNotFound = lazy(() => import("../components/PageNotFound"));
 const PrivacyPolicy = lazy(() => import("./../Views/PostLogin/privacyPolicy"));
 const ReturnRefund = lazy(() => import("./../Views/PostLogin/returnRefund"));
 
-
-const Account = lazy(() =>
-  import("./../Views/PostLogin/account")
-);
-const  Cart = lazy(() =>
-  import("./../Views/PostLogin/Cart")
-);
+const Account = lazy(() => import("./../Views/PostLogin/account"));
+const Cart = lazy(() => import("./../Views/PostLogin/Cart"));
 const PersonalInformation = lazy(() =>
   import("./../Views/PostLogin/myProfile/personalInformation")
 );
@@ -30,7 +25,12 @@ const ChangePassword = lazy(() =>
   import("./../Views/PostLogin/myProfile/changePassword")
 );
 const WishList = lazy(() => import("./../Views/PostLogin/myProfile/wishList"));
-const AllAddress = lazy(() => import("./../Views/PostLogin/myProfile/addaddress"));
+const AllAddress = lazy(() =>
+  import("./../Views/PostLogin/myProfile/addaddress")
+);
+const AddNewAddressessModal = lazy(() =>
+  import("./../Views/PostLogin/myProfile/addaddress/addnewwaddress")
+);
 
 const Notification = lazy(() =>
   import("./../Views/PostLogin/myProfile/notification")
@@ -69,11 +69,10 @@ const MyOrder = lazy(() => import("./../Views/PostLogin/myOrder"));
 
 const Views = () => {
   const location = useLocation();
-  const isLoggedIn = !!loginDetails()?.token; 
+  const isLoggedIn = !!loginDetails()?.token;
 
   return (
     <Routes location={location}>
-    
       {isLoggedIn && (
         <>
           <Route path={`/signin`} element={<Navigate to="/" replace />} />
@@ -81,11 +80,10 @@ const Views = () => {
         </>
       )}
 
-  
       {!isLoggedIn && (
         <>
-        <Route path={`/cart`} element={<Navigate to="/" replace />} />
-        <Route path={`/account`} element={<Navigate to="/" replace />} />
+          <Route path={`/cart`} element={<Navigate to="/" replace />} />
+          <Route path={`/account`} element={<Navigate to="/" replace />} />
           <Route path={`/my-order`} element={<Navigate to="/" replace />} />
           <Route path={`/mycart`} element={<Navigate to="/" replace />} />
           <Route
@@ -126,13 +124,23 @@ const Views = () => {
             path={`/my-profile/wish-list`}
             element={<Navigate to="/" replace />}
           />
-                    <Route
+          <Route
             path={`/my-profile/alladdress
               `}
             element={<Navigate to="/" replace />}
           />
+<Route
+  exact
+  path="/my-profile/alladdress/addnewaddress"
+  element={<AddNewAddressessModal />}
+/>
+<Route
+  exact
+  path="/my-profile/alladdress/addnewaddress/:addressId"
+  element={<AddNewAddressessModal />}
+/>
 
-          
+
           <Route
             path={`/my-profile/manage-addresses`}
             element={<Navigate to="/" replace />}
@@ -149,10 +157,15 @@ const Views = () => {
             path={`/my-profile/wish-list`}
             element={<Navigate to="/" replace />}
           />
-                    <Route
+          <Route
             path={`/my-profile/alladdress`}
             element={<Navigate to="/" replace />}
           />
+                    <Route
+            path={`/my-profile/alladdress/addnewaddress`}
+            element={<Navigate to="/" replace />}
+          />
+
 
           <Route
             path={`/my-profile/notification`}
@@ -190,6 +203,8 @@ const Views = () => {
       />
       <Route exact path={`/my-profile/wish-list`} element={<WishList />} />
       <Route exact path={`/my-profile/alladdress`} element={<AllAddress />} />
+      <Route exact path={`/my-profile/alladdress/addnewaddress`} element={<AddNewAddressessModal />} />
+
 
       <Route
         exact
@@ -250,12 +265,8 @@ const Views = () => {
         exact
         path={`/mycart/address/order-placed/:id`}
         element={<OrderPlaced />}
-      /> 
-      <Route
-        exact
-        path={`cart`}
-        element={< Cart />}
       />
+      <Route exact path={`cart`} element={<Cart />} />
       <Route path={`/my-order`} exact element={<MyOrder />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
