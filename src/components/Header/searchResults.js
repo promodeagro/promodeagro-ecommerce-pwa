@@ -20,8 +20,6 @@ import { fetchGlobalSearchItems } from "../../Redux/ProductFilters/ProductFilter
 import { withRouter } from "components/withRouter";
 import { LocalStorageCartService } from "Services/localStorageCartService";
 import SearchProductItemView from "../../components/AddRemoveProductComponents/searchProductView";
-import { setSearchTerm } from "../../Redux/ProductFilters/ProductFiltersSlice";
-import searchBackIcon from "../../assets/img/search-back-icon.png";
 
 class SearchResults extends Component {
   constructor(props) {
@@ -30,7 +28,7 @@ class SearchResults extends Component {
       matches: window.matchMedia("(max-width: 600px)").matches,
 
       // addedProducts: [], // Track added products
-      // searchTerm: "", // Track search term
+      searchTerm: "", // Track search term
       dataId: "",
       isUpdateIncrease: false,
       productsFiltersData: [],
@@ -81,13 +79,12 @@ class SearchResults extends Component {
     }
 
     if (prevProps.location.pathname !== this.props.location.pathname) {
-      this.handleSearchNavigate();
+      this.searchBgClick();
     }
   }
 
   searchChange = (event) => {
     const searchTerm = event.target.value;
-    this.props.setSearchTerm(searchTerm); // Dispatch to Redux
     if (searchTerm.length) {
       this.setState({ showResult: true });
     }
@@ -100,18 +97,19 @@ class SearchResults extends Component {
     }
   };
 
-  handleSearchNavigate = () => {
-    this.props.setSearchTerm(""); // Reset Redux store
-     if (this.searchInputRef.current) {
+  searchBgClick = () => {
+    this.setState({ showResult: false, searchTerm: "" });
+    if (this.searchInputRef.current) {
       this.searchInputRef.current.value = "";
     }
   };
 
   render() {
-    const { cartItemsData, searchTerm } = this.props;
+    const { cartItemsData } = this.props;
     const {
       matches,
-       productsFiltersData,
+      searchTerm,
+      productsFiltersData,
       searchLoader,
       showResult,
       placeholderIndex,
@@ -121,30 +119,75 @@ class SearchResults extends Component {
       <>
         <Box className="search-container">
           <TextField
-          onFocus={()=> this.props.navigate('/s')}
             id="outlined-search"
-            // inputRef={this.searchInputRef}
-            value={this.props.searchTerm} // Controlled by Redux
+            inputRef={this.searchInputRef}
             className="search"
             variant="outlined"
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  {window.location.pathname === '/s' ? (
-                    <img style={{cursor:'pointer'}} onClick={() => this.props.navigate('/')} src={searchBackIcon} alt="" />
-                  ) : (
-                    <img src={searchIcon} alt="" />
-                  )}
-
+                  <img src={searchIcon} alt="" />
                 </InputAdornment>
               ),
             }}
             onChange={this.searchChange}
             placeholder={this.placeholderTexts[placeholderIndex]}
           />
+           {!matches?(
+          <Box
+           
           
+            className={`search-results ${
+              searchTerm && productsFiltersData ? "active" : ""
+            }`}
+          >
+            {showResult ? (
+              searchLoader ? (
+                <Box className="search-loader">
+                  <CircularProgress className="common-loader" />
+                </Box>
+              ) : searchTerm && productsFiltersData.length === 0 ? (
+                <p className="no-data">There is no data</p>
+              ) : (
+                <SearchProductItemView productList={productsFiltersData} />
+              )
+            ) : null}
+          </Box>):(
+            <Box
+            sx={{
+              //  marginLeft:'-px',
+              //  marginRight:'-10px',
+              marginTop: '14px',
+            }}
+            style={{
+              width:'100vw',
+            }}
+            className={`search-results ${
+              searchTerm && productsFiltersData ? "active" : ""
+            }`}
+          >
+            {showResult ? (
+              searchLoader ? (
+                <Box className="search-loader">
+                  <CircularProgress className="common-loader" />
+                </Box>
+              ) : searchTerm && productsFiltersData.length === 0 ? (
+                <p className="no-data">There is no data</p>
+              ) : (
+                <SearchProductItemView productList={productsFiltersData} />
+              )
+            ) : null}
+          </Box>
+
+          )}
         </Box>
-        
+        <Box
+       
+          className={`search-results-bg ${
+            searchTerm && productsFiltersData ? "active" : ""
+          }`}
+          onClick={this.searchBgClick}
+        ></Box>
       </>
     );
   }
@@ -160,7 +203,6 @@ function mapStateToProps(state) {
     updateItems,
     deleteItems,
     shopCategoryData,
-    searchTerm: state.allproductsfilters.searchTerm, 
     globalSearchRes,
   };
 }
@@ -171,7 +213,6 @@ const mapDispatchToProps = {
   deleteItemToCart,
   productDetailsData,
   fetchGlobalSearchItems,
-  setSearchTerm,
 };
 
 export default connect(
