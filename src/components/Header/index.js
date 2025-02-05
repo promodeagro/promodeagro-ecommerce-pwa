@@ -305,9 +305,9 @@ class Header extends Component {
                 <Box className="search-box">
                   <Box
                     onClick={() => this.props.navigate("/")}
-                    className={`back-button ${
-                      currentPathName === "/" ? "none" : ""
+                    className={`back-button ${currentPathName === "/"|| currentPathName === "/s" ? "none" : ""
                     }`}
+                    
                   >
                     <ArrowBackIosNewOutlinedIcon />
                   </Box>

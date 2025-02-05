@@ -14,7 +14,9 @@ const PrivacyPolicy = lazy(() => import("./../Views/PostLogin/privacyPolicy"));
 const ReturnRefund = lazy(() => import("./../Views/PostLogin/returnRefund"));
 
 
-const Account = lazy(() =>
+const Search = lazy(() =>
+  import("./../Views/PostLogin/search")
+);const Account = lazy(() =>
   import("./../Views/PostLogin/account")
 );
 const  Cart = lazy(() =>
@@ -245,6 +247,10 @@ const Views = () => {
       <Route
         path={`/my-profile/address/updated-address/:id`}
         element={<UpdatedAddress />}
+      />
+      <Route
+        path={`/s`}
+        element={<Search />}
       />
       <Route
         exact

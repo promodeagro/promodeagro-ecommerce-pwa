@@ -14,9 +14,7 @@ import Footer from "./components/Footer";
 import GlobalCartIndicator from "components/GlobalCartIndicator";
  
 function App(props) {
-//   if (!window.location.href.includes("www.promodeagro.com")) {
-//     window.location.href = "https://www.promodeagro.com";
-// }
+
   return (
     <Router>
       <Suspense fallback={CommonLoader}>

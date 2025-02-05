@@ -6,8 +6,13 @@ const AllProductsFiltersSlice = createSlice({
   name: "allproductsfilters",
   initialState: {
     globalSearchRes: { status: "", data: [] },
+    searchTerm: "",
   },
-  reducers: {},
+  reducers: {
+    setSearchTerm: (state, action) => {
+      state.searchTerm = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchGlobalSearchItems.pending.toString(), (state, action) => {
@@ -40,5 +45,5 @@ const AllProductsFiltersSlice = createSlice({
       });
   },
 });
-
+export const { setSearchTerm } = AllProductsFiltersSlice.actions;
 export default AllProductsFiltersSlice.reducer;
