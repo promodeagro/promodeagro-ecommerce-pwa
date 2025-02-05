@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-import { Box, Button, CircularProgress, Modal } from "@mui/material";
+import { Box, CircularProgress, Modal } from "@mui/material";
 import { connect } from "react-redux";
 import Deleteicon from "../../../../assets/img/trash-2.png";
 import Editicon from "../../../../assets/img/editicon.svg";
 import { Loader } from "../../../Utills/helperFunctions";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
+import AddNewAddress from "../addaddress/addnewwaddress"
+
 import {
   fetchDefaultAddress,
   getAllAddress,
@@ -12,6 +14,7 @@ import {
 } from "../../../../Redux/Address/AddressThunk";
 import status from "../../../../Redux/Constants";
 import { loginDetails } from "../../../Utills/helperFunctions";
+import BackArrow from "../../../../assets/img/backArrow.svg";
 
 class AllAddress extends Component {
   constructor(props) {
@@ -27,6 +30,9 @@ class AllAddress extends Component {
       openDeleteModal: false,
       addressToDelete: null,
       isDeleting: false,
+      selectedAddress: null, // Store selected address here
+      navigateToAdd: false, // Control navigation within component
+
     };
   }
 
@@ -78,9 +84,8 @@ class AllAddress extends Component {
 
   handleEditClick = (event, address) => {
     event.stopPropagation();
-    // Edit functionality removed.
+    this.setState({ selectedAddress: address, navigateToAdd: true }); // Store selected address
   };
-
   handleDeleteClick = (addressId) => {
     this.setState({ openDeleteModal: true, addressToDelete: addressId });
   };
@@ -123,8 +128,18 @@ class AllAddress extends Component {
       loaderStatus,
       openDeleteModal,
       isDeleting,
+      navigateToAdd, // Check if navigating
       allAddresses,
+      selectedAddress // Extract selectedAddress from state
+
+
     } = this.state;
+
+    if (navigateToAdd) {
+      return <AddNewAddress addressData={this.state.selectedAddress} 
+      />;
+    }
+
 
     let sortedAddresses = allAddresses;
     if (allAddresses && allAddresses.length > 1 && defaultAddressId) {
@@ -142,58 +157,65 @@ class AllAddress extends Component {
             Loader.commonLoader()
           ) : (
             <Box>
-              <Box>
-                <h2>Address Book</h2>
+              <Box className="headerboxoftheaddress">
+                <div style={{ display: "flex", gap: "8px" }}>
+                  <img src={BackArrow} alt="Back" />
+                  <h2>Address Book</h2>
+                </div>
+                <button className="buttonheightwidth"                   onClick={() => this.setState({ navigateToAdd: true })}
+                >+ Add Address</button>
               </Box>
-              {sortedAddresses && sortedAddresses.length > 0 ? (
-                sortedAddresses.map((item) => (
-                  <Box className="maindivfortheaddress" key={item.addressId}>
-                    <Box className="addresscontainerbox">
-                      <h3 className="headeroftheaddress">
-                        {item?.address_type}
-                        {item.addressId === defaultAddressId ? (
-                          <div
-                            className="roundDiv"
-                            style={{ marginLeft: "10px" }}
-                          >
-                            Default
-                          </div>
-                        ) : null}
-                      </h3>
-                      <p >{item?.name}</p>
-                      <span>
-                        {item?.house_number}, {item?.landmark_area},
-                        {item?.address}, {item?.zipCode}
-                      </span>
-                    </Box>
-                    <Box className="iconsscontainer">
-                      {item.addressId !== defaultAddressId && (
+              <div style={{ marginTop: "40px" }}>
+                {sortedAddresses && sortedAddresses.length > 0 ? (
+                  sortedAddresses.map((item) => (
+                    <Box className="maindivfortheaddress" key={item.addressId}>
+                      <Box className="addresscontainerbox">
+                        <h3 className="headeroftheaddress">
+                          {item?.address_type}
+                          {item.addressId === defaultAddressId ? (
+                            <div
+                              className="roundDiv"
+                              style={{ marginLeft: "10px" }}
+                            >
+                              Default
+                            </div>
+                          ) : null}
+                        </h3>
+                        <p>{item?.name}</p>
+                        <span>
+                          {item?.house_number}, {item?.landmark_area},{" "}
+                          {item?.address}, {item?.zipCode}
+                        </span>
+                      </Box>
+                      <Box className="iconsscontainer">
+                        {item.addressId !== defaultAddressId && (
+                          <img
+                            src={Deleteicon}
+                            alt="Delete"
+                            className="iconsheightwidth"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              this.handleDeleteClick(item.addressId);
+                            }}
+                          />
+                        )}
                         <img
-                          src={Deleteicon}
-                          alt="Delete"
+                          src={Editicon}
+                          alt="Edit"
                           className="iconsheightwidth"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            this.handleDeleteClick(item.addressId);
-                          }}
+                          onClick={(event) => this.handleEditClick(event, item)}
                         />
-                      )}
-                      <img
-                        src={Editicon}
-                        alt="Edit"
-                        className="iconsheightwidth"
-                        onClick={(event) => this.handleEditClick(event, item)}
-                      />
+                      </Box>
                     </Box>
-                  </Box>
-                ))
-              ) : (
-                <Box className="no-data">There Is No Address Found</Box>
-              )}
+                  ))
+                ) : (
+                  <Box className="no-data">There Is No Address Found</Box>
+                )}
+              </div>
             </Box>
           )}
-          <Button className="common-btn ">+ Add Address</Button>
         </Box>
+
         <Modal open={openDeleteModal} onClose={this.handleDeleteModalClose}>
           <Box className="common-modal deletemodal">
             <Box className="delete-text">Confirm Deletion</Box>
@@ -201,7 +223,7 @@ class AllAddress extends Component {
               Are you sure you want to delete this address?
             </Box>
             <Box className="buttongap">
-            <button
+              <button
                 onClick={this.handleConfirmDelete}
                 className="confirmbutton"
                 disabled={isDeleting}
@@ -231,22 +253,11 @@ class AllAddress extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  const {
-    allAddress,
-    selectedAddressData,
-    defaultAddressData,
-    setDefaultAddressData,
-    deleteAddresses,
-  } = state.alladdress;
-  return {
-    allAddress,
-    selectedAddressData,
-    defaultAddressData,
-    setDefaultAddressData,
-    deleteAddresses,
-  };
-}
+const mapStateToProps = (state) => ({
+  allAddress: state.alladdress.allAddress,
+  defaultAddressData: state.alladdress.defaultAddressData,
+  deleteAddresses: state.alladdress.deleteAddresses,
+});
 
 const mapDispatchToProps = {
   fetchDefaultAddress,

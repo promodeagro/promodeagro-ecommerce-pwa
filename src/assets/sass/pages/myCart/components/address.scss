@@ -744,12 +744,14 @@
   justify-content: space-between;
   border-bottom: 1px solid #E6e6e6;
   margin-bottom: 10px;
+  // margin-top: 26px;
 
 
 }
 
 .containeradddress{
   padding: 16px;
+  width: 100%;
 }
 
 .iconsheightwidth{
@@ -763,6 +765,7 @@ cursor: pointer;
   width: 100%;
   height: fit-content;
   margin-bottom: 10px;
+  font-size: 14px;
 }
 
 .headercontainer{
@@ -777,4 +780,37 @@ cursor: pointer;
   text-decoration-thickness: 2px; /* Adjust the thickness */
   text-decoration-color: #1f9151; /* Optional: Change the underline color */
   color: #1f9151;
+}
+
+.headerboxoftheaddress {
+  display: flex;
+  justify-content: space-between;
+
+  div {
+    display: flex;
+    align-items: center; // Vertically center the image and header text
+    gap: 8px;
+  }
+
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  img {
+    height: 20px;
+    width: 20px;
+  }
+}
+
+.buttonheightwidth {
+  height: 32px;
+  width: 120px;
+  font-size: 14px;
+  background-color: #1f9151;
+  color: white;
+  border-radius: 6px;
+  border-color: #1f9151;
+  border: none;
+  cursor: pointer;
 }
