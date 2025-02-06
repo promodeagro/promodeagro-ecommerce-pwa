@@ -61,12 +61,23 @@ registerRoute(
   })
 );
 
-// This allows the web app to trigger skipWaiting via
-// registration.waiting.postMessage({type: 'SKIP_WAITING'})
+
+// Force the new service worker to activate immediately upon installation
+self.addEventListener('install', (event) => {
+  self.skipWaiting();
+});
+// Take control of all open pages immediately after activation
+self.addEventListener('activate', (event) => {
+  event.waitUntil(self.clients.claim());
+});
+
+
+// Listen for SKIP_WAITING message from client and activate new SW
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
 });
 
+ 
 // Any other custom service worker logic can go here.

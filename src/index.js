@@ -26,6 +26,21 @@ AOS.init();
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://cra.link/PWA
-serviceWorkerRegistration.register();
+// Register service worker with auto-update functionality
+serviceWorkerRegistration.register({
+  onUpdate: (registration) => {
+    if (registration.waiting) {
+      registration.waiting.postMessage({ type: "SKIP_WAITING" });
+
+      // Refresh page to load the new service worker
+      registration.waiting.addEventListener("statechange", (event) => {
+        if (event.target.state === "activated") {
+          window.location.reload();
+        }
+      });
+    }
+  },
+});
+
 
 reportWebVitals();
