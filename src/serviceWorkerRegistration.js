@@ -135,3 +135,14 @@ export function unregister() {
       });
   }
 }
+
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.addEventListener('message', (event) => {
+    if (event.data && event.data.type === 'UPDATE_READY') {
+      if (window.confirm("A new version is available. Do you want to update now?")) {
+        window.location.reload();
+      }
+    }
+  });
+}

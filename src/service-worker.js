@@ -61,12 +61,24 @@ registerRoute(
   })
 );
 
-// This allows the web app to trigger skipWaiting via
-// registration.waiting.postMessage({type: 'SKIP_WAITING'})
+
+
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
+    console.log('Skipping waiting and activating new service worker...');
     self.skipWaiting();
   }
 });
 
-// Any other custom service worker logic can go here.
+// Notify all clients when the new service worker activates
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    self.clients.claim().then(() => {
+      return self.clients.matchAll({ type: 'window' }).then((clients) => {
+        clients.forEach((client) => {
+          client.postMessage({ type: 'UPDATE_READY' });
+        });
+      });
+    })
+  );
+});
