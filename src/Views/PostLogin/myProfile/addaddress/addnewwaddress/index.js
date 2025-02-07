@@ -14,6 +14,7 @@ import {
 } from "../../../../../Redux/Address/AddressThunk"; // Import the setDefaultAddress action
 import { loginDetails } from "Views/Utills/helperFunctions";
 import BackArrow from "../../../../../assets/img/backArrow.svg";
+import Checkmark from "../../../../../assets/img/check_mark.png";
 
 const addressValidationSchema = {
   fullName: [
@@ -87,6 +88,8 @@ class AddNewAddressessModal extends Component {
       isDefaultChecked: false, // To track if the checkbox is checked
       validationErrors: {},
       isDefaultAddressPresent: false,
+      showBox2: false, // Controls which box is shown
+
     };
   }
 
@@ -155,6 +158,7 @@ class AddNewAddressessModal extends Component {
       console.log("Validation failed:", errors);
       return; // Stop submission if invalid
     }
+  
     const {
       fullName,
       flatNumber,
@@ -164,16 +168,17 @@ class AddNewAddressessModal extends Component {
       pincode,
       selectedAddressType,
       isDefaultChecked,
+      isDefaultAddressPresent,
       addressId,
     } = this.state;
     const loginData = loginDetails(); // Retrieve login details
     const userId = loginData?.userId;
-
+  
     if (!userId) {
       console.error("User ID is missing.");
       return;
     }
-
+  
     const requestBody = {
       userId: userId,
       address: {
@@ -186,28 +191,34 @@ class AddNewAddressessModal extends Component {
         address_type: selectedAddressType,
       },
     };
-
+  
     this.setState({ isSubmitting: true });
-
+  
     try {
+      let response = null;
+  
       if (addressId) {
         requestBody.addressId = addressId;
-        const response = await this.props.updateAddress(requestBody);
+        response = await this.props.updateAddress(requestBody);
         console.log("Update Address API Response:", response);
       } else {
-        const response = await this.props.postAddress(requestBody);
+        response = await this.props.postAddress(requestBody);
         const newAddressId = response?.payload?.addressId;
+  
         if (!newAddressId) {
           console.error("Address ID is missing in the response:", response);
           this.setState({ isSubmitting: false });
           return;
         }
+  
         console.log("Post Address API Response Address ID:", newAddressId);
-        if (isDefaultChecked || !this.state.isDefaultAddressPresent) {
+  
+        if (isDefaultChecked || !isDefaultAddressPresent) {
           await this.props.setDefaultAddress({
             userId,
             addressId: newAddressId,
           });
+  
           const fetchDefaultAddressResponse =
             await this.props.fetchDefaultAddress(userId);
           if (fetchDefaultAddressResponse?.payload) {
@@ -223,15 +234,23 @@ class AddNewAddressessModal extends Component {
           }
         }
       }
-      this.setState({ isSubmitting: false });
-      window.location.reload();
-
+      if (response && response.payload) {
+        this.setState({ showBox2: true, isSubmitting: false }, () => {
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000); 
+        });
+      }
+       else {
+        console.error("API response failed:", response);
+        this.setState({ isSubmitting: false });
+      }
     } catch (error) {
       console.error("Error in API call:", error);
       this.setState({ isSubmitting: false });
     }
   };
-
+  
   validateForm = () => {
     const {
       fullName,
@@ -287,11 +306,27 @@ class AddNewAddressessModal extends Component {
 
     return (
       <Box className="main-container">
+              {this.state.showBox2 ? (
+      <Box
+      className="box2container"
+    >
+      <img src={Checkmark} alt="Checkmark" style={{ width: "50px", height: "50px", marginBottom: "10px" }} />
+      <p>Your Address has been Saved!</p>
+    </Box>
+    
+      ) : (
+
         <Box className="containeradddress">
-          {/* Header can optionally include a back arrow and title */}
           <Box className="headerboxoftheaddress">
             <div style={{ display: "flex", gap: "8px" }}>
-              <img src={BackArrow} alt="Back" />
+              <img
+                src={BackArrow}
+                alt="Back"
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  window.location.reload();
+                }}
+              />
               <h2>Address Book</h2>
             </div>
             <Box sx={{ marginTop: "8px" }}>
@@ -519,6 +554,8 @@ class AddNewAddressessModal extends Component {
             </>
           )}
         </Box>
+              )}
+
       </Box>
     );
   }

@@ -159,7 +159,8 @@ class AllAddress extends Component {
             <Box>
               <Box className="headerboxoftheaddress">
                 <div style={{ display: "flex", gap: "8px" }}>
-                  <img src={BackArrow} alt="Back" />
+                  <img src={BackArrow} alt="Back"  style={{cursor:"pointer"}}   onClick={() => window.location.href = "/account"}
+                  />
                   <h2>Address Book</h2>
                 </div>
                 <button className="buttonheightwidth"                   onClick={() => this.setState({ navigateToAdd: true })}
@@ -218,7 +219,6 @@ class AllAddress extends Component {
 
         <Modal open={openDeleteModal} onClose={this.handleDeleteModalClose}>
           <Box className="common-modal deletemodal">
-            <Box className="delete-text">Confirm Deletion</Box>
             <Box className="delete-subtext">
               Are you sure you want to delete this address?
             </Box>
@@ -233,7 +233,7 @@ class AllAddress extends Component {
                   justifyContent: "center",
                 }}
               >
-                Confirm
+                Delete
                 {isDeleting && (
                   <CircularProgress size={20} style={{ marginLeft: "4px" }} />
                 )}
