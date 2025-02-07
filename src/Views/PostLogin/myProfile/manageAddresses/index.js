@@ -338,11 +338,21 @@ class ManageAddresses extends React.Component {
           onClose={this.handleDeleteModalClose}
         >
           <Box className="common-modal deletemodal">
-            <Box className="delete-text">Confirm Deletion</Box>
             <Box className="delete-subtext">
               Are you sure you want to delete this address?
             </Box>
             <Box className="buttongap">
+            <button
+                className="confirmbutton"
+                variant="contained"
+                onClick={this.handleConfirmDelete}
+                disabled={this.state.confirmDeleteLoader} // Disable button while loader is active
+              >
+                Delete
+                {this.state.confirmDeleteLoader && (
+                  <CircularProgress size={20} style={{ marginLeft: "4px" }} />
+                )}
+              </button>
               <button
                 variant="outlined"
                 className="cancelbutton"
@@ -350,17 +360,7 @@ class ManageAddresses extends React.Component {
               >
                 Cancel
               </button>
-              <button
-                className="confirmbutton"
-                variant="contained"
-                onClick={this.handleConfirmDelete}
-                disabled={this.state.confirmDeleteLoader} // Disable button while loader is active
-              >
-                Confirm
-                {this.state.confirmDeleteLoader && (
-                  <CircularProgress size={20} style={{ marginLeft: "4px" }} />
-                )}
-              </button>
+              
             </Box>
           </Box>
         </Modal>

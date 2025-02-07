@@ -311,14 +311,7 @@ class AllAddresses extends React.Component {
           <DialogActions
             style={{ justifyContent: "center", paddingBottom: "24px" }}
           >
-            <Button
-              variant="outlined"
-              className="outline-common-btn"
-              onClick={this.handleClose}
-            >
-              Cancel
-            </Button>
-            <Button
+                        <Button
               variant="outlined"
               className="outline-common-btn"
               color="error"
@@ -339,6 +332,14 @@ class AllAddresses extends React.Component {
             >
               Delete
             </Button>
+
+            <Button
+              variant="outlined"
+              className="outline-common-btn"
+              onClick={this.handleClose}
+            >
+              Cancel
+            </Button>
           </DialogActions>
         </Dialog>
         <Modal
@@ -346,31 +347,31 @@ class AllAddresses extends React.Component {
           onClose={this.handleDeleteModalClose}
         >
           <Box className="common-modal deletemodal">
-            <Box className="delete-text">Confirm Deletion</Box>
             <Box className="delete-subtext">
               Are you sure you want to delete this address?
             </Box>
             <Box className="buttongap">
-              <button
-                variant="outlined"
-                className="cancelbutton"
-                onClick={() => this.handleDeleteModalClose()} // Close modal on Cancel
-              >
-                Cancel
-              </button>
-              <button
+            <button
                 className="confirmbutton"
                 variant="contained"
                 onClick={this.handleConfirmDelete}
                 disabled={this.state.confirmDeleteLoader} // Disable button while loader is active
               >
-                Confirm
+                Delete
                 {this.state.confirmDeleteLoader && (
                   <CircularProgress
                     size={20}
                      style={{ marginLeft: "4px"}}
                   />
                 )}
+              </button>
+
+              <button
+                variant="outlined"
+                className="cancelbutton"
+                onClick={() => this.handleDeleteModalClose()} // Close modal on Cancel
+              >
+                Cancel
               </button>
             </Box>
           </Box>

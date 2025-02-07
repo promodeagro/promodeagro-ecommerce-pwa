@@ -261,14 +261,15 @@ class AddressModal extends Component {
               </Box>
             </Box>
             <span className="viewbutton">
-              <button
-                variant="contained"
-                className="smallbutton1"
-                type="button"
-              >
-                View Saved Address
-              </button>
-            </span>
+  <button
+    variant="contained"
+    className="smallbutton1"
+    type="button"
+    onClick={() => window.location.href = "/my-profile/manage-addresses"}
+  >
+    View Saved Address
+  </button>
+</span>
           </Box>
           <AddAddressModal
             open={submitAddress}
@@ -283,19 +284,11 @@ class AddressModal extends Component {
             onClose={() => this.handleDeleteModalClose(false)} // Keeps modal open on cancel
           >
             <Box className="common-modal deletemodal">
-              <Box className="delete-text">Confirm Deletion</Box>
               <Box className="delete-subtext">
                 Are you sure you want to delete this address?
               </Box>
               <Box className="buttongap">
-                <button
-                  onClick={() => this.handleDeleteModalClose(false)}
-                  variant="outlined"
-                  className="cancelbutton"
-                >
-                  Cancel
-                </button>
-                <button
+              <button
                   onClick={this.handleConfirmDelete}
                   className="confirmbutton"
                   variant="contained"
@@ -305,13 +298,21 @@ class AddressModal extends Component {
                     alignItems: "center",
                     justifyContent: "center",
                   }}
-                >Confirm
+                >Delete
                   {isDeleting && (
                     <CircularProgress
                       size={20}
                       style={{ marginLeft: "4px" }}
                     />
                   )}
+                </button>
+
+                <button
+                  onClick={() => this.handleDeleteModalClose(false)}
+                  variant="outlined"
+                  className="cancelbutton"
+                >
+                  Cancel
                 </button>
               </Box>
             </Box>
