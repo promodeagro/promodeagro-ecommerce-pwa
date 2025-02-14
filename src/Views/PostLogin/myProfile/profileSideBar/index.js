@@ -20,7 +20,7 @@ class ProfileSideBar extends Component {
           links: [
             {
               name: "Orders",
-              to: "/my-profile/personal-information",
+              to: "/my-order",
               icon: orderimage,
             },
             {
@@ -30,12 +30,12 @@ class ProfileSideBar extends Component {
             },
             {
               name: "Customer Support",
-              to: "/my-profile/change-password",
+              to: "/contact-us",
               icon: customersupportimage,
             },
             {
               name: "Account Privacy",
-              to: "/my-profile/change-password",
+              to: "/contact-us",
               icon: accountprivacy,
             },
             { name: "Logout", to: "#", icon: logoutimage },
