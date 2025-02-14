@@ -179,9 +179,9 @@ class ProductItemView extends Component {
           key={item?.id}
           onContextMenu={this.handleContextMenu}
         >
-          {item?.savingsPercentage != 0 && (
-            <Box className="sale">Sale {item?.savingsPercentage}%</Box>
-          )}
+{item?.savingsPercentage && item?.savingsPercentage !== "-Infinity" && item?.savingsPercentage !== 0 && (
+  <Box className="sale">Sale {item?.savingsPercentage}%</Box>
+)}
 
           {showDeleteWishlist ? (
             <Box

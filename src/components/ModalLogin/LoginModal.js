@@ -528,7 +528,7 @@ const AuthModal = (props) => {
           onClose={() => handleModalClose()}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
-          data-aos="flip-left"
+          // data-aos="flip-left"
         >
           <Box className="common-modal auth_container">
             <img
