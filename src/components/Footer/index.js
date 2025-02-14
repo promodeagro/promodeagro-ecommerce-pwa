@@ -340,7 +340,7 @@ class Footer extends Component {
                   <Grid container spacing={2} alignItems={"center"}>
                     <Grid item xs={12} sm={12} md={8}>
                       <Box className="copyright">
-                        PROMODE AGRO FARMS eCommerce © 2024. All Rights Reserved
+                        PROMODE AGRO FARMS eCommerce © 2025. All Rights Reserved
                       </Box>
                     </Grid>
                     <Grid item xs={12} sm={12} md={4}>
