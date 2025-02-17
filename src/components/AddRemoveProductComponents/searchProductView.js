@@ -155,13 +155,15 @@ class SearchProductItemView extends Component {
                           : prices?.price?.price
                           ? prices?.price?.price
                           : item?.price}
-                        <span>
-                          {item?.cartItem?.selectedQuantityUnitMrp
-                            ? item?.cartItem?.selectedQuantityUnitMrp
-                            : prices?.price?.mrp
-                            ? prices?.price?.mrp
-                            : item?.mrp}
-                        </span>
+                        {(item?.cartItem?.selectedQuantityUnitMrp > 0 ||
+                          prices?.price?.mrp > 0 ||
+                          item?.mrp > 0) && (
+                          <span>
+                            {item?.cartItem?.selectedQuantityUnitMrp ||
+                              prices?.price?.mrp ||
+                              item?.mrp}
+                          </span>
+                        )}
                       </Box>
                       {item.ratings && (
                         <Box className="ratting">

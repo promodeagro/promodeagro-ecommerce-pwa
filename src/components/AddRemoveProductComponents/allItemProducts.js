@@ -258,14 +258,16 @@ class ProductItemView extends Component {
                   ? prices?.price?.price
                   : item?.price}
               </strong>
-              <span>
-                <CurrencyRupeeOutlinedIcon />
-                {item?.cartItem?.selectedQuantityUnitMrp
-                  ? item?.cartItem?.selectedQuantityUnitMrp
-                  : prices?.price?.mrp
-                  ? prices?.price?.mrp
-                  : item?.mrp}
-              </span>
+              {(item?.cartItem?.selectedQuantityUnitMrp || prices?.price?.mrp || item?.mrp) > 0 && (
+  <span>
+    <CurrencyRupeeOutlinedIcon />
+    {item?.cartItem?.selectedQuantityUnitMrp
+      ? item?.cartItem?.selectedQuantityUnitMrp
+      : prices?.price?.mrp
+      ? prices?.price?.mrp
+      : item?.mrp}
+  </span>
+)}
             </Box>
             {addedProducts && addedProducts[item?.id] ? (
               <Box className="number-input-container">

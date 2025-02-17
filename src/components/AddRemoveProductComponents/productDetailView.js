@@ -111,16 +111,18 @@ class ProductDetailCartUpdateView extends Component {
               ? quantityUnitPrice?.price
               : productItem?.price}
           </Box>
-          <Box className="mrp">
-            <img src={mdiRupee} alt="" />{" "}
-            <span>
-              {productItem?.cartItem?.selectedQuantityUnitMrp
-                ? productItem?.cartItem?.selectedQuantityUnitMrp
-                : quantityUnitPrice?.mrp
-                ? quantityUnitPrice?.mrp
-                : productItem?.mrp}
-            </span>
-          </Box>
+          {(productItem?.cartItem?.selectedQuantityUnitMrp > 0 ||
+            quantityUnitPrice?.mrp > 0 ||
+            productItem?.mrp > 0) && (
+            <Box className="mrp">
+              <img src={mdiRupee} alt="" />{" "}
+              <span>
+                {productItem?.cartItem?.selectedQuantityUnitMrp ||
+                  quantityUnitPrice?.mrp ||
+                  productItem?.mrp}
+              </span>
+            </Box>
+          )}
         </Box>
         {productItem?.savingsPercentage != 0 ? (
           <Box className="product-save">
@@ -129,7 +131,6 @@ class ProductDetailCartUpdateView extends Component {
         ) : (
           <></>
         )}
-
 
         {productItem?.unitPrices?.length > 0 ? (
           // <Box className="select">
@@ -151,20 +152,20 @@ class ProductDetailCartUpdateView extends Component {
           //     </NativeSelect>
           //   </FormControl>
           // </Box>
-          
+
           <></>
         ) : (
           // <Box className="select">{productItem?.unit}</Box>
           <></>
         )}
 
-
         <Box className="product-cart-buttons">
           <Grid container spacing={2}>
             <Grid item xs={12} sm={8} md={6} lg={4}>
               {productItem?.availability ? (
                 <>
-                  {addedProducts && addedProducts[this.props.params.id]?.quantity &&
+                  {addedProducts &&
+                  addedProducts[this.props.params.id]?.quantity &&
                   addedProducts[this.props.params.id]?.quantity != 0 ? (
                     <Box className="number-input-container">
                       <Box
