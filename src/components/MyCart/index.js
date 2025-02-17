@@ -61,30 +61,29 @@ class MyCart extends Component {
   }
 
   componentDidMount() {
-    window
-      .matchMedia("(max-width: 800px)")
-      .addEventListener("change", (e) => this.setState({ matches: e.matches }));
-
     const items = loginDetails();
-
     if (items?.userId) {
-      this.props.fetchDefaultAddress(items?.userId);
-    }
-
-    if (items?.userId) {
-      let cartData = LocalStorageCartService.getData() || {};
+      // Fetch the default address (assuming it updates props synchronously)
+      this.props.fetchDefaultAddress(items.userId);
+  
+      // Optionally add any items already in the cart
+      const cartData = LocalStorageCartService.getData() || {};
       this.props.addListOfItemsToCartReq({
         userId: items.userId,
-        cartItems: Object.values(cartData).length
-          ? Object.values(cartData)
-          : [],
+        cartItems: Object.values(cartData).length ? Object.values(cartData) : [],
       });
-      this.props.fetchCartItems({
-        userId: items.userId,
-      });
+      const addressId = localStorage.getItem("addressId") || ""; // Get addressId from localStorage
+      if (addressId) {
+        this.props.fetchCartItems({
+          userId: items.userId,
+          addressId: addressId,
+        });
+      } else {
+        console.warn("defaultAddress not available; addressId is undefined");
+      }
     }
   }
-
+  
   componentDidUpdate(prevProps, prevState) {
     const items = loginDetails();
     const { handleClose } = this.props;
