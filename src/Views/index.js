@@ -5,7 +5,7 @@ import { loginDetails } from "./Utills/helperFunctions";
 
 const Home = lazy(() => import("./../Views/PostLogin/home"));
 const AboutUs = lazy(() => import("./../Views/PostLogin/aboutUs"));
-const ContactUs = lazy(() => import("./../Views/PostLogin/contactUs"));
+const ContactUs = lazy(() => import("./PostLogin/myProfile/contactUs"));
 const TermsCondition = lazy(() =>
   import("./../Views/PostLogin/termsCondition")
 );

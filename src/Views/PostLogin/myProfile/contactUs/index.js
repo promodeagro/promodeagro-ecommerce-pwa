@@ -9,12 +9,12 @@ import {
   MenuItem,
   Button,
 } from "@mui/material";
-import { ErrorMessages, loginDetails, ValidationEngine } from "../../Utills/helperFunctions";
-import { createFeedback } from "../../../Redux/FeedBack/FeedBackThunk";
+import { ErrorMessages, loginDetails, ValidationEngine } from "../../../Utills/helperFunctions";
+import { createFeedback } from "../../../../Redux/FeedBack/FeedBackThunk";
 
 import { connect } from "react-redux";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
-import status from "../../../Redux/Constants";
+import status from "../../../../Redux/Constants";
 const validationSchema = {
   typeOfEnquiry: [
     {
@@ -137,6 +137,8 @@ class ContactUs extends Component {
     } = this.state;
     return (
       <Box className="main-container">
+          <Container>
+
         <Box className="contact-heading-banner">
           <Container>
             <h2>
@@ -346,6 +348,8 @@ class ContactUs extends Component {
             </Grid>
           </Container>
         </Box>
+                </Container>
+        
       </Box>
     );
   }
