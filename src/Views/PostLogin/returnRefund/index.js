@@ -24,8 +24,8 @@ class ReturnRefund extends Component {
             <strong>2. Refund</strong>
             <p>
               Once the Product is received to the company successfully,{" "}
-              <a href="#">Promode Agro Farm</a> will instantly initiate the
-              refund to your source account or chosen method of refund. 
+              <a href="https://promodeagro.com/">Promode Agro Farm</a> will initiate the
+              refund to your source account or chosen method of refund.The transfer will be completed within 5 to 7 days 
             </p>
             <strong>
               3. Refund and Cancellation for Service Provider Company
@@ -47,7 +47,7 @@ class ReturnRefund extends Component {
             </p>
             <strong>5. Shipping & Delivery Policies </strong>
             <p>
-              <a href="#">Promode Agro Farms</a> ships its products to almost
+              <a href="https://promodeagro.com/">Promode Agro Farms</a> ships its products to almost
               all parts of India. Orders placed will be shipped within 24* hrs.
               We ship on all days except Sunday and National Holidays.
             </p>
@@ -55,15 +55,15 @@ class ReturnRefund extends Component {
               or all areas serviced by reputed couriers, the delivery time would
               be within 3 to 4 business days of shipping (business days exclude
               Sundays and other holidays). For other areas the products will be
-              shipped through --------------- and may take 1-2 weeks depending
+              shipped through  and may take 1-2 weeks depending
               on location. At times there might be unexpected delays in the
               delivery of your order due to unavoidable and undetermined
               logistics challenges beyond our control for which{" "}
-              <a href="#">Promode Agro Farms</a> is not liable and would request
-              its users to cooperate as <a href="#">Promode Agro Farms</a> continuously tries to
-              nought such instances. Also, <a href="#">Promode Agro Farms</a>{" "}
+              <a href="https://promodeagro.com/">Promode Agro Farms</a> is not liable and would request
+              its users to cooperate as <a href="https://promodeagro.com/">Promode Agro Farms</a> continuously tries to
+              nought such instances. Also, <a href="https://promodeagro.com/">Promode Agro Farms</a>{" "}
               reserves the right to cancel your order at its sole discretion in
-              cases where it takes longer than usual delivery time or the
+              cases whettps://promodeagro.com/re it takes longer than usual delivery time or the
               shipment is physically untraceable and refund the amount paid for
               cancelled product(s) to your source account
             </p>
