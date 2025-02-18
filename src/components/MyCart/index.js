@@ -527,14 +527,24 @@ class MyCart extends Component {
                         <div>
                           <span>Delivery Charges</span>
                           <div>
-                             {this.props.cartItems.data?.deliveryCharges <= 0 ? (
+                             {/* {this.props.cartItems.data?.deliveryCharges <= 0 ? (
                               <>
                                <span className="mrp">₹50</span>
                                <span className="free">Free</span>
                               </>
                             ) : (
                               <strong style={{ marginLeft: "5px" }}>₹{this.props.cartItems.data?.deliveryCharges}</strong>
-                            )}
+                            )} */}
+                            {this.props.cartItems.data?.deliveryCharges <= 0 ? (
+  <span className="mrp">
+    ₹{this.state.selectedAddress.zipCode === '500091' ? 20 : 50}
+  </span>
+) : (
+  <strong style={{ marginLeft: "5px" }}>
+    ₹{this.props.cartItems.data?.deliveryCharges}
+  </strong>
+)}
+
                           </div>
                         </div>
                         <div>
