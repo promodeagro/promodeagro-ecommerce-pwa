@@ -6,13 +6,13 @@ import { Button, useMediaQuery, Divider, Typography } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 
 const Invoice = ({ orderData, flag }) => {
-  // console.log(orderData,"order from invoice");
+  console.log(orderData, "order from invoice");
   const items = orderData?.items || [];
   const [showInvoice, setShowInvoice] = useState(false);
   const toggleInvoice = () => {
     setShowInvoice((prev) => !prev);
   };
-  console.log(orderData,"invoice")
+  console.log(orderData, "invoice");
   const isMobile = useMediaQuery("(max-width:600px)"); // Detect mobile screen size
   const downloadPDF = () => {
     const invoiceElement = document.getElementById("invoice-content");
@@ -344,14 +344,25 @@ footer p {
               </p>
               <p>
                 <strong>Address:</strong>
-                {`${orderData?.address?.address || "N/A"} ${
-                  orderData?.address?.landmark_area || ""
-                }, ${orderData?.address?.zipCode || ""}`}
+                {`${orderData?.address?.house_number || "N/A"},${
+                  orderData?.address?.address || "N/A"
+                } ${orderData?.address?.landmark_area || ""}, ${
+                  orderData?.address?.zipCode || ""
+                }`}
               </p>
               <p>
                 <strong>Date & Time:</strong>
                 {orderData?.createdAt
-                  ? new Date(orderData.createdAt).toLocaleString()
+                  ? new Date(orderData.createdAt).toLocaleString("en-US", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      second: "2-digit",
+                      hour12: true,
+                      timeZone: "UTC", // Ensures UTC time is used
+                    })
                   : "N/A"}
               </p>
             </div>
@@ -364,7 +375,7 @@ footer p {
 
             <div class="right">
               <div style={{ display: "flex" }}>
-                <strong style={{ width: "146px" }}>Biller Name:</strong>
+                <strong style={{ width: "151px" }}>Biller Name:</strong>
                 <div>Promode Agro Farm</div>
               </div>
               <div style={{ display: "flex" }}>
@@ -389,7 +400,9 @@ footer p {
                 <tr>
                   <th>S.No</th>
                   <th style={{ textAlign: "left" }}>Product Name</th>
-                  <th style={{ textAlign: "left" }}>Quantity</th>
+                  <th style={{ textAlign: "left" }}>Unit</th>
+
+                  <th style={{ textAlign: "center" }}>Quantity</th>
                   <th>Rate</th>
                   <th>Total Amount</th>
                 </tr>
@@ -398,10 +411,14 @@ footer p {
                 {items.map((item, index) => (
                   <tr key={index}>
                     <td> {index + 1}</td>
-                    <td style={{ textAlign: "left" }}> {item.productName}</td>
                     <td style={{ textAlign: "left" }}>
-                      {item.quantity} {item.unit}
+                      {" "}
+                      {item.productName.split("-")[0]}
                     </td>
+                    <td style={{ textAlign: "left" }}>
+                      {item.productName.split("-")[1]}
+                    </td>
+                    <td style={{ textAlign: "center" }}>{item.quantity}</td>
                     <td> ₹{item.price}</td>
                     <td> ₹{item.subtotal}</td>
                   </tr>
