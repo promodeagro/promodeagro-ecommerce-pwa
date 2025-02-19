@@ -342,14 +342,21 @@ footer p {
                 <strong>Phone Number:</strong>
                 {orderData?.customerNumber || "N/A"}
               </p>
-              <p>
-                <strong>Address:</strong>
-                {`${orderData?.address?.house_number || "N/A"},${
-                  orderData?.address?.address || "N/A"
-                } ${orderData?.address?.landmark_area || ""}, ${
-                  orderData?.address?.zipCode || ""
-                }`}
-              </p>
+              <div style={{ display: "flex" }}>
+                <strong>
+                
+                  Address:
+                </strong>
+                <span
+                  className="value"
+                  style={{ width: "200px", wordBreak: "break-word" }}
+                >
+                  {orderData?.address?.house_number},
+                  {orderData?.address?.address},
+                  {orderData?.address?.landmark_area},
+                  {orderData?.address?.zipCode}
+                </span>
+              </div>
               <p>
                 <strong>Date & Time:</strong>
                 {orderData?.createdAt
