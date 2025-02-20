@@ -75,40 +75,38 @@ const AuthModal = (props) => {
 
   useEffect(() => {
     if (props.loginData.status === status.SUCCESS && isSubmitMobOrEmail) {
-      setSubmitMobOrEmail(false);
       if (props.loginData.data) {
-        if (props.loginData.data.statusCode == 200) {
+        setSubmitMobOrEmail(false);
+        if (props.loginData.data.statusCode === 200) {
           resetTimer();
           setFormType("otp");
-        } else {
+        } else if (props.loginData.data.message) {
           ErrorMessages.error(props.loginData.data.message);
         }
       }
     }
-  }, [props.loginData.status]);
+  }, [props.loginData]);
 
   useEffect(() => {
-    if (props.validateOtpRes.status === status.SUCCESS && setSubmitMobOrEmail) {
-      setSubmitMobOrEmail(false);
+    if (props.validateOtpRes.status === status.SUCCESS && isSubmitMobOrEmail) {
       if (props.validateOtpRes?.data) {
-        if (props.validateOtpRes?.data?.statusCode == 200) {
+        setSubmitMobOrEmail(false);
+        if (props.validateOtpRes?.data?.statusCode === 200) {
           handleModalClose();
+          const loginData = JSON.stringify(props?.validateOtpRes?.data?.data);
           if (window.location.hostname === "localhost") {
-            document.cookie = `login=${JSON.stringify(
-              props?.validateOtpRes?.data?.data
-            )}; path=/; max-age=3600`;
+            document.cookie = `login=${loginData}; path=/; max-age=3600`;
+          } else {
+            document.cookie = `login=${loginData}; path=/; domain=.promodeagro.com; max-age=3600`;
           }
-          document.cookie = `login=${JSON.stringify(
-            props?.validateOtpRes?.data?.data
-          )}; path=/; domain=.promodeagro.com; max-age=3600`;
           props.handleDefaultAddress();
           props.handleClose();
-        } else {
+        } else if (props.validateOtpRes?.data?.message) {
           ErrorMessages.error(props.validateOtpRes?.data?.message);
         }
       }
     }
-  }, [props.validateOtpRes.status]);
+  }, [props.validateOtpRes]);
 
   const resetTimer = () => {
     setSeconds(30);
@@ -130,22 +128,27 @@ const AuthModal = (props) => {
 
   const handleRegisterForm = async (e) => {
     e.preventDefault();
-    setSubmitMobOrEmail(true);
     const errorData = validateForm();
     if (errorData.isValid) {
+      setSubmitMobOrEmail(true);
       props.signIn({ mobileNumber: emailOrNumber });
+    } else {
+      ErrorMessages.error(errorData?.emailOrNumber?.message);
     }
   };
 
   const handleOtpLogin = async (e) => {
     e.preventDefault();
     const otpScreenErrorData = validateOtpForm();
-    setOtpSubmitted(true);
     if (otpScreenErrorData.isValid) {
+      setOtpSubmitted(true);
+      setSubmitMobOrEmail(true);
       props.validateOtp({
         mobileNumber: emailOrNumber,
         otp: validateOtp,
       });
+    } else {
+      ErrorMessages.error(otpScreenErrorData?.validateOtp?.message);
     }
   };
   const errorData = validateForm();
@@ -193,26 +196,91 @@ const AuthModal = (props) => {
 
   const handleChange = (index, event) => {
     const value = event.target.value;
-    if (!/^\d?$/.test(value)) return; // Only allow digits
+    
+    // Handle paste event
+    if (value.length > 1) {
+      const digits = value.slice(0, 6).split('').map(char => char.replace(/\D/g, '')); 
+      const newOtp = [...otp];
+      
+      digits.forEach((digit, idx) => {
+        if (idx < 6) {
+          newOtp[idx] = digit;
+        }
+      });
+      
+      setOtp(newOtp);
+      setValidateOtp(newOtp.join(''));
+      
+      const nextEmptyIndex = newOtp.findIndex(digit => !digit);
+      if (nextEmptyIndex === -1) {
+        inputRefs.current[5].focus();
+      } else {
+        inputRefs.current[nextEmptyIndex].focus();
+      }
+      
+      // Remove auto-submit on paste and let state update first
+      return;
+    }
+
+    // Handle single digit input
+    if (!/^\d?$/.test(value)) return;
 
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
-    setValidateOtp(newOtp.join("")); // Update validation state
+    setValidateOtp(newOtp.join(''));
 
     if (value && index < 5) {
       inputRefs.current[index + 1].focus();
     }
 
-    if (index === 5 && value) {
-      handleOtpLogin(event); // Auto-submit when last digit is entered
+    // Remove immediate auto-submit
+  };
+
+  // Add handleKeyDown function back
+  const handleKeyDown = (index, event) => {
+    if (event.key === "Backspace" && !otp[index] && index > 0) {
+      // Move focus to previous input when backspace is pressed on empty input
+      inputRefs.current[index - 1].focus();
     }
   };
 
-  const handleKeyDown = (index, event) => {
-    if (event.key === "Backspace" && !otp[index] && index > 0) {
-      inputRefs.current[index - 1].focus();
+  // Add a useEffect to handle auto-submit after state updates
+  useEffect(() => {
+    const isComplete = otp.every(digit => digit !== '') && otp.length === 6;
+    if (isComplete) {
+      // Add a small delay to ensure state is updated
+      const timer = setTimeout(() => {
+        handleOtpLogin({ preventDefault: () => {} });
+      }, 300);
+      return () => clearTimeout(timer);
     }
+  }, [otp]);
+
+  // Update handlePaste to remove auto-submit
+  const handlePaste = (event) => {
+    event.preventDefault();
+    const pastedData = event.clipboardData.getData('text');
+    const digits = pastedData.slice(0, 6).split('').map(char => char.replace(/\D/g, '')); 
+    
+    const newOtp = [...otp];
+    digits.forEach((digit, idx) => {
+      if (idx < 6) {
+        newOtp[idx] = digit;
+      }
+    });
+    
+    setOtp(newOtp);
+    setValidateOtp(newOtp.join(''));
+    
+    const nextEmptyIndex = newOtp.findIndex(digit => !digit);
+    if (nextEmptyIndex === -1) {
+      inputRefs.current[5].focus();
+    } else {
+      inputRefs.current[nextEmptyIndex].focus();
+    }
+    
+    // Remove auto-submit on paste
   };
 
   const renderForm = () => {
@@ -444,13 +512,13 @@ const AuthModal = (props) => {
                       value={digit}
                       onChange={(e) => handleChange(index, e)}
                       onKeyDown={(e) => handleKeyDown(index, e)}
+                      onPaste={handlePaste}  // Add paste handler
                       inputRef={(el) => (inputRefs.current[index] = el)}
                       variant="outlined"
                       size="small"
                       type="tel"
-                      
-                      inputMode="numeric"  // Force numeric keyboard
-                      pattern="[0-9]"      // Ensure the input is a number
+                      inputMode="numeric"
+                      pattern="[0-9]"
                       inputProps={{
                         maxLength: 1,
                         style: { textAlign: "center", fontSize: "18px" },
@@ -615,7 +683,10 @@ const AuthModal = (props) => {
 
 function mapStateToProps(state) {
   const { loginData, validateOtpRes } = state.login;
-  return { loginData, validateOtpRes };
+  return { 
+    loginData: loginData || { status: '', data: null },
+    validateOtpRes: validateOtpRes || { status: '', data: null }
+  };
 }
 
 const mapDispatchToProps = { signIn, validateOtp };
