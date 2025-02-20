@@ -513,7 +513,17 @@ class MyOrder extends Component {
                                   {item?.address?.name}
                                 </span>
                                 <address className="info">
+                                  {item?.address?.house_number}
+                                  <address className="info">
                                   {item?.address?.address}
+                                </address>
+                                </address><address className="info">
+                                  {item?.address?.landmark_area}
+                                </address>
+
+                               
+                                <address className="info">
+                                  {item?.address?.zipCode}
                                 </address>
                                 <span className="d-block info">
                                   Ph: {item?.address?.phoneNumber}

@@ -9,60 +9,51 @@ import {
 } from "./SigninThunk";
 import status from "./../Constants";
 
+const initialState = {
+    loginData: {
+        status: '',
+        data: null
+    },
+    changePassData: {
+        status: null,
+    },
+    deleteUserData: {
+        status: null
+    },
+    personalDetailsData: {
+        status: null
+    },
+    updatePersonalDetailsData: {
+        status: null
+    },
+    validateOtpRes: {
+        status: '',
+        data: null
+    }
+};
+
 const SigninSlice = createSlice({
     name: "login",
-    initialState: {
-        loginData: {
-            status: null,
-        },
-        changePassData:{
-            status: null, 
-        },
-        deleteUserData:{
-            status:null
-        },
-        personalDetailsData:{
-            status:null
-        },
-        updatePersonalDetailsData:{
-            status:null
-        },
-        validateOtpRes:{
-            status:null
-        }
-
-    },
+    initialState,
     reducers: {
-
+        resetLogin: (state) => {
+            state.loginData = initialState.loginData;
+            state.validateOtpRes = initialState.validateOtpRes;
+        }
     },
     extraReducers: (builder) => {
         builder
-            .addCase(signIn.pending.toString(), (state, action) => {
-                return {
-                    ...state,
-                    loginData: {
-                        status: status.IN_PROGRESS,
-                    },
-                };
+            .addCase(signIn.pending, (state) => {
+                state.loginData.status = status.IN_PROGRESS;
             })
-            .addCase(signIn.fulfilled.toString(), (state, { payload }) => {
-                return {
-                    ...state,
-                    loginData: {
-                        status: status.SUCCESS,
-                        data: payload,
-                    },
-                };
+            .addCase(signIn.fulfilled, (state, action) => {
+                state.loginData.status = status.SUCCESS;
+                state.loginData.data = action.payload;
             })
-            .addCase(signIn.rejected.toString(), (state, action) => {
-                return {
-                    ...state,
-                    loginData: {
-                        status: status.FAILURE,
-                    },
-                };
+            .addCase(signIn.rejected, (state, action) => {
+                state.loginData.status = status.ERROR;
+                state.loginData.data = action.payload;
             })
-
 
             .addCase(changePassword.pending.toString(), (state, action) => {
                 return {
@@ -90,8 +81,6 @@ const SigninSlice = createSlice({
                 };
             })
 
-
-
             .addCase(deleteUser.pending.toString(), (state, action) => {
                 return {
                     ...state,
@@ -117,7 +106,6 @@ const SigninSlice = createSlice({
                     },
                 };
             })
-
 
             .addCase(updatePersonalDetails.pending.toString(), (state, action) => {
                 return {
@@ -145,7 +133,6 @@ const SigninSlice = createSlice({
                 };
             })
 
-
             .addCase(fetchPersonalDetails.pending.toString(), (state, action) => {
                 return {
                     ...state,
@@ -172,35 +159,19 @@ const SigninSlice = createSlice({
                 };
             })
 
-             
-            .addCase(validateOtp.pending.toString(), (state, action) => {
-                return {
-                    ...state,
-                    validateOtpRes: {
-                        status: status.IN_PROGRESS,
-                    },
-                };
+            .addCase(validateOtp.pending, (state) => {
+                state.validateOtpRes.status = status.IN_PROGRESS;
             })
-            .addCase(validateOtp.fulfilled.toString(), (state, { payload }) => {
-                return {
-                    ...state,
-                    validateOtpRes: {
-                        status: status.SUCCESS,
-                        data: payload,
-                    },
-                };
+            .addCase(validateOtp.fulfilled, (state, action) => {
+                state.validateOtpRes.status = status.SUCCESS;
+                state.validateOtpRes.data = action.payload;
             })
-            .addCase(validateOtp.rejected.toString(), (state, action) => {
-                return {
-                    ...state,
-                    validateOtpRes: {
-                        status: status.FAILURE,
-                    },
-                };
+            .addCase(validateOtp.rejected, (state, action) => {
+                state.validateOtpRes.status = status.ERROR;
+                state.validateOtpRes.data = action.payload;
             })
-
     },
 });
 
-
+export const { resetLogin } = SigninSlice.actions;
 export default SigninSlice.reducer;

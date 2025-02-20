@@ -36,6 +36,7 @@ function App(props) {
             draggable
             pauseOnHover
             theme="light"
+            limit={1} 
           />
         </div>
       </Suspense>

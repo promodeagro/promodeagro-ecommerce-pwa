@@ -57,6 +57,7 @@ class MyCart extends Component {
       cartListArr: [],
       totalPrice: "",
       defaultSelectedAddress: {},
+      isSubmitting: false,
     };
   }
 
@@ -220,60 +221,29 @@ class MyCart extends Component {
       prevProps.placeOrderData.status !== this.props.placeOrderData.status &&
       this.props.placeOrderData.status === status.SUCCESS
     ) {
-    }
-    if (
-      prevProps.placeOrderData.status !== this.props.placeOrderData.status &&
-      this.props.placeOrderData.status === status.SUCCESS
-    ) {
       if (this.props.placeOrderData.data?.statuscode === 200) {
-        if (this.props.placeOrderData.data?.orderId) {
-          ErrorMessages.success(this.props?.placeOrderData?.data?.message);
-          this.props.navigate(
-            `/mycart/address/order-placed/${this.props.placeOrderData.data.orderId}`
-          );
-          handleClose();
-          localStorage.removeItem("cartItem");
-          localStorage.removeItem("address");
-          LocalStorageCartService.saveData({});
-          this.setState({ selectedSlot: "" });
-          this.setState({ selectedPaymentMethod: "online" });
-          let login = loginDetails();
-          if (login?.userId) {
-            this.props.addListOfItemsToCartReq({
-              userId: login.userId,
-              cartItems: [],
-            });
-            this.props.fetchCartItems({
-              userId: login.userId,
-            });
-          }
-          this.setState({ cartList: [] });
-        }
-        if (!this.props.placeOrderData.data?.orderId) {
-          ErrorMessages.error(this.props?.placeOrderData?.data?.error);
-        }
-        if (this.props.placeOrderData.data?.paymentLink) {
-          this.setState({
-            paymentLink: this.props.placeOrderData.data.paymentLink,
+        this.props.navigate(
+          `/mycart/address/order-placed/${this.props.placeOrderData.data.orderId}`
+        );
+        handleClose();
+        localStorage.removeItem("cartItem");
+        localStorage.removeItem("address");
+        LocalStorageCartService.saveData({});
+        this.setState({ selectedSlot: "" });
+        this.setState({ selectedPaymentMethod: "online" });
+        let login = loginDetails();
+        if (login?.userId) {
+          this.props.addListOfItemsToCartReq({
+            userId: login.userId,
+            cartItems: [],
           });
-          const openPaymentLink = async () => {
-            if (this.props.placeOrderData.data?.paymentLink) {
-              await new Promise((resolve) => {
-                this.setState(
-                  {
-                    paymentLink: this.props.placeOrderData.data.paymentLink,
-                  },
-                  resolve
-                );
-              });
-              if (this.state.paymentLink) {
-                window.open(this.state.paymentLink, "_blank");
-              }
-            }
-          };
-          openPaymentLink();
+          this.props.fetchCartItems({
+            userId: login.userId,
+          });
         }
+        this.setState({ cartList: [] });
       }
+      this.setState({ isSubmitting: false });
     }
   }
 
@@ -288,10 +258,14 @@ class MyCart extends Component {
 
     // Check if a slot is selected
     if (!selectedSlot) {
-      this.setState({ showSlotError: true }); // Trigger the error state
-      ErrorMessages.error("Please select a delivery slot."); // Show error message
+      this.setState({ showSlotError: true });
+      ErrorMessages.error("Please select a delivery slot.");
       return;
     }
+
+    // Prevent multiple submissions
+    if (this.state.isSubmitting) return;
+    this.setState({ isSubmitting: true });
 
     const Data = {
       addressId: addressId ? addressId : defaultAddress,
@@ -305,6 +279,25 @@ class MyCart extends Component {
 
     this.props.placeOrder(Data);
   };
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.placeOrderData.status !== this.props.placeOrderData.status &&
+      this.props.placeOrderData.status === status.SUCCESS
+    ) {
+      if (this.props.placeOrderData.data?.statuscode === 200) {
+        // Remove duplicate success message here since it's already shown in the thunk
+        // ErrorMessages.success(this.props?.placeOrderData?.data?.message);
+        
+        this.props.navigate(
+          `/mycart/address/order-placed/${this.props.placeOrderData.data.orderId}`
+        );
+        this.props.handleClose();
+        // ... rest of your success handling code ...
+      }
+      // Reset submission flag
+      this.setState({ isSubmitting: false });
+    }
+  }
 
   handleQuantityChange(id, increment, productQuantity = 0, qty) {
     const items = loginDetails();
