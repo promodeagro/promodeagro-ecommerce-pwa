@@ -28,6 +28,15 @@ const WishList = lazy(() => import("./../Views/PostLogin/myProfile/wishList"));
 const AllAddress = lazy(() =>
   import("./../Views/PostLogin/myProfile/addaddress")
 );
+const Privacy = lazy(() =>
+  import("./../Views/PostLogin/myProfile/privacy")
+);
+const CustomerSupport = lazy(() =>
+  import("./../Views/PostLogin/myProfile/customerSupport")
+);
+
+
+
 const AddNewAddressessModal = lazy(() =>
   import("./../Views/PostLogin/myProfile/addaddress/addnewwaddress")
 );
@@ -102,7 +111,6 @@ const Views = () => {
             path={`/mycart/address/add-new-address`}
             element={<Navigate to="/" replace />}
           />
-
           <Route
             path={`/my-profile/manage-addresses/add-new-address`}
             element={<Navigate to="/" replace />}
@@ -129,6 +137,20 @@ const Views = () => {
               `}
             element={<Navigate to="/" replace />}
           />
+                    <Route
+            path={`/my-profile/privacy
+
+              `}
+            element={<Navigate to="/" replace />}
+          />
+                              <Route
+            path={`/my-profile/customer-support
+
+              `}
+            element={<Navigate to="/" replace />}
+          />
+
+
 <Route
   exact
   path="/my-profile/alladdress/addnewaddress"
@@ -161,6 +183,16 @@ const Views = () => {
             path={`/my-profile/alladdress`}
             element={<Navigate to="/" replace />}
           />
+                    <Route
+            path={`/my-profile/privacy`}
+            element={<Navigate to="/" replace />}
+          />
+                              <Route
+            path={`/my-profile/customer-support`}
+            element={<Navigate to="/" replace />}
+          />
+
+
                     <Route
             path={`/my-profile/alladdress/addnewaddress`}
             element={<Navigate to="/" replace />}
@@ -207,9 +239,10 @@ const Views = () => {
       />
       <Route exact path={`/my-profile/wish-list`} element={<WishList />} />
       <Route exact path={`/my-profile/alladdress`} element={<AllAddress />} />
+      <Route exact path={`/my-profile/privacy`} element={<Privacy />} />
+      <Route exact path={`/my-profile/customer-support`} element={<CustomerSupport />} />
+
       <Route exact path={`/my-profile/alladdress/addnewaddress`} element={<AddNewAddressessModal />} />
-
-
       <Route
         exact
         path={`/my-profile/notification`}
