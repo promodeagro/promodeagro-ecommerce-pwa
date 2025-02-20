@@ -161,7 +161,7 @@ class CustomerSupport extends Component {
         </Box>
         <Box className="contact-info">
           <Container>
-            <Box className="links-box">
+            <Box className="links-boxes">
               <h2>Contact us</h2>
               <ul>
                 <li
@@ -180,37 +180,37 @@ class CustomerSupport extends Component {
             </Box>
             {activeTab === "support" && (
               <Box className="support-details">
-                <Box className="support-box">
+                <Box className="support-boxes">
                   <h4>Online Customer Support</h4>
                   <p>
-                    Customer Care Team Email :{" "}
+                    Customer Care Team Email :                  </p>
+
                     <a href="mailto:support@promodeagro.com">
                       support@promodeagro.com
                     </a>
-                  </p>
                 </Box>
-                <Box className="support-box">
+                <Box className="support-boxes">
                   <h4>Phone Customer Support</h4>
                   <div className="divcontainer">
-                    <div>
+                    <div style={{width:"50%"}}>
                       <p>Online Customer Care Phone No : </p>
                       <p>Store Customer Care Phone No : </p>
                       <p>Farm CEO(Tina) Phone No: </p>
                     </div>
                     <div>
-                      <p>
+                      <p  style={{marginTop:"16px"}}>
                         <a href="tel:+91 9701610033">+91 9701610033</a>
                       </p>
-                      <p>
+                      <p  style={{marginTop:"16px"}}>
                         <a href="tel:+91 8522829922">+91 8522829922</a>
                       </p>
-                      <p>
+                      <p  style={{marginTop:"16px"}}>
                         <a href="tel:+91 8897399587">+91 8897399587</a>
                       </p>
                     </div>
                   </div>
                 </Box>
-                <Box className="support-box">
+                <Box className="support-boxes">
                   <h4>Office Address</h4>
                   <p>
                     ADDRESS: HOUSE NO 6 - 100, DARGAH KHALEEJ KHAN GUDA ROAD,
@@ -237,7 +237,7 @@ class CustomerSupport extends Component {
                   <Grid container spacing={2} alignItems={"center"}>
                     <Grid item xs={12} lg={6} md={6} sm={6}>
                       <Box className="textfield">
-                        <label>Type Of Enquiry</label>
+                        <label>Type Of Enquiry *</label>
                         <Select
                           className="select"
                           labelId="enquiry-select-label"
@@ -262,7 +262,7 @@ class CustomerSupport extends Component {
 
                     <Grid item xs={12} lg={6} md={6} sm={6}>
                       <Box className="textfield">
-                        <label>Name</label>
+                        <label>Name *</label>
                         <TextField
                           className="input"
                           variant="outlined"
@@ -283,7 +283,7 @@ class CustomerSupport extends Component {
                     </Grid>
                     <Grid item xs={12} lg={6} md={6} sm={6}>
                       <Box className="textfield">
-                        <label className="d-block">Email</label>
+                        <label className="d-block">Email *</label>
                         <TextField
                           className="input"
                           variant="outlined"
@@ -304,7 +304,7 @@ class CustomerSupport extends Component {
                     </Grid>
                     <Grid item xs={12} lg={6} md={6} sm={6}>
                       <Box className="textfield">
-                        <label className="d-block">Contact</label>
+                        <label className="d-block">Contact *</label>
                         <TextField
                           className="input"
                           variant="outlined"
@@ -325,7 +325,7 @@ class CustomerSupport extends Component {
                     </Grid>
                     <Grid item xs={12} lg={12} md={12} sm={12}>
                       <Box className="textfield">
-                        <label className="d-block">Feedback</label>
+                        <label className="d-block">Feedback *</label>
                         <TextField
                           className="input textarea"
                           variant="outlined"

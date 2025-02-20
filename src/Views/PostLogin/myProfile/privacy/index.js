@@ -8,6 +8,8 @@ import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import { connect } from "react-redux";
 import sideiconimage from "../../../../assets/img/sideicon.png";
 import { fetchDefaultAddress, updateAddress } from "../../../../Redux/Address/AddressThunk";
+import BackArrow from "../../../../assets/img/backArrow.svg";
+
 
 class Privacy extends Component {
   constructor(props) {
@@ -61,12 +63,17 @@ class Privacy extends Component {
   render() {
     return (
       <Box className="main-container">
-        <Container className="wraper">
-          <Box className="profile-container">
-            <Box className="profile-right">
-              <Box className="heading">
-                <h2>Account Privacy</h2>
-              </Box>
+        <Box className="headerboxofthecustomer">
+          <div style={{ display: "flex", gap: "8px" }}>
+            <img
+              src={BackArrow}
+              alt="Back"
+              style={{ cursor: "pointer" }}
+              onClick={() => (window.location.href = "/account")}
+            />
+            <h2>Account Privacy</h2>
+          </div>
+        </Box>
               <Box className="mainboxfortheprivacy">
                 <Box className="textfield20">
                   <label>Name *</label>
@@ -113,6 +120,7 @@ class Privacy extends Component {
                 <img src={sideiconimage} alt="Side Icon" className="side-icon" />
               </div>
               <Modal open={this.state.openModal} onClose={this.handleCloseModal}>
+                
                 <Box className="common-modal deleteusermodal">
                   <Box>
                     All data associated with this account will be permanently deleted and cannot be recovered once it's removed.
@@ -136,9 +144,6 @@ class Privacy extends Component {
                 </Box>
               </Modal>
             </Box>
-          </Box>
-        </Container>
-      </Box>
     );
   }
 }
