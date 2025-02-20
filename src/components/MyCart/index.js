@@ -220,14 +220,8 @@ class MyCart extends Component {
       prevProps.placeOrderData.status !== this.props.placeOrderData.status &&
       this.props.placeOrderData.status === status.SUCCESS
     ) {
-    }
-    if (
-      prevProps.placeOrderData.status !== this.props.placeOrderData.status &&
-      this.props.placeOrderData.status === status.SUCCESS
-    ) {
       if (this.props.placeOrderData.data?.statuscode === 200) {
         if (this.props.placeOrderData.data?.orderId) {
-          ErrorMessages.success(this.props?.placeOrderData?.data?.message);
           this.props.navigate(
             `/mycart/address/order-placed/${this.props.placeOrderData.data.orderId}`
           );
@@ -248,9 +242,6 @@ class MyCart extends Component {
             });
           }
           this.setState({ cartList: [] });
-        }
-        if (!this.props.placeOrderData.data?.orderId) {
-          ErrorMessages.error(this.props?.placeOrderData?.data?.error);
         }
         if (this.props.placeOrderData.data?.paymentLink) {
           this.setState({

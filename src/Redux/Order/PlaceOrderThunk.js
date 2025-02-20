@@ -10,10 +10,10 @@ export const placeOrder = createAsyncThunk(
     try {
       const response = await postLoginService.post(config.PLACE_ORDER, orderData);
       
-      // Add a unique ID to prevent duplicate toasts
-      if (response.data?.statuscode === 200) {
+      // Only show success message if we have an orderId
+      if (response.data?.statuscode === 200 && response.data?.orderId) {
         ErrorMessages.success(response.data?.message, {
-          toastId: 'order-success' // Add this to prevent duplicate toasts
+          toastId: `order-${response.data.orderId}` // Use orderId to make toast unique
         });
       }
       
@@ -23,6 +23,8 @@ export const placeOrder = createAsyncThunk(
     }
   }
 );
+
+
 
 export const fetchAllorders = createAsyncThunk("allorders", async (userId) => {
   try {

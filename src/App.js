@@ -37,6 +37,7 @@ function App(props) {
             pauseOnHover
             theme="light"
             limit={1} 
+            
           />
         </div>
       </Suspense>

@@ -232,18 +232,11 @@ import "../../../assets/sass/components/myCart.scss"
       prevProps.placeOrderData.status !== this.props.placeOrderData.status &&
       this.props.placeOrderData.status === status.SUCCESS
     ) {
-    }
-    if (
-      prevProps.placeOrderData.status !== this.props.placeOrderData.status &&
-      this.props.placeOrderData.status === status.SUCCESS
-    ) {
       if (this.props.placeOrderData.data?.statuscode === 200) {
         if (this.props.placeOrderData.data?.orderId) {
-          ErrorMessages.success(this.props?.placeOrderData?.data?.message);
           this.props.navigate(
             `/mycart/address/order-placed/${this.props.placeOrderData.data.orderId}`
           );
-          // handleClose();
           localStorage.removeItem("cartItem");
           localStorage.removeItem("address");
           LocalStorageCartService.saveData({});
@@ -295,22 +288,30 @@ import "../../../assets/sass/components/myCart.scss"
     let defaultAddress = JSON.parse(
       localStorage.getItem("defaultAddress")
     ).addressId;
-    const { selectedPaymentMethod, itemListArr,selectedSlot } = this.state;
-      // Check if a slot is selected
-        if (!selectedSlot) {
-          this.setState({ showSlotError: true }); // Trigger the error state
-          ErrorMessages.error("Please select a delivery slot."); // Show error message
-          return;
-        }
+
+    const { selectedPaymentMethod, itemListArr, selectedSlot } = this.state;
+
+    // Check if a slot is selected
+    if (!selectedSlot) {
+      this.setState({ showSlotError: true });
+      ErrorMessages.error("Please select a delivery slot.");
+      return;
+    }
+
+    // Prevent multiple submissions
+    if (this.state.isSubmitting) return;
+    this.setState({ isSubmitting: true });
+
     const Data = {
       addressId: addressId ? addressId : defaultAddress,
-      deliverySlotId: this.state.selectedSlot ? this.state.selectedSlot.id : "",
+      deliverySlotId: selectedSlot.id,
       items: itemListArr,
       paymentDetails: {
         method: selectedPaymentMethod,
       },
       userId: login.userId,
     };
+
     this.props.placeOrder(Data);
   };
 
