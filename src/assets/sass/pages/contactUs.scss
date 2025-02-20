@@ -179,3 +179,26 @@
 .divcontainer{
   display: flex;
 }
+
+.headerboxofthecustomer {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 10px;
+  padding-bottom: 10px;
+
+  div {
+    display: flex;
+    align-items: center; // Vertically center the image and header text
+    gap: 8px;
+  }
+
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  img {
+    height: 20px;
+    width: 20px;
+  }
+}

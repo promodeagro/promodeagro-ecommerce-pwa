@@ -45,7 +45,7 @@ class Account extends Component {
             </Link>
           </li>
           <li>
-            <Link to="/my-profile/wish-list" className="gapinthespan">
+            <Link to="/my-profile/privacy" className="gapinthespan">
               <img src={accountprivacy} alt="Account Privacy" />
               <span>Account Privacy</span>
               <img
@@ -56,7 +56,7 @@ class Account extends Component {
             </Link>
           </li>
           <li>
-            <Link to="/contact-us" className="gapinthespan">
+            <Link to="/my-profile/customer-support" className="gapinthespan">
               <img src={customersupportimage} alt="Customer Support" />
               <span>Customer Support</span>
               <img
