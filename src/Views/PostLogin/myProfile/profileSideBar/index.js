@@ -30,12 +30,12 @@ class ProfileSideBar extends Component {
             },
             {
               name: "Customer Support",
-              to: "/contact-us",
+              to: "/my-profile/contact-us",
               icon: customersupportimage,
             },
             {
               name: "Account Privacy",
-              to: "/contact-us",
+              to: "/my-profile/account-privacy",
               icon: accountprivacy,
             },
             { name: "Logout", to: "#", icon: logoutimage },

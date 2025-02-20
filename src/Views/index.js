@@ -175,13 +175,17 @@ const Views = () => {
             path={`/my-profile/account-privacy`}
             element={<Navigate to="/" replace />}
           />
+                <Route exact path={`/my-profile/contact-us`} 
+            element={<Navigate to="/" replace />}
+            />
+
         </>
       )}
 
       <Route path={`/forgot-password`} element={<Forgot />} />
       <Route path={`/`} element={<Home />} />
       <Route exact path={`/about-us`} element={<AboutUs />} />
-      <Route exact path={`/contact-us`} element={<ContactUs />} />
+      <Route exact path={`/my-profile/contact-us`} element={<ContactUs />} />
       <Route exact path={`/terms-condition`} element={<TermsCondition />} />
       <Route exact path={`/privacy-policy`} element={<PrivacyPolicy />} />
       <Route exact path={`/return-refund`} element={<ReturnRefund />} />

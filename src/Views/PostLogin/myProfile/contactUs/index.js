@@ -9,12 +9,18 @@ import {
   MenuItem,
   Button,
 } from "@mui/material";
-import { ErrorMessages, loginDetails, ValidationEngine } from "../../../Utills/helperFunctions";
+import {
+  ErrorMessages,
+  loginDetails,
+  ValidationEngine,
+} from "../../../Utills/helperFunctions";
 import { createFeedback } from "../../../../Redux/FeedBack/FeedBackThunk";
 
 import { connect } from "react-redux";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import status from "../../../../Redux/Constants";
+import ProfileSideBar from "../profileSideBar";
+
 const validationSchema = {
   typeOfEnquiry: [
     {
@@ -72,7 +78,6 @@ class ContactUs extends Component {
     };
   }
 
- 
   validateForm = () => {
     const { name, email, feedback, mobileNumber, typeOfEnquiry } = this.state;
     const error = ValidationEngine.validate(validationSchema, {
@@ -92,20 +97,20 @@ class ContactUs extends Component {
   };
 
   handleSubmit = () => {
-    
     const errorData = this.validateForm();
-    
+
     this.setState({
       isSubmit: true,
-    }); 
+    });
     this.props.createFeedback({
-      typeOfEnquiry:this.state.typeOfEnquiry,
-      name:this.state.name,
-      email:this.state.email , contact:this.state.mobileNumber, feedback:this.state.feedback
-        })
-        if (errorData.isValid) {
-     
-      ErrorMessages.success("Thank you for The Feedback")
+      typeOfEnquiry: this.state.typeOfEnquiry,
+      name: this.state.name,
+      email: this.state.email,
+      contact: this.state.mobileNumber,
+      feedback: this.state.feedback,
+    });
+    if (errorData.isValid) {
+      ErrorMessages.success("Thank you for The Feedback");
       this.setState({
         name: "",
         email: "",
@@ -122,7 +127,6 @@ class ContactUs extends Component {
       activeTab: tab,
     });
   };
-  
 
   render() {
     const errorData = this.validateForm();
@@ -137,90 +141,97 @@ class ContactUs extends Component {
     } = this.state;
     return (
       <Box className="main-container">
-          <Container>
-
-        <Box className="contact-heading-banner">
-          <Container>
-            <h2>
-              We love to hear <br />
-              from you
-            </h2>
-          </Container>
-        </Box>
-        <Box className="contact-info">
-          <Container>
-            <Grid container spacing={5}>
-              <Grid item xs={12} lg={3} md={3} sm={4}>
-                <Box className="links-box">
-                  <h2>Contact us</h2>
-                  <ul>
-                    <li
-                      className={activeTab === "support" ? "active" : ""}
-                      onClick={() => this.handleTabClick("support")}
-                    >
-                      Support
-                    </li>
-                    <li
-                      className={activeTab === "feedback" ? "active" : ""}
-                      onClick={() => this.handleTabClick("feedback")}
-                    >
-                      Feedback
-                    </li>
-                  </ul>
-                </Box>
-              </Grid>
-              <Grid item xs={12} lg={9} md={9} sm={8}>
-                {activeTab === "support" && (
-                  <Box className="support-details">
-                    <Box className="support-box">
-                      <h4>Online Customer Support</h4>
-                      <p>
-                        Customer Care Team Email :{" "}
-                        <a href="mailto:support@promodeagro.com">
-                          support@promodeagro.com
-                        </a>
-                      </p>
-                    </Box>
-                    <Box className="support-box">
-                      <h4>Phone Customer Support</h4>
-                      <p>
-                        Online Customer Care Team Phone No :{" "}
-                        <a href="tel:+91 9701610033">+91 9701610033</a>
-                      </p>
-                      <p>
-                        Store customer Care Team Phone No :{" "}
-                        <a href="tel:+91 8522829922">+91 8522829922</a>
-                      </p>
-                      <p>
-                        Farm CEO(Tina) Phone No:{" "}
-                        <a href="tel:+91 8897399587">+91 8897399587</a>
-                      </p>
-                    </Box>
-                    <Box className="support-box">
-                      <h4>Office Address</h4>
-                      <p>
-                        ADDRESS: FL NO E 702, KALIMATA TEMPLE ROAD, NEAR HANUMAN
-                        TEMPLE, RAJENDRA NAGAR, SURVEY NO 4/A AND 4/AA,
-                        PEERAMCHERUVU, VASATHI ANANDI, HYDERABAD, RANGAREDDY,
-                        TELANGANA, 500091
-                      </p>
-                      <h4>Store Address</h4>
-                      <p>
-                        Giridhari Executive Park ,Kalimandir Rd, Hyderabad,
-                        Telangana 500091
-                      </p>
-                      <h4>Farm Address</h4>
-                      <p>
-                        veluvartey village , valigonda , Bhongir District,
-                        Telangana Pin - 508112
-                      </p>
-                    </Box>
+        <Container className="wraper">
+          <Box className="profile-container">
+            <ProfileSideBar />
+            <Box className="profile-right">
+              <Box className="heading">
+                <h2>Customer Support</h2>
+              </Box>
+              <Box className="contact-heading-banner">
+                <Container>
+                  <h2>
+                    We love to hear <br />
+                    from you
+                  </h2>
+                </Container>
+              </Box>
+              <Box className="contact-info">
+                <Container>
+                  <Box className="links-box">
+                    <h2>Contact us</h2>
+                    <ul>
+                      <li
+                        className={activeTab === "support" ? "active" : ""}
+                        onClick={() => this.handleTabClick("support")}
+                      >
+                        Support
+                      </li>
+                      <li
+                        className={activeTab === "feedback" ? "active" : ""}
+                        onClick={() => this.handleTabClick("feedback")}
+                      >
+                        Feedback
+                      </li>
+                    </ul>
                   </Box>
-                )}
-                {activeTab === "feedback" && (
-                  <form>
-                  <Box className="feedback-from">
-                    <Grid container spacing={2} alignItems={"center"}>
+                  {activeTab === "support" && (
+                    <Box className="support-details">
+                      <Box className="support-box">
+                        <h4>Online Customer Support</h4>
+                        <p>
+                          Customer Care Team Email :{" "}
+                          <a href="mailto:support@promodeagro.com">
+                            support@promodeagro.com
+                          </a>
+                        </p>
+                      </Box>
+                      <Box className="support-box">
+                        <h4>Phone Customer Support</h4>
+                        <div className="divcontainer">
+                          <div>
+                            <p>Online Customer Care Phone No : </p>
+                            <p>Store Customer Care Phone No : </p>
+                            <p>Farm CEO(Tina) Phone No: </p>
+                          </div>
+                          <div>
+                            <p>
+                              <a href="tel:+91 9701610033">+91 9701610033</a>
+                            </p>
+                            <p>
+                              <a href="tel:+91 8522829922">+91 8522829922</a>
+                            </p>
+                            <p>
+                              <a href="tel:+91 8897399587">+91 8897399587</a>
+                            </p>
+                          </div>
+                        </div>
+                      </Box>
+                      <Box className="support-box">
+                        <h4>Office Address</h4>
+                        <p>
+                          ADDRESS: HOUSE NO 6 - 100, DARGAH KHALEEJ KHAN GUDA
+                          ROAD, KISMATPUR, BANDLAGUDA JAGIR, HYDERABAD,
+                          RANGAREDDY, TELANGANA, 500086.
+                        </p>
+                        <h4>Store Address</h4>
+                        <p>
+                          ADDRESS: HOUSE NO 6 - 100, DARGAH KHALEEJ KHAN GUDA
+                          ROAD, KISMATPUR, BANDLAGUDA JAGIR, HYDERABAD,
+                          RANGAREDDY, TELANGANA, 500086.
+                        </p>
+                        <h4>Farm Address</h4>
+                        <p>
+                          VELUVARTEY VILLAGE, VALIGONDA, BHONGIR DISTRICT,
+                          TELANGANA, 508112.
+                        </p>
+                      </Box>
+                    </Box>
+                  )}
+                  {activeTab === "feedback" && (
+                    <form>
+                      <Box className="feedback-from">
+                      <Grid container spacing={2} alignItems={"center"}>
                       <Grid item xs={12} lg={6} md={6} sm={6}>
                         <Box className="textfield">
                           <label>Type Of Enquiry</label>
@@ -234,9 +245,9 @@ class ContactUs extends Component {
                             onChange={this.handleValueChange}
                             error={!errorData.typeOfEnquiry.isValid && isSubmit}
                           >
-                            <MenuItem value={10}>Informal feedback</MenuItem>
-                            <MenuItem value={20}>Formal feedback</MenuItem>
-                            <MenuItem value={30}>Formative feedback</MenuItem>
+                            <MenuItem value={10}>Informal Feedback</MenuItem>
+                            <MenuItem value={20}>Formal Feedback</MenuItem>
+                            <MenuItem value={30}>Formative Feedback</MenuItem>
                           </Select>
                           {isSubmit && (
                             <FormHelperText error>
@@ -244,8 +255,10 @@ class ContactUs extends Component {
                             </FormHelperText>
                           )}
                         </Box>
-                      </Grid>
-                      <Grid item xs={12} lg={6} md={6} sm={6}>
+                        </Grid>
+
+                        <Grid item xs={12} lg={6} md={6} sm={6}>
+
                         <Box className="textfield">
                           <label>Name</label>
                           <TextField
@@ -265,8 +278,9 @@ class ContactUs extends Component {
                             </FormHelperText>
                           )}
                         </Box>
-                      </Grid>
+                        </Grid>
                       <Grid item xs={12} lg={6} md={6} sm={6}>
+
                         <Box className="textfield">
                           <label className="d-block">Email</label>
                           <TextField
@@ -286,8 +300,9 @@ class ContactUs extends Component {
                             </FormHelperText>
                           )}
                         </Box>
-                      </Grid>
+                        </Grid>
                       <Grid item xs={12} lg={6} md={6} sm={6}>
+
                         <Box className="textfield">
                           <label className="d-block">Contact</label>
                           <TextField
@@ -307,8 +322,9 @@ class ContactUs extends Component {
                             </FormHelperText>
                           )}
                         </Box>
-                      </Grid>
+                        </Grid>
                       <Grid item xs={12} lg={12} md={12} sm={12}>
+
                         <Box className="textfield">
                           <label className="d-block">Feedback</label>
                           <TextField
@@ -330,43 +346,43 @@ class ContactUs extends Component {
                             </FormHelperText>
                           )}
                         </Box>
-                      </Grid>
+                        </Grid>
                       <Grid item xs={12} lg={6} md={6} sm={6}>
+
                         <Button
                           className="common-btn submit-btn"
                           variant="contained"
-                          onClick={()=> this.handleSubmit()}
+                          onClick={() => this.handleSubmit()}
                         >
                           Submit
                         </Button>
-                      </Grid>
-                    </Grid>
-                  </Box>
-                  </form>
-                )}
-              </Grid>
-            </Grid>
-          </Container>
-        </Box>
+                        </Grid>
+                        </Grid>
+
+                      </Box>
+                    </form>
+                  )}
                 </Container>
-        
+              </Box>
+            </Box>
+          </Box>
+        </Container>
       </Box>
     );
   }
 }
 
 function mapStateToProps(state) {
- 
   // const { allAddress, selectedAddressData, defaultAddressData } =
   // state.alladdress;
-  const {feedBackData} = state.feedBack
+  const { feedBackData } = state.feedBack;
   return {
-    feedBackData 
+    feedBackData,
   };
 }
 
 const mapDispatchToProps = {
-  createFeedback
+  createFeedback,
 };
 
 export default connect(

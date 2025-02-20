@@ -188,7 +188,7 @@ class ManageAddresses extends React.Component {
 
     return (
       <Box className="main-container">
-        <Container>
+        <Container className="wraper">
           <Box className="profile-container">
             <ProfileSideBar />
             <Box className="profile-right">

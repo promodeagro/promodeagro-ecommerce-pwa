@@ -362,10 +362,10 @@ class Header extends Component {
                                 </Link>
                               </li>
                               <li onClick={() => this.handleProfileModal()}>
-                                <Link to="/contact-us">Customer Support</Link>
+                                <Link to="/my-profile/contact-us">Customer Support</Link>
                               </li>
                               <li onClick={() => this.handleProfileModal()}>
-                                <Link to="/contact-us">Account Privacy</Link>
+                                <Link to="/my-profile/account-privacy">Account Privacy</Link>
                               </li>
 
                               {/* <li onClick={() => this.handleProfileModal()}>
