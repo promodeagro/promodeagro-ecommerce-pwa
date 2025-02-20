@@ -1,17 +1,30 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import config from "../../Views/Config";
 import { postLoginService } from "../../Services";
+import { ErrorMessages } from "Views/Utills/helperFunctions";
 
 
-export const placeOrder = createAsyncThunk("placeorder", async (params) => {
-  try {
-    let url = config.PLACE_ORDER;
-    const response = await postLoginService.post(url, params);
-    return response.data;
-  } catch (error) {
-    return error;
+export const placeOrder = createAsyncThunk(
+  "order/placeOrder",
+  async (orderData, { dispatch }) => {
+    try {
+      const response = await postLoginService.post(config.PLACE_ORDER, orderData);
+      
+      // Only show success message if we have an orderId
+      if (response.data?.statuscode === 200 && response.data?.orderId) {
+        ErrorMessages.success(response.data?.message, {
+          toastId: `order-${response.data.orderId}` // Use orderId to make toast unique
+        });
+      }
+      
+      return response.data;
+    } catch (error) {
+      return error;
+    }
   }
-});
+);
+
+
 
 export const fetchAllorders = createAsyncThunk("allorders", async (userId) => {
   try {

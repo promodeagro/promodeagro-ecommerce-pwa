@@ -220,14 +220,8 @@ class MyCart extends Component {
       prevProps.placeOrderData.status !== this.props.placeOrderData.status &&
       this.props.placeOrderData.status === status.SUCCESS
     ) {
-    }
-    if (
-      prevProps.placeOrderData.status !== this.props.placeOrderData.status &&
-      this.props.placeOrderData.status === status.SUCCESS
-    ) {
       if (this.props.placeOrderData.data?.statuscode === 200) {
         if (this.props.placeOrderData.data?.orderId) {
-          ErrorMessages.success(this.props?.placeOrderData?.data?.message);
           this.props.navigate(
             `/mycart/address/order-placed/${this.props.placeOrderData.data.orderId}`
           );
@@ -248,9 +242,6 @@ class MyCart extends Component {
             });
           }
           this.setState({ cartList: [] });
-        }
-        if (!this.props.placeOrderData.data?.orderId) {
-          ErrorMessages.error(this.props?.placeOrderData?.data?.error);
         }
         if (this.props.placeOrderData.data?.paymentLink) {
           this.setState({
@@ -276,8 +267,7 @@ class MyCart extends Component {
       }
     }
   }
-
-  handlePlaceOrder = () => {
+ handlePlaceOrder = () => {
     let login = loginDetails();
     let addressId = localStorage.getItem("address");
     let defaultAddress = JSON.parse(
@@ -288,10 +278,14 @@ class MyCart extends Component {
 
     // Check if a slot is selected
     if (!selectedSlot) {
-      this.setState({ showSlotError: true }); // Trigger the error state
-      ErrorMessages.error("Please select a delivery slot."); // Show error message
+      this.setState({ showSlotError: true });
+      ErrorMessages.error("Please select a delivery slot.");
       return;
     }
+
+    // Prevent multiple submissions
+    if (this.state.isSubmitting) return;
+    this.setState({ isSubmitting: true });
 
     const Data = {
       addressId: addressId ? addressId : defaultAddress,
