@@ -512,19 +512,26 @@ class MyOrder extends Component {
                                 <span className="d-block info">
                                   {item?.address?.name}
                                 </span>
+                                <div style={{display:'flex',width:'350px'}}>
                                 <address className="info">
                                   {item?.address?.house_number}
+                                  </address>
                                   <address className="info">
                                   {item?.address?.address}
-                                </address>
-                                </address><address className="info">
+                                </address>,{" "}
+                                
+                                
+                                </div>
+                                <div style={{display:'flex',width:'350px'}}
+                                ><address className="info">
                                   {item?.address?.landmark_area}
-                                </address>
+                                </address>,{" "}
 
                                
                                 <address className="info">
                                   {item?.address?.zipCode}
                                 </address>
+                                </div>
                                 <span className="d-block info">
                                   Ph: {item?.address?.phoneNumber}
                                 </span>

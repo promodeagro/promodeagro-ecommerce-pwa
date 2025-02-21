@@ -274,7 +274,7 @@ class Header extends Component {
                         >
                           <strong>Deliver Now</strong>
                           <span>
-                            {currentAddress?.address}
+                            {currentAddress?.house_number},{" "} {currentAddress?.landmark_area}, ...
                             <KeyboardArrowDownIcon />
                           </span>
                         </Box>
@@ -461,7 +461,8 @@ class Header extends Component {
                 // }
                 onClick={this.toggleAddressModal}
               >
-                {currentAddress?.address} <KeyboardArrowDownIcon />
+                            {currentAddress?.house_number},{" "} {currentAddress?.landmark_area}, ...
+                            <KeyboardArrowDownIcon />
               </Box>
             )}
           </>

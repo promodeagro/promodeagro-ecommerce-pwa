@@ -16,17 +16,41 @@ const Invoice = ({ orderData, flag }) => {
   const isMobile = useMediaQuery("(max-width:600px)"); // Detect mobile screen size
   const downloadPDF = () => {
     const invoiceElement = document.getElementById("invoice-content");
-    html2canvas(invoiceElement).then((canvas) => {
+  
+    html2canvas(invoiceElement, { scale: 2 }).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");
-      const imgProps = pdf.getImageProperties(imgData);
+  
       const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+  
+      const ratio = imgWidth / pdfWidth;
+      const scaledHeight = imgHeight / ratio; // Scale the height to fit the width
+      let yPosition = 0;
+  
+      // Add pages dynamically if content exceeds one page
+      while (yPosition < scaledHeight) {
+        pdf.addImage(
+          imgData,
+          "PNG",
+          0,
+          -yPosition,
+          pdfWidth,
+          scaledHeight
+        );
+        
+        yPosition += pdfHeight; // Move to the next page height
+        if (yPosition < scaledHeight) {
+          pdf.addPage(); // Add new page if content still exists
+        }
+      }
+  
       pdf.save("invoice.pdf");
     });
   };
+  
   return (
     <>
       {!isMobile && flag ? (
@@ -351,9 +375,9 @@ footer p {
                   className="value"
                   style={{ width: "200px", wordBreak: "break-word" }}
                 >
-                  {orderData?.address?.house_number},
-                  {orderData?.address?.address},
-                  {orderData?.address?.landmark_area},
+                  {orderData?.address?.house_number},{" "}
+                  {orderData?.address?.address},{" "}
+                  {orderData?.address?.landmark_area},{" "}
                   {orderData?.address?.zipCode}
                 </span>
               </div>
@@ -420,10 +444,11 @@ footer p {
                     <td> {index + 1}</td>
                     <td style={{ textAlign: "left" }}>
                       {" "}
-                      {item.productName.split("-")[0]}
+                      {item.productName.split("-").slice(0, -1).join("-")}
+
                     </td>
                     <td style={{ textAlign: "left" }}>
-                      {item.productName.split("-")[1]}
+                      {item.productName.split("-").pop()}
                     </td>
                     <td style={{ textAlign: "center" }}>{item.quantity}</td>
                     <td> ₹{item.price}</td>
@@ -466,9 +491,9 @@ footer p {
                 : "0.00"}
             </span>
           </div>
-          <div style={{ textAlign: "center", marginBottom: "5px" }}>
+          {/* <div style={{ textAlign: "center", marginBottom: "5px" }}>
             <span>** You Saved ₹{orderData?.totalSavings || "0.00"} **</span>
-          </div>
+          </div> */}
           <footer>
             <div class="footer-container">
               <span class="footer-left">&lt;</span>
