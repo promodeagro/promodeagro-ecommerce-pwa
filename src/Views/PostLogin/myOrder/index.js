@@ -20,6 +20,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import BackArrow from "../../../assets/img/backArrow.svg";
 import {
   fetchAllorders,
   fetchOrderById,
@@ -222,15 +223,23 @@ class MyOrder extends Component {
           ) : (
             <Box className="my-order-container">
               <Box className="my-order-list">
-                <Box className="d-flex align-items-center">
-                  <h2>My Orders</h2>
-                  {/* <Box className="order-status">
-                  <span>Packing</span>
-                </Box> */}
-                </Box>
+              {this.state.isMobile ? (
+          <div style={{ display: "flex", gap: "8px" }}>
+            <img
+              src={BackArrow}
+              alt="Back"
+              style={{ cursor: "pointer" }}
+              onClick={() => (window.location.href = "/account")}
+            />
+            <h2>My Orders</h2>
+          </div>
+        ) : (
+          <Box className="d-flex align-items-center">
+            <h2>My Orders</h2>
+          </Box>
+        )}
                 <span className="d-block last-month-order">
-                  Showing orders for the last 6 months{" "}
-                  <strong>{myOrdersList?.length}</strong> Orders
+                  Showing orders for the last 6 months<strong>{myOrdersList?.length}</strong>Orders
                 </span>
                 {myOrdersList?.length > 0 ? (
                   myOrdersList.map((item) => (
