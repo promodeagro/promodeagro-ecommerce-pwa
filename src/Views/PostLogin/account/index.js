@@ -13,13 +13,17 @@ import sideiconimage from "../../../assets/img/sideicon.png";
 
 class Account extends Component {
   render() {
+    const defaultAddress = JSON.parse(localStorage.getItem("defaultAddress") || "{}");
+    const phoneNumber = defaultAddress?.phoneNumber || "N/A"; // Fallback to "N/A" if not available
+
+
     return (
       <Box className="account_page">
         <ul>
           <li>
             <Link to="/my-profile/personal-information" className="gapinthespan">
               <img src={profileimage} alt="Account" className="account-image" />
-              <span>Account</span>
+              <span>{phoneNumber}</span> {/* Updated to show phone number */}
             </Link>
           </li>
           <li>

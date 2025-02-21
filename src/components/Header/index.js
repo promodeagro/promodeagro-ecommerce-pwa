@@ -335,7 +335,7 @@ class Header extends Component {
                       onClick={() => this.handleProfileModal()}
                       className="login profile_modal_par"
                     >
-                      {"Account" || "User"} <KeyboardArrowDownIcon />
+                      {currentAddress?.name || "User"} <KeyboardArrowDownIcon />
                       {profileModal && (
                         <>
                           <Box

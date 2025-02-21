@@ -68,8 +68,8 @@ class AccountPrivacy extends Component {
               <Box className="heading">
                 <h2>Account Privacy</h2>
               </Box>
-              <Box className="mainboxfortheprivacy">
-                <Box className="textfield20">
+              {/* <Box className="mainboxfortheprivacy"> */}
+                {/* <Box className="textfield20">
                   <label>Name *</label>
                   <TextField
                     className="inputfield"
@@ -93,17 +93,17 @@ class AccountPrivacy extends Component {
                     placeholder={this.state.phoneNumber || "Phone No"}
                     onChange={this.handleValueChange}
                   />
-                </Box>
-                <div className="buttonbox">
+                </Box> */}
+                {/* <div className="buttonbox">
                   <button
                     onClick={this.handleSubmit}
                     variant="contained"
-                    className="smallbutton1"
+                    className="smallerbutton1"
                   >
                     Submit
                   </button>
                 </div>
-              </Box>
+              </Box> */}
               <div className="delete-account-btn" onClick={this.handleOpenModal}>
                 <div className="delete-account-content">
                   <h4>Delete Account</h4>

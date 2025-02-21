@@ -50,7 +50,7 @@ class MyCart extends Component {
       AddNewAddressOpen: false,
       slotOpen: false,
       defaultAddress: "",
-      selectedPaymentMethod: "online",
+      selectedPaymentMethod: "cash",
       paymentLink: null,
       ListData: [],
       itemListArr: [],
@@ -233,7 +233,7 @@ class MyCart extends Component {
           localStorage.removeItem("address");
           LocalStorageCartService.saveData({});
           this.setState({ selectedSlot: "" });
-          this.setState({ selectedPaymentMethod: "online" });
+          this.setState({ selectedPaymentMethod: "cash" });
           let login = loginDetails();
           if (login?.userId) {
             this.props.addListOfItemsToCartReq({
@@ -525,9 +525,14 @@ class MyCart extends Component {
                         <div>
                           <span>Delivery Charges</span>
                           <div>
-                          <span>
-  <strong style={{ marginLeft: "5px" }}>₹{this.props.cartItems.data?.deliveryCharges}</strong>
-  </span>
+                             {this.props.cartItems.data?.deliveryCharges <= 0 ? (
+                              <>
+                               <span className="mrp">₹50</span>
+                               <span className="free">Free</span>
+                              </>
+                            ) : (
+                              <strong style={{ marginLeft: "5px" }}>₹{this.props.cartItems.data?.deliveryCharges}</strong>
+                            )}
                           </div>
                         </div>
                         <div>
@@ -541,7 +546,7 @@ class MyCart extends Component {
                           <div className="payment_container">
                             <Box className="Payment_methods_box">
                               <h2>Payment Method</h2>
-                              <div
+                              {/* <div
                                 onClick={() =>
                                   this.setState({
                                     selectedPaymentMethod: "online",
@@ -555,7 +560,7 @@ class MyCart extends Component {
                                   checked={selectedPaymentMethod === "online"}
                                   color="success"
                                 />
-                              </div>
+                              </div> */}
                               <div
                                 onClick={() =>
                                   this.setState({
