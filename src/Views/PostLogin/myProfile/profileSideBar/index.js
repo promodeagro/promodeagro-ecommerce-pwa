@@ -53,6 +53,9 @@ class ProfileSideBar extends Component {
   render() {
     const path = window.location.pathname;
     const { sections } = this.state;
+    const defaultAddress = JSON.parse(localStorage.getItem("defaultAddress") || "{}");
+    const phoneNumber = defaultAddress?.phoneNumber || "N/A"; // Fallback to "N/A" if not available
+
 
     return (
       <Box className="profilewrap" sx={{marginLeft:"none", marginTop:"none"}}>
@@ -63,7 +66,8 @@ class ProfileSideBar extends Component {
           className="heading"
         >
           <img className="imageofheader" src={profileimage} alt="Profile" />
-          <Link to={"/my-order"}><p style={{marginTop: '6px'}}>7989786093</p></Link>
+          <Link to={"/my-order"}>              <p style={{ marginTop: "6px" }}>{phoneNumber}</p>
+          </Link>
         </Box>
         {sections.map((section, index) => (
           <Box className="profile-links" key={index}>
