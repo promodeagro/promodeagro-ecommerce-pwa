@@ -149,11 +149,14 @@ class MyCart extends Component {
         totalPrice: this.props.cartItems.data.finalTotal,
         loaderCount: 1,
       });
-    } else if (this.props.cartItems.status === status.FAILURE) {
-      this.setState({
-        cartList: [],
-        loaderCount: 1,
-      });
+    }  if (this.props.cartItems.status === status.FAILURE) {
+      // Only update state if cartList is not already empty and loaderCount is not already 1
+      if (this.state.cartList.length !== 0 || this.state.loaderCount !== 1) {
+        this.setState({
+          cartList: [],
+          loaderCount: 1,
+        });
+      }
     }
     if (
       prevProps.saveForLaterData.status !==
