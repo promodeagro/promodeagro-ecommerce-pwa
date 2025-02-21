@@ -1,8 +1,11 @@
 .my-order-container {
-  margin: 36px 0px 77px 0px;
+  // margin: 36px 0px 77px 0px;
+  padding-top: 20px;
   .invoice-download:hover {
     color: rgba(0, 0, 0, 0.87); /* MUI default hover color */
   }
+
+  
 
   .my-order-list {
     h2 {
@@ -413,5 +416,11 @@
     Button {
       width: 100% !important;
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .my-order-container {
+    padding-top: 10px;
   }
 }
