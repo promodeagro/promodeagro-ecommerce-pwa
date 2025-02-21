@@ -412,13 +412,11 @@ import "../../../assets/sass/components/myCart.scss"
                         ? this.state.selectedAddress.address_type
                         : this.getDefaultAddresstype()}
                     </span>
-                    <span>
-                      {
-                        this.state.selectedAddress
-                          ? `${this.state.selectedAddress.address}, ${this.state.selectedAddress.zipCode}`
-                          : this.getDefaultAddress() 
-                      }
-                    </span>
+                   <span>
+                          {this.state.selectedAddress
+                            ? `${this.state.selectedAddress.house_number}, ${this.state.selectedAddress.landmark_area}...`
+                            : this.getDefaultAddress()}
+                        </span>
                   </Box>
                   {!matches && (
                     <Link
@@ -534,7 +532,9 @@ import "../../../assets/sass/components/myCart.scss"
                    
                    <>
                   
-                   <div className="bill_details">
+                   <div className="bill_details" style={{marginBottom:'8px'
+          
+        }}>
                      <strong>Bill details</strong>
                      <div>
                        <span>Item total</span>
@@ -559,6 +559,17 @@ import "../../../assets/sass/components/myCart.scss"
                        <strong>₹{this.state.totalPrice}</strong>
                      </div>
                    </div>
+                     {this.state.selectedAddress?.zipCode == "500091" ||
+                      this.state.selectedAddress?.zipCode == "500030" ||
+                      this.state.selectedAddress?.zipCode == "500086" ? (
+                        <span style={{color:"#005F41",fontWeight:'600',fontSize:'16px',marginLeft:'5px'}}>
+                          "Enjoy free delivery on orders above 100 rupees"
+                        </span>
+                      ) : (
+                        <span style={{color:"#005F41",fontWeight:'600',fontSize:'14px',marginLeft:'5px'}}>
+                          "Enjoy free delivery on orders above 300 rupees"
+                        </span>
+                      )}
 
                    {defaultSelectedAddress?.addressId ? (
                      <>
