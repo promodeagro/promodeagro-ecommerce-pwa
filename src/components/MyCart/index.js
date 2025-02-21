@@ -287,8 +287,8 @@ class MyCart extends Component {
     }
 
     // Prevent multiple submissions
-    if (this.state.isSubmitting) return;
-    this.setState({ isSubmitting: true });
+    // if (this.state.isSubmitting) return;
+    // this.setState({ isSubmitting: true });
 
     const Data = {
       addressId: addressId ? addressId : defaultAddress,
