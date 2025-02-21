@@ -343,7 +343,7 @@ class MyCart extends Component {
   getDefaultAddress() {
     const defaultAddress = JSON.parse(localStorage.getItem("defaultAddress"));
     if (defaultAddress) {
-      return `${defaultAddress.address}, ${defaultAddress.zipCode}`;
+      return `${defaultAddress.house_number}, ${defaultAddress.landmark_area}...`;
     }
     return "No Address Selected";
   }
@@ -393,15 +393,16 @@ class MyCart extends Component {
                       <img src={LocationIcon} alt="" />
                       <Box>
                         <span>
-                          Delivering to  {" "}
+                          Delivering to {""}
                           {this.state.selectedAddress
                             ? this.state.selectedAddress.address_type
                             : this.getDefaultAddresstype()}
                         </span>
                         <span>
+
                           {this.state.selectedAddress
-                            ? `${this.state.selectedAddress.address}, ${this.state.selectedAddress.zipCode}`
-                            : this.getDefaultAddress()}
+    ? `${this.state.selectedAddress.house_number}, ${this.state.selectedAddress.landmark_area}...`
+    : this.getDefaultAddress()}
                         </span>
                       </Box>
                       {!matches && (
@@ -525,12 +526,8 @@ class MyCart extends Component {
                           <span>Delivery Charges</span>
                           <div>
                           <span>
-  ₹
-  {this.state.selectedAddress?.zipCode === "500091" || 
-   this.state.defaultSelectedAddress?.zipCode === "500091"
-    ? 20 
-    : 50}
-</span>
+  <strong style={{ marginLeft: "5px" }}>₹{this.props.cartItems.data?.deliveryCharges}</strong>
+  </span>
                           </div>
                         </div>
                         <div>
