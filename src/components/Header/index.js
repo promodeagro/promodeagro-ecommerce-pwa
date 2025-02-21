@@ -344,7 +344,7 @@ class Header extends Component {
                           >
                             <ul>
                               <li onClick={() => this.handleProfileModal()}>
-                                <Link to="/my-profile/personal-information">
+                                <Link>
                                   <p>
                                     My Account
                                     <div className="smalltext">

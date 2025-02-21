@@ -65,12 +65,14 @@ class MyCart extends Component {
     if (items?.userId) {
       // Fetch the default address (assuming it updates props synchronously)
       this.props.fetchDefaultAddress(items.userId);
-  
+
       // Optionally add any items already in the cart
       const cartData = LocalStorageCartService.getData() || {};
       this.props.addListOfItemsToCartReq({
         userId: items.userId,
-        cartItems: Object.values(cartData).length ? Object.values(cartData) : [],
+        cartItems: Object.values(cartData).length
+          ? Object.values(cartData)
+          : [],
       });
       const addressId = localStorage.getItem("addressId") || ""; // Get addressId from localStorage
       if (addressId) {
@@ -83,13 +85,13 @@ class MyCart extends Component {
       }
     }
   }
-  
+
   componentDidUpdate(prevProps, prevState) {
     const items = loginDetails();
     const { handleClose } = this.props;
     if (
       prevProps.defaultAddressData?.status !==
-      this.props?.defaultAddressData?.status &&
+        this.props?.defaultAddressData?.status &&
       this.props?.defaultAddressData?.status === status.SUCCESS &&
       this.props?.defaultAddressData?.data
     ) {
@@ -149,7 +151,8 @@ class MyCart extends Component {
         totalPrice: this.props.cartItems.data.finalTotal,
         loaderCount: 1,
       });
-    }  if (this.props.cartItems.status === status.FAILURE) {
+    }
+    if (this.props.cartItems.status === status.FAILURE) {
       // Only update state if cartList is not already empty and loaderCount is not already 1
       if (this.state.cartList.length !== 0 || this.state.loaderCount !== 1) {
         this.setState({
@@ -160,7 +163,7 @@ class MyCart extends Component {
     }
     if (
       prevProps.saveForLaterData.status !==
-      this.props.saveForLaterData.status &&
+        this.props.saveForLaterData.status &&
       this.props.saveForLaterData.status === status.SUCCESS
     ) {
       this.props.fetchCartItems({
@@ -270,7 +273,7 @@ class MyCart extends Component {
       }
     }
   }
- handlePlaceOrder = () => {
+  handlePlaceOrder = () => {
     let login = loginDetails();
     let addressId = localStorage.getItem("address");
     let defaultAddress = JSON.parse(
@@ -399,10 +402,9 @@ class MyCart extends Component {
                             : this.getDefaultAddresstype()}
                         </span>
                         <span>
-
                           {this.state.selectedAddress
-    ? `${this.state.selectedAddress.house_number}, ${this.state.selectedAddress.landmark_area}...`
-    : this.getDefaultAddress()}
+                            ? `${this.state.selectedAddress.house_number}, ${this.state.selectedAddress.landmark_area}...`
+                            : this.getDefaultAddress()}
                         </span>
                       </Box>
                       {!matches && (
@@ -492,46 +494,66 @@ class MyCart extends Component {
                           order.
                         </Typography>
                       )}
-
                     </Box>
-                   
                   </>
                 ) : null}
 
                 <Box className="item_details_container">
-                  <Box sx={{display:"flex" ,alignItems:"center", justifyContent:"space-between"}}>
-                                                    <h2>Item Details</h2>
-                                                    <Button  sx={{color:"#1f9151" , fontSize:"14px" , fontWeight:"500"}} onClick={()=> {
-                                                     const login = loginDetails()
-                                                        localStorage.removeItem("cartItem");
-                                                        LocalStorageCartService.saveData({});
-                                                        this.props.addListOfItemsToCartReq({
-                                                         userId: login.userId,
-                                                         cartItems: [],
-                                                       });
-                                                    }} >Clear Cart</Button>
-                                                    </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <h2>Item Details</h2>
+                    <Button
+                      sx={{
+                        color: "#1f9151",
+                        fontSize: "14px",
+                        fontWeight: "500",
+                      }}
+                      onClick={() => {
+                        const login = loginDetails();
+                        localStorage.removeItem("cartItem");
+                        LocalStorageCartService.saveData({});
+                        this.props.addListOfItemsToCartReq({
+                          userId: login.userId,
+                          cartItems: [],
+                        });
+                      }}
+                    >
+                      Clear Cart
+                    </Button>
+                  </Box>
                   <CartItems />
 
                   {this.state.cartList?.length > 0 ? (
                     <>
-                    
-                      <div className="bill_details">
+                      <div className="bill_details" style={{marginBottom:'8px'
+          
+                      }}>
                         <strong>Bill details</strong>
+
+                       
                         <div>
                           <span>Item total</span>
-                          <strong>₹{this.props.cartItems.data?.subTotal}</strong>
+                          <strong>
+                            ₹{this.props.cartItems.data?.subTotal}
+                          </strong>
                         </div>
                         <div>
                           <span>Delivery Charges</span>
                           <div>
-                             {this.props.cartItems.data?.deliveryCharges <= 0 ? (
+                            {this.props.cartItems.data?.deliveryCharges <= 0 ? (
                               <>
-                               <span className="mrp">₹50</span>
-                               <span className="free">Free</span>
+                                <span className="mrp">₹50</span>
+                                <span className="free">Free</span>
                               </>
                             ) : (
-                              <strong style={{ marginLeft: "5px" }}>₹{this.props.cartItems.data?.deliveryCharges}</strong>
+                              <strong style={{ marginLeft: "5px" }}>
+                                ₹{this.props.cartItems.data?.deliveryCharges}
+                              </strong>
                             )}
                           </div>
                         </div>
@@ -540,6 +562,17 @@ class MyCart extends Component {
                           <strong>₹{this.state.totalPrice}</strong>
                         </div>
                       </div>
+                      {this.state.selectedAddress?.zipCode == "500091" ||
+                        this.state.selectedAddress?.zipCode == "500030" ||
+                        this.state.selectedAddress?.zipCode == "500086" ? (
+                          <span style={{color:"#005F41",fontWeight:'600',fontSize:'16px',marginLeft:'5px'}}>
+                             "Enjoy free delivery on orders above 100 rupees"
+                          </span>
+                        ) : (
+                          <span style={{color:"#005F41",fontWeight:'600',fontSize:'16px',marginLeft:'5px'}}>
+                            "Enjoy free delivery on orders above 300 rupees"
+                          </span>
+                        )}
 
                       {defaultSelectedAddress?.addressId ? (
                         <>
@@ -578,6 +611,7 @@ class MyCart extends Component {
                                 />
                               </div>
                             </Box>
+                          
                             <Grid
                               sx={{ paddingBottom: "20px" }}
                               item
@@ -597,7 +631,7 @@ class MyCart extends Component {
                                 }
                                 endIcon={
                                   this.props.placeOrderData.status ===
-                                    status.IN_PROGRESS ? (
+                                  status.IN_PROGRESS ? (
                                     <CircularProgress className="common-loader" />
                                   ) : (
                                     <></>
