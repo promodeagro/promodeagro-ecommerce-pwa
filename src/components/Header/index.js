@@ -59,7 +59,10 @@ class Header extends Component {
       .matchMedia("(max-width: 600px)")
       .addEventListener("change", (e) => this.setState({ matches: e.matches }));
     let items = loginDetails();
-
+   localStorage.setItem("defaultAddress", JSON.stringify({
+      "addressId": "gwskddsfsd",
+    }));
+    
     if (items?.userId) {
       this.props.fetchDefaultAddress(items?.userId);
     }
