@@ -7,122 +7,91 @@ import { connect } from 'react-redux';
 import { navigateRouter } from 'Views/Utills/Navigate/navigateRouter';
 import status from '../../Redux/Constants';
 import MyCart from 'components/MyCart';
+import { loginDetails } from "Views/Utills/helperFunctions";
+
 class GlobalCartIndicator extends Component {
     constructor(props) {
         super(props);
         this.state = {
           matches: window.matchMedia("(max-width: 600px)").matches,
-          myCartOpen:false,
+          myCartOpen: false,
           totalPrice: "",
-          showGlobalInicator:true
+          showGlobalInicator: true
         };
-      }
-      componentDidMount(){
-        window
-        .matchMedia("(max-width: 600px)")
+    }
+
+    componentDidMount() {
+        window.matchMedia("(max-width: 600px)")
         .addEventListener("change", (e) => this.setState({ matches: e.matches }));
-      }
+    }
 
-componentDidUpdate(prevProps){
+    componentDidUpdate(prevProps) {
+        if (
+            prevProps.cartItems.status !== this.props.cartItems.status &&
+            this.props.cartItems.status === status.SUCCESS &&
+            this.props.cartItems.data
+        ) {
+            this.setState({
+                totalPrice: this.props.cartItems.data.subTotal,
+            });
+        }
+    }
+
+    render() {
+        const { noOfcartItemsInLS } = this.props;
+        const currentPath = window.location.pathname;
+        const userId = loginDetails()?.userId;
     
-    if (
-        prevProps.cartItems.status !== this.props.cartItems.status &&
-        this.props.cartItems.status === status.SUCCESS &&
-        this.props.cartItems.data
-      ) {
+        if (currentPath === "/cart" || noOfcartItemsInLS <= 0) {
+            return null;
+        }
     
-        this.setState({
-          
-          totalPrice: this.props.cartItems.data.subTotal,
-          
-        });}
-}
-
-  render() {
-    const { noOfcartItemsInLS } = this.props;
-    const currentPath = window.location.pathname; 
+        return (
+            <>
+                {this.state.matches && (
+                    <div>
+                        {this.state.showGlobalInicator ? (
+                            <Box sx={{ display: "flex", alignItems: "center", height: "50px", justifyContent: "space-between" }} className="global_cart">
+                                <Box sx={{ display: "flex", gap: "4px", alignItems: "center" }}>
+                                    <ShoppingCartIcon />
+                                    <Box sx={{ display: "flex", flexDirection: "column" }}>
+                                        <span style={{ display: "flex", gap: "2px" }} className='item_count'>
+                                            {noOfcartItemsInLS ? <p>{noOfcartItemsInLS}</p> : <></>} Item
+                                        </span>
+                                    </Box>
+                                </Box>
     
-  if (currentPath === "/cart" || noOfcartItemsInLS <= 0) {
-    return null;
-  }
-
-
-    return (
-      <>
-     {this.state.matches && (
-                 <div>
-                 {this.state.showGlobalInicator ? (
-                   <Box sx={{
-                       display: "flex", alignItems: "center",height:"50px", justifyContent: "space-between"
-                     }} className="global_cart">
-                       <Box sx={{ display: "flex", gap: "4px", alignItems: "center" }}>
-                         <ShoppingCartIcon />
-                         <Box sx={{ display: "flex", flexDirection: "column" }}>
-                          
-                           <span style={{ display: "flex", gap: "2px" }} className='item_count'>
-                             {noOfcartItemsInLS ? (
-                               <p>{noOfcartItemsInLS}</p>
-                             ) : (
-                               <></>
-                             )} Item
-                           </span>
-
-                           {/* <span>
-                             ₹ {this.totalPrice} 230
-                           </span> */}
-                         
-                         </Box>
-                       </Box>
-           
-                       <Box onClick={()=> this.props.navigate("/cart")} sx={{
-                         display: 'flex', cursor: "pointer", alignItems: 'center', gap: "4px"
-                       }}>
-                         View Cart
-                         <ArrowForwardIosIcon />
-                       </Box>
-                     </Box>
-                 ) : (
-                   <>
-                   </>
-                 )}
-               </div>
-              )}
-
-
-
+                                <Box
+                                    onClick={() => this.props.navigate(userId ? "/cart" : "/")}
+                                    sx={{ display: 'flex', cursor: "pointer", alignItems: 'center', gap: "4px" }}
+                                >
+                                    View Cart
+                                    <ArrowForwardIosIcon />
+                                </Box>
+                            </Box>
+                        ) : null}
+                    </div>
+                )}
     
                 <MyCart
-                         open={this.state.myCartOpen}
-                         handleClose={() => {
-                           this.setState({
-                             myCartOpen: false,
-                           });
-                         }}
-                       />
-      </>
-    );
-  }
+                    open={this.state.myCartOpen}
+                    handleClose={() => this.setState({ myCartOpen: false })}
+                />
+            </>
+        );
+    }
 }
 
 function mapStateToProps(state) {
-  const { cartData } = state.home;
-  const { cartItems, noOfcartItemsInLS } = state.cartitem;
-  const { personalDetailsData } = state.login;
-  const { shopCategoryData, productCategoryData, allCategories } =
-    state.allproducts;
-  const { allAddress, selectedAddressData, defaultAddressData } =
-    state.alladdress;
-  return {
-    cartData,
-    noOfcartItemsInLS,
-    cartItems,
-  };
+    const { cartData } = state.home;
+    const { cartItems, noOfcartItemsInLS } = state.cartitem;
+    return {
+        cartData,
+        noOfcartItemsInLS,
+        cartItems,
+    };
 }
 
-const mapDispatchToProps = {
-};
+const mapDispatchToProps = {};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(navigateRouter(GlobalCartIndicator));
+export default connect(mapStateToProps, mapDispatchToProps)(navigateRouter(GlobalCartIndicator));
