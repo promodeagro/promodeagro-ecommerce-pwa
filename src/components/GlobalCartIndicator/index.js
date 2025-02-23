@@ -16,7 +16,8 @@ class GlobalCartIndicator extends Component {
           matches: window.matchMedia("(max-width: 600px)").matches,
           myCartOpen: false,
           totalPrice: "",
-          showGlobalInicator: true
+          showGlobalInicator: true,
+          authModalOpen: false
         };
     }
 
@@ -62,7 +63,13 @@ class GlobalCartIndicator extends Component {
                                 </Box>
     
                                 <Box
-                                    onClick={() => this.props.navigate(userId ? "/cart" : "/")}
+                                    onClick={() => {
+                                        if (userId) {
+                                            this.props.navigate("/cart");
+                                        } else {
+                                            this.setState({ authModalOpen: true });
+                                        }
+                                    }}
                                     sx={{ display: 'flex', cursor: "pointer", alignItems: 'center', gap: "4px" }}
                                 >
                                     View Cart
