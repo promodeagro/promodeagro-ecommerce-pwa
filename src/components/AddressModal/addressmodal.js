@@ -265,7 +265,7 @@ class AddressModal extends Component {
     variant="contained"
     className="smallbutton1"
     type="button"
-    onClick={() => window.location.href = "/my-profile/alladdress"}
+    onClick={() => window.location.href = "/my-profile/manage-addresses"}
   >
     View Saved Address
   </button>
