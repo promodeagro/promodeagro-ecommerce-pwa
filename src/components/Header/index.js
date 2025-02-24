@@ -29,6 +29,7 @@ import MyCart from "components/MyCart";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import AddressModal from "components/AddressModal/addressmodal";
 import AddAddressModal from "components/AddressModal/addaddressmodal";
+import { LocalStorageCartService } from "Services/localStorageCartService";
 
 class Header extends Component {
   constructor(props) {
@@ -59,11 +60,11 @@ class Header extends Component {
       .matchMedia("(max-width: 600px)")
       .addEventListener("change", (e) => this.setState({ matches: e.matches }));
     let items = loginDetails();
-    if (!localStorage.getItem("defaultAddress")) {
-      localStorage.setItem("defaultAddress", JSON.stringify({
-          "addressId": "gwskddsfsd",
-      }));
-  } 
+  //   if (!localStorage.getItem("defaultAddress")) {
+  //     localStorage.setItem("defaultAddress", JSON.stringify({
+  //         "addressId": "gwskddsfsd",
+  //     }));
+  // } 
     if (items?.userId) {
       this.props.fetchDefaultAddress(items?.userId);
     }
@@ -71,6 +72,10 @@ class Header extends Component {
       this.props.fetchPersonalDetails({
         userId: loginDetails()?.userId,
       });
+    }
+    if (!loginDetails()?.userId) {
+      localStorage.removeItem('cartItem');
+       LocalStorageCartService.saveData({});
     }
     this.props.fetchCategories();
   }
