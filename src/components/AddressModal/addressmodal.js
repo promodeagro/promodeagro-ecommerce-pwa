@@ -21,11 +21,15 @@ class AddressModal extends Component {
       addressToDelete: null,
       addressToEdit: null, // Store the address data to be edited
       isDeleting: false, // Add loading state for deletion
+      matches: window.matchMedia("(max-width: 600px)").matches,
 
     };
   }
 
   componentDidMount() {
+    window
+    .matchMedia("(max-width: 600px)")
+    .addEventListener("change", (e) => this.setState({ matches: e.matches }));
     const { getAllAddress } = this.props;
     const loginData = loginDetails();
     const userId = loginData?.userId;
@@ -156,7 +160,7 @@ class AddressModal extends Component {
 
   render() {
     const { open, allAddressData, handleClose } = this.props;
-    const { submitAddress, openDeleteModal, addressToEdit, isDeleting } =
+    const { submitAddress,matches , openDeleteModal, addressToEdit, isDeleting } =
       this.state;
     const { defaultAddressId, addresses } = allAddressData || {};
     if (!addresses || addresses.length === 0) return null;
@@ -261,14 +265,28 @@ class AddressModal extends Component {
               </Box>
             </Box>
             <span className="viewbutton">
-  <button
-    variant="contained"
-    className="smallbutton1"
-    type="button"
-    onClick={() => window.location.href = "/my-profile/manage-addresses"}
-  >
-    View Saved Address
-  </button>
+            {
+  matches ? (
+    <button
+      variant="contained"
+      className="smallbutton1"
+      type="button"
+      onClick={() => window.location.href = "/my-profile/alladdress"}
+    >
+      View Saved Address
+    </button>
+  ) : (
+    <button
+      variant="contained"
+      className="smallbutton1"
+      type="button"
+      onClick={() => window.location.href = "/my-profile/manage-addresses"}
+    >
+      View Saved Address
+    </button>
+  )
+}
+
 </span>
           </Box>
           <AddAddressModal
