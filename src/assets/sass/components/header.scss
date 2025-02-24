@@ -61,6 +61,13 @@
     color: #ffffff;
     cursor: pointer;
   }
+  .users_name{
+    display: inline-block;
+    max-width: 100px;
+     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
   .card {
     display: inline-flex;
