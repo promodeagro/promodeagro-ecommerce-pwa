@@ -39,13 +39,28 @@ class DeliverySlots extends Component {
     const { slots, allAddressData } = this.props;
     const deliveryType = slots?.[0]?.deliveryType || "same day";
 
-    if (deliveryType !== prevState.deliveryType) {
-      this.setState({ deliveryType }, () => {
-        const selectedDay = deliveryType === "same day" ? "today" : "tomorrow";
-        this.setState({ selectedDay });
-      });
-    }
+    // if (deliveryType !== prevState.deliveryType) {
+    //   this.setState({ deliveryType }, () => {
+    //     const selectedDay = deliveryType === "same day" ? "today" : "tomorrow";
+    //     this.setState({ selectedDay });
+    //   });
+    // }
 
+       // New slot availability check
+       if (prevProps.slots !== this.props.slots) {
+        const { slots } = this.props;
+        const sameDaySlots = slots?.[0]?.sameDaySlots || [];
+        const hasTodaySlots = sameDaySlots.some(shift => shift.slots?.length > 0);
+    
+        const nextDaySlots = slots?.[0]?.nextDaySlots || [];
+        const hasTomorrowSlots = nextDaySlots.some(shift => shift.slots?.length > 0);
+    
+        const { selectedDay } = this.state;
+    
+        if (selectedDay === "today" && !hasTodaySlots && hasTomorrowSlots) {
+          this.setState({ selectedDay: "tomorrow" });
+        }
+      }
     const addressDetail = loginDetails();
     let zipCode = null;
 
@@ -158,14 +173,14 @@ class DeliverySlots extends Component {
             >
               Today
             </span>
-            {slots?.[0]?.nextDaySlots?.length > 0 && (
+            {/* {slots?.[0]?.nextDaySlots?.length > 0 && ( */}
               <span
                 className={selectedDay === "tomorrow" ? "active_day" : ""}
                 onClick={() => this.setState({ selectedDay: "tomorrow" })}
               >
                 Tomorrow
               </span>
-            )}
+            {/* )} */}
           </Box>
           <Box>
             <Tabs
