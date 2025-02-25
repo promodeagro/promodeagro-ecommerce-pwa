@@ -48,9 +48,18 @@ componentDidUpdate(prevProps){
     const { noOfcartItemsInLS } = this.props;
     const currentPath = window.location.pathname; 
     
-  if (currentPath === "/cart" || noOfcartItemsInLS <= 0) {
-    return null;
-  }
+    if (
+      currentPath === "/cart" ||
+      currentPath === "/account" ||
+      currentPath === "/my-order" ||
+      currentPath === "/my-profile/customer-support" ||
+      currentPath === "/my-profile/alladdress" ||
+      currentPath === "/my-profile/privacy" ||
+      noOfcartItemsInLS <= 0
+    ) {
+      return null;
+    }
+  
 
 
     return (
