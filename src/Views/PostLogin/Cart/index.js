@@ -56,7 +56,7 @@ import "../../../assets/sass/components/myCart.scss"
       AddNewAddressOpen: false,
       slotOpen: false,
       defaultAddress: "",
-      selectedPaymentMethod: "cash",
+      selectedPaymentMethod: "online",
       paymentLink: null,
       ListData: [],
       itemListArr: [],
@@ -241,7 +241,7 @@ import "../../../assets/sass/components/myCart.scss"
           localStorage.removeItem("address");
           LocalStorageCartService.saveData({});
           this.setState({ selectedSlot: "" });
-          this.setState({ selectedPaymentMethod: "cash" });
+          this.setState({ selectedPaymentMethod: "online" });
           let login = loginDetails();
           if (login?.userId) {
             this.props.addListOfItemsToCartReq({
@@ -576,7 +576,7 @@ import "../../../assets/sass/components/myCart.scss"
                        <div className="payment_container">
                          <Box className="Payment_methods_box">
                            <h2>Payment Method</h2>
-                           {/* <div
+                           <div
                              onClick={() =>
                                this.setState({
                                  selectedPaymentMethod: "online",
@@ -590,7 +590,7 @@ import "../../../assets/sass/components/myCart.scss"
                                checked={selectedPaymentMethod === "online"}
                                color="success"
                              />
-                           </div> */}
+                           </div>
 
                            
                            <div
