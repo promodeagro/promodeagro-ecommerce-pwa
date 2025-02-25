@@ -50,7 +50,7 @@ class MyCart extends Component {
       AddNewAddressOpen: false,
       slotOpen: false,
       defaultAddress: "",
-      selectedPaymentMethod: "cash",
+      selectedPaymentMethod: "online",
       paymentLink: null,
       ListData: [],
       itemListArr: [],
@@ -236,7 +236,7 @@ class MyCart extends Component {
           localStorage.removeItem("address");
           LocalStorageCartService.saveData({});
           this.setState({ selectedSlot: "" });
-          this.setState({ selectedPaymentMethod: "cash" });
+          this.setState({ selectedPaymentMethod: "online" });
           let login = loginDetails();
           if (login?.userId) {
             this.props.addListOfItemsToCartReq({
@@ -579,7 +579,7 @@ class MyCart extends Component {
                           <div className="payment_container">
                             <Box className="Payment_methods_box">
                               <h2>Payment Method</h2>
-                              {/* <div
+                              <div
                                 onClick={() =>
                                   this.setState({
                                     selectedPaymentMethod: "online",
@@ -593,7 +593,7 @@ class MyCart extends Component {
                                   checked={selectedPaymentMethod === "online"}
                                   color="success"
                                 />
-                              </div> */}
+                              </div>
                               <div
                                 onClick={() =>
                                   this.setState({
