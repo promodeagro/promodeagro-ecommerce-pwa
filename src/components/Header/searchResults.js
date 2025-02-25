@@ -78,9 +78,9 @@ class SearchResults extends Component {
       }
     }
 
-    if (prevProps.location.pathname !== this.props.location.pathname) {
-      this.searchBgClick();
-    }
+   if (prevProps.location.pathname !== this.props.location.pathname) {
+    this.searchBgClick();  
+  }
   }
 
   searchChange = (event) => {
