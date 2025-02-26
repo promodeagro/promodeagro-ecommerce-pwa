@@ -68,7 +68,7 @@ class AlgoliaSearch extends Component {
       this.setState((prevState) => ({
         placeholderIndex: (prevState.placeholderIndex + 1) % this.placeholderTexts.length,
       }));
-    }, 3000);
+    }, 2000);
   }
 
   componentWillUnmount() {
