@@ -112,6 +112,7 @@ class SearchProductItemView extends Component {
     const addedProducts = LocalStorageCartService.getData();
     const { productList } = this.props;
     const { qauntityUnits, unitIdPrices } = this.state;
+    console.log(productList, "productList");
     return (
       <>
         {productList.length > 0 ? (
@@ -133,7 +134,10 @@ class SearchProductItemView extends Component {
                         );
                       }}
                     >
-                      <img src={item.image ? item.image : noImage} alt="" />
+                      <img 
+                        src={item.image || item.images?.[0] || noImage} 
+                        alt={item.name} 
+                      />
                     </Box>
                   </Grid>
                   <Grid item xs={5} sm={5} md={5} lg={5}>
@@ -150,18 +154,16 @@ class SearchProductItemView extends Component {
                     <Box className="price-ratting">
                       <Box className="price">
                         <img src={priceIcon} alt="" />
-                        {item?.cartItem?.selectedQuantityUnitprice
-                          ? item?.cartItem?.selectedQuantityUnitprice
-                          : prices?.price?.price
-                          ? prices?.price?.price
-                          : item?.price}
+                        {item?.cartItem?.selectedQuantityUnitprice ||
+                          prices?.price?.price ||
+                          item.sellingPrice}
                         {(item?.cartItem?.selectedQuantityUnitMrp > 0 ||
                           prices?.price?.mrp > 0 ||
-                          item?.mrp > 0) && (
+                          item.comparePrice > 0) && (
                           <span>
                             {item?.cartItem?.selectedQuantityUnitMrp ||
                               prices?.price?.mrp ||
-                              item?.mrp}
+                              item.comparePrice}
                           </span>
                         )}
                       </Box>
