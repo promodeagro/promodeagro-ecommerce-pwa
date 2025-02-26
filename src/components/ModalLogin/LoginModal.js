@@ -97,7 +97,7 @@ const AuthModal = (props) => {
           if (window.location.hostname === "localhost") {
             document.cookie = `login=${loginData}; path=/; max-age=3600`;
           } else {
-            document.cookie = `login=${loginData}; path=/; domain=.promodeagro.com; max-age=3600`;
+            document.cookie = `login=${loginData}; path=/; domain=.promodeagro.com; max-age=25920000`;
           }
           props.handleDefaultAddress();
           props.handleClose();
