@@ -10,30 +10,52 @@ class MainBanner extends Component {
   constructor(props) {
     super(props);
     this.state = {
-       tagline: "Enjoy free delivery in PBEL City on orders above 100 rupees", // initial tagline
+       taglineIndex: 0, // Index to track current tagline (0, 1, or 2)
     };
   }
 
-  
+   
+
   componentDidMount() {
-    // Change tagline every 4 seconds (the total duration for fading out + fading in)
+    // Cycle through taglines every 4 seconds
     this.taglineInterval = setInterval(() => {
-      this.setState((prevState) => {
-        return {
-          tagline:
-            prevState.tagline === "Enjoy free delivery in PBEL City on orders above 100 rupees"
-              ? "Get free delivery across Hyderabad on purchases over 300 rupees!"
-              : "Enjoy free delivery in PBEL City on orders above 100 rupees", // Toggle between taglines
-        };
-      });
-    }, 4000); // Change every 4 seconds to allow enough time for fade-out and fade-in
+      this.setState((prevState) => ({
+        taglineIndex: (prevState.taglineIndex + 1) % 3, // Cycle between 0, 1, 2
+      }));
+    }, 4000);
   }
 
   componentWillUnmount() {
-    // Cleanup interval when the component is unmounted
+    // Cleanup interval
     clearInterval(this.taglineInterval);
   }
 
+  renderTagline() {
+    const { taglineIndex } = this.state;
+
+    switch (taglineIndex) {
+      case 0:
+        return (
+          <p>
+            Now delivering exclusively in <span className="taglie_highlight">Hyderabad</span>!
+          </p>
+        );
+      case 1:
+        return (
+          <p>
+            Get free delivery across <span className="taglie_highlight">Hyderabad</span> on purchases over <span className="taglie_highlight">₹300</span>
+          </p>
+        );
+      case 2:
+        return (
+          <p>
+            Enjoy free delivery in <span className="taglie_highlight">PBEL</span> City on orders above <span className="taglie_highlight">₹100</span>   
+            </p>
+        );
+      default:
+        return null; // Fallback, should never hit
+    }
+  }
   render() {
     var settings = {
       dots: false,
@@ -70,12 +92,10 @@ class MainBanner extends Component {
          
         <Container>
    <Box className="tagline-container">
-        <div  className="hyderabad_tag_line">
-        
-            {this.state.tagline}
-           
+            <div className="hyderabad_tag_line">
+              {this.renderTagline()}
             </div>
-      </Box>
+          </Box>
           <Slider {...settings}>
             {allOffersList?.length > 0 ? (
               allOffersList?.map((item) => {
