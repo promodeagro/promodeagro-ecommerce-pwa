@@ -9,7 +9,29 @@ import { Link } from "react-router-dom";
 class MainBanner extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+       tagline: "Enjoy free delivery in PBEL City on orders above 100 rupees", // initial tagline
+    };
+  }
+
+  
+  componentDidMount() {
+    // Change tagline every 4 seconds (the total duration for fading out + fading in)
+    this.taglineInterval = setInterval(() => {
+      this.setState((prevState) => {
+        return {
+          tagline:
+            prevState.tagline === "Enjoy free delivery in PBEL City on orders above 100 rupees"
+              ? "Get free delivery across Hyderabad on purchases over 300 rupees!"
+              : "Enjoy free delivery in PBEL City on orders above 100 rupees", // Toggle between taglines
+        };
+      });
+    }, 4000); // Change every 4 seconds to allow enough time for fade-out and fade-in
+  }
+
+  componentWillUnmount() {
+    // Cleanup interval when the component is unmounted
+    clearInterval(this.taglineInterval);
   }
 
   render() {
@@ -47,11 +69,12 @@ class MainBanner extends Component {
       <Box className="main-banner-container">
          
         <Container>
-        <Box
-        className="hyderabad_tag_line"
-        >
-  {/* Focused on Hyderabad – Serving You, Right Where You Are!  */}
-  Now delivering exclusively in Hyderabad! 
+   <Box className="tagline-container">
+        <div  className="hyderabad_tag_line">
+        
+            {this.state.tagline}
+           
+            </div>
       </Box>
           <Slider {...settings}>
             {allOffersList?.length > 0 ? (
