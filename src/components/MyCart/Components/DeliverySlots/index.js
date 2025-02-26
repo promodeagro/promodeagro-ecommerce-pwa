@@ -61,13 +61,13 @@ class DeliverySlots extends Component {
           this.setState({ selectedDay: "tomorrow" });
         }
       }
-    const addressDetail = loginDetails();
-    let zipCode = null;
+      const addressDetail = localStorage.getItem("address") || {};
+      let zipCode = null;
 
     if (allAddressData.length > 0) {
-      if (addressDetail?.address) {
+      if (addressDetail) {
         const filtered = allAddressData.filter(
-          (address) => address.addressId === addressDetail.address
+          (address) => address.addressId === addressDetail
         );
 
         if (filtered.length > 0) {
@@ -84,19 +84,20 @@ class DeliverySlots extends Component {
             });
           }
         }
-      } else {
-        const defaultAddress = localStorage.getItem("defaultAddress");
-        if (defaultAddress) {
-          zipCode = JSON.parse(defaultAddress)?.zipCode;
+      } 
+      // else {
+      //   const defaultAddress = localStorage.getItem("defaultAddress");
+      //   if (defaultAddress) {
+      //     zipCode = JSON.parse(defaultAddress)?.zipCode;
 
-          if (zipCode && zipCode !== prevState.zipCode) {
-            this.setState({ zipCode }, () => {
-              const { dispatch } = this.props;
-              dispatch(fetchDeliverySlots({ zipCode }));
-            });
-          }
-        }
-      }
+      //     if (zipCode && zipCode !== prevState.zipCode) {
+      //       this.setState({ zipCode }, () => {
+      //         const { dispatch } = this.props;
+      //         dispatch(fetchDeliverySlots({ zipCode }));
+      //       });
+      //     }
+      //   }
+      // }
     }
   }
 
