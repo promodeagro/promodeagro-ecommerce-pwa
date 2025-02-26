@@ -626,7 +626,7 @@
           }
         }
 
-        span {
+        span {    
           display: flex;
           align-items: center;
           width: 100%;
@@ -947,3 +947,13 @@
   }
 }
 
+.mrpstyle {    
+  color: #808080;
+  font-size: 13px;
+  font-weight: 400;
+  text-decoration: line-through;
+  // svg {
+  //   max-width: 12px;
+  //   height: 12px;
+  // }
+}

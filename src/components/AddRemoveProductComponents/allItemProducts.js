@@ -240,7 +240,7 @@ class ProductItemView extends Component {
             {item?.variations?.length > 0 ? (
               <Box className="select">
 <button className="selettobutton" onClick={() => this.handleModalOpen(item)}>
-  {item?.unit}
+  {item?.name}
   <img src={selecticon} alt="Select Icon" className="selecticon" />
 </button>
               </Box>
@@ -422,7 +422,7 @@ class ProductItemView extends Component {
 <Modal open={this.state.modalOpen} onClose={this.handleModalClose}>
   <Box
     className="common-modal"
-    sx={{ width: "40vw", padding: 3, borderRadius: "20px" }}
+    sx={{ width: "40vw", padding: 3, borderRadius: "10px" }}
   >
     {this.state.selectedProduct ? (
       <Box>
@@ -443,7 +443,7 @@ class ProductItemView extends Component {
                 borderRadius: "10px",
               }}
             >
-              <div style={{ display: "flex", alignItems: "center", fontSize:"14px" }}>
+              <div style={{ display: "flex", alignItems: "center", fontSize:"14px", gap:"10px" }}>
                 <img
                   src={variant.image || noImage}
                   alt={variant.name}
@@ -451,12 +451,12 @@ class ProductItemView extends Component {
                     width: "50px",
                     height: "50px",
                     objectFit: "cover",
-                    marginRight: "10px",
                     borderRadius: "5px",
                   }}
                 />
-                <span>{variant.name}</span> <p> ₹{variant.price}</p>
-                <p> ₹{variant.mrp}</p>
+                <span>{variant.name}</span>
+                <span>{variant.unit}</span> <p> ₹{variant.price}</p>
+                <p className="mrpstyle"> ₹{variant.mrp}</p>
               </div>
               {addedProduct ? (
                 <Box className="number-input-containermodal">
