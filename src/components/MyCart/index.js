@@ -563,11 +563,11 @@ class MyCart extends Component {
                         this.state.selectedAddress?.zipCode == "500030" ||
                         this.state.selectedAddress?.zipCode == "500086" ? (
                           <span style={{color:"#005F41",fontWeight:'600',fontSize:'16px',marginLeft:'5px'}}>
-                             "Enjoy free delivery on orders above 100 rupees"
+                             "Unlock free shipping on purchases over ₹100"
                           </span>
                         ) : (
                           <span style={{color:"#005F41",fontWeight:'600',fontSize:'16px',marginLeft:'5px'}}>
-                            "Enjoy free delivery on orders above 300 rupees"
+                            "Unlock free shipping on purchases over ₹300"
                           </span>
                         )}
 
