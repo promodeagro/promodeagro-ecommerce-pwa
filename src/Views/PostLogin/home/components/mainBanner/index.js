@@ -43,13 +43,13 @@ class MainBanner extends Component {
       case 1:
         return (
           <p>
-            Get free delivery across <span className="taglie_highlight">Hyderabad</span> on purchases over <span className="taglie_highlight">₹300</span>
+           ₹300+ gets <span className="taglie_highlight">Hyderabad</span>  free delivery.
           </p>
         );
       case 2:
         return (
           <p>
-            Enjoy free delivery in <span className="taglie_highlight">PBEL</span> City on orders above <span className="taglie_highlight">₹100</span>   
+              ₹100+ gets <span className="taglie_highlight">PBEL</span> city free delivery.
             </p>
         );
       default:
