@@ -8,7 +8,6 @@ import {
   DialogContentText,
   DialogActions,
   CircularProgress,
-  Modal,
 } from "@mui/material";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import noImage from "../../assets/img/no-image.png";
@@ -25,7 +24,6 @@ import CurrencyRupeeOutlinedIcon from "@mui/icons-material/CurrencyRupeeOutlined
 import status from "../../Redux/Constants";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { deleteProductWishList } from "../../Redux/AllProducts/AllProductthunk";
-import selecticon from "../../assets/img/selecticon.png"
 
 class ProductItemView extends Component {
   constructor(props) {
@@ -37,8 +35,6 @@ class ProductItemView extends Component {
       isProductSelecting: false,
       unitIdPrices: [],
       authModalOpen: false,
-      modalOpen: false,
-      selectedProduct: null, 
     };
   }
 
@@ -168,20 +164,6 @@ class ProductItemView extends Component {
     event.preventDefault();
   };
 
-  handleModalOpen = (product) => {
-    this.setState({
-      modalOpen: true,
-      selectedProduct: product, // Store the selected product
-    });
-  };
-
-  handleModalClose = () => {
-    this.setState({
-      modalOpen: false,
-      selectedProduct: null, // Clear the selected product when modal is closed
-    });
-  };
-
   renderProductItems = (productList, showDeleteWishlist) => {
     const addedProducts = LocalStorageCartService.getData();
     const { qauntityUnits, unitIdPrices } = this.state;
@@ -197,11 +179,9 @@ class ProductItemView extends Component {
           key={item?.id}
           onContextMenu={this.handleContextMenu}
         >
-          {item?.savingsPercentage &&
-            item?.savingsPercentage !== "-Infinity" &&
-            item?.savingsPercentage !== 0 && (
-              <Box className="sale">Sale {item?.savingsPercentage}%</Box>
-            )}
+{item?.savingsPercentage && item?.savingsPercentage !== "-Infinity" && item?.savingsPercentage !== 0 && (
+  <Box className="sale">Sale {item?.savingsPercentage}%</Box>
+)}
 
           {showDeleteWishlist ? (
             <Box
@@ -209,11 +189,13 @@ class ProductItemView extends Component {
               onClick={(event) => {
                 event.preventDefault();
                 this.handleClickOpen(item);
+                // this.handleDeleteWishList(item.id);
               }}
             >
               <DeleteOutlineOutlinedIcon />
             </Box>
           ) : null}
+
           <Box
             className="image"
             onClick={() => {
@@ -236,19 +218,37 @@ class ProductItemView extends Component {
           >
             <Link>{item?.name}</Link>
           </Box>
+
+
           <>
-            {item?.variations?.length > 0 ? (
-              <Box className="select">
-<button className="selettobutton" onClick={() => this.handleModalOpen(item)}>
-  {item?.unit}
-  <img src={selecticon} alt="Select Icon" className="selecticon" />
-</button>
-              </Box>
+            {item?.unitPrices?.length > 0 ? (
+              <></>
+              // <Box className="select">
+              //   <select
+              //     value={
+              //       qauntityUnits[item?.id] ||
+              //       item?.cartItem?.QuantityUnits ||
+              //       ""
+              //     }
+              //     onChange={(event) =>
+              //       this.handleQuantity(event, item, addedProducts)
+              //     }
+              //   >
+              //     {item?.unitPrices.map((unitItem, index) => {
+              //       return (
+              //         <option key={index} value={unitItem.qty}>
+              //           {/* {unitItem.qty}  */}
+              //           {item?.unit}
+              //         </option>
+              //       );
+              //     })}
+              //   </select>
+              // </Box>
             ) : (
               <Box className="select">{item?.unit}</Box>
             )}
           </>
-          <Box className="price-cart">
+            <Box className="price-cart">
             <Box className="price">
               <strong>
                 <CurrencyRupeeOutlinedIcon />
@@ -258,18 +258,16 @@ class ProductItemView extends Component {
                   ? prices?.price?.price
                   : item?.price}
               </strong>
-              {(item?.cartItem?.selectedQuantityUnitMrp ||
-                prices?.price?.mrp ||
-                item?.mrp) > 0 && (
-                <span>
-                  <CurrencyRupeeOutlinedIcon />
-                  {item?.cartItem?.selectedQuantityUnitMrp
-                    ? item?.cartItem?.selectedQuantityUnitMrp
-                    : prices?.price?.mrp
-                    ? prices?.price?.mrp
-                    : item?.mrp}
-                </span>
-              )}
+              {(item?.cartItem?.selectedQuantityUnitMrp || prices?.price?.mrp || item?.mrp) > 0 && (
+  <span>
+    <CurrencyRupeeOutlinedIcon />
+    {item?.cartItem?.selectedQuantityUnitMrp
+      ? item?.cartItem?.selectedQuantityUnitMrp
+      : prices?.price?.mrp
+      ? prices?.price?.mrp
+      : item?.mrp}
+  </span>
+)}
             </Box>
             {addedProducts && addedProducts[item?.id] ? (
               <Box className="number-input-container">
@@ -283,6 +281,7 @@ class ProductItemView extends Component {
                       } else {
                         unitqty = 1;
                       }
+
                       if (addedProducts[item?.id]?.productId) {
                         let d = addedProducts[item?.id]?.quantity;
                         this.handleQuantityChange(
@@ -301,6 +300,7 @@ class ProductItemView extends Component {
                 ) : (
                   <></>
                 )}
+
                 <Box className="Number">
                   {addedProducts[item?.id]?.quantity}
                 </Box>
@@ -313,6 +313,7 @@ class ProductItemView extends Component {
                     } else {
                       unitqty = 1;
                     }
+
                     if (addedProducts[item?.id]?.productId) {
                       let d = addedProducts[item?.id]?.quantity;
 
@@ -327,7 +328,7 @@ class ProductItemView extends Component {
                     }
                   }}
                 >
-                  + 
+                  +
                 </Box>
               </Box>
             ) : (
@@ -403,6 +404,7 @@ class ProductItemView extends Component {
         ) : (
           <>{this.renderProductItems(productList, showDeleteWishlist)}</>
         )}
+
         <AuthModal
           open={this.state.authModalOpen}
           handleDefaultAddress={() => {
@@ -419,99 +421,6 @@ class ProductItemView extends Component {
             });
           }}
         />
-<Modal open={this.state.modalOpen} onClose={this.handleModalClose}>
-  <Box
-    className="common-modal"
-    sx={{ width: "40vw", padding: 3, borderRadius: "20px" }}
-  >
-    {this.state.selectedProduct ? (
-      <Box>
-        {this.state.selectedProduct.variations.map((variant) => {
-          const variantId = variant.id;
-          const addedProduct = LocalStorageCartService.getData()?.[variantId] || null;
-
-          return (
-            <Box
-              key={variantId}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginBottom: "10px",
-                padding: "8px",
-                border: "1px solid #ddd",
-                borderRadius: "10px",
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center", fontSize:"14px" }}>
-                <img
-                  src={variant.image || noImage}
-                  alt={variant.name}
-                  style={{
-                    width: "50px",
-                    height: "50px",
-                    objectFit: "cover",
-                    marginRight: "10px",
-                    borderRadius: "5px",
-                  }}
-                />
-                <span>{variant.name}</span> <p> ₹{variant.price}</p>
-                <p> ₹{variant.mrp}</p>
-              </div>
-              {addedProduct ? (
-                <Box className="number-input-containermodal">
-                  {addedProduct.quantity !== 0 ? (
-                    <Box
-                      className="symbolbutton"
-                      onClick={() => {
-                        let unitqty = variant?.unitPrices?.length > 0
-                          ? variant?.unitPrices[0]?.qty
-                          : 1;
-                        this.handleQuantityChange(variantId, -1, addedProduct.quantity, unitqty);
-                      }}
-                    >
-                      -
-                    </Box>
-                  ) : null}
-                  <Box className="Numberbutton">{addedProduct.quantity}</Box>
-                  <Box
-                    className="symbolbutton"
-                    onClick={() => {
-                      let unitqty = variant?.unitPrices?.length > 0
-                        ? variant?.unitPrices[0]?.qty
-                        : 1;
-                      this.handleQuantityChange(variantId, 1, addedProduct.quantity, unitqty);
-                    }}
-                  >
-                    +
-                  </Box>
-                </Box>
-              ) : (
-                <Box className="add-cart">
-                  <button className="buttonvaradd"
-                    variant="outlined"
-                    onClick={() => {
-                      let unitqty = variant?.unitPrices?.length > 0
-                        ? variant?.unitPrices[0]?.qty
-                        : 1;
-                      this.setState({ isUpdateIncrease: true }, () => {
-                        this.handleAddToCart(variantId, unitqty);
-                      });
-                    }}
-                  >
-                    {variant?.availability ? "Add" : "Out"}
-                  </button>
-                </Box>
-              )}
-            </Box>
-          );
-        })}
-      </Box>
-    ) : (
-      <p>No product selected</p>
-    )}
-  </Box>
-</Modal>
 
         {showDeleteWishlist ? (
           <Dialog
@@ -581,3 +490,34 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(navigateRouter(ProductItemView));
+
+
+// producs unit code 
+
+// <>
+// {item?.unitPrices?.length > 0 ? (
+//   <Box className="select">
+//     <select
+//       value={
+//         qauntityUnits[item?.id] ||
+//         item?.cartItem?.QuantityUnits ||
+//         ""
+//       }
+//       onChange={(event) =>
+//         this.handleQuantity(event, item, addedProducts)
+//       }
+//     >
+//       {item?.unitPrices.map((unitItem, index) => {
+//         return (
+//           <option key={index} value={unitItem.qty}>
+//             {/* {unitItem.qty}  */}
+//             {item?.unit}
+//           </option>
+//         );
+//       })}
+//     </select>
+//   </Box>
+// ) : (
+//   <Box className="select">{item?.unit}</Box>
+// )}
+// </>
