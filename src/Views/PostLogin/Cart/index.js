@@ -272,7 +272,7 @@ import "../../../assets/sass/components/myCart.scss"
                 );
               });
               if (this.state.paymentLink) {
-                window.open(this.state.paymentLink, "_blank");
+                 window.location.href = this.state.paymentLink;
               }
             }
           };
@@ -298,9 +298,9 @@ import "../../../assets/sass/components/myCart.scss"
       return;
     }
 
-    // Prevent multiple submissions
-    if (this.state.isSubmitting) return;
-    this.setState({ isSubmitting: true });
+    // // Prevent multiple submissions
+    // if (this.state.isSubmitting) return;
+    // this.setState({ isSubmitting: true });
 
     const Data = {
       addressId: addressId ? addressId : defaultAddress,

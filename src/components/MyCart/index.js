@@ -261,7 +261,7 @@ class MyCart extends Component {
                 );
               });
               if (this.state.paymentLink) {
-                window.open(this.state.paymentLink, "_blank");
+                 window.location.href = this.state.paymentLink;
               }
             }
           };
