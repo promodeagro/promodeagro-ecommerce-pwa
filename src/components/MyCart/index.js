@@ -272,26 +272,25 @@ class MyCart extends Component {
   }
   handlePlaceOrder = () => {
     let login = loginDetails();
-    let addressId = localStorage.getItem("address");
-    let defaultAddress = JSON.parse(
-      localStorage.getItem("defaultAddress")
-    ).addressId;
-
+    let addressId = localStorage.getItem("address"); // Only getting from localStorage
+  
     const { selectedPaymentMethod, itemListArr, selectedSlot } = this.state;
-
+  
     // Check if a slot is selected
     if (!selectedSlot) {
       this.setState({ showSlotError: true });
       ErrorMessages.error("Please select a delivery slot.");
       return;
     }
-
-    // Prevent multiple submissions
-    // if (this.state.isSubmitting) return;
-    // this.setState({ isSubmitting: true });
-
+  
+    // Ensure addressId is available before proceeding
+    if (!addressId) {
+      ErrorMessages.error("No address selected. Please choose an address.");
+      return;
+    }
+  
     const Data = {
-      addressId: addressId ? addressId : defaultAddress,
+      addressId: addressId, // Only using addressId from localStorage
       deliverySlotId: selectedSlot.id,
       items: itemListArr,
       paymentDetails: {
@@ -299,10 +298,10 @@ class MyCart extends Component {
       },
       userId: login.userId,
     };
-
+  
     this.props.placeOrder(Data);
   };
-
+  
   handleQuantityChange(id, increment, productQuantity = 0, qty) {
     const items = loginDetails();
     if (increment < 0 && productQuantity != 0) {
@@ -341,21 +340,25 @@ class MyCart extends Component {
   }
 
   getDefaultAddress() {
-    const defaultAddress = JSON.parse(localStorage.getItem("defaultAddress"));
-    if (defaultAddress) {
-      return `${defaultAddress.house_number}, ${defaultAddress.landmark_area}...`;
+    const { defaultAddressData } = this.props; // Get default address from props
+  
+    if (defaultAddressData?.status === status.SUCCESS && defaultAddressData?.data) {
+      return `${defaultAddressData.data.house_number}, ${defaultAddressData.data.landmark_area}...`;
     }
+    
     return "No Address Selected";
   }
-
+  
   getDefaultAddresstype() {
-    const defaultAddress = JSON.parse(localStorage.getItem("defaultAddress"));
-    if (defaultAddress) {
-      return `${defaultAddress.address_type}`;
+    const { defaultAddressData } = this.props;
+  
+    if (defaultAddressData?.status === status.SUCCESS && defaultAddressData?.data) {
+      return defaultAddressData.data.address_type;
     }
+  
     return "No Address Selected";
   }
-
+  
   toggleAddNewAddressModal = (e) => {
     if (e?.stopPropagation) {
       e.stopPropagation();
