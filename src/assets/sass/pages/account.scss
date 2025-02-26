@@ -47,6 +47,7 @@
     .gapinthespan {
       gap: 10px;
     }
+
   
     .account-image {
       height: 40px;
@@ -60,3 +61,15 @@
     }
   }
   
+
+  .gapinthespanmain {
+    display: flex;
+     align-items: center;
+    // justify-content: space-between;
+    font-weight: 600;
+    font-size: 18px;
+    width: 100%;
+    // border-bottom: 1px solid #bfbfbf;
+    padding: 10px;
+    gap: 10px;
+  }

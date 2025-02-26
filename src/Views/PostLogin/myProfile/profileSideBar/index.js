@@ -10,7 +10,6 @@ import customersupportimage from "../../../../assets/img/customersupportimage.pn
 import accountprivacy from "../../../../assets/img/accountprivacyimage.png";
 import logoutimage from "../../../../assets/img/logoutimage.png";
 
-
 class ProfileSideBar extends Component {
   constructor(props) {
     super(props);
@@ -53,52 +52,56 @@ class ProfileSideBar extends Component {
   render() {
     const path = window.location.pathname;
     const { sections } = this.state;
-    const defaultAddress = JSON.parse(localStorage.getItem("defaultAddress") || "{}");
+    const defaultAddress = JSON.parse(
+      localStorage.getItem("defaultAddress") || "{}"
+    );
     const phoneNumber = defaultAddress?.phoneNumber || "N/A"; // Fallback to "N/A" if not available
 
-
     return (
-      <Box className="profilewrap" sx={{marginLeft:"none", marginTop:"none"}}>
       <Box
-        className="profile-sidebar"
+        className="profilewrap"
+        sx={{ marginLeft: "none", marginTop: "none" }}
       >
-        <Box
-          className="heading"
-        >
-          <img className="imageofheader" src={profileimage} alt="Profile" />
-          <Link to={"/my-order"}>              <p style={{ marginTop: "6px" }}>{phoneNumber}</p>
-          </Link>
-        </Box>
-        {sections.map((section, index) => (
-          <Box className="profile-links" key={index}>
-            <Box className="links">
-              <ul>
-                {section.links.map((link, idx) => (
-                  <li
-                    className={link.to === path ? "active" : ""}
-                    key={idx}
-                    style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
-                  >
-                    <Link to={link.to}>
-                    <div style={{display: 'flex', gap: '6px'}}>
-                    <img
-                        src={link.icon}
-                        alt={link.name}
-                        style={{
-                          width: "22px",
-                          height: "22px",
-                        }}
-                      />
-                      <span style={{marginTop: '2px'}}>{link.name}</span>
-                    </div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </Box>
+        <Box className="profile-sidebar">
+          <Box className="heading">
+            <img className="imageofheader" src={profileimage} alt="Profile" />
+              <p style={{ marginTop: "6px" }}>{phoneNumber}</p>
           </Box>
-        ))}
-      </Box></Box>
+          {sections.map((section, index) => (
+            <Box className="profile-links" key={index}>
+              <Box className="links">
+                <ul>
+                  {section.links.map((link, idx) => (
+                    <li
+                      className={link.to === path ? "active" : ""}
+                      key={idx}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Link to={link.to}>
+                        <div style={{ display: "flex", gap: "6px" }}>
+                          <img
+                            src={link.icon}
+                            alt={link.name}
+                            style={{
+                              width: "22px",
+                              height: "22px",
+                            }}
+                          />
+                          <span style={{ marginTop: "2px" }}>{link.name}</span>
+                        </div>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </Box>
+            </Box>
+          ))}
+        </Box>
+      </Box>
     );
   }
 }

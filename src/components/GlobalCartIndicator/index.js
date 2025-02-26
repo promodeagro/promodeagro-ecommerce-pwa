@@ -7,6 +7,10 @@ import { connect } from 'react-redux';
 import { navigateRouter } from 'Views/Utills/Navigate/navigateRouter';
 import status from '../../Redux/Constants';
 import MyCart from 'components/MyCart';
+import AuthModal from "components/ModalLogin/LoginModal";
+import { loginDetails } from "Views/Utills/helperFunctions";
+
+
 class GlobalCartIndicator extends Component {
     constructor(props) {
         super(props);
@@ -14,7 +18,9 @@ class GlobalCartIndicator extends Component {
           matches: window.matchMedia("(max-width: 600px)").matches,
           myCartOpen:false,
           totalPrice: "",
-          showGlobalInicator:true
+          showGlobalInicator:true,
+          authModalOpen: false,
+
         };
       }
       componentDidMount(){
@@ -42,9 +48,18 @@ componentDidUpdate(prevProps){
     const { noOfcartItemsInLS } = this.props;
     const currentPath = window.location.pathname; 
     
-  if (currentPath === "/cart" || noOfcartItemsInLS <= 0) {
-    return null;
-  }
+    if (
+      currentPath === "/cart" ||
+      currentPath === "/account" ||
+      currentPath === "/my-order" ||
+      currentPath === "/my-profile/customer-support" ||
+      currentPath === "/my-profile/alladdress" ||
+      currentPath === "/my-profile/privacy" ||
+      noOfcartItemsInLS <= 0
+    ) {
+      return null;
+    }
+  
 
 
     return (
@@ -74,7 +89,17 @@ componentDidUpdate(prevProps){
                          </Box>
                        </Box>
            
-                       <Box onClick={()=> this.props.navigate("/cart")} sx={{
+                       <Box
+                      onClick={() => {
+                        if (loginDetails()?.userId) {
+                          {
+                            this.props.navigate("/cart");
+                          }
+                        } else {
+                          this.setState({ authModalOpen: true });
+                        }
+                      }}
+                        sx={{
                          display: 'flex', cursor: "pointer", alignItems: 'center', gap: "4px"
                        }}>
                          View Cart
@@ -99,6 +124,15 @@ componentDidUpdate(prevProps){
                            });
                          }}
                        />
+                               <AuthModal
+                                 open={this.state.authModalOpen}
+                                 handleClose={() => {
+                                   this.setState({
+                                     authModalOpen: false,
+                                   });
+                                 }}
+                               />
+                       
       </>
     );
   }

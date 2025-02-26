@@ -56,9 +56,25 @@ class Privacy extends Component {
     this.setState({ openModal: false });
   };
 
-  handleDeleteUser = () => {
-    this.props.deleteUser({ userId: loginDetails()?.userId });
-  };
+
+    handleDeleteUser = () => {
+      this.props.deleteUser({ userId: loginDetails()?.userId });
+      this.setState({ openModal: false });
+      if (
+        window.location.hostname === "localhost"
+      ) {
+        document.cookie =
+          "login=; path=/; max-age=0";
+      }
+      localStorage.removeItem("defaultAddress");
+      localStorage.removeItem("cartItem");
+      localStorage.removeItem("address");
+      document.cookie =
+        "login=; path=/; domain=.promodeagro.com; max-age=0";
+      this.props.navigate("/");
+      window.location.reload();
+      this.props.navigate('/') 
+    };
 
   render() {
     return (

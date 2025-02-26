@@ -21,10 +21,10 @@ class Account extends Component {
       <Box className="account_page">
         <ul>
           <li>
-            <Link to="/my-profile/personal-information" className="gapinthespan">
+            <Box className="gapinthespanmain">
               <img src={profileimage} alt="Account" className="account-image" />
               <span>{phoneNumber}</span> {/* Updated to show phone number */}
-            </Link>
+            </Box>
           </li>
           <li>
             <Link to="/my-order" className="gapinthespan">

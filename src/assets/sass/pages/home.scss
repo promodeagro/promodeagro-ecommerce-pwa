@@ -866,3 +866,84 @@
 }
 
 
+.selettobutton {
+  width: 100%;
+  font-size: 13px;
+  line-height: 18px;
+  border: 1px solid #cacaca;
+  border-radius: 3px;
+  padding: 2px 3px;
+  background-color: white;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.selecticon {
+  width: 10px; /* Adjust size as needed */
+  height: 7px;
+  margin-left: 5px;
+}
+
+
+
+.buttonvaradd {
+  border: 1px solid #1f9151;
+  width: 60px;
+  padding: 0;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+  color: #1f9151;
+  text-transform: capitalize;
+  border-radius: 5px;
+  height: 36px;
+  background-color: rgba(0, 178, 7, 0.1);
+  &.Mui-disabled {
+    color: rgba(0, 0, 0, 0.26) !important;
+    border: 1px solid rgba(0, 0, 0, 0.26) !important;
+  }
+}
+
+
+
+
+.number-input-containermodal {
+  display: inline-flex;
+  width: 64px;
+
+  .symbolbutton {
+    width: 33.33%;
+    border: 1px solid #1f9151;
+    background-color: #1f9151;
+    height: 36px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    border-radius: 4px 0px 0px 4px;
+
+    &:last-child {
+      border-radius: 0px 4px 4px 0px;
+    }
+  }
+
+  .Numberbutton {
+    width: 33.33%;
+    height: 36px;
+    border: 1px solid #1f9151;
+    background-color: #1f9151;
+    font-size: 14px;
+    line-height: 24px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+  }
+}
+

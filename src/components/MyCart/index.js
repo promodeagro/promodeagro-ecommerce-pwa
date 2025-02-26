@@ -50,7 +50,7 @@ class MyCart extends Component {
       AddNewAddressOpen: false,
       slotOpen: false,
       defaultAddress: "",
-      selectedPaymentMethod: "cash",
+      selectedPaymentMethod: "online",
       paymentLink: null,
       ListData: [],
       itemListArr: [],
@@ -152,14 +152,11 @@ class MyCart extends Component {
         loaderCount: 1,
       });
     }
-    if (this.props.cartItems.status === status.FAILURE) {
-      // Only update state if cartList is not already empty and loaderCount is not already 1
-      if (this.state.cartList.length !== 0 || this.state.loaderCount !== 1) {
+       else if (this.props.cartItems.status === status.FAILURE) {
         this.setState({
-          cartList: [],
-          loaderCount: 1,
+            cartList: [],
+            loaderCount: 1,
         });
-      }
     }
     if (
       prevProps.saveForLaterData.status !==
@@ -236,7 +233,7 @@ class MyCart extends Component {
           localStorage.removeItem("address");
           LocalStorageCartService.saveData({});
           this.setState({ selectedSlot: "" });
-          this.setState({ selectedPaymentMethod: "cash" });
+          this.setState({ selectedPaymentMethod: "online" });
           let login = loginDetails();
           if (login?.userId) {
             this.props.addListOfItemsToCartReq({
@@ -579,7 +576,7 @@ class MyCart extends Component {
                           <div className="payment_container">
                             <Box className="Payment_methods_box">
                               <h2>Payment Method</h2>
-                              {/* <div
+                              <div
                                 onClick={() =>
                                   this.setState({
                                     selectedPaymentMethod: "online",
@@ -593,7 +590,7 @@ class MyCart extends Component {
                                   checked={selectedPaymentMethod === "online"}
                                   color="success"
                                 />
-                              </div> */}
+                              </div>
                               <div
                                 onClick={() =>
                                   this.setState({
