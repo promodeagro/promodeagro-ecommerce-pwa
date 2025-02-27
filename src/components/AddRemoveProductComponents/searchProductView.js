@@ -112,7 +112,6 @@ class SearchProductItemView extends Component {
     const addedProducts = LocalStorageCartService.getData();
     const { productList } = this.props;
     const { qauntityUnits, unitIdPrices } = this.state;
-    console.log(productList, "productList");
     return (
       <>
         {productList.length > 0 ? (

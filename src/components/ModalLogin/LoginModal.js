@@ -351,13 +351,13 @@ const AuthModal = (props) => {
                             marginTop: "10px",
                             width: "280px",
                           }}
-                          value={`+91${emailOrNumber}`} // Prefix +91 only once
+                          value={`+91  ${emailOrNumber}`} // Prefix +91 only once
                           onChange={(e) => {
                             let inputValue = e.target.value;
 
                             // Only update the state with the numeric part after "+91"
-                            if (inputValue.startsWith("+91")) {
-                              inputValue = inputValue.slice(3); // Remove "+91"
+                            if (inputValue.startsWith("+91  ")) {
+                              inputValue = inputValue.slice(5); // Remove "+91"
                             }
 
                             // Update the state with the number without the prefix
@@ -373,7 +373,7 @@ const AuthModal = (props) => {
                             }
                           }}
                           name="emailOrNumber"
-                          placeholder="+91"
+                          placeholder="+91  "
                           className="input-textfield"
                           id="outlined-basic"
                           variant="outlined"
