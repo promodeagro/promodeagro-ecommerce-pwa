@@ -57,24 +57,11 @@ class AlgoliaSearch extends Component {
     }
   }
 
-  handleBackgroundClick = () => {
-    if (this.searchBoxRef.current) {
-      this.searchBoxRef.current.value = '';
-      if (this.searchBoxRef.current.refine) {
-        this.searchBoxRef.current.refine(''); // Clear Algolia query
-      }
-    }
-  
-    this.setState(prevState => ({
-      searchBoxKey: prevState.searchBoxKey + 1,
-    }));
-  
-    this.props.searchBgClick?.();
-  };
+
   
 
   render() {
-    const { showResult, onFocus, matches, inputRef } = this.props;
+    const { showResult, onFocus, matches, inputRef,searchBgClick } = this.props;
     const { placeholderIndex, searchBoxKey, searchClient, loading } = this.state;
 
     if (loading) {
@@ -107,7 +94,7 @@ class AlgoliaSearch extends Component {
           </Box>
           <Configure hitsPerPage={5} />
         </InstantSearch>
-        <Box className={`search-results-bg ${showResult ? "active" : ""}`} onClick={this.handleBackgroundClick} />
+        <Box className='search-results-bg' onClick={searchBgClick} />
       </>
     );
   }
