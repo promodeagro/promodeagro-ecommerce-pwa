@@ -37,8 +37,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "cross-env REACT_APP_ALGOLIA_APP_ID=$REACT_APP_ALGOLIA_APP_ID REACT_APP_ALGOLIA_API_KEY=$REACT_APP_ALGOLIA_API_KEY react-scripts start",
+    "build": "cross-env REACT_APP_ALGOLIA_APP_ID=$REACT_APP_ALGOLIA_APP_ID REACT_APP_ALGOLIA_API_KEY=$REACT_APP_ALGOLIA_API_KEY react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -61,6 +61,7 @@
     ]
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "sass": "^1.77.8",
     "sass-loader": "^14.2.1"
   }
