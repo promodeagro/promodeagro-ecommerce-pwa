@@ -130,6 +130,7 @@ const AuthModal = (props) => {
     e.preventDefault();
     const errorData = validateForm();
     if (errorData.isValid) {
+      e.stopPropagation();
       setSubmitMobOrEmail(true);
       props.signIn({ mobileNumber: emailOrNumber });
     } else {
@@ -196,28 +197,31 @@ const AuthModal = (props) => {
 
   const handleChange = (index, event) => {
     const value = event.target.value;
-    
+
     // Handle paste event
     if (value.length > 1) {
-      const digits = value.slice(0, 6).split('').map(char => char.replace(/\D/g, '')); 
+      const digits = value
+        .slice(0, 6)
+        .split("")
+        .map((char) => char.replace(/\D/g, ""));
       const newOtp = [...otp];
-      
+
       digits.forEach((digit, idx) => {
         if (idx < 6) {
           newOtp[idx] = digit;
         }
       });
-      
+
       setOtp(newOtp);
-      setValidateOtp(newOtp.join(''));
-      
-      const nextEmptyIndex = newOtp.findIndex(digit => !digit);
+      setValidateOtp(newOtp.join(""));
+
+      const nextEmptyIndex = newOtp.findIndex((digit) => !digit);
       if (nextEmptyIndex === -1) {
         inputRefs.current[5].focus();
       } else {
         inputRefs.current[nextEmptyIndex].focus();
       }
-      
+
       // Remove auto-submit on paste and let state update first
       return;
     }
@@ -229,7 +233,7 @@ const AuthModal = (props) => {
     newOtp[index] = value; // Replace the existing digit
     // newOtp[index] = value;
     setOtp(newOtp);
-    setValidateOtp(newOtp.join(''));
+    setValidateOtp(newOtp.join(""));
 
     if (value && index < 5) {
       inputRefs.current[index + 1].focus();
@@ -238,17 +242,29 @@ const AuthModal = (props) => {
     // Remove immediate auto-submit
   };
 
-  // Add handleKeyDown function back
   const handleKeyDown = (index, event) => {
     if (event.key === "Backspace" && !otp[index] && index > 0) {
       // Move focus to previous input when backspace is pressed on empty input
       inputRefs.current[index - 1].focus();
+    } else if (/^\d$/.test(event.key)) {
+      // Check if the key is a number (0-9)
+      event.preventDefault(); // Prevent default behavior of typing the number
+
+      const newOtp = [...otp];
+      newOtp[index] = event.key; // Set the input to the entered digit
+      setOtp(newOtp);
+      setValidateOtp(newOtp.join(""));
+
+      // Move focus to the next input if not at the last input
+      if (index < inputRefs.current.length - 1) {
+        inputRefs.current[index + 1].focus();
+      }
     }
   };
 
   // Add a useEffect to handle auto-submit after state updates
   useEffect(() => {
-    const isComplete = otp.every(digit => digit !== '') && otp.length === 6;
+    const isComplete = otp.every((digit) => digit !== "") && otp.length === 6;
     if (isComplete) {
       // Add a small delay to ensure state is updated
       const timer = setTimeout(() => {
@@ -261,26 +277,29 @@ const AuthModal = (props) => {
   // Update handlePaste to remove auto-submit
   const handlePaste = (event) => {
     event.preventDefault();
-    const pastedData = event.clipboardData.getData('text');
-    const digits = pastedData.slice(0, 6).split('').map(char => char.replace(/\D/g, '')); 
-    
+    const pastedData = event.clipboardData.getData("text");
+    const digits = pastedData
+      .slice(0, 6)
+      .split("")
+      .map((char) => char.replace(/\D/g, ""));
+
     const newOtp = [...otp];
     digits.forEach((digit, idx) => {
       if (idx < 6) {
         newOtp[idx] = digit;
       }
     });
-    
+
     setOtp(newOtp);
-    setValidateOtp(newOtp.join(''));
-    
-    const nextEmptyIndex = newOtp.findIndex(digit => !digit);
+    setValidateOtp(newOtp.join(""));
+
+    const nextEmptyIndex = newOtp.findIndex((digit) => !digit);
     if (nextEmptyIndex === -1) {
       inputRefs.current[5].focus();
     } else {
       inputRefs.current[nextEmptyIndex].focus();
     }
-    
+
     // Remove auto-submit on paste
   };
 
@@ -326,44 +345,52 @@ const AuthModal = (props) => {
                           alignItems: "center", // Vertically center
                         }}
                       >
-<TextField
-  sx={{
-    borderRadius: "16px",
-    marginTop: "10px",
-    width: "280px",
-  }}
-  value={`+91${emailOrNumber}`} // Prefix +91 only once
-  onChange={(e) => {
-    let inputValue = e.target.value;
+                        <TextField
+                          sx={{
+                            borderRadius: "16px",
+                            marginTop: "10px",
+                            width: "280px",
+                          }}
+                          value={`+91${emailOrNumber}`} // Prefix +91 only once
+                          onChange={(e) => {
+                            let inputValue = e.target.value;
 
-    // Only update the state with the numeric part after "+91"
-    if (inputValue.startsWith("+91")) {
-      inputValue = inputValue.slice(3); // Remove "+91"
-    }
+                            // Only update the state with the numeric part after "+91"
+                            if (inputValue.startsWith("+91")) {
+                              inputValue = inputValue.slice(3); // Remove "+91"
+                            }
 
-    // Update the state with the number without the prefix
-    setEmailOrNumber(inputValue);
-  }}
-  onKeyDown={(e) => {
-    if (e.key === "Backspace" && emailOrNumber.length === 0) {
-      // Prevent backspace from deleting the "+91" prefix
-      e.preventDefault();
-    }
-  }}
-  name="emailOrNumber"
-  placeholder="+91"
-  className="input-textfield"
-  id="outlined-basic"
-  variant="outlined"
-  type="tel"
-/>
-
-                     </Box>
+                            // Update the state with the number without the prefix
+                            setEmailOrNumber(inputValue);
+                          }}
+                          onKeyDown={(e) => {
+                            if (
+                              e.key === "Backspace" &&
+                              emailOrNumber.length === 0
+                            ) {
+                              // Prevent backspace from deleting the "+91" prefix
+                              e.preventDefault();
+                            }
+                          }}
+                          name="emailOrNumber"
+                          placeholder="+91"
+                          className="input-textfield"
+                          id="outlined-basic"
+                          variant="outlined"
+                          type="tel"
+                        />
+                      </Box>
                       {isSubmitMobOrEmail && (
-                        <div style={{display:'flex',justifyContent:'left', marginLeft:'52px'}}>
-                        <FormHelperText error>
-                          {errorData?.emailOrNumber?.message}
-                        </FormHelperText>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "left",
+                            marginLeft: "52px",
+                          }}
+                        >
+                          <FormHelperText error>
+                            {errorData?.emailOrNumber?.message}
+                          </FormHelperText>
                         </div>
                       )}
                     </>
@@ -405,18 +432,18 @@ const AuthModal = (props) => {
                       variant="contained"
                       color="success"
                       sx={{
-                        backgroundColor: isMobileValid ? "#1F9151" : "#9BA7B6", 
+                        backgroundColor: isMobileValid ? "#1F9151" : "#9BA7B6",
                         // Step 3: Success color if valid
                         borderRadius: "6px",
                         marginTop: "15px",
                         width: "280px",
-                        marginBottom:'10px'
+                        marginBottom: "10px",
                       }}
                       // fullWidth
                       // className="common-btn login-btns"
                       disabled={
                         props.loginData.status === status.IN_PROGRESS &&
-                        setSubmitMobOrEmail 
+                        setSubmitMobOrEmail
                       }
                       endIcon={
                         props.loginData.status === status.IN_PROGRESS &&
@@ -530,7 +557,7 @@ const AuthModal = (props) => {
                       value={digit}
                       onChange={(e) => handleChange(index, e)}
                       onKeyDown={(e) => handleKeyDown(index, e)}
-                      onPaste={handlePaste}  // Add paste handler
+                      onPaste={handlePaste} // Add paste handler
                       inputRef={(el) => (inputRefs.current[index] = el)}
                       variant="outlined"
                       size="small"
@@ -648,8 +675,10 @@ const AuthModal = (props) => {
             {formType !== "otp" ? (
               <>
                 <img
-                 style={{height:'370px',width:'100%'}} 
-                src={loginimage} alt="logo" />
+                  style={{ height: "370px", width: "100%" }}
+                  src={loginimage}
+                  alt="logo"
+                />
 
                 <div style={{ textAlign: "center" }}>
                   <img
@@ -678,8 +707,9 @@ const AuthModal = (props) => {
             ) : (
               <>
                 <IconButton
-                  onClick={() =>{ setFormType("login")
-                    setOtp(["","","","","",""])
+                  onClick={() => {
+                    setFormType("login");
+                    setOtp(["", "", "", "", "", ""]);
                   }}
                   sx={{ alignSelf: "flex-start", marginRight: "5px" }}
                 >
@@ -693,7 +723,6 @@ const AuthModal = (props) => {
             )}
 
             {renderForm()}
-           
           </Box>
         </Modal>
       )}
@@ -703,9 +732,9 @@ const AuthModal = (props) => {
 
 function mapStateToProps(state) {
   const { loginData, validateOtpRes } = state.login;
-  return { 
-    loginData: loginData || { status: '', data: null },
-    validateOtpRes: validateOtpRes || { status: '', data: null }
+  return {
+    loginData: loginData || { status: "", data: null },
+    validateOtpRes: validateOtpRes || { status: "", data: null },
   };
 }
 
