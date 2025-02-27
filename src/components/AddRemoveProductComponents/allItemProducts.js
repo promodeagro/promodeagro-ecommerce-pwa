@@ -170,15 +170,11 @@ class ProductItemView extends Component {
     return productList.map((item) => {
       let prices = unitIdPrices.find((d) => d.id === item.id);
       return (
-        <Box
-          className={
-            this.props.hideFilter
-              ? "product-box hide-filter-box"
-              : "product-box"
-          }
-          key={item?.id}
-          onContextMenu={this.handleContextMenu}
-        >
+<Box
+  className={`product-box ${!item.availability ? "out-of-stock" : ""}`}
+  key={item?.id}
+  onContextMenu={this.handleContextMenu}
+>
 {item?.savingsPercentage && item?.savingsPercentage !== "-Infinity" && item?.savingsPercentage !== 0 && (
   <Box className="sale">Sale {item?.savingsPercentage}%</Box>
 )}
@@ -346,7 +342,7 @@ class ProductItemView extends Component {
                     this.handleAddToCart(item?.id, unitqty);
                   }}
                 >
-                  {item?.availability ? "Add" : "Out"}
+                  Add
                 </Button>
               </Box>
             )}
