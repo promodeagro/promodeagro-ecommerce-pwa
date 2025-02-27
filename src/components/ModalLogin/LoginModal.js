@@ -226,7 +226,8 @@ const AuthModal = (props) => {
     if (!/^\d?$/.test(value)) return;
 
     const newOtp = [...otp];
-    newOtp[index] = value;
+    newOtp[index] = value; // Replace the existing digit
+    // newOtp[index] = value;
     setOtp(newOtp);
     setValidateOtp(newOtp.join(''));
 
@@ -325,22 +326,39 @@ const AuthModal = (props) => {
                           alignItems: "center", // Vertically center
                         }}
                       >
-                        <TextField
-                          sx={{
-                            borderRadius: "16px",
-                            marginTop: "10px",
-                            width: "280px",
-                          }}
-                          value={emailOrNumber}
-                          onChange={(e) => setEmailOrNumber(e.target.value)}
-                          name="emailOrNumber"
-                          placeholder="+91"
-                          className="input-textfield"
-                          id="outlined-basic"
-                          variant="outlined"
-                          type="tel"
-                        />
-                      </Box>
+<TextField
+  sx={{
+    borderRadius: "16px",
+    marginTop: "10px",
+    width: "280px",
+  }}
+  value={`+91${emailOrNumber}`} // Prefix +91 only once
+  onChange={(e) => {
+    let inputValue = e.target.value;
+
+    // Only update the state with the numeric part after "+91"
+    if (inputValue.startsWith("+91")) {
+      inputValue = inputValue.slice(3); // Remove "+91"
+    }
+
+    // Update the state with the number without the prefix
+    setEmailOrNumber(inputValue);
+  }}
+  onKeyDown={(e) => {
+    if (e.key === "Backspace" && emailOrNumber.length === 0) {
+      // Prevent backspace from deleting the "+91" prefix
+      e.preventDefault();
+    }
+  }}
+  name="emailOrNumber"
+  placeholder="+91"
+  className="input-textfield"
+  id="outlined-basic"
+  variant="outlined"
+  type="tel"
+/>
+
+                     </Box>
                       {isSubmitMobOrEmail && (
                         <div style={{display:'flex',justifyContent:'left', marginLeft:'52px'}}>
                         <FormHelperText error>
@@ -660,7 +678,9 @@ const AuthModal = (props) => {
             ) : (
               <>
                 <IconButton
-                  onClick={() => setFormType("login")}
+                  onClick={() =>{ setFormType("login")
+                    setOtp(["","","","","",""])
+                  }}
                   sx={{ alignSelf: "flex-start", marginRight: "5px" }}
                 >
                   <ArrowBack />{" "}
