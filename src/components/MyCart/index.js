@@ -339,11 +339,11 @@ class MyCart extends Component {
   }
 
   getDefaultAddress() {
-    // const { defaultAddressData } = this.props; // Get default address from props
+    const { defaultAddressData } = this.props; // Get default address from props
 
-    // if (defaultAddressData?.status === status.SUCCESS && defaultAddressData?.data) {
-    //   return `${defaultAddressData.data.house_number}, ${defaultAddressData.data.landmark_area}...`;
-    // }
+    if (defaultAddressData?.status === status.SUCCESS && defaultAddressData?.data) {
+      return `${defaultAddressData.data.house_number}, ${defaultAddressData.data.landmark_area}...`;
+    }
 
     return "No Address Selected";
   }
