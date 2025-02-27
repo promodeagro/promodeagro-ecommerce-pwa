@@ -10,11 +10,9 @@ class MainBanner extends Component {
   constructor(props) {
     super(props);
     this.state = {
-       taglineIndex: 0, // Index to track current tagline (0, 1, or 2)
+      taglineIndex: 0, // Index to track current tagline (0, 1, or 2)
     };
   }
-
-   
 
   componentDidMount() {
     // Cycle through taglines every 4 seconds
@@ -37,20 +35,22 @@ class MainBanner extends Component {
       case 0:
         return (
           <p>
-            Now delivering exclusively in <span className="taglie_highlight">Hyderabad</span>!
+            Now delivering exclusively in{" "}
+            <span className="taglie_highlight">Hyderabad</span>!
           </p>
         );
       case 1:
         return (
           <p>
-           ₹300+ gets <span className="taglie_highlight">Hyderabad</span>  free delivery.
+             Unlock free delivery on orders above <span className="taglie_highlight">₹300</span> in Hyderabad!
+            
           </p>
         );
       case 2:
         return (
           <p>
-              ₹100+ gets <span className="taglie_highlight">PBEL</span> city free delivery.
-            </p>
+            Free delivery on orders above <span className="taglie_highlight">₹100</span> in PBEL City!
+          </p>
         );
       default:
         return null; // Fallback, should never hit
@@ -89,12 +89,9 @@ class MainBanner extends Component {
     const { allOffersList } = this.props;
     return (
       <Box className="main-banner-container">
-         
         <Container>
-   <Box className="tagline-container">
-            <div className="hyderabad_tag_line">
-              {this.renderTagline()}
-            </div>
+          <Box className="tagline-container">
+            <div className="hyderabad_tag_line">{this.renderTagline()}</div>
           </Box>
           <Slider {...settings}>
             {allOffersList?.length > 0 ? (
