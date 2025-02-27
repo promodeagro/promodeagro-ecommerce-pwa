@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.750.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.20",
@@ -37,8 +38,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "cross-env REACT_APP_ALGOLIA_APP_ID=$REACT_APP_ALGOLIA_APP_ID REACT_APP_ALGOLIA_API_KEY=$REACT_APP_ALGOLIA_API_KEY react-scripts start",
-    "build": "cross-env REACT_APP_ALGOLIA_APP_ID=$REACT_APP_ALGOLIA_APP_ID REACT_APP_ALGOLIA_API_KEY=$REACT_APP_ALGOLIA_API_KEY react-scripts build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

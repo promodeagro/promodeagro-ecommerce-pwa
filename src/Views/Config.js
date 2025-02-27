@@ -50,6 +50,7 @@ const Config = {
   All_PRODUCT_WITH_CATEGORY: `${BASE_URL}/homePageProducts`,
   DELIVERY_SLOTS: `${BASE_URL}/slot`,
   CREATE_FEEDBACK: `${BASE_URL}/createFeedback`,
+  // GET_ALGOLIA_KEYS:`${BASE_URL}/getSecrets`
 };
 
 export default Config;
