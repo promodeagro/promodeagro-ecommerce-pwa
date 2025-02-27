@@ -151,12 +151,11 @@ class MyCart extends Component {
         totalPrice: this.props.cartItems.data.finalTotal,
         loaderCount: 1,
       });
-    }
-       else if (this.props.cartItems.status === status.FAILURE) {
-        this.setState({
-            cartList: [],
-            loaderCount: 1,
-        });
+    } else if (this.props.cartItems.status === status.FAILURE) {
+      this.setState({
+        cartList: [],
+        loaderCount: 1,
+      });
     }
     if (
       prevProps.saveForLaterData.status !==
@@ -261,7 +260,7 @@ class MyCart extends Component {
                 );
               });
               if (this.state.paymentLink) {
-                 window.location.href = this.state.paymentLink;
+                window.location.href = this.state.paymentLink;
               }
             }
           };
@@ -273,22 +272,22 @@ class MyCart extends Component {
   handlePlaceOrder = () => {
     let login = loginDetails();
     let addressId = localStorage.getItem("address"); // Only getting from localStorage
-  
+
     const { selectedPaymentMethod, itemListArr, selectedSlot } = this.state;
-  
+
     // Check if a slot is selected
     if (!selectedSlot) {
       this.setState({ showSlotError: true });
       ErrorMessages.error("Please select a delivery slot.");
       return;
     }
-  
+
     // Ensure addressId is available before proceeding
     if (!addressId) {
       ErrorMessages.error("No address selected. Please choose an address.");
       return;
     }
-  
+
     const Data = {
       addressId: addressId, // Only using addressId from localStorage
       deliverySlotId: selectedSlot.id,
@@ -298,10 +297,10 @@ class MyCart extends Component {
       },
       userId: login.userId,
     };
-  
+
     this.props.placeOrder(Data);
   };
-  
+
   handleQuantityChange(id, increment, productQuantity = 0, qty) {
     const items = loginDetails();
     if (increment < 0 && productQuantity != 0) {
@@ -340,25 +339,28 @@ class MyCart extends Component {
   }
 
   getDefaultAddress() {
-    const { defaultAddressData } = this.props; // Get default address from props
-  
-    if (defaultAddressData?.status === status.SUCCESS && defaultAddressData?.data) {
-      return `${defaultAddressData.data.house_number}, ${defaultAddressData.data.landmark_area}...`;
-    }
-    
+    // const { defaultAddressData } = this.props; // Get default address from props
+
+    // if (defaultAddressData?.status === status.SUCCESS && defaultAddressData?.data) {
+    //   return `${defaultAddressData.data.house_number}, ${defaultAddressData.data.landmark_area}...`;
+    // }
+
     return "No Address Selected";
   }
-  
+
   getDefaultAddresstype() {
     const { defaultAddressData } = this.props;
-  
-    if (defaultAddressData?.status === status.SUCCESS && defaultAddressData?.data) {
+
+    if (
+      defaultAddressData?.status === status.SUCCESS &&
+      defaultAddressData?.data
+    ) {
       return defaultAddressData.data.address_type;
     }
-  
+
     return "No Address Selected";
   }
-  
+
   toggleAddNewAddressModal = (e) => {
     if (e?.stopPropagation) {
       e.stopPropagation();
@@ -447,37 +449,34 @@ class MyCart extends Component {
                     <Box className="select_delivery_slot">
                       <h2>Select Delivery Slot</h2>
                       <span className="select_delivery_slot_wrapper">
-                        <div
-                          className={
-                            this.state.showSlotError ? "slot-error" : ""
-                          }
-                          onClick={() => {
-                            this.setState({
-                              slotOpen: true,
-                              showSlotError: false, // Reset error when opening the slot selection
-                            });
-                          }}
-                        >
-                          <span>
-                            {this.state.selectedSlot
-                              ? `${this.state.selectedSlot.start} ${this.state.selectedSlot.startAmPm} - ${this.state.selectedSlot.end} ${this.state.selectedSlot.endAmPm}`
-                              : "Select Slot"}
-                          </span>
-                          <img src={ArrowDown} alt="Open Slots" />
-                        </div>
-                        {matches && (
-                          <Button
-                            onClick={() => {
-                              this.setState({
-                                slotOpen: true,
-                                showSlotError: false, // Reset error when opening the slot selection
-                              });
-                            }}
-                            className="common-btn select_slot_btn"
-                          >
-                            Select Slot
-                          </Button>
-                        )}
+                      <div
+      className={this.state.showAddressError ? "address-error" : ""}
+      onClick={() => {
+        const hasValidAddress =
+          this.state.selectedAddress?.addressId ||
+          (this.getDefaultAddress() && this.getDefaultAddress() !== "No Address Selected");
+
+        if (!hasValidAddress) {
+          this.setState({ showAddressError: true });
+          ErrorMessages.error("Please select an address before selecting a slot.");
+          return;
+        }
+
+        this.setState({
+          slotOpen: true,
+          showSlotError: false, // Reset slot error if applicable
+          showAddressError: false, // Reset address error
+        });
+      }}
+    >
+      <span>
+        {this.state.selectedSlot
+          ? `${this.state.selectedSlot.start} ${this.state.selectedSlot.startAmPm} - ${this.state.selectedSlot.end} ${this.state.selectedSlot.endAmPm}`
+          : "Select Slot"}
+      </span>
+      <img src={ArrowDown} alt="Open Slots" />
+    </div>
+
                       </span>
 
                       {/* Error message */}
@@ -530,12 +529,12 @@ class MyCart extends Component {
 
                   {this.state.cartList?.length > 0 ? (
                     <>
-                      <div className="bill_details" style={{marginBottom:'8px'
-          
-                      }}>
+                      <div
+                        className="bill_details"
+                        style={{ marginBottom: "8px" }}
+                      >
                         <strong>Bill details</strong>
 
-                       
                         <div>
                           <span>Item total</span>
                           <strong>
@@ -563,16 +562,30 @@ class MyCart extends Component {
                         </div>
                       </div>
                       {this.state.selectedAddress?.zipCode == "500091" ||
-                        this.state.selectedAddress?.zipCode == "500030" ||
-                        this.state.selectedAddress?.zipCode == "500086" ? (
-                          <span style={{color:"#005F41",fontWeight:'600',fontSize:'16px',marginLeft:'5px'}}>
-                             "Unlock free shipping on purchases over ₹100"
-                          </span>
-                        ) : (
-                          <span style={{color:"#005F41",fontWeight:'600',fontSize:'16px',marginLeft:'5px'}}>
-                            "Unlock free shipping on purchases over ₹300"
-                          </span>
-                        )}
+                      this.state.selectedAddress?.zipCode == "500030" ||
+                      this.state.selectedAddress?.zipCode == "500086" ? (
+                        <span
+                          style={{
+                            color: "#005F41",
+                            fontWeight: "600",
+                            fontSize: "16px",
+                            marginLeft: "5px",
+                          }}
+                        >
+                          "Unlock free shipping on purchases over ₹100"
+                        </span>
+                      ) : (
+                        <span
+                          style={{
+                            color: "#005F41",
+                            fontWeight: "600",
+                            fontSize: "16px",
+                            marginLeft: "5px",
+                          }}
+                        >
+                          "Unlock free shipping on purchases over ₹300"
+                        </span>
+                      )}
 
                       {defaultSelectedAddress?.addressId ? (
                         <>
@@ -611,7 +624,7 @@ class MyCart extends Component {
                                 />
                               </div>
                             </Box>
-                          
+
                             <Grid
                               sx={{ paddingBottom: "20px" }}
                               item
