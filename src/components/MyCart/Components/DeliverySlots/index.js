@@ -64,28 +64,30 @@ class DeliverySlots extends Component {
       // const addressDetail = localStorage.getItem("address") || {};
       // let zipCode = null;
 
-       const addressDetail = localStorage.getItem("address") || {};
-      let zipCode = null;
-    
-      if (addressDetail && allAddressData.length > 0) {
-        const filtered = allAddressData.filter(
-          (address) => address.addressId === addressDetail
-        );
-    
-        if (filtered.length > 0) {
-          zipCode = filtered[0].zipCode;
-        }
-      }
-    
-      // Ensure that zipCode updates only when it's different
-      if (zipCode && zipCode !== prevState.zipCode) {
-        this.setState({ zipCode }, () => {
-          const { dispatch } = this.props;
-          dispatch(fetchDeliverySlots({ zipCode })); // Fetch slots using zipCode
-        });
-      }
+  // Retrieve address ID from local storage (ensure it's a string)
+  const addressDetail = localStorage.getItem("address"); // No need for JSON.parse()
+  let zipCode = null;
+
+  if (addressDetail && allAddressData.length > 0) {
+    // Ensure comparison is done as strings
+    const filtered = allAddressData.filter(
+      (address) => address.addressId === addressDetail.trim() // Trim to avoid unwanted spaces
+    );
+
+    if (filtered.length > 0) {
+      zipCode = filtered[0].zipCode;
     }
-          // else {
+  }
+
+  // Ensure zipCode updates only when it's different
+  if (zipCode && zipCode !== prevState.zipCode) {
+    this.setState({ zipCode }, () => {
+      const { dispatch } = this.props;
+      dispatch(fetchDeliverySlots({ zipCode })); // Fetch slots using zipCode
+    });
+  }
+}
+W      // else {
       //   const defaultAddress = localStorage.getItem("defaultAddress");
       //   if (defaultAddress) {
       //     zipCode = JSON.parse(defaultAddress)?.zipCode;
