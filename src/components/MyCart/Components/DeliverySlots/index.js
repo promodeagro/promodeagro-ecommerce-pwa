@@ -226,7 +226,7 @@ W      // else {
                 label="All Slots"
               />
 
-              {/* <Tab
+              <Tab
                 sx={{
                   textTransform: "none",
                   fontFamily: "Poppins",
@@ -245,8 +245,8 @@ W      // else {
                   },
                 }}
                 label="Morning"
-              /> */}
-              {/* <Tab
+              />
+              <Tab
                 sx={{
                   textTransform: "none",
                   fontFamily: "Poppins",
@@ -265,8 +265,8 @@ W      // else {
                   },
                 }}
                 label="Afternoon"
-              /> */}
-              {/* <Tab
+              />
+              <Tab
                 sx={{
                   textTransform: "none",
                   fontFamily: "Poppins",
@@ -285,8 +285,8 @@ W      // else {
                   },
                 }}
                 label="Evening"
-              /> */}
-              {/* <Tab
+              />
+              <Tab
                 sx={{
                   textTransform: "none",
                   fontFamily: "Poppins",
@@ -305,7 +305,7 @@ W      // else {
                   },
                 }}
                 label="Night"
-              /> */}
+              />
             </Tabs>
             {status === "IN_PROGRESS" ? (
               Loader.commonLoader()
