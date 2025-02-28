@@ -212,7 +212,7 @@ class AddNewAddressModal extends Component {
       console.error("Error in API call:", error);
       this.setState({ isSubmitting: false });
     }
-    // window.location.reload();
+     window.location.reload();
   };
 
   validateForm = () => {
