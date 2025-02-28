@@ -107,7 +107,8 @@ class AlgoliaSearch extends Component {
               )}
             </SearchResults>
           </Box>
-          <Configure hitsPerPage={5} />
+          <Configure  hitsPerPage={5}
+           />
         </InstantSearch>
         <Box className="search-results-bg" onClick={searchBgClick} />
       </>
@@ -128,7 +129,7 @@ const SearchResults = connectStateResults(
 const CustomSearchBox = connectSearchBox(
   ({ currentRefinement, refine, onFocus, placeholder, inputRef }) => {
     const [searchTerm, setSearchTerm] = useState(currentRefinement || "");
-    console.log(searchTerm,"search");
+
     const debouncedRefine = debounce(refine, 300); // 300ms debounce
 
 
@@ -166,8 +167,9 @@ const CustomSearchBox = connectSearchBox(
 
 // Search Hits Component
 const CustomHits = connectHits(({ hits }) =>
+
   hits.length === 0 ? (
-    <p className="no-data">No data found</p>
+    <p className="no-data">No data found{hits}</p>
   ) : (
     <SearchProductItemView productList={hits} />
   )
