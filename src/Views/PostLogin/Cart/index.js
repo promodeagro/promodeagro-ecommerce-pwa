@@ -107,10 +107,10 @@ import "../../../assets/sass/components/myCart.scss"
       this.setState({
         defaultSelectedAddress: this.props?.defaultAddressData?.data,
       });
-      localStorage.setItem(
-        "address",
-        this.props?.defaultAddressData?.data?.addressId
-      );
+      // localStorage.setItem(
+      //   "address",
+      //   this.props?.defaultAddressData?.data?.addressId
+      // );
     }
 
 
