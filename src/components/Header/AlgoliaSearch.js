@@ -107,7 +107,7 @@ class AlgoliaSearch extends Component {
               )}
             </SearchResults>
           </Box>
-          <Configure hitsPerPage={10} />
+          <Configure hitsPerPage={5} />
         </InstantSearch>
         <Box className="search-results-bg" onClick={searchBgClick} />
       </>
