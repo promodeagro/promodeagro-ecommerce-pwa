@@ -89,7 +89,7 @@ class AddNewAddressModal extends Component {
   }
 
   componentDidMount() {
-    const defaultAddress = JSON.parse(localStorage.getItem("defaultAddress"));
+    const defaultAddress = JSON.parse(localStorage.getItem("address"));
     this.setState({
       isDefaultAddressPresent: !!defaultAddress, // true if a default address exists
       isDefaultChecked: !defaultAddress, // If no default address, set checkbox to checked
@@ -212,7 +212,7 @@ class AddNewAddressModal extends Component {
       console.error("Error in API call:", error);
       this.setState({ isSubmitting: false });
     }
-    // window.location.reload();
+     window.location.reload();
   };
 
   validateForm = () => {
