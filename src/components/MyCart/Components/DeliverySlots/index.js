@@ -61,31 +61,31 @@ class DeliverySlots extends Component {
           this.setState({ selectedDay: "tomorrow" });
         }
       }
-      const addressDetail = localStorage.getItem("address") || {};
-      let zipCode = null;
+      // const addressDetail = localStorage.getItem("address") || {};
+      // let zipCode = null;
 
-    if (allAddressData.length > 0) {
-      if (addressDetail) {
+       const addressDetail = localStorage.getItem("address") || {};
+      let zipCode = null;
+    
+      if (addressDetail && allAddressData.length > 0) {
         const filtered = allAddressData.filter(
           (address) => address.addressId === addressDetail
         );
-
+    
         if (filtered.length > 0) {
           zipCode = filtered[0].zipCode;
-          if (
-            filtered[0] !== prevState.filteredAddress ||
-            zipCode !== prevState.zipCode
-          ) {
-            this.setState({ filteredAddress: filtered[0], zipCode }, () => {
-              if (zipCode) {
-                const { dispatch } = this.props;
-                dispatch(fetchDeliverySlots({ zipCode })); // Call API with zipCode
-              }
-            });
-          }
         }
-      } 
-      // else {
+      }
+    
+      // Ensure that zipCode updates only when it's different
+      if (zipCode && zipCode !== prevState.zipCode) {
+        this.setState({ zipCode }, () => {
+          const { dispatch } = this.props;
+          dispatch(fetchDeliverySlots({ zipCode })); // Fetch slots using zipCode
+        });
+      }
+    }
+          // else {
       //   const defaultAddress = localStorage.getItem("defaultAddress");
       //   if (defaultAddress) {
       //     zipCode = JSON.parse(defaultAddress)?.zipCode;
@@ -98,8 +98,7 @@ class DeliverySlots extends Component {
       //     }
       //   }
       // }
-    }
-  }
+    
 
   handleTabChange = (event, newValue) => {
     this.setState({ selectedTab: newValue });
