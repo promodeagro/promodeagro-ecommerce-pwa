@@ -225,86 +225,87 @@ W      // else {
                 }}
                 label="All Slots"
               />
-              // <Tab
-              //   sx={{
-              //     textTransform: "none",
-              //     fontFamily: "Poppins",
-              //     fontSize: "14px",
-              //     fontWeight: 400,
-              //     lineHeight: "21px",
-              //     textAlign: "left",
-              //     textUnderlinePosition: "from-font",
-              //     textDecorationSkipInk: "none",
-              //     color: "#A09797",
-              //     "&.Mui-selected": {
-              //       color: "#1F9151", // Custom color for the selected state
-              //     },
-              //     "&.MuiTabs-indicator": {
-              //       backgroundColor: "#1F9151", // Your custom color
-              //     },
-              //   }}
-              //   label="Morning"
-              // />
-              // <Tab
-              //   sx={{
-              //     textTransform: "none",
-              //     fontFamily: "Poppins",
-              //     fontSize: "14px",
-              //     fontWeight: 400,
-              //     lineHeight: "21px",
-              //     textAlign: "left",
-              //     textUnderlinePosition: "from-font",
-              //     textDecorationSkipInk: "none",
-              //     color: "#A09797",
-              //     "&.Mui-selected": {
-              //       color: "#1F9151", // Custom color for the selected state
-              //     },
-              //     "&.MuiTabs-indicator": {
-              //       backgroundColor: "#1F9151", // Your custom color
-              //     },
-              //   }}
-              //   label="Afternoon"
-              // />
-              // <Tab
-              //   sx={{
-              //     textTransform: "none",
-              //     fontFamily: "Poppins",
-              //     fontSize: "14px",
-              //     fontWeight: 400,
-              //     lineHeight: "21px",
-              //     textAlign: "left",
-              //     textUnderlinePosition: "from-font",
-              //     textDecorationSkipInk: "none",
-              //     color: "#A09797",
-              //     "&.Mui-selected": {
-              //       color: "#1F9151", // Custom color for the selected state
-              //     },
-              //     "&.MuiTabs-indicator": {
-              //       backgroundColor: "#1F9151", // Your custom color
-              //     },
-              //   }}
-              //   label="Evening"
-              // />
-              // <Tab
-              //   sx={{
-              //     textTransform: "none",
-              //     fontFamily: "Poppins",
-              //     fontSize: "14px",
-              //     fontWeight: 400,
-              //     lineHeight: "21px",
-              //     textAlign: "left",
-              //     textUnderlinePosition: "from-font",
-              //     textDecorationSkipInk: "none",
-              //     color: "#A09797",
-              //     "&.Mui-selected": {
-              //       color: "#1F9151", // Custom color for the selected state
-              //     },
-              //     "&.MuiTabs-indicator": {
-              //       backgroundColor: "#1F9151", // Your custom color
-              //     },
-              //   }}
-              //   label="Night"
-              // />
+
+              {/* <Tab
+                sx={{
+                  textTransform: "none",
+                  fontFamily: "Poppins",
+                  fontSize: "14px",
+                  fontWeight: 400,
+                  lineHeight: "21px",
+                  textAlign: "left",
+                  textUnderlinePosition: "from-font",
+                  textDecorationSkipInk: "none",
+                  color: "#A09797",
+                  "&.Mui-selected": {
+                    color: "#1F9151", // Custom color for the selected state
+                  },
+                  "&.MuiTabs-indicator": {
+                    backgroundColor: "#1F9151", // Your custom color
+                  },
+                }}
+                label="Morning"
+              /> */}
+              {/* <Tab
+                sx={{
+                  textTransform: "none",
+                  fontFamily: "Poppins",
+                  fontSize: "14px",
+                  fontWeight: 400,
+                  lineHeight: "21px",
+                  textAlign: "left",
+                  textUnderlinePosition: "from-font",
+                  textDecorationSkipInk: "none",
+                  color: "#A09797",
+                  "&.Mui-selected": {
+                    color: "#1F9151", // Custom color for the selected state
+                  },
+                  "&.MuiTabs-indicator": {
+                    backgroundColor: "#1F9151", // Your custom color
+                  },
+                }}
+                label="Afternoon"
+              /> */}
+              {/* <Tab
+                sx={{
+                  textTransform: "none",
+                  fontFamily: "Poppins",
+                  fontSize: "14px",
+                  fontWeight: 400,
+                  lineHeight: "21px",
+                  textAlign: "left",
+                  textUnderlinePosition: "from-font",
+                  textDecorationSkipInk: "none",
+                  color: "#A09797",
+                  "&.Mui-selected": {
+                    color: "#1F9151", // Custom color for the selected state
+                  },
+                  "&.MuiTabs-indicator": {
+                    backgroundColor: "#1F9151", // Your custom color
+                  },
+                }}
+                label="Evening"
+              /> */}
+              {/* <Tab
+                sx={{
+                  textTransform: "none",
+                  fontFamily: "Poppins",
+                  fontSize: "14px",
+                  fontWeight: 400,
+                  lineHeight: "21px",
+                  textAlign: "left",
+                  textUnderlinePosition: "from-font",
+                  textDecorationSkipInk: "none",
+                  color: "#A09797",
+                  "&.Mui-selected": {
+                    color: "#1F9151", // Custom color for the selected state
+                  },
+                  "&.MuiTabs-indicator": {
+                    backgroundColor: "#1F9151", // Your custom color
+                  },
+                }}
+                label="Night"
+              /> */}
             </Tabs>
             {status === "IN_PROGRESS" ? (
               Loader.commonLoader()
