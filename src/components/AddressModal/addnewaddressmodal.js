@@ -89,7 +89,7 @@ class AddNewAddressModal extends Component {
   }
 
   componentDidMount() {
-    const defaultAddress = JSON.parse(localStorage.getItem("address"));
+    const defaultAddress = JSON.parse(localStorage.getItem("defaultAddress"));
     this.setState({
       isDefaultAddressPresent: !!defaultAddress, // true if a default address exists
       isDefaultChecked: !defaultAddress, // If no default address, set checkbox to checked
