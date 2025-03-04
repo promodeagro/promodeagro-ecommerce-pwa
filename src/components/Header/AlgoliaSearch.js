@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { Component, useState, useEffect,useMemo } from "react";
 import {
   InstantSearch,
   Configure,
@@ -16,6 +16,8 @@ import algoliasearch from "algoliasearch";
 import SearchProductItemView from "../AddRemoveProductComponents/searchProductView";
 import searchIcon from "../../assets/img/search-icon.png";
 import { debounce } from "lodash";
+import { Clear as ClearIcon } from '@mui/icons-material';  // Import Clear icon
+
 
 class AlgoliaSearch extends Component {
   constructor(props) {
@@ -79,7 +81,22 @@ class AlgoliaSearch extends Component {
     const { placeholderIndex, searchClient } = this.state;
 
     if (!searchClient) {
-      return <p>Error initializing search. Please try again later.</p>;
+      return (
+        <TextField
+          id="outlined-search"
+          className="search"
+          style={{backgroundColor:'white',borderRadius:'8px',width:'300px'}}
+          variant="outlined"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <img src={searchIcon} alt="Search" />
+              </InputAdornment>
+            ),
+          }}
+          placeholder="Please Try Again Later"
+        />
+      );
     }
 
     return (
@@ -130,13 +147,17 @@ const CustomSearchBox = connectSearchBox(
   ({ currentRefinement, refine, onFocus, placeholder, inputRef }) => {
     const [searchTerm, setSearchTerm] = useState(currentRefinement || "");
 
-    const debouncedRefine = debounce(refine, 300); // 300ms debounce
+    const debouncedRefine = useMemo(() => debounce(refine, 300), [refine]);
 
 
     useEffect(() => {
       debouncedRefine(searchTerm);
       return () => debouncedRefine.cancel(); // Cleanup on unmount
     }, [searchTerm]);
+    const handleClear = () => {
+      setSearchTerm("");
+      refine("");
+    };
 
     return (
       <TextField
@@ -156,6 +177,14 @@ const CustomSearchBox = connectSearchBox(
           startAdornment: (
             <InputAdornment position="start">
               <img src={searchIcon} alt="Search" />
+            </InputAdornment>
+          ),
+          endAdornment: searchTerm && (  // Show the clear icon only if there's a search term
+            <InputAdornment position="end">
+              <ClearIcon
+                onClick={handleClear}
+                style={{ cursor: 'pointer' }}
+              />
             </InputAdornment>
           ),
         }}
