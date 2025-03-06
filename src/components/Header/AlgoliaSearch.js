@@ -1,157 +1,72 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { useState, useEffect, useRef,useMemo } from "react";
+import algoliasearch from "algoliasearch/lite";
 import {
   InstantSearch,
+  SearchBox,
   Configure,
-  connectSearchBox,
-  connectHits,
-  connectStateResults,
-} from "react-instantsearch-dom";
-import {
-  Box,
-  TextField,
-  InputAdornment,
-  CircularProgress,
-} from "@mui/material";
-import algoliasearch from "algoliasearch";
+  useHits,
+  useSearchBox,
+  useInstantSearch
+} from "react-instantsearch-hooks-web";
+import { Clear as ClearIcon } from '@mui/icons-material';  // Import Clear icon
+import { Box, TextField, InputAdornment } from "@mui/material";
 import SearchProductItemView from "../AddRemoveProductComponents/searchProductView";
 import searchIcon from "../../assets/img/search-icon.png";
 import { debounce } from "lodash";
 
-class AlgoliaSearch extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      searchClient: null, // Store Algolia search client
-      loading: true, // Loading state for API keys
-      placeholderIndex: 0,
-    };
-    this.searchBoxRef = React.createRef();
+const AlgoliaSearch = ({ showResult = true, onFocus = () => {}, matches = false, inputRef, searchBgClick }) => {
+  const [searchClient, setSearchClient] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
+  const searchBoxRef = useRef(null);
 
-    this.placeholderTexts = [
-      'Search "Pui saag"',
-      'Search "Laal Saag"',
-      'Search "Gondharaj Nimbu"',
-    ];
-  }
+  const placeholderTexts = [
+    'Search "Pui saag"',
+    'Search "Laal Saag"',
+    'Search "Gondharaj Nimbu"',
+  ];
 
-  componentDidMount() {
-    this.fetchAlgoliaKeys();
-    this.intervalId = setInterval(() => {
-      this.setState((prevState) => ({
-        placeholderIndex:
-          (prevState.placeholderIndex + 1) % this.placeholderTexts.length,
-      }));
+  useEffect(() => {
+    fetchAlgoliaKeys();
+    const intervalId = setInterval(() => {
+      setPlaceholderIndex((prevIndex) => (prevIndex + 1) % placeholderTexts.length);
     }, 2000);
-  }
+    return () => clearInterval(intervalId);
+  }, []);
 
-  componentWillUnmount() {
-    clearInterval(this.intervalId);
-  }
-
-  async fetchAlgoliaKeys() {
+  const fetchAlgoliaKeys = async () => {
     try {
-      const response = await fetch(
-        "https://ijy06nbhob.execute-api.ap-south-1.amazonaws.com/getSecrets"
-      );
+      const cachedKeys = JSON.parse(sessionStorage.getItem("algolia_keys"));
+      if (cachedKeys) {
+        setSearchClient(algoliasearch(cachedKeys.ALGOLIA_APP_ID, cachedKeys.ALGOLIA_API_KEY));
+        setLoading(false);
+        return;
+      }
+  
+      const response = await fetch("https://ijy06nbhob.execute-api.ap-south-1.amazonaws.com/getSecrets");
       const data = await response.json();
-
+      
       if (data.ALGOLIA_APP_ID && data.ALGOLIA_API_KEY) {
-        this.setState({
-          searchClient: algoliasearch(
-            data.ALGOLIA_APP_ID,
-            data.ALGOLIA_API_KEY
-          ),
-          loading: false,
-        });
+        sessionStorage.setItem("algolia_keys", JSON.stringify(data)); // Cache keys
+        setSearchClient(algoliasearch(data.ALGOLIA_APP_ID, data.ALGOLIA_API_KEY));
       } else {
         console.error("Invalid API response:", data);
-        this.setState({ loading: false });
       }
     } catch (error) {
       console.error("Error fetching Algolia keys:", error);
-      this.setState({ loading: false });
+    } finally {
+      setLoading(false);
     }
-  }
+  };
+  
 
-  render() {
-    const { showResult, onFocus, matches, inputRef, searchBgClick } =
-      this.props;
-    const { placeholderIndex, searchClient } = this.state;
-
-    if (!searchClient) {
-      return <p>Error initializing search. Please try again later.</p>;
-    }
-
-    return (
-      <>
-        <InstantSearch searchClient={searchClient} indexName="products">
-          <Box className="search-container">
-            <CustomSearchBox
-              onFocus={onFocus}
-              placeholder={this.placeholderTexts[placeholderIndex]}
-              inputRef={(ref) => {
-                this.searchBoxRef.current = ref;
-                if (inputRef) inputRef.current = ref;
-              }}
-            />
-            <SearchResults>
-              {({ hasResults, hasQuery }) => (
-                <Box
-                  className={`search-results ${
-                    showResult && hasQuery ? "active" : ""
-                  }`}
-                  style={matches ? { width: "100vw", marginTop: "20px" } : {}}
-                >
-                  {showResult && hasResults && <CustomHits />}
-                </Box>
-              )}
-            </SearchResults>
-          </Box>
-          <Configure  hitsPerPage={5}
-           />
-        </InstantSearch>
-        <Box className="search-results-bg" onClick={searchBgClick} />
-      </>
-    );
-  }
-}
-
-// Search Results Component
-const SearchResults = connectStateResults(
-  ({ searchState, searchResults, children }) => {
-    const hasResults = searchResults?.nbHits !== 0;
-    const hasQuery = searchState?.query?.length > 0;
-    return children({ hasResults, hasQuery, searchResults });
-  }
-);
-
-// ✅ Properly Debounced Custom Search Box
-const CustomSearchBox = connectSearchBox(
-  ({ currentRefinement, refine, onFocus, placeholder, inputRef }) => {
-    const [searchTerm, setSearchTerm] = useState(currentRefinement || "");
-
-    const debouncedRefine = debounce(refine, 300); // 300ms debounce
-
-
-    useEffect(() => {
-      debouncedRefine(searchTerm);
-      return () => debouncedRefine.cancel(); // Cleanup on unmount
-    }, [searchTerm]);
-
+  if (!searchClient || loading) {
     return (
       <TextField
         id="outlined-search"
         className="search"
+        style={{backgroundColor:'white',borderRadius:'8px',width:'300px'}}
         variant="outlined"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        onFocus={onFocus}
-        inputRef={(ref) => {
-          if (ref) {
-            inputRef(ref);
-            ref.refine = refine;
-          }
-        }}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -159,20 +74,110 @@ const CustomSearchBox = connectSearchBox(
             </InputAdornment>
           ),
         }}
-        placeholder={placeholder}
+        placeholder="Please Try Again Later"
       />
     );
   }
-);
 
-// Search Hits Component
-const CustomHits = connectHits(({ hits }) =>
+  return (
+    <>
+      <InstantSearch searchClient={searchClient} indexName="products">
+        <Box className="search-container">
+          <CustomSearchBox
+            onFocus={onFocus}
+            placeholder={placeholderTexts[placeholderIndex]}
+            inputRef={(ref) => {
+              searchBoxRef.current = ref;
+              if (inputRef) inputRef.current = ref;
+            }}
+          />
+          <SearchResults showResult={showResult} matches={matches} />
+        </Box>
+        <Configure
+           restrictSearchableAttributes={["search_name", "sellingPrice"]} hitsPerPage={5} />
+      </InstantSearch>
+      <Box className="search-results-bg" onClick={searchBgClick} />
+    </>
+  );
+};
 
-  hits.length === 0 ? (
-    <p className="no-data">No data found{hits}</p>
+// ✅ Search Results Component
+const SearchResults = ({ showResult, matches }) => {
+  const { results } = useInstantSearch();
+  const hasResults = results?.nbHits !== 0;
+  const hasQuery = results?.query?.length > 0;
+
+  return (
+    <Box
+      className={`search-results ${showResult && hasQuery ? "active" : ""}`}
+      style={matches ? { width: "100vw", marginTop: "20px" } : {}}
+    >
+      {showResult && hasResults ? <CustomHits /> : <p className="no-data">No data found</p>}
+    </Box>
+  );
+};
+
+// ✅ Custom SearchBox (Debounced)
+const CustomSearchBox = ({ onFocus, placeholder, inputRef }) => {
+  const { query, refine } = useSearchBox();
+  const [searchTerm, setSearchTerm] = useState(query || "");
+
+  // ✅ Wrap debouncedRefine in usememo to prevent re-creation
+  const debouncedRefine = useMemo(() => debounce(refine, 300), [refine]);
+
+  useEffect(() => {
+    debouncedRefine(searchTerm);
+    return () => debouncedRefine.cancel();
+  }, [searchTerm, debouncedRefine]);
+  const handleClear = () => {
+    setSearchTerm("");
+    refine("");
+  };
+  return (
+    <TextField
+      id="outlined-search"
+      className="search"
+      variant="outlined"
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      onFocus={onFocus}
+      inputRef={(ref) => {
+        if (ref) {
+          inputRef?.(ref);
+          ref.refine = refine;
+        }
+      }}
+      
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">
+            <img src={searchIcon} alt="Search" />
+          </InputAdornment>
+        ),
+        endAdornment: searchTerm && (  // Show the clear icon only if there's a search term
+          <InputAdornment position="end">
+            <ClearIcon
+              onClick={handleClear}
+              style={{ cursor: 'pointer' }}
+            />
+          </InputAdornment>
+        ),
+      }}
+      placeholder={placeholder}
+    />
+  );
+};
+
+const CustomHits = () => {
+  const { results } = useInstantSearch(); // ✅ Get results directly
+  const hits = results?.hits || []; // ✅ Extract hits safely
+  const empty=results.nbHits===0
+  return empty ? (
+    <p className="no-data">No data found</p>
   ) : (
     <SearchProductItemView productList={hits} />
-  )
-);
+  );
+};
+
 
 export default AlgoliaSearch;

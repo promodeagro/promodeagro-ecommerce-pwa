@@ -55,3 +55,5 @@ class SearchResults extends Component {
 }
 
 export default withRouter(SearchResults);
+
+
