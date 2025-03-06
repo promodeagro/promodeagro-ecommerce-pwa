@@ -61,44 +61,46 @@ class DeliverySlots extends Component {
           this.setState({ selectedDay: "tomorrow" });
         }
       }
-    const addressDetail = loginDetails();
-    let zipCode = null;
+      // const addressDetail = localStorage.getItem("address") || {};
+      // let zipCode = null;
 
-    if (allAddressData.length > 0) {
-      if (addressDetail?.address) {
-        const filtered = allAddressData.filter(
-          (address) => address.addressId === addressDetail.address
-        );
+  // Retrieve address ID from local storage (ensure it's a string)
+  const addressDetail = localStorage.getItem("address"); // No need for JSON.parse()
+  let zipCode = null;
 
-        if (filtered.length > 0) {
-          zipCode = filtered[0].zipCode;
-          if (
-            filtered[0] !== prevState.filteredAddress ||
-            zipCode !== prevState.zipCode
-          ) {
-            this.setState({ filteredAddress: filtered[0], zipCode }, () => {
-              if (zipCode) {
-                const { dispatch } = this.props;
-                dispatch(fetchDeliverySlots({ zipCode })); // Call API with zipCode
-              }
-            });
-          }
-        }
-      } else {
-        const defaultAddress = localStorage.getItem("defaultAddress");
-        if (defaultAddress) {
-          zipCode = JSON.parse(defaultAddress)?.zipCode;
+  if (addressDetail && allAddressData.length > 0) {
+    // Ensure comparison is done as strings
+    const filtered = allAddressData.filter(
+      (address) => address.addressId === addressDetail.trim() // Trim to avoid unwanted spaces
+    );
 
-          if (zipCode && zipCode !== prevState.zipCode) {
-            this.setState({ zipCode }, () => {
-              const { dispatch } = this.props;
-              dispatch(fetchDeliverySlots({ zipCode }));
-            });
-          }
-        }
-      }
+    if (filtered.length > 0) {
+      zipCode = filtered[0].zipCode;
     }
   }
+
+  // Ensure zipCode updates only when it's different
+  if (zipCode && zipCode !== prevState.zipCode) {
+    this.setState({ zipCode }, () => {
+      const { dispatch } = this.props;
+      dispatch(fetchDeliverySlots({ zipCode })); // Fetch slots using zipCode
+    });
+  }
+}
+W      // else {
+      //   const defaultAddress = localStorage.getItem("defaultAddress");
+      //   if (defaultAddress) {
+      //     zipCode = JSON.parse(defaultAddress)?.zipCode;
+
+      //     if (zipCode && zipCode !== prevState.zipCode) {
+      //       this.setState({ zipCode }, () => {
+      //         const { dispatch } = this.props;
+      //         dispatch(fetchDeliverySlots({ zipCode }));
+      //       });
+      //     }
+      //   }
+      // }
+    
 
   handleTabChange = (event, newValue) => {
     this.setState({ selectedTab: newValue });
@@ -223,6 +225,7 @@ class DeliverySlots extends Component {
                 }}
                 label="All Slots"
               />
+
               <Tab
                 sx={{
                   textTransform: "none",

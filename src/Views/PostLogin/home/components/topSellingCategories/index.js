@@ -83,7 +83,7 @@ class TopSellingCategories extends Component {
 
   render() {
     return (
-      <Box className="top-selling-categories-container">
+      <Box style={{paddingBottom:"60px"}}  className="top-selling-categories-container">
         <Container>
           {this.state.loading
             ? Loader.commonLoader()

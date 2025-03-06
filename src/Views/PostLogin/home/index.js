@@ -71,7 +71,7 @@ class Home extends Component {
       // Check if the response has the required data
       if (response?.payload?.address) {
         console.log("Default address fetched successfully:", response.payload);
-        localStorage.setItem("defaultAddress", JSON.stringify(response.payload));
+        localStorage.setItem("address", response.payload.addressId.replace(/"/g, ''));
         console.log("Default address saved to localStorage.");
       } else {
         console.error("Failed to fetch default address. Response:", response);

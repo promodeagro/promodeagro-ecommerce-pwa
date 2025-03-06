@@ -9,9 +9,53 @@ import { Link } from "react-router-dom";
 class MainBanner extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      taglineIndex: 0, // Index to track current tagline (0, 1, or 2)
+    };
   }
 
+  componentDidMount() {
+    // Cycle through taglines every 4 seconds
+    this.taglineInterval = setInterval(() => {
+      this.setState((prevState) => ({
+        taglineIndex: (prevState.taglineIndex + 1) % 3, // Cycle between 0, 1, 2
+      }));
+    }, 4000);
+  }
+
+  componentWillUnmount() {
+    // Cleanup interval
+    clearInterval(this.taglineInterval);
+  }
+
+  renderTagline() {
+    const { taglineIndex } = this.state;
+
+    switch (taglineIndex) {
+      case 0:
+        return (
+          <p>
+            Now delivering exclusively in{" "}
+            <span className="taglie_highlight">Hyderabad</span>!
+          </p>
+        );
+      case 1:
+        return (
+          <p>
+             Unlock free delivery on orders above <span className="taglie_highlight">₹300</span> in Hyderabad!
+            
+          </p>
+        );
+      case 2:
+        return (
+          <p>
+            Free delivery on orders above <span className="taglie_highlight">₹100</span> in PBEL City!
+          </p>
+        );
+      default:
+        return null; // Fallback, should never hit
+    }
+  }
   render() {
     var settings = {
       dots: false,
@@ -45,14 +89,10 @@ class MainBanner extends Component {
     const { allOffersList } = this.props;
     return (
       <Box className="main-banner-container">
-         
         <Container>
-        <Box
-        className="hyderabad_tag_line"
-        >
-  {/* Focused on Hyderabad – Serving You, Right Where You Are!  */}
-  Now delivering exclusively in Hyderabad! 
-      </Box>
+          <Box className="tagline-container">
+            <div className="hyderabad_tag_line">{this.renderTagline()}</div>
+          </Box>
           <Slider {...settings}>
             {allOffersList?.length > 0 ? (
               allOffersList?.map((item) => {
