@@ -1,3 +1,7 @@
+
+
+
+
 import React, { Component, useState, useEffect,useMemo } from "react";
 import {
   InstantSearch,
@@ -124,7 +128,10 @@ class AlgoliaSearch extends Component {
               )}
             </SearchResults>
           </Box>
-          <Configure  hitsPerPage={5}
+          <Configure 
+                      restrictSearchableAttributes={["search_name", "sellingPrice"]}
+
+           hitsPerPage={5}
            />
         </InstantSearch>
         <Box className="search-results-bg" onClick={searchBgClick} />
