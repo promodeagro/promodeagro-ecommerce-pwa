@@ -46,61 +46,64 @@ class DeliverySlots extends Component {
     //   });
     // }
 
-       // New slot availability check
-       if (prevProps.slots !== this.props.slots) {
-        const { slots } = this.props;
-        const sameDaySlots = slots?.[0]?.sameDaySlots || [];
-        const hasTodaySlots = sameDaySlots.some(shift => shift.slots?.length > 0);
-    
-        const nextDaySlots = slots?.[0]?.nextDaySlots || [];
-        const hasTomorrowSlots = nextDaySlots.some(shift => shift.slots?.length > 0);
-    
-        const { selectedDay } = this.state;
-    
-        if (selectedDay === "today" && !hasTodaySlots && hasTomorrowSlots) {
-          this.setState({ selectedDay: "tomorrow" });
-        }
+    // New slot availability check
+    if (prevProps.slots !== this.props.slots) {
+      const { slots } = this.props;
+      const sameDaySlots = slots?.[0]?.sameDaySlots || [];
+      const hasTodaySlots = sameDaySlots.some(
+        (shift) => shift.slots?.length > 0
+      );
+
+      const nextDaySlots = slots?.[0]?.nextDaySlots || [];
+      const hasTomorrowSlots = nextDaySlots.some(
+        (shift) => shift.slots?.length > 0
+      );
+
+      const { selectedDay } = this.state;
+
+      if (selectedDay === "today" && !hasTodaySlots && hasTomorrowSlots) {
+        this.setState({ selectedDay: "tomorrow" });
       }
-      // const addressDetail = localStorage.getItem("address") || {};
-      // let zipCode = null;
+    }
+    // const addressDetail = localStorage.getItem("address") || {};
+    // let zipCode = null;
 
-  // Retrieve address ID from local storage (ensure it's a string)
-  const addressDetail = localStorage.getItem("address"); // No need for JSON.parse()
-  let zipCode = null;
+    // Retrieve address ID from local storage (ensure it's a string)
+    const addressDetail = localStorage.getItem("address"); // No need for JSON.parse()
+    let zipCode = null;
 
-  if (addressDetail && allAddressData.length > 0) {
-    // Ensure comparison is done as strings
-    const filtered = allAddressData.filter(
-      (address) => address.addressId === addressDetail.trim() // Trim to avoid unwanted spaces
-    );
+    if (addressDetail && allAddressData.length > 0) {
+      // Ensure comparison is done as strings
+      const filtered = allAddressData.filter(
+        (address) => address.addressId === addressDetail.trim() // Trim to avoid unwanted spaces
+      );
 
-    if (filtered.length > 0) {
-      zipCode = filtered[0].zipCode;
+      if (filtered.length > 0) {
+        zipCode = filtered[0].zipCode;
+      }
+    }
+
+    // Ensure zipCode updates only when it's different
+    if (zipCode && zipCode !== prevState.zipCode) {
+      this.setState({ zipCode }, () => {
+        const { dispatch } = this.props;
+        dispatch(fetchDeliverySlots({ zipCode })); // Fetch slots using zipCode
+      });
     }
   }
+  W; // else {
+  //   const defaultAddress = localStorage.getItem("defaultAddress");
+  //   if (defaultAddress) {
+  //     zipCode = JSON.parse(defaultAddress)?.zipCode;
 
-  // Ensure zipCode updates only when it's different
-  if (zipCode && zipCode !== prevState.zipCode) {
-    this.setState({ zipCode }, () => {
-      const { dispatch } = this.props;
-      dispatch(fetchDeliverySlots({ zipCode })); // Fetch slots using zipCode
-    });
-  }
-}
-W      // else {
-      //   const defaultAddress = localStorage.getItem("defaultAddress");
-      //   if (defaultAddress) {
-      //     zipCode = JSON.parse(defaultAddress)?.zipCode;
-
-      //     if (zipCode && zipCode !== prevState.zipCode) {
-      //       this.setState({ zipCode }, () => {
-      //         const { dispatch } = this.props;
-      //         dispatch(fetchDeliverySlots({ zipCode }));
-      //       });
-      //     }
-      //   }
-      // }
-    
+  //     if (zipCode && zipCode !== prevState.zipCode) {
+  //       this.setState({ zipCode }, () => {
+  //         const { dispatch } = this.props;
+  //         dispatch(fetchDeliverySlots({ zipCode }));
+  //       });
+  //     }
+  //   }
+  // }
 
   handleTabChange = (event, newValue) => {
     this.setState({ selectedTab: newValue });
@@ -176,12 +179,12 @@ W      // else {
               Today
             </span>
             {/* {slots?.[0]?.nextDaySlots?.length > 0 && ( */}
-              <span
-                className={selectedDay === "tomorrow" ? "active_day" : ""}
-                onClick={() => this.setState({ selectedDay: "tomorrow" })}
-              >
-                Tomorrow
-              </span>
+            <span
+              className={selectedDay === "tomorrow" ? "active_day" : ""}
+              onClick={() => this.setState({ selectedDay: "tomorrow" })}
+            >
+              Tomorrow
+            </span>
             {/* )} */}
           </Box>
           <Box>
@@ -191,7 +194,7 @@ W      // else {
               textColor="primary"
               indicatorColor="primary"
               aria-label="delivery slot tabs"
-              variant="fullWidth"
+              // variant="fullWidth"
               sx={{
                 marginBottom: 2,
                 "& .MuiTabs-indicator": {
@@ -225,7 +228,7 @@ W      // else {
                 }}
                 label="All Slots"
               />
-
+              {/* 
               <Tab
                 sx={{
                   textTransform: "none",
@@ -306,6 +309,7 @@ W      // else {
                 }}
                 label="Night"
               />
+               */}
             </Tabs>
             {status === "IN_PROGRESS" ? (
               Loader.commonLoader()
@@ -317,47 +321,45 @@ W      // else {
                   minHeight: "240px",
                 }}
               >
-                <Grid
-                  container
-                  sx={{
-                    flexDirection: { xs: "column", sm: "row" }, // Stack items on small screens
-                    gap: 0, // Ensure no additional space between grid items
-                  }}
-                >
-                  {filteredSlots.map((slot, index) => (
-                    <Grid
-                      item
-                      xs={12}
-                      sm={6}
-                      md={6}
-                      key={index}
-                      sx={{
-                        padding: 0, // Remove extra padding for the grid items
-                        margin: 0, // Ensure no extra margins
-                      }}
-                    >
-                      <FormControlLabel
-                        control={
-                          <Radio
-                            checked={
-                              selectedSlot === `${slot.start} - ${slot.end}`
-                            }
-                            onChange={this.handleSlotChange}
-                            value={`${slot.start} - ${slot.end}`}
-                            color="success"
-                          />
-                        }
-                        label={
-                          <Typography variant="body2">{`${slot.start} ${slot.startAmPm} - ${slot.end} ${slot.endAmPm}`}</Typography>
-                        }
-                        sx={{
-                          width: "100%", // Ensure full width for each slot
-                          margin: 0, // Remove any margin between labels
-                        }}
-                      />
-                    </Grid>
-                  ))}
-                </Grid>
+<Grid
+  container
+  spacing={0} // Reducing space between rows and columns
+  sx={{
+    display: "flex",
+    flexWrap: "wrap",
+  }}
+>
+  {filteredSlots.map((slot, index) => (
+    <Grid
+      item
+      xs={12} // On mobile, full width (1 per row)
+      sm={6} // On tablets and above, 2 per row
+      key={index}
+      sx={{
+        padding: "2px", // Minimal padding for tighter layout
+        margin: 0,
+      }}
+    >
+      <FormControlLabel
+        control={
+          <Radio
+            checked={selectedSlot === `${slot.start} - ${slot.end}`}
+            onChange={this.handleSlotChange}
+            value={`${slot.start} - ${slot.end}`}
+            color="success"
+          />
+        }
+        label={
+          <Typography variant="body2">{`${slot.start} ${slot.startAmPm} - ${slot.end} ${slot.endAmPm}`}</Typography>
+        }
+        sx={{
+          width: "100%",
+          margin: 0,
+        }}
+      />
+    </Grid>
+  ))}
+</Grid>
               </Box>
             ) : (
               <div className="box">No Slots Available</div>
