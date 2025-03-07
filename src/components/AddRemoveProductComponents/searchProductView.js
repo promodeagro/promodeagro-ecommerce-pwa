@@ -112,7 +112,7 @@ class SearchProductItemView extends Component {
     const addedProducts = LocalStorageCartService.getData();
     const { productList } = this.props;
     const { qauntityUnits, unitIdPrices } = this.state;
-    // console.log(productList, "productList");
+    console.log(productList, "productList");
     return (
       <>
         {productList.length > 0 ? (
@@ -121,6 +121,9 @@ class SearchProductItemView extends Component {
             return (
               <Box
                 className="result-product"
+                sx={{
+                  opacity: !item.availability ? 0.35 : 1, // 35% opacity when available
+                }}
                 key={item.id}
                 onContextMenu={this.handleContextMenu}
               >
@@ -276,6 +279,27 @@ class SearchProductItemView extends Component {
                       </Box>
                     ) : (
                       <Box className="add-cart">
+                        {!item.availability ? (
+                          <Box
+  sx={{
+    backgroundColor: "#000000",
+    color: "white",
+    fontSize:'14px',
+    fontWeight:600,
+    paddingX: "8px",
+    paddingY: "8px",
+    borderRadius: "5px",
+    display: "flex", // Enables flexbox
+    justifyContent: "center", // Centers horizontally
+    alignItems: "center", // Centers vertically
+    textAlign: "center", // Ensures text is centered
+    width: "100%", // Optional: Ensures full width if inside a container
+  }}
+>
+  Out of Stock
+</Box>
+
+) : (
                         <Button
                           variant="outlined"
                           onClick={() => {
@@ -291,6 +315,7 @@ class SearchProductItemView extends Component {
                         >
                           Add to cart
                         </Button>
+)}
                       </Box>
                     )}
                   </Grid>
