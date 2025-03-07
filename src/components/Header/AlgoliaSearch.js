@@ -17,7 +17,7 @@ import { debounce } from "lodash";
 // ✅ Initialize Algolia search client
 const searchClient = algoliasearch(
   "PBBD4F57NI", // ALGOLIA_APP_ID
-  "27386ed97d577de7d0779a5f8a4c6be0" // ALGOLIA_API_KEY
+  "27386ed97d577de7d0779a5f8a4c6be0" 
 );
 
 const AlgoliaSearch = ({ showResult = true, onFocus = () => {}, matches = false, inputRef, searchBgClick }) => {
