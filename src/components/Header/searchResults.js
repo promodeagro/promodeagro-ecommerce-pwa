@@ -9,7 +9,6 @@ class SearchResults extends Component {
     this.searchInputRef = React.createRef();
     this.state = {
       matches: window.matchMedia("(max-width: 600px)").matches,
-      showResult: false,
     };
   }
 
@@ -19,41 +18,19 @@ class SearchResults extends Component {
       .addEventListener("change", (e) => this.setState({ matches: e.matches }));
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.location.pathname !== this.props.location.pathname) {
-      this.searchBgClick();  
-    }
-  }
-
-  searchBgClick = () => {
-    this.setState({ showResult: false});
-    if (this.searchInputRef.current) {
-      this.searchInputRef.current.value = "";
-    }
-  };
-
-  handleSearchFocus = () => {
-    this.setState({ showResult: true });
-  };
-
   render() {
-    const { matches, showResult } = this.state;
+    const { matches } = this.state;
 
     return (
       <Box
-       className="search-wrapper" style={matches ? { width: '100vw' } : {width:'650px'}}>
-        <AlgoliaSearch 
-          showResult={showResult}
-          searchBgClick={this.searchBgClick}
-          onFocus={this.handleSearchFocus}
-          matches={matches}
-          inputRef={this.searchInputRef}
-        />
+        className="search-wrapper"
+        style={matches ? { width: "100vw" } : { width: "650px" }}
+      >
+        <AlgoliaSearch inputRef={this.searchInputRef} />
       </Box>
     );
   }
 }
 
 export default withRouter(SearchResults);
-
 

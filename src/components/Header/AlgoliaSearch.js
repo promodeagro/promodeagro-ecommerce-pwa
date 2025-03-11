@@ -2,27 +2,25 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 import algoliasearch from "algoliasearch/lite";
 import {
   InstantSearch,
-  SearchBox,
+
   Configure,
-  useHits,
+  
   useSearchBox,
-  useInstantSearch
+  useInstantSearch,
 } from "react-instantsearch-hooks-web";
-import { Clear as ClearIcon } from "@mui/icons-material"; // Import Clear icon
+import { Clear as ClearIcon } from "@mui/icons-material";
 import { Box, TextField, InputAdornment } from "@mui/material";
 import SearchProductItemView from "../AddRemoveProductComponents/searchProductView";
 import searchIcon from "../../assets/img/search-icon.png";
 import { debounce } from "lodash";
 
 // ✅ Initialize Algolia search client
-const searchClient = algoliasearch(
-  "PBBD4F57NI", // ALGOLIA_APP_ID
-  "27386ed97d577de7d0779a5f8a4c6be0" 
-);
+const searchClient = algoliasearch("PBBD4F57NI", "27386ed97d577de7d0779a5f8a4c6be0");
 
-const AlgoliaSearch = ({ showResult = true, onFocus = () => {}, matches = false, inputRef, searchBgClick }) => {
+const AlgoliaSearch = ({ showResult = true, onFocus = () => {}, matches = false, inputRef }) => {
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
-  const searchBoxRef = useRef(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const searchContainerRef = useRef(null); // Ref for detecting outside clicks
 
   const placeholderTexts = [
     'Search "Pui saag"',
@@ -37,24 +35,47 @@ const AlgoliaSearch = ({ showResult = true, onFocus = () => {}, matches = false,
     return () => clearInterval(intervalId);
   }, []);
 
+  // ✅ Handle clicks outside the search bar and results
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(event.target)
+      ) {
+        setSearchTerm(""); // Clear search input
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <>
-      <InstantSearch searchClient={searchClient} indexName="products">
-        <Box className="search-container">
-          <CustomSearchBox
-            onFocus={onFocus}
-            placeholder={placeholderTexts[placeholderIndex]}
-            inputRef={(ref) => {
-              searchBoxRef.current = ref;
-              if (inputRef) inputRef.current = ref;
-            }}
-          />
-          <SearchResults showResult={showResult} matches={matches} />
-        </Box>
-        <Configure restrictSearchableAttributes={["search_name", "sellingPrice"]} hitsPerPage={3} />
-      </InstantSearch>
-      <Box className="search-results-bg" onClick={searchBgClick} />
-    </>
+    <InstantSearch searchClient={searchClient} indexName="products">
+      <Box ref={searchContainerRef} className="search-container">
+        <CustomSearchBox
+          onFocus={onFocus}
+          placeholder={placeholderTexts[placeholderIndex]}
+          inputRef={inputRef}
+          setSearchTerm={setSearchTerm}
+          searchTerm={searchTerm}
+        />
+        <SearchResults showResult={showResult} matches={matches} />
+      </Box>
+      <Configure restrictSearchableAttributes={["search_name", "sellingPrice"]} hitsPerPage={25} />
+      <SearchResultsBg searchTerm={searchTerm} />
+    </InstantSearch>
+  );
+};
+
+const SearchResultsBg = ({ searchTerm }) => {
+  const { results } = useInstantSearch();
+  const hasResults = results?.nbHits > 0;
+
+  return (
+    <div
+      className={`search-results-bg ${searchTerm && hasResults ? "active" : ""}`}
+    />
   );
 };
 
@@ -65,41 +86,52 @@ const SearchResults = ({ showResult, matches }) => {
   const hasQuery = results?.query?.length > 0;
 
   return (
-    <Box className={`search-results ${showResult && hasQuery ? "active" : ""}`} style={matches ? { width: "100vw", marginTop: "20px" } : {}}>
+    <Box
+      className={`search-results ${showResult && hasQuery ? "active" : ""}`}
+      style={matches ? { width: "100vw", marginTop: "20px" } : {}}
+    >
       {showResult && hasResults ? <CustomHits /> : <p className="no-data">No data found</p>}
     </Box>
   );
 };
 
 // ✅ Custom SearchBox (Debounced)
-const CustomSearchBox = ({ onFocus, placeholder, inputRef }) => {
+const CustomSearchBox = ({ onFocus, placeholder, inputRef, setSearchTerm, searchTerm }) => {
   const { query, refine } = useSearchBox();
-  const [searchTerm, setSearchTerm] = useState(query || "");
+  const [searchValue, setSearchValue] = useState(query || "");
 
-  // ✅ Wrap debouncedRefine in useMemo to prevent re-creation
+  // ✅ Debounced refine function
   const debouncedRefine = useMemo(() => debounce(refine, 300), [refine]);
 
   useEffect(() => {
-    debouncedRefine(searchTerm);
+    debouncedRefine(searchValue);
     return () => debouncedRefine.cancel();
-  }, [searchTerm, debouncedRefine]);
+  }, [searchValue, debouncedRefine]);
 
   const handleClear = () => {
+    setSearchValue("");
     setSearchTerm("");
     refine("");
   };
+
+  useEffect(() => {
+    if (searchTerm === "") setSearchValue("");
+  }, [searchTerm]);
 
   return (
     <TextField
       id="outlined-search"
       className="search"
       variant="outlined"
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
+      value={searchValue}
+      onChange={(e) => {
+        setSearchValue(e.target.value);
+        setSearchTerm(e.target.value);
+      }}
       onFocus={onFocus}
       inputRef={(ref) => {
         if (ref) {
-          inputRef?.(ref);
+          if (inputRef) inputRef.current = ref;
           ref.refine = refine;
         }
       }}
@@ -109,7 +141,7 @@ const CustomSearchBox = ({ onFocus, placeholder, inputRef }) => {
             <img src={searchIcon} alt="Search" />
           </InputAdornment>
         ),
-        endAdornment: searchTerm && (
+        endAdornment: searchValue && (
           <InputAdornment position="end">
             <ClearIcon onClick={handleClear} style={{ cursor: "pointer" }} />
           </InputAdornment>
