@@ -384,7 +384,7 @@ footer p {
               <p>
                 <strong>Date & Time:</strong>
                 {orderData?.createdAt
-                  ? new Date(orderData.createdAt).toLocaleString("en-US", {
+                  ? new Date(orderData.createdAt).toLocaleString("en-GB", {
                       year: "numeric",
                       month: "2-digit",
                       day: "2-digit",
