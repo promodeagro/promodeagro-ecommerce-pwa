@@ -8,6 +8,7 @@ import {
   useSearchBox,
   useInstantSearch,
 } from "react-instantsearch-hooks-web";
+import { useMediaQuery } from "@mui/material";
 import { Clear as ClearIcon } from "@mui/icons-material";
 import { Box, TextField, InputAdornment } from "@mui/material";
 import SearchProductItemView from "../AddRemoveProductComponents/searchProductView";
@@ -17,7 +18,8 @@ import { debounce } from "lodash";
 // ✅ Initialize Algolia search client
 const searchClient = algoliasearch("PBBD4F57NI", "27386ed97d577de7d0779a5f8a4c6be0");
 
-const AlgoliaSearch = ({ showResult = true, onFocus = () => {}, matches = false, inputRef }) => {
+const AlgoliaSearch = ({ showResult = true, onFocus = () => {}, inputRef }) => {
+  const matches = useMediaQuery("(max-width: 650px)");
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const searchContainerRef = useRef(null); // Ref for detecting outside clicks
