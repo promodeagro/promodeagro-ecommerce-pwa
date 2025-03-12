@@ -8,6 +8,8 @@ import {
   DialogContentText,
   DialogActions,
   CircularProgress,
+  Modal,
+  Drawer,
 } from "@mui/material";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import noImage from "../../assets/img/no-image.png";
@@ -24,6 +26,8 @@ import CurrencyRupeeOutlinedIcon from "@mui/icons-material/CurrencyRupeeOutlined
 import status from "../../Redux/Constants";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { deleteProductWishList } from "../../Redux/AllProducts/AllProductthunk";
+import selecticon from "../../assets/img/dropdown3.svg";
+import closeicon from "../../assets/img/closeModalIcon.svg";
 
 class ProductItemView extends Component {
   constructor(props) {
@@ -35,6 +39,10 @@ class ProductItemView extends Component {
       isProductSelecting: false,
       unitIdPrices: [],
       authModalOpen: false,
+      modalOpen: false,
+      selectedProduct: null,
+      drawerOpen: false, // New state for drawer
+      selectedVariants: {}, // Stores selected variant per product ID
     };
   }
 
@@ -56,17 +64,17 @@ class ProductItemView extends Component {
     }
   }
 
-  handleAddToCart(id, qty) {
+  handleAddToCart(groupId, qty) {
     const items = loginDetails();
     this.setState({
-      dataId: id,
+      dataId: groupId,
     });
     if (items?.userId) {
-      LocalStorageCartService.addItem(id, {
-        productId: id,
+      LocalStorageCartService.addItem(groupId, {
+        productId: groupId,
         quantity: 1,
-        quantityUnits: this.state.qauntityUnits[id]
-          ? parseInt(this.state.qauntityUnits[id])
+        quantityUnits: this.state.qauntityUnits[groupId]
+          ? parseInt(this.state.qauntityUnits[groupId])
           : qty,
       });
     } else {
@@ -76,7 +84,7 @@ class ProductItemView extends Component {
     }
   }
 
-  handleQuantityChange(id, increment, productQuantity = 0, qty) {
+  handleQuantityChange(groupId, increment, productQuantity = 0, qty) {
     const items = loginDetails();
     if (increment < 0 && productQuantity != 0) {
       this.setState({ isUpdateIncrease: false });
@@ -84,21 +92,21 @@ class ProductItemView extends Component {
       this.setState({ isUpdateIncrease: true });
     }
     this.setState({
-      dataId: id,
+      dataId: groupId,
     });
 
     productQuantity = productQuantity + increment;
 
     if (productQuantity != 0) {
-      LocalStorageCartService.updateItem(id, {
-        productId: id,
+      LocalStorageCartService.updateItem(groupId, {
+        productId: groupId,
         quantity: parseInt(productQuantity),
-        quantityUnits: this.state.qauntityUnits[id]
-          ? parseInt(this.state.qauntityUnits[id])
+        quantityUnits: this.state.qauntityUnits[groupId]
+          ? parseInt(this.state.qauntityUnits[groupId])
           : qty,
       });
     } else {
-      LocalStorageCartService.deleteItem(id);
+      LocalStorageCartService.deleteItem(groupId);
     }
   }
 
@@ -106,19 +114,15 @@ class ProductItemView extends Component {
     const items = loginDetails();
     const { value } = event.target;
     let dupQty = this.state.qauntityUnits;
-
-    dupQty[item?.id] = value;
+    dupQty[item?.groupId] = value;
     const parsedValue = parseInt(value, 10);
-
     this.setState((prevState) => {
       const newPrice = item?.unitPrices?.find((d) => d?.qty === parsedValue);
-
       const updatedPrices = prevState.unitIdPrices.map((price) =>
-        price.id === item?.id ? { ...price, price: newPrice } : price
+        price.groupId === item?.groupId ? { ...price, price: newPrice } : price
       );
-
-      if (!updatedPrices.some((price) => price.id === item?.id)) {
-        updatedPrices.push({ id: item?.id, price: newPrice });
+      if (!updatedPrices.some((price) => price.groupId === item?.groupId)) {
+        updatedPrices.push({ groupId: item?.groupId, price: newPrice });
       }
 
       return {
@@ -127,28 +131,28 @@ class ProductItemView extends Component {
       };
     });
 
-    if (addedProduct && addedProduct[item?.id]?.quantity > 0) {
+    if (addedProduct && addedProduct[item?.groupId]?.quantity > 0) {
       this.setState({
         isProductSelecting: true,
-        dataId: item?.id,
+        dataId: item?.groupId,
       });
-      LocalStorageCartService.deleteItem(item?.id);
+      LocalStorageCartService.deleteItem(item?.groupId);
     }
   };
 
-  handleDeleteWishList(id) {
+  handleDeleteWishList(groupId) {
     this.setState({
-      deleteItemId: id,
+      deleteItemId: groupId,
       apiLoader: true,
     });
-    this.props.deleteProductWishList(id);
+    this.props.deleteProductWishList(groupId);
   }
 
   handleClickOpen = (item) => {
     this.setState({
       open: true,
       deleteId: item?.addressId,
-      productId: item?.id,
+      productId: item?.groupId,
     });
   };
 
@@ -164,20 +168,90 @@ class ProductItemView extends Component {
     event.preventDefault();
   };
 
+  handleModalOpen = (product) => {
+    if (window.innerWidth <= 600) {
+      // Adjust breakpoint as needed
+      this.setState({
+        drawerOpen: true,
+        selectedProduct: product,
+      });
+    } else {
+      this.setState({
+        modalOpen: true,
+        selectedProduct: product,
+      });
+    }
+  };
+
+  handleDrawerClose = () => {
+    this.setState({
+      drawerOpen: false,
+      selectedProduct: null,
+    });
+  };
+
+  handleModalClose = () => {
+    this.setState({
+      modalOpen: false,
+      selectedProduct: null, // Clear the selected product when modal is closed
+    });
+  };
+
+  handleVariantSelect = (
+    productId,
+    variantId,
+    variantUnit,
+    variantQuantity,
+    variantMrp,
+    variantPrice
+  ) => {
+    console.log(
+      "Selected Variant Updated:",
+      productId,
+      variantId,
+      variantUnit,
+      variantQuantity,
+      variantMrp,
+      variantPrice
+    );
+    this.setState((prevState) => ({
+      selectedVariants: {
+        ...prevState.selectedVariants,
+        [productId]: {
+          id: variantId,
+          unit: variantUnit,
+          quantity: variantQuantity,
+          mrp: variantMrp,
+          price: variantPrice,
+        }, // Store both ID and name
+      },
+      modalOpen: false, // Close modal when variant is selected
+    }));
+  };
+
   renderProductItems = (productList, showDeleteWishlist) => {
     const addedProducts = LocalStorageCartService.getData();
     const { qauntityUnits, unitIdPrices } = this.state;
+
     return productList.map((item) => {
-      let prices = unitIdPrices.find((d) => d.id === item.id);
+      let prices = unitIdPrices.find((d) => d.id === item.groupId);
+      const allVariationsOutOfStock = item?.variations?.every(
+        (variant) => !variant.availability
+      );
+
       return (
-<Box
-  className={`product-box ${!item.availability ? "out-of-stock" : ""}`}
-  key={item?.id}
-  onContextMenu={this.handleContextMenu}
->
-{item?.savingsPercentage && item?.savingsPercentage !== "-Infinity" && item?.savingsPercentage !== 0 && (
-  <Box className="sale">Sale {item?.savingsPercentage}%</Box>
-)}
+        <Box
+          className={`product-box ${
+            allVariationsOutOfStock ? "out-of-stock" : ""
+          }`}
+          key={item?.groupId}
+          onContextMenu={this.handleContextMenu}
+        >
+          {item?.savingsPercentage &&
+            item?.savingsPercentage !== "-Infinity" &&
+            item?.savingsPercentage !== 0 && (
+              <Box className="sale">Sale {item?.savingsPercentage}%</Box>
+            )}
 
           {showDeleteWishlist ? (
             <Box
@@ -185,19 +259,21 @@ class ProductItemView extends Component {
               onClick={(event) => {
                 event.preventDefault();
                 this.handleClickOpen(item);
-                // this.handleDeleteWishList(item.id);
               }}
             >
               <DeleteOutlineOutlinedIcon />
             </Box>
           ) : null}
-
           <Box
             className="image"
             onClick={() => {
+              const displayedVariantId =
+                this.state.selectedVariants[item.groupId]?.id ||
+                item.variations?.[0]?.id;
+
               window.scrollTo({ top: 0, behavior: "smooth" });
               this.props.navigate(
-                `/product-details/${item?.category}/${item?.name}/${item?.id}`
+                `/product-details/${item?.category}/${item?.name}/${item?.groupId}?variant=${displayedVariantId}`
               );
             }}
           >
@@ -206,122 +282,123 @@ class ProductItemView extends Component {
           <Box
             className="name"
             onClick={() => {
+              const displayedVariantId =
+                this.state.selectedVariants[item.groupId]?.id ||
+                item.variations?.[0]?.id;
+
               window.scrollTo({ top: 0, behavior: "smooth" });
               this.props.navigate(
-                `/product-details/${item?.category}/${item?.name}/${item?.id}`
+                `/product-details/${item?.category}/${item?.name}/${item?.groupId}?variant=${displayedVariantId}`
               );
             }}
           >
             <Link>{item?.name}</Link>
           </Box>
-
-
           <>
-            {item?.unitPrices?.length > 0 ? (
-              <></>
-              // <Box className="select">
-              //   <select
-              //     value={
-              //       qauntityUnits[item?.id] ||
-              //       item?.cartItem?.QuantityUnits ||
-              //       ""
-              //     }
-              //     onChange={(event) =>
-              //       this.handleQuantity(event, item, addedProducts)
-              //     }
-              //   >
-              //     {item?.unitPrices.map((unitItem, index) => {
-              //       return (
-              //         <option key={index} value={unitItem.qty}>
-              //           {/* {unitItem.qty}  */}
-              //           {item?.unit}
-              //         </option>
-              //       );
-              //     })}
-              //   </select>
-              // </Box>
+            {item?.variations?.length > 0 ? (
+              <Box className="select">
+                <button
+                  className="selettobutton"
+                  onClick={() => this.handleModalOpen(item)}
+                >
+                  {(this.state.selectedVariants[item.groupId]?.quantity ||
+                    item.variations?.[0]?.quantity ||
+                    0) + " "}
+                  {this.state.selectedVariants[item.groupId]?.unit ||
+                    item.variations?.[0]?.unit}
+                  <img
+                    src={selecticon}
+                    alt="Select Icon"
+                    className="selecticon"
+                  />
+                </button>
+              </Box>
             ) : (
               <Box className="select">{item?.unit}</Box>
             )}
           </>
-            <Box className="price-cart">
+
+          <Box className="price-cart">
             <Box className="price">
               <strong>
                 <CurrencyRupeeOutlinedIcon />
-                {item?.cartItem?.selectedQuantityUnitprice
-                  ? item?.cartItem?.selectedQuantityUnitprice
-                  : prices?.price?.price
-                  ? prices?.price?.price
-                  : item?.price}
+                {this.state.selectedVariants[item.groupId]?.price ||
+                  item.variations?.[0]?.price ||
+                  item?.price}
               </strong>
-              {(item?.cartItem?.selectedQuantityUnitMrp || prices?.price?.mrp || item?.mrp) > 0 && (
-  <span>
-    <CurrencyRupeeOutlinedIcon />
-    {item?.cartItem?.selectedQuantityUnitMrp
-      ? item?.cartItem?.selectedQuantityUnitMrp
-      : prices?.price?.mrp
-      ? prices?.price?.mrp
-      : item?.mrp}
-  </span>
-)}
+              {(this.state.selectedVariants[item.groupId]?.mrp ||
+                item.variations?.[0]?.mrp ||
+                item?.mrp) > 0 && (
+                <span>
+                  <CurrencyRupeeOutlinedIcon />
+                  {this.state.selectedVariants[item.groupId]?.mrp ||
+                    item.variations?.[0]?.mrp ||
+                    item?.mrp}
+                </span>
+              )}
             </Box>
-            {addedProducts && addedProducts[item?.id] ? (
+            {addedProducts &&
+            addedProducts[
+              this.state.selectedVariants[item.groupId]?.id ||
+                item?.variations?.[0]?.id ||
+                item?.groupId
+            ] ? (
               <Box className="number-input-container">
-                {addedProducts[item?.id].quantity !== 0 ? (
+                {addedProducts[
+                  this.state.selectedVariants[item.groupId]?.id ||
+                    item?.variations?.[0]?.id ||
+                    item?.groupId
+                ]?.quantity !== 0 ? (
                   <Box
                     className="symbol"
                     onClick={() => {
-                      let unitqty = "";
-                      if (item?.unitPrices?.length > 0) {
-                        unitqty = item?.unitPrices[0]?.qty;
-                      } else {
-                        unitqty = 1;
-                      }
+                      let unitqty =
+                        item?.unitPrices?.length > 0
+                          ? item?.unitPrices[0]?.qty
+                          : 1;
+                      let selectedVariantId =
+                        this.state.selectedVariants[item.groupId]?.id ||
+                        item?.variations?.[0]?.id ||
+                        item?.groupId;
 
-                      if (addedProducts[item?.id]?.productId) {
-                        let d = addedProducts[item?.id]?.quantity;
-                        this.handleQuantityChange(
-                          addedProducts[item?.id]?.productId,
-                          -1,
-                          Number(d),
-                          unitqty
-                        );
-                      } else {
-                        this.handleQuantityChange(item?.id, -1, "", unitqty);
-                      }
+                      this.handleQuantityChange(
+                        selectedVariantId,
+                        -1,
+                        addedProducts[selectedVariantId]?.quantity,
+                        unitqty
+                      );
                     }}
                   >
                     -
                   </Box>
-                ) : (
-                  <></>
-                )}
-
+                ) : null}
                 <Box className="Number">
-                  {addedProducts[item?.id]?.quantity}
+                  {
+                    addedProducts[
+                      this.state.selectedVariants[item.groupId]?.id ||
+                        item?.variations?.[0]?.id ||
+                        item?.groupId
+                    ]?.quantity
+                  }
                 </Box>
                 <Box
                   className="symbol"
                   onClick={() => {
-                    let unitqty = "";
-                    if (item?.unitPrices?.length > 0) {
-                      unitqty = item?.unitPrices[0]?.qty;
-                    } else {
-                      unitqty = 1;
-                    }
+                    let unitqty =
+                      item?.unitPrices?.length > 0
+                        ? item?.unitPrices[0]?.qty
+                        : 1;
+                    let selectedVariantId =
+                      this.state.selectedVariants[item.groupId]?.id ||
+                      item?.variations?.[0]?.id ||
+                      item?.groupId;
 
-                    if (addedProducts[item?.id]?.productId) {
-                      let d = addedProducts[item?.id]?.quantity;
-
-                      this.handleQuantityChange(
-                        addedProducts[item?.id]?.productId,
-                        1,
-                        Number(d),
-                        unitqty
-                      );
-                    } else {
-                      this.handleQuantityChange(item?.id, 1, "", unitqty);
-                    }
+                    this.handleQuantityChange(
+                      selectedVariantId,
+                      1,
+                      addedProducts[selectedVariantId]?.quantity,
+                      unitqty
+                    );
                   }}
                 >
                   +
@@ -332,17 +409,32 @@ class ProductItemView extends Component {
                 <Button
                   variant="outlined"
                   onClick={() => {
-                    let unitqty = "";
-                    if (item?.unitPrices?.length > 0) {
-                      unitqty = item?.unitPrices[0]?.qty;
-                    } else {
-                      unitqty = 1;
-                    }
+                    let unitqty =
+                      item?.unitPrices?.length > 0
+                        ? item?.unitPrices[0]?.qty
+                        : 1;
+                    let selectedVariantId =
+                      this.state.selectedVariants[item.groupId]?.id ||
+                      item?.variations?.[0]?.id ||
+                      item?.groupId;
+
                     this.setState({ isUpdateIncrease: true });
-                    this.handleAddToCart(item?.id, unitqty);
+                    this.handleAddToCart(selectedVariantId, unitqty);
                   }}
                 >
-                  Add
+                  {addedProducts[
+                    this.state.selectedVariants[item.groupId]?.id ||
+                      item?.variations?.[0]?.id ||
+                      item?.groupId
+                  ]
+                    ? `Added (${
+                        addedProducts[
+                          this.state.selectedVariants[item.groupId]?.id ||
+                            item?.variations?.[0]?.id ||
+                            item?.groupId
+                        ]?.quantity
+                      })`
+                    : "Add"}
                 </Button>
               </Box>
             )}
@@ -400,7 +492,6 @@ class ProductItemView extends Component {
         ) : (
           <>{this.renderProductItems(productList, showDeleteWishlist)}</>
         )}
-
         <AuthModal
           open={this.state.authModalOpen}
           handleDefaultAddress={() => {
@@ -417,7 +508,398 @@ class ProductItemView extends Component {
             });
           }}
         />
-
+        <Modal open={this.state.modalOpen} onClose={this.handleModalClose}>
+          <Box
+            className="common-modal"
+            sx={{
+              width: "36vw",
+              padding: 3,
+              borderRadius: "10px",
+              overflowY: "auto",
+              height:"24vw",
+              scrollbarWidth: "none", // Hide scrollbar for Firefox
+              msOverflowStyle: "none", // Hide scrollbar for IE/Edge
+            
+            }}
+          >
+            {this.state.selectedProduct ? (
+              <Box>
+                <Box
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "18px",
+                    marginBottom: "15px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  {this.state.selectedProduct.name}
+                  <img
+                    src={closeicon}
+                    alt="Close Icon"
+                    className="closeiconofmodal"
+                    onClick={this.handleModalClose}
+                  />
+                </Box>
+                <Box>
+                  {this.state.selectedProduct.variations.map((variant) => {
+                    const variantId = variant.id;
+                    const addedProduct =
+                      LocalStorageCartService.getData()?.[variantId] || null;
+                    return (
+                      <Box
+                        key={variantId}
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          marginBottom: "10px",
+                          padding: "8px",
+                          border: "1px solid #ddd",
+                          borderRadius: "10px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            fontSize: "14px",
+                            gap: "8px",
+                          }}
+                        >
+                          <img
+                            onClick={() => {
+                              const displayedVariantId = variant.id; // Use the clicked variant's ID
+                              window.scrollTo({ top: 0, behavior: "smooth" });
+                              this.props.navigate(
+                                `/product-details/${this.state.selectedProduct?.category}/${this.state.selectedProduct?.name}/${this.state.selectedProduct?.groupId}?variant=${displayedVariantId}`
+                              );
+                            }}
+                            src={variant.image || noImage}
+                            alt={variant.name}
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              objectFit: "cover",
+                              borderRadius: "5px",
+                              cursor: "pointer",
+                            }}
+                          />
+                          <div
+                            style={{
+                              display: "flex",
+                              height: "42px",
+                              alignItems: "center", // Vertically center children
+                              // backgroundColor:"red"
+                            }}
+                            onClick={() =>
+                              this.handleVariantSelect(
+                                this.state.selectedProduct.groupId, // Correct product ID
+                                variant.id, // Variant ID
+                                variant.unit, // Variant Name
+                                variant.quantity,
+                                variant.mrp,
+                                variant.price
+                              )
+                            }
+                          >
+                            <div
+                              style={{
+                                display: "flex",
+                                gap: "3px",
+                                width: "150px",
+                              }}
+                            >
+                              <span className="namestyle">
+                                {variant.quantity}
+                              </span>
+                              <span className="namestyle">{variant.unit}</span>
+                            </div>
+                            <div
+                              style={{
+                                display: "flex",
+                                width: "150px",
+                                gap: "3px",
+                              }}
+                            >
+                              {variant.mrp > 0 && (
+                                <span className="mrpstyle">₹{variant.mrp}</span>
+                              )}
+                              <span className="pricebold">
+                                ₹{variant.price}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        {addedProduct ? (
+                          <Box className="number-input-containermodal">
+                            {addedProduct.quantity !== 0 ? (
+                              <Box
+                                className="symbolbutton"
+                                onClick={() => {
+                                  let unitqty =
+                                    variant?.unitPrices?.length > 0
+                                      ? variant?.unitPrices[0]?.qty
+                                      : 1;
+                                  this.handleQuantityChange(
+                                    variantId,
+                                    -1,
+                                    addedProduct.quantity,
+                                    unitqty
+                                  );
+                                }}
+                              >
+                                -
+                              </Box>
+                            ) : null}
+                            <Box className="Numberbutton">
+                              {addedProduct.quantity}
+                            </Box>
+                            <Box
+                              className="symbolbutton"
+                              onClick={() => {
+                                let unitqty =
+                                  variant?.unitPrices?.length > 0
+                                    ? variant?.unitPrices[0]?.qty
+                                    : 1;
+                                this.handleQuantityChange(
+                                  variantId,
+                                  1,
+                                  addedProduct.quantity,
+                                  unitqty
+                                );
+                              }}
+                            >
+                              +
+                            </Box>
+                          </Box>
+                        ) : (
+                          <Box className="add-cart">
+                            <button
+                              className={`buttonvaradd ${
+                                !variant?.availability
+                                  ? "out-of-stock-button"
+                                  : ""
+                              }`}
+                              variant="outlined"
+                              disabled={!variant?.availability} // Disable button for out of stock items
+                              onClick={() => {
+                                if (!variant?.availability) return;
+                                let unitqty =
+                                  variant?.unitPrices?.length > 0
+                                    ? variant?.unitPrices[0]?.qty
+                                    : 1;
+                                this.setState(
+                                  { isUpdateIncrease: true },
+                                  () => {
+                                    this.handleAddToCart(variantId, unitqty);
+                                  }
+                                );
+                              }}
+                            >
+                              {variant?.availability ? "Add" : "Out of Stock"}
+                            </button>
+                          </Box>
+                        )}
+                      </Box>
+                    );
+                  })}
+                </Box>
+              </Box>
+            ) : (
+              <p>No product selected</p>
+            )}
+          </Box>
+        </Modal>
+        <Drawer
+          anchor="bottom"
+          open={this.state.drawerOpen}
+          onClose={this.handleDrawerClose}
+        >
+          <Box className="drawerbox">
+            {this.state.selectedProduct ? (
+              <Box>
+                <Box
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "18px",
+                    marginBottom: "15px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  {this.state.selectedProduct.name}
+                </Box>
+                <Box>
+                  {this.state.selectedProduct.variations.map((variant) => {
+                    const variantId = variant.id;
+                    const addedProduct =
+                      LocalStorageCartService.getData()?.[variantId] || null;
+                    return (
+                      <Box
+                        key={variantId}
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          marginBottom: "10px",
+                          padding: "8px",
+                          border: "1px solid #ddd",
+                          borderRadius: "10px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            fontSize: "14px",
+                            gap: "10px",
+                          }}
+                        >
+                          <img
+                            onClick={() => {
+                              const displayedVariantId = variant.id; // Use the clicked variant's ID
+                              window.scrollTo({ top: 0, behavior: "smooth" });
+                              this.props.navigate(
+                                `/product-details/${this.state.selectedProduct?.category}/${this.state.selectedProduct?.name}/${this.state.selectedProduct?.groupId}?variant=${displayedVariantId}`
+                              );
+                            }}
+                            src={variant.image || noImage}
+                            alt={variant.name}
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              objectFit: "cover",
+                              borderRadius: "5px",
+                            }}
+                          />
+                          <div
+                            style={{
+                              display: "flex",
+                              height: "42px",
+                              alignItems: "center", // Vertically center children
+                              //  backgroundColor:"red"
+                            }}
+                            onClick={() => {
+                              this.handleVariantSelect(
+                                this.state.selectedProduct.groupId, // Correct product ID
+                                variant.id, // Variant ID
+                                variant.unit, // Variant Name
+                                variant.quantity,
+                                variant.mrp,
+                                variant.price
+                              );
+                              this.setState({ drawerOpen: false }); // Close the drawer
+                            }}
+                          >
+                            <div
+                              style={{
+                                display: "flex",
+                                gap: "3px",
+                                width: "100px",
+                              }}
+                            >
+                              <span className="namestyle">
+                                {variant.quantity}
+                              </span>
+                              <span className="namestyle">{variant.unit}</span>
+                            </div>
+                            <div
+                              style={{
+                                display: "flex",
+                                width: "100px",
+                                gap: "3px",
+                              }}
+                            >
+                              {variant.mrp > 0 && (
+                                <span className="mrpstyle">₹{variant.mrp}</span>
+                              )}
+                              <span className="pricebold">
+                                ₹{variant.price}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        {addedProduct ? (
+                          <Box className="number-input-containermodal">
+                            {addedProduct.quantity !== 0 ? (
+                              <Box
+                                className="symbolbutton"
+                                onClick={() => {
+                                  let unitqty =
+                                    variant?.unitPrices?.length > 0
+                                      ? variant?.unitPrices[0]?.qty
+                                      : 1;
+                                  this.handleQuantityChange(
+                                    variantId,
+                                    -1,
+                                    addedProduct.quantity,
+                                    unitqty
+                                  );
+                                }}
+                              >
+                                -
+                              </Box>
+                            ) : null}
+                            <Box className="Numberbutton">
+                              {addedProduct.quantity}
+                            </Box>
+                            <Box
+                              className="symbolbutton"
+                              onClick={() => {
+                                let unitqty =
+                                  variant?.unitPrices?.length > 0
+                                    ? variant?.unitPrices[0]?.qty
+                                    : 1;
+                                this.handleQuantityChange(
+                                  variantId,
+                                  1,
+                                  addedProduct.quantity,
+                                  unitqty
+                                );
+                              }}
+                            >
+                              +
+                            </Box>
+                          </Box>
+                        ) : (
+                          <Box className="add-cart">
+                            <button
+                              className={`buttonvaradd ${
+                                !variant?.availability
+                                  ? "out-of-stock-button"
+                                  : ""
+                              }`}
+                              variant="outlined"
+                              disabled={!variant?.availability} // Disable button for out of stock items
+                              onClick={() => {
+                                if (!variant?.availability) return;
+                                let unitqty =
+                                  variant?.unitPrices?.length > 0
+                                    ? variant?.unitPrices[0]?.qty
+                                    : 1;
+                                this.setState(
+                                  { isUpdateIncrease: true },
+                                  () => {
+                                    this.handleAddToCart(variantId, unitqty);
+                                  }
+                                );
+                              }}
+                            >
+                              {variant?.availability ? "Add" : "Out of Stock"}
+                            </button>
+                          </Box>
+                        )}
+                      </Box>
+                    );
+                  })}
+                </Box>
+              </Box>
+            ) : (
+              <p>No product selected</p>
+            )}
+          </Box>
+        </Drawer>
         {showDeleteWishlist ? (
           <Dialog
             open={this.state.open}
@@ -486,34 +968,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(navigateRouter(ProductItemView));
-
-
-// producs unit code 
-
-// <>
-// {item?.unitPrices?.length > 0 ? (
-//   <Box className="select">
-//     <select
-//       value={
-//         qauntityUnits[item?.id] ||
-//         item?.cartItem?.QuantityUnits ||
-//         ""
-//       }
-//       onChange={(event) =>
-//         this.handleQuantity(event, item, addedProducts)
-//       }
-//     >
-//       {item?.unitPrices.map((unitItem, index) => {
-//         return (
-//           <option key={index} value={unitItem.qty}>
-//             {/* {unitItem.qty}  */}
-//             {item?.unit}
-//           </option>
-//         );
-//       })}
-//     </select>
-//   </Box>
-// ) : (
-//   <Box className="select">{item?.unit}</Box>
-// )}
-// </>

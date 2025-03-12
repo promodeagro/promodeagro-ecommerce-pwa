@@ -29,21 +29,54 @@ class ProductDetailCartUpdateView extends Component {
     };
   }
 
-  handleAddToCart(id, qty) {
+  componentDidMount() {
+    this.updateSelectedVariant();
+  }
+
+  componentDidUpdate() {
+    if (this.state.prevSearch !== window.location.search) {
+      this.setState({ prevSearch: window.location.search }, () => {
+        this.updateSelectedVariant();
+      });
+    }
+  }
+
+  updateSelectedVariant() {
+    const queryParams = new URLSearchParams(window.location.search);
+    const variantId = queryParams.get("variant");
+
+    if (variantId && this.props.productItem?.variants) {
+      const selectedVariant = this.props.productItem.variants.find(
+        (variant) => variant.id === variantId
+      );
+
+      if (selectedVariant) {
+        this.setState({ selectedVariant });
+      }
+    }
+  }
+
+  handleAddToCart() {
     const items = loginDetails();
+    const { selectedVariant } = this.state;
+
+    if (!selectedVariant) {
+      return; // Ensure a variant is selected before adding to cart
+    }
+
     this.setState({
-      dataId: id,
+      dataId: selectedVariant.id,
     });
+
     if (items?.userId) {
-      LocalStorageCartService.addItem(id, {
-        productId: id,
+      LocalStorageCartService.addItem(selectedVariant.id, {
+        productId: selectedVariant.id,
         quantity: 1,
         quantityUnits: this.state.qauntityUnits
           ? parseInt(this.state.qauntityUnits)
-          : qty,
+          : selectedVariant.quantity,
       });
-    } else if (!items?.userId) {
-      // this.props.navigate("/signin");
+    } else {
       this.setState({
         authModalOpen: true,
       });
@@ -78,7 +111,6 @@ class ProductDetailCartUpdateView extends Component {
   }
 
   handleQuantity(event, item, addedProduct) {
-    //
     let priceOfItem = item?.unitPrices?.find(
       (d) => d.qty === parseInt(event.target.value)
     );
@@ -99,152 +131,168 @@ class ProductDetailCartUpdateView extends Component {
     const addedProducts = LocalStorageCartService.getData();
     const { productItem } = this.props;
     const { quantityUnitPrice } = this.state;
+    const { selectedVariant } = this.state;
+    const productDetails = selectedVariant || this.props.productItem;
 
     return (
       <>
-        <Box className="product-price">
-          <Box className="price">
-            <img src={rupeeIcon} alt="" />{" "}
-            {productItem?.cartItem?.selectedQuantityUnitprice
-              ? productItem?.cartItem?.selectedQuantityUnitprice
-              : quantityUnitPrice?.price
-              ? quantityUnitPrice?.price
-              : productItem?.price}
-          </Box>
-          {(productItem?.cartItem?.selectedQuantityUnitMrp > 0 ||
-            quantityUnitPrice?.mrp > 0 ||
-            productItem?.mrp > 0) && (
-            <Box className="mrp">
-              <img src={mdiRupee} alt="" />{" "}
-              <span>
-                {productItem?.cartItem?.selectedQuantityUnitMrp ||
-                  quantityUnitPrice?.mrp ||
-                  productItem?.mrp}
-              </span>
+        {" "}
+        <Box className="mainboxforthescroll">
+          {productItem?.variants?.map((variant) => (
+            <div
+              key={variant.id}
+              onClick={() => {
+                if (!variant.availability) return; // Prevent click if out of stock
+                this.setState({ selectedVariant: variant });
+
+                this.props.navigate(
+                  `/product-details/${encodeURIComponent(
+                    productItem?.category
+                  )}/${encodeURIComponent(productItem?.name)}/${
+                    productItem?.groupId
+                  }?variant=${variant.id}`
+                );
+              }}
+              style={{
+                height: "auto",
+                width: "110px",
+                flexShrink: 0,
+                border: `2px solid ${
+                  selectedVariant?.id === variant.id ? "#1f9151" : "#cacaca"
+                }`,
+                borderRadius: "8px",
+                padding: "10px",
+                marginBottom: "5px",
+                fontSize: "14px",
+                cursor: variant.availability ? "pointer" : "not-allowed", // Change cursor
+                gap: "4px",
+                marginTop: "10px",
+                marginRight: "5px",
+                opacity: variant.availability ? "1" : "0.6", // Dim out of stock items
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  gap: "2px",
+                  fontWeight: "400",
+                  marginBottom: "3px",
+                  justifyContent: "center", // Center horizontally
+                  alignItems: "center", // Align items centrally
+                }}
+              >
+                <span>{variant.quantity}</span>
+                <span>{variant.unit}</span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  gap: "4px",
+                  justifyContent: "center", // Center horizontally
+                  alignItems: "center", // Align items centrally
+                }}
+              >
+                <span style={{ fontWeight: "600" }}> ₹{variant.price}</span>
+                {!variant.availability ? (
+                  <button
+                    style={{
+                      backgroundColor: "white",
+                      color: "red",
+                      fontWeight: "600",
+                      border: "none",
+                      marginTop: "4px",
+                      fontSize: "13px",
+                    }}
+                  >
+                    Out of Stock
+                  </button>
+                ) : (
+                  variant.mrp > 0 && (
+                    <span className="mrpstyle">₹{variant.mrp}</span>
+                  )
+                )}
+              </div>
+            </div>
+          ))}
+        </Box>
+        {productDetails?.savingsPercentage &&
+          productDetails?.savingsPercentage !== "-Infinity" &&
+          productDetails?.savingsPercentage !== 0 && (
+            <Box className="product-save">
+              You save <span>{productDetails?.savingsPercentage} %</span>
             </Box>
           )}
-        </Box>
-        {productItem?.savingsPercentage != 0 ? (
-          <Box className="product-save">
-            You save <span>{productItem?.savingsPercentage} %</span>
-          </Box>
-        ) : (
-          <></>
-        )}
-
-        {productItem?.unitPrices?.length > 0 ? (
-          // <Box className="select">
-          //   <FormControl fullWidth>
-          //     <NativeSelect
-          //       value={this.state.qauntityUnits}
-          //       onChange={(event) =>
-          //         this.handleQuantity(event, productItem, addedProducts)
-          //       }
-          //     >
-          //       {productItem?.unitPrices?.map((unitItem, index) => {
-          //         return (
-          //           <option key={index} value={unitItem?.qty}>
-          //             {/* {unitItem?.qty} */}
-          //              {productItem?.unit}
-          //           </option>
-          //         );
-          //       })}
-          //     </NativeSelect>
-          //   </FormControl>
-          // </Box>
-
-          <></>
-        ) : (
-          // <Box className="select">{productItem?.unit}</Box>
-          <></>
-        )}
-
         <Box className="product-cart-buttons">
           <Grid container spacing={2}>
             <Grid item xs={12} sm={8} md={6} lg={4}>
-              {productItem?.availability ? (
-                <>
-                  {addedProducts &&
-                  addedProducts[this.props.params.id]?.quantity &&
-                  addedProducts[this.props.params.id]?.quantity != 0 ? (
-                    <Box className="number-input-container">
-                      <Box
-                        className={"symbol"}
-                        onClick={() => {
-                          let unitqty = "";
-                          if (productItem?.unitPrices?.length > 0) {
-                            unitqty = productItem?.unitPrices[0]?.qty;
-                          } else {
-                            unitqty = 1;
-                          }
-                          this.handleQuantityChange(
-                            this.props.params.id,
-                            -1,
-                            Number(
-                              addedProducts[this.props.params.id]?.quantity
-                            ),
-                            unitqty
-                          );
-                        }}
-                      >
-                        -
-                      </Box>
+              {productItem?.variants?.every(
+                (variant) => !variant.availability
+              ) ? (
+                // If all variants are out of stock, show "Out of Stock" button
+                <Button className="add-cart-btn" variant="contained" disabled>
+                  Out Of Stock
+                  <ShoppingCartOutlinedIcon style={{ marginLeft: "10px" }} />
+                </Button>
+              ) : addedProducts &&
+                addedProducts[this.state.selectedVariant?.id]?.quantity &&
+                addedProducts[this.state.selectedVariant?.id]?.quantity !==
+                  0 ? (
+                // Quantity adjustment UI if the product is already in the cart
+                <Box className="number-input-container">
+                  <Box
+                    className={"symbol"}
+                    onClick={() => {
+                      let unitqty = this.state.selectedVariant?.quantity || 1;
+                      this.handleQuantityChange(
+                        this.state.selectedVariant?.id,
+                        -1,
+                        Number(
+                          addedProducts[this.state.selectedVariant?.id]
+                            ?.quantity
+                        ),
+                        unitqty
+                      );
+                    }}
+                  >
+                    -
+                  </Box>
 
-                      <Box className="Number">
-                        {addedProducts[this.props.params.id]?.quantity}
-                      </Box>
-                      <Box
-                        className={"symbol"}
-                        onClick={() => {
-                          let unitqty = "";
-                          if (productItem?.unitPrices?.length > 0) {
-                            unitqty = productItem?.unitPrices[0]?.qty;
-                          } else {
-                            unitqty = 1;
-                          }
-                          this.handleQuantityChange(
-                            this.props.params.id,
-                            1,
-                            Number(
-                              addedProducts[this.props.params.id]?.quantity || 1
-                            ),
-                            unitqty
-                          );
-                        }}
-                      >
-                        +
-                      </Box>
-                    </Box>
-                  ) : (
-                    <Button
-                      className="add-cart-btn"
-                      variant="contained"
-                      onClick={() => {
-                        let unitqty = "";
-                        if (productItem?.unitPrices?.length > 0) {
-                          unitqty = productItem?.unitPrices[0]?.qty;
-                        } else {
-                          unitqty = 1;
-                        }
-                        this.handleAddToCart(productItem?.id, unitqty);
-                      }}
-                    >
-                      {productItem?.availability
-                        ? "Add to Cart"
-                        : "Out Of Stock"}
-                      <ShoppingCartOutlinedIcon
-                        style={{ marginLeft: "10px" }}
-                      />
-                    </Button>
-                  )}
-                </>
+                  <Box className="Number">
+                    {addedProducts[this.state.selectedVariant?.id]?.quantity}
+                  </Box>
+
+                  <Box
+                    className={"symbol"}
+                    onClick={() => {
+                      let unitqty = this.state.selectedVariant?.quantity || 1;
+                      this.handleQuantityChange(
+                        this.state.selectedVariant?.id,
+                        1,
+                        Number(
+                          addedProducts[this.state.selectedVariant?.id]
+                            ?.quantity || 1
+                        ),
+                        unitqty
+                      );
+                    }}
+                  >
+                    +
+                  </Box>
+                </Box>
               ) : (
+                // "Add to Cart" button for available variants
                 <Button
                   className="add-cart-btn"
                   variant="contained"
-                  disabled={!productItem?.availability}
+                  onClick={() => {
+                    let unitqty = this.state.selectedVariant?.quantity || 1;
+                    this.handleAddToCart(
+                      this.state.selectedVariant?.id,
+                      unitqty
+                    );
+                  }}
                 >
-                  Out Of Stock
+                  Add to Cart
                   <ShoppingCartOutlinedIcon style={{ marginLeft: "10px" }} />
                 </Button>
               )}

@@ -260,7 +260,7 @@ const Views = () => {
 
       <Route path={`/category/offers/:id`} element={<Category />} />
       <Route
-        path={`/product-details/:category/:subcategory/:id`}
+        path={`/product-details/:category/:subcategory/:groupId`}
         element={<ProductDetails />}
       />
 

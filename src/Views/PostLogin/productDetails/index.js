@@ -63,7 +63,7 @@ class ProductDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: this.props.params.id,
+      groupId: this.props.params.groupId,
       productItem: {},
       loaderCount: 0,
       pathName: "",
@@ -83,10 +83,10 @@ class ProductDetails extends Component {
       pathName: window.location.pathname,
     });
     this.props.productDetails({
-      productId: this.props.params.id,
+      productId: this.props.params.groupId,
       userId: items?.userId ? items?.userId : "",
     });
-    this.props.fetchProducReview(this.props.params.id);
+    this.props.fetchProducReview(this.props.params.groupId);
     if (items?.userId) {
       this.props.fetchCartItems({
         userId: items?.userId,
@@ -102,10 +102,10 @@ class ProductDetails extends Component {
         pathName: window.location.pathname,
         loaderCount: 0,
       });
-      this.props.fetchProducReview(this.props.params.id);
+      this.props.fetchProducReview(this.props.params.groupId);
 
       this.props.productDetails({
-        productId: this.props.params.id,
+        productId: this.props.params.groupId,
         userId: items?.userId ? items?.userId : "",
       });
     }
@@ -115,7 +115,7 @@ class ProductDetails extends Component {
         this.props.addProductReviewData.status &&
       this.props.addProductReviewData.status === status.SUCCESS
     ) {
-      this.props.fetchProducReview(this.props.params.id);
+      this.props.fetchProducReview(this.props.params.groupId);
     } else if (this.props.addProductReviewData.status === status.FAILURE) {
       
     }
@@ -126,7 +126,7 @@ class ProductDetails extends Component {
     ) {
       if (this.props.deleteBookMarkData.data.statusCode === 200) {
         this.props.productDetails({
-          productId: this.props.params.id,
+          productId: this.props.params.groupId,
           userId: items?.userId ? items?.userId : "",
         });
       } else {
@@ -140,7 +140,7 @@ class ProductDetails extends Component {
       this.props.setBookmarksData.status === status.SUCCESS
     ) {
       this.props.productDetails({
-        productId: this.props.params.id,
+        productId: this.props.params.groupId,
         userId: items?.userId ? items?.userId : "",
       });
     }
@@ -167,7 +167,7 @@ class ProductDetails extends Component {
         );
 
         if (!isItemInList) {
-          if (this.props.productDetailsData?.data?.id) {
+          if (this.props.productDetailsData?.data?.groupId) {
             recentViewList.unshift(this.props.productDetailsData?.data);
             localStorage.setItem(
               "recentviewitems",
@@ -176,7 +176,7 @@ class ProductDetails extends Component {
           }
         }
       } else {
-        if (this.props.productDetailsData?.data?.id) {
+        if (this.props.productDetailsData?.data?.groupId) {
           localStorage.setItem(
             "recentviewitems",
             JSON.stringify([this.props.productDetailsData?.data])
@@ -245,7 +245,7 @@ class ProductDetails extends Component {
   productDetails() {
     const items = loginDetails();
     this.props.productDetails({
-      productId: this.props.params.id,
+      productId: this.props.params.groupId,
       userId: items?.userId ? items?.userId : "",
     });
     if (items?.userId) {
@@ -277,7 +277,7 @@ class ProductDetails extends Component {
           Loader.commonLoader()
         ) : (
           <>
-            {productItem?.id ? (
+            {productItem?.groupId ? (
               <Container>
                 <Box className="details-container">
                   <Grid container spacing={2}>
@@ -337,7 +337,7 @@ class ProductDetails extends Component {
                           <Box className="breadcrum">
                             <ul>
                               <li>
-                                <Link to="/">Hone</Link>
+                                <Link to="/">Home</Link>
                               </li>
                               <li>
                                 <span>/</span>
@@ -382,7 +382,7 @@ class ProductDetails extends Component {
                                     }/${productItem?.subCategory?.replace(
                                       " ",
                                       "%20"
-                                    )}/${productItem?.id}`}
+                                    )}/${productItem?.groupId}`}
                                     quote={"find best products"}
                                     hashtag={`share your thoughts about ${productItem?.subCategory}`}
                                   >
@@ -392,7 +392,7 @@ class ProductDetails extends Component {
                                 </li>
                                 <li>
                                   <TwitterShareButton
-                                    url={`https://promodeagro.com/product-details/${productItem?.category}/${productItem?.subCategory}/${productItem?.id}`}
+                                    url={`https://promodeagro.com/product-details/${productItem?.category}/${productItem?.subCategory}/${productItem?.groupId}`}
                                     quote={"Find |Best Products"}
                                     hashtag={`Share Yours Thoughts About ${productItem?.subCategory}`}
                                   >
@@ -408,7 +408,7 @@ class ProductDetails extends Component {
                                     }/${productItem?.subCategory?.replace(
                                       " ",
                                       "%20"
-                                    )}/${productItem?.id}`}
+                                    )}/${productItem?.groupId}`}
                                     quote={"Find |Best Products"}
                                     hashtag={`Share Yours Thoughts About ${productItem?.subCategory}`}
                                   >

@@ -868,6 +868,7 @@
 
 .selettobutton {
   width: 100%;
+  padding: 10px;
   font-size: 13px;
   line-height: 18px;
   border: 1px solid #cacaca;
@@ -879,11 +880,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  margin-bottom: 2px;
 }
 
 .selecticon {
-  width: 10px; /* Adjust size as needed */
-  height: 7px;
+    // width: 10px; /* Adjust size as needed */
+    // height: 12px;
   margin-left: 5px;
 }
 
@@ -983,4 +989,145 @@ font-weight: 650;
 
 .product-box.out-of-stock .add-cart button:hover {
   background-color: #000000; /* Even darker on hover */
+}
+
+.number-input-containermodal {
+  display: inline-flex;
+  width: 64px;
+
+  .symbolbutton {
+    width: 33.33%;
+    border: 1px solid #1f9151;
+    background-color: #1f9151;
+    height: 36px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    border-radius: 4px 0px 0px 4px;
+
+    &:last-child {
+      border-radius: 0px 4px 4px 0px;
+    }
+  }
+
+  .Numberbutton {
+    width: 33.33%;
+    height: 36px;
+    border: 1px solid #1f9151;
+    background-color: #1f9151;
+    font-size: 14px;
+    line-height: 24px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    cursor: pointer;
+  }
+}
+
+.mrpstyle {    
+  color: #808080;
+  font-size: 13px;
+  font-weight: 400;
+  text-decoration: line-through;
+  // svg {
+  //   max-width: 12px;
+  //   height: 12px;
+  // }
+}
+
+.buttonvaradd {
+  border: 1px solid #1f9151;
+  cursor: pointer;
+  width: 60px;
+  padding: 0;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+  color: #1f9151;
+  text-transform: capitalize;
+  border-radius: 5px;
+  height: 36px;
+  background-color: rgba(0, 178, 7, 0.1);
+  &.Mui-disabled {
+    color: rgba(0, 0, 0, 0.26) !important;
+    border: 1px solid rgba(0, 0, 0, 0.26) !important;
+  }
+}
+
+.closeiconofmodal {
+  width: 14px; 
+  height: 14px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.pricebold{
+  font-weight: 600;
+}
+.namestyle{
+  color: #958e8e;
+  font-weight: 400;
+}
+
+.drawerbox{
+  position: fixed; /* Fixed positioning relative to the viewport */
+  top: auto; /* Position from the top */
+  left: auto; /* Margin of 4px from the left side */
+  z-index: 10; /* Ensures modal stays on top */
+  width: 100%; /* Modal width */
+  background-color: #ffffff; /* White background */
+  box-shadow: 0px 12px 16px 0px #10182814; /* Shadow for depth */
+  padding: 0.8rem; /* Internal padding */
+  border-radius: 8px; /* Smooth rounded corners */
+  height: 48vh; /* Removed fixed height */
+  max-height: 80vh; /* Optional: Limits the height of the modal */
+  overflow-y: auto; /* Ensures scrolling if content overflows */
+  bottom: 0;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
+
+}
+.out-of-stock-button {
+  background: none !important;
+  color: red !important;
+  border: none !important;
+  cursor: not-allowed;
+  width: 100px;
+}
+
+
+.mainboxforthescroll {
+  // background-color: #406b41;
+  width: 400px;
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none; /* Hide scrollbar in Firefox */
+  // scrollbar-color: #888 #f1f1f1; // For Firefox
+
+  // &::-webkit-scrollbar {
+  //   height: 6px;
+  // }
+
+  // &::-webkit-scrollbar-track {
+  //   background: #f1f1f1;
+  //   border-radius: 10px;
+  // }
+
+  // &::-webkit-scrollbar-thumb {
+  //   background: #888;
+  //   border-radius: 10px;
+  // }
+
+  // &::-webkit-scrollbar-thumb:hover {
+  //   background: #555;
+  // }
+  &::-webkit-scrollbar {
+    display: none; /* Hide scrollbar in Chrome, Safari */
+  }
+
 }

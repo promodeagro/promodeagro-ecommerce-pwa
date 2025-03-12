@@ -8,6 +8,7 @@ const Config = {
   BASE_URL,
   HOME: `${BASE_URL}/product`,
   FILTERED_PRODUCTS: `${BASE_URL}/products`,
+  PRODUCTS_DETAIL: `${BASE_URL}/productByGroupId`,
   SIGN_UP: `${BASE_URL}/register`,
   SIGN_IN: `${BASE_URL}/login`,
   VALIDATE_OTP: `${BASE_URL}/login/validate-otp`,

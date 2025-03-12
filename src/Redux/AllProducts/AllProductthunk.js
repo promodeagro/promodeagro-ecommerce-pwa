@@ -23,7 +23,7 @@ export const productDetails = createAsyncThunk(
   "productsdetails",
   async ({ productId, userId }) => {
     try {
-      let url = config.ALL_PRODUCTS + `/${productId}?userId=${userId}`;
+      let url = config.PRODUCTS_DETAIL +  `?groupId=${productId}&userId=${userId}`;
       const response = await postLoginService.get(url);
       return response.data;
     } catch (error) {
