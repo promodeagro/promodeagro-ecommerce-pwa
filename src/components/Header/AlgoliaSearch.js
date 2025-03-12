@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
+import { useLocation } from "react-router-dom";
 import algoliasearch from "algoliasearch/lite";
 import {
   InstantSearch,
-
   Configure,
-  
   useSearchBox,
   useInstantSearch,
 } from "react-instantsearch-hooks-web";
@@ -15,14 +14,14 @@ import SearchProductItemView from "../AddRemoveProductComponents/searchProductVi
 import searchIcon from "../../assets/img/search-icon.png";
 import { debounce } from "lodash";
 
-// ✅ Initialize Algolia search client
 const searchClient = algoliasearch("PBBD4F57NI", "27386ed97d577de7d0779a5f8a4c6be0");
 
 const AlgoliaSearch = ({ showResult = true, onFocus = () => {}, inputRef }) => {
   const matches = useMediaQuery("(max-width: 650px)");
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
-  const searchContainerRef = useRef(null); // Ref for detecting outside clicks
+  const searchContainerRef = useRef(null);
+  const location = useLocation();
 
   const placeholderTexts = [
     'Search "Pui saag"',
@@ -37,20 +36,27 @@ const AlgoliaSearch = ({ showResult = true, onFocus = () => {}, inputRef }) => {
     return () => clearInterval(intervalId);
   }, []);
 
-  // ✅ Handle clicks outside the search bar and results
+  // ✅ Close search on route change
+  useEffect(() => {
+    setSearchTerm("");
+  }, [location.key]);
+
+  // ✅ Handle clicks outside the search bar
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
         searchContainerRef.current &&
         !searchContainerRef.current.contains(event.target)
       ) {
-        setSearchTerm(""); // Clear search input
+        setSearchTerm("");
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+ 
 
   return (
     <InstantSearch searchClient={searchClient} indexName="products">
@@ -81,7 +87,6 @@ const SearchResultsBg = ({ searchTerm }) => {
   );
 };
 
-// ✅ Search Results Component
 const SearchResults = ({ showResult, matches }) => {
   const { results } = useInstantSearch();
   const hasResults = results?.nbHits !== 0;
@@ -97,12 +102,9 @@ const SearchResults = ({ showResult, matches }) => {
   );
 };
 
-// ✅ Custom SearchBox (Debounced)
 const CustomSearchBox = ({ onFocus, placeholder, inputRef, setSearchTerm, searchTerm }) => {
   const { query, refine } = useSearchBox();
   const [searchValue, setSearchValue] = useState(query || "");
-
-  // ✅ Debounced refine function
   const debouncedRefine = useMemo(() => debounce(refine, 300), [refine]);
 
   useEffect(() => {
@@ -154,7 +156,6 @@ const CustomSearchBox = ({ onFocus, placeholder, inputRef, setSearchTerm, search
   );
 };
 
-// ✅ Custom Hits Component
 const CustomHits = () => {
   const { results } = useInstantSearch();
   const hits = results?.hits || [];
