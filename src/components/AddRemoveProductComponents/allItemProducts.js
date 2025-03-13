@@ -47,14 +47,29 @@ class ProductItemView extends Component {
   }
 
   componentDidMount() {
-    document.addEventListener("touchstart", this.handleTouchStart);
-    document.addEventListener("touchmove", this.handleTouchMove);
+    document.addEventListener("touchstart", this.handleTouchStart, { passive: false });
+    document.addEventListener("touchmove", this.handleTouchMove, { passive: false });
   }
+  
   componentWillUnmount() {
     document.removeEventListener("touchstart", this.handleTouchStart);
     document.removeEventListener("touchmove", this.handleTouchMove);
   }
-    
+  
+  handleTouchStart = (e) => {
+    this.startY = e.touches[0].clientY;
+  };
+  
+  handleTouchMove = (e) => {
+    const moveY = e.touches[0].clientY;
+    if (this.state.drawerOpen) {
+      e.preventDefault(); // Prevent screen scrolling
+      if (moveY - this.startY > 50) {
+        this.handleDrawerClose();
+      }
+    }
+  };
+      
   componentDidUpdate(prevProps, prevState) {
     if (
       prevProps.deleteBookMarkData.status !==
@@ -149,16 +164,16 @@ class ProductItemView extends Component {
     }
   };
 
-  handleTouchStart = (e) => {
-    this.startY = e.touches[0].clientY;
-  };
+  // handleTouchStart = (e) => {
+  //   this.startY = e.touches[0].clientY;
+  // };
   
-  handleTouchMove = (e) => {
-    const moveY = e.touches[0].clientY;
-    if (this.state.drawerOpen && moveY - this.startY > 50) {
-      this.handleDrawerClose();
-    }
-  };
+  // handleTouchMove = (e) => {
+  //   const moveY = e.touches[0].clientY;
+  //   if (this.state.drawerOpen && moveY - this.startY > 50) {
+  //     this.handleDrawerClose();
+  //   }
+  // };
   
   handleDeleteWishList(groupId) {
     this.setState({
