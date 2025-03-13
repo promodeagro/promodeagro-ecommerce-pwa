@@ -46,6 +46,15 @@ class ProductItemView extends Component {
     };
   }
 
+  componentDidMount() {
+    document.addEventListener("touchstart", this.handleTouchStart);
+    document.addEventListener("touchmove", this.handleTouchMove);
+  }
+  componentWillUnmount() {
+    document.removeEventListener("touchstart", this.handleTouchStart);
+    document.removeEventListener("touchmove", this.handleTouchMove);
+  }
+    
   componentDidUpdate(prevProps, prevState) {
     if (
       prevProps.deleteBookMarkData.status !==
@@ -140,6 +149,17 @@ class ProductItemView extends Component {
     }
   };
 
+  handleTouchStart = (e) => {
+    this.startY = e.touches[0].clientY;
+  };
+  
+  handleTouchMove = (e) => {
+    const moveY = e.touches[0].clientY;
+    if (this.state.drawerOpen && moveY - this.startY > 50) {
+      this.handleDrawerClose();
+    }
+  };
+  
   handleDeleteWishList(groupId) {
     this.setState({
       deleteItemId: groupId,
@@ -712,10 +732,17 @@ class ProductItemView extends Component {
           </Box>
         </Modal>
         <Drawer
-          anchor="bottom"
-          open={this.state.drawerOpen}
-          onClose={this.handleDrawerClose}
-        >
+  anchor="bottom"
+  open={this.state.drawerOpen}
+  onClose={this.handleDrawerClose}
+  onTouchStart={(e) => (this.startY = e.touches[0].clientY)}
+  onTouchMove={(e) => {
+    const moveY = e.touches[0].clientY;
+    if (moveY - this.startY > 50) {
+      this.handleDrawerClose();
+    }
+  }}
+>
           <Box className="drawerbox">
             {this.state.selectedProduct ? (
               <Box>
