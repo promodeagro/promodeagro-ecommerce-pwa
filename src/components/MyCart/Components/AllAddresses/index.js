@@ -23,7 +23,7 @@ import {
 import status from "../../../../Redux/Constants";
 import penciEditIcon from "../../../../assets/img/pencilEditIcon.svg";
 import deleteBinIcon from "../../../../assets/img/deleteBinIcon.svg";
-import AddNewAddressModal from "../../../../../src/components/AddressModal/addnewaddressmodal";
+import AddAddressModal from "../../../../../src/components/AddressModal/addaddressmodal";
 import AddIcon from "@mui/icons-material/Add";
 
 class AllAddresses extends React.Component {
@@ -35,7 +35,7 @@ class AllAddresses extends React.Component {
       deleteAddressApiLoader: false,
       openDeleteModal: false, // For confirming delete
       addressToEdit: null, // Store the address data to be edited
-      openAddNewAddressModal: false,
+      openAddAddressModal: false,
       addressId: "",
       selectedAddressId: localStorage.getItem("address") || "",
       confirmDeleteLoader: false, // Loader for the Confirm button in delete modal
@@ -77,13 +77,13 @@ class AllAddresses extends React.Component {
   };
 
   handleEditClick = (address) => {
-    this.setState({ openAddNewAddressModal: true, addressToEdit: address });
+    this.setState({ openAddAddressModal: true, addressToEdit: address });
   };
 
-  handleAddNewAddressModalClose = () => {
+  handleAddAddressModalClose = () => {
     const items = loginDetails();
     this.setState(
-      { openAddNewAddressModal: false, addressToEdit: null },
+      { openAddAddressModal: false, addressToEdit: null },
       () => {
         this.props
           .getAllAddress({ userId: items.userId })
@@ -169,7 +169,7 @@ class AllAddresses extends React.Component {
       deleteAddressApiLoader,
       selectedAddressId,
     } = this.state;
-    const { openAddNewAddressModal, addressToEdit } = this.state;
+    const { openAddAddressModal, addressToEdit } = this.state;
 
     const sortedAddresses = allAddressData.addresses
       ? [
@@ -186,7 +186,7 @@ class AllAddresses extends React.Component {
       <div>
         <div className="h2spacing">
           <Button
-            onClick={() => this.setState({ openAddNewAddressModal: true })} // Add click handler
+            onClick={() => this.setState({ openAddAddressModal: true })} // Add click handler
             sx={{
               borderRadius: "9px",
               height: "60px",
@@ -376,10 +376,10 @@ class AllAddresses extends React.Component {
             </Box>
           </Box>
         </Modal>
-        {openAddNewAddressModal && (
-          <AddNewAddressModal
-            open={openAddNewAddressModal}
-            handleClose={this.handleAddNewAddressModalClose} // Pass updated handler
+        {openAddAddressModal && (
+          <AddAddressModal
+            open={openAddAddressModal}
+            handleClose={this.handleAddAddressModalClose} // Pass updated handler
             addressData={addressToEdit} // Prefilled data for edit
           />
         )}

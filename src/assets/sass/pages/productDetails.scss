@@ -2,7 +2,7 @@
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  padding-top: 20px;
+   padding-top: 20px;
   padding-bottom: 20px;
 
   .product-images {
@@ -104,7 +104,7 @@
 
   .product-description {
     display: block;
-    width: 100%;
+    // width: 244%;
     margin-top: 20px;
     margin-bottom: 20px;
     h4 {
@@ -752,7 +752,10 @@
 
 @media only screen and (max-width: 900px) {
   .details-container {
-    margin-bottom: 60px;
+    // margin-bottom: 10px;
+          padding-top: 0;
+      margin-top: 0;
+
     .product-info {
       .breadcrum {
         display: none;
@@ -771,7 +774,9 @@
 @media only screen and (max-width: 600px) {
   .details-container {
     .product-images {
-      margin-bottom: 10px;
+      // margin-bottom: 10px;
+      // padding-top: 0;
+      // margin-top: 0;
       .big-image {
         height: 250px;
         img {
@@ -832,5 +837,24 @@
     .slick-next {
       right: -10px;
     }
+  }
+}
+
+.product-description22 {
+  display: block;
+  // width: 244%;
+  margin-top: 8px;
+  margin-bottom: 26px;
+  h3 {
+    font-weight: 600;
+    color: #000000;
+    margin-bottom: 0px;
+  }
+  p {
+    display: block;
+    margin-top: 5px;
+    font-size: 14px;
+    line-height: 22px;
+    color: #00000099;
   }
 }

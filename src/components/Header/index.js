@@ -231,11 +231,18 @@ class Header extends Component {
     }));
   };
   handleAddressClose = () => {
-    this.setState({
-      isAddressModalOpen: false, // Close the AddressModal
+    this.setState({ isAddressModalOpen: false }, () => {
+      const userId = loginDetails()?.userId;
+      if (userId) {
+        this.props.fetchDefaultAddress(userId).then((response) => {
+          if (response?.data) {
+            this.setState({ currentAddress: response.data });
+          }
+        });
+      }
     });
   };
-  handleAddAddressClose = () => {
+    handleAddAddressClose = () => {
     this.setState({
       isAddAddressModalOpen: false, // Close the AddAddressModal
     });

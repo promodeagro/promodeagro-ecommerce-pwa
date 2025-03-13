@@ -65,7 +65,7 @@ class SimilarProducts extends Component {
                   <h2>
                     {categoryItem.category === "Fresh Fruits"
                       ? "Similar Products"
-                      : "you might also like"}
+                      : "You Might Also Like"}
                   </h2>
                 </Box>
                 <All

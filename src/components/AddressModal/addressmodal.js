@@ -148,7 +148,7 @@ class AddressModal extends Component {
             JSON.stringify(newDefaultAddress)
           );
           this.props.handleClose();
-          window.location.reload();
+          // window.location.reload();
         })
         .catch((error) => {
           console.error("Failed to set default address:", error);
