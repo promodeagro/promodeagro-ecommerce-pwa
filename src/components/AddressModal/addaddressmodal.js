@@ -188,14 +188,13 @@ class AddAddressModal extends Component {
             await this.props.fetchDefaultAddress(userId);
           if (fetchDefaultAddressResponse?.payload) {
             const newDefaultAddress = fetchDefaultAddressResponse.payload;
-            if (!newDefaultAddress) {
-              console.warn("New default address not found in the response.");
+            if (!newDefaultAddress || !newDefaultAddress.addressId) {
+              console.warn("New default address or addressId not found in the response.");
             } else {
-              localStorage.setItem(
-                "defaultAddress",
-                JSON.stringify(newDefaultAddress)
-              );
-              console.log(
+              localStorage.setItem("address", newDefaultAddress.addressId);
+              console.log("Default address ID saved to local storage:", newDefaultAddress.addressId);
+            
+                        console.log(
                 "Default address saved to local storage:",
                 newDefaultAddress
               );

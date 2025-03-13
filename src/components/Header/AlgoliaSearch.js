@@ -11,7 +11,7 @@ import { useMediaQuery } from "@mui/material";
 import { Clear as ClearIcon } from "@mui/icons-material";
 import { Box, TextField, InputAdornment } from "@mui/material";
 import SearchProductItemView from "../AddRemoveProductComponents/searchProductView";
-import searchIcon from "../../assets/img/search-icon.png";
+import searchIcon from "../../assets/img/searchiconsvg.svg";
 import { debounce } from "lodash";
 
 const searchClient = algoliasearch("PBBD4F57NI", "27386ed97d577de7d0779a5f8a4c6be0");
@@ -142,7 +142,7 @@ const CustomSearchBox = ({ onFocus, placeholder, inputRef, setSearchTerm, search
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
-            <img src={searchIcon} alt="Search" />
+            <img src={searchIcon} alt="Search" style={{height:"20px", width:"20px"}} />
           </InputAdornment>
         ),
         endAdornment: searchValue && (

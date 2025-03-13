@@ -57,7 +57,7 @@ import {
   WhatsappIcon,
   FacebookIcon,
 } from "react-share";
-import ProductDetailCartUpdateView from "../../../components/AddRemoveProductComponents/productDetailView"
+import ProductDetailCartUpdateView from "../../../components/AddRemoveProductComponents/productDetailView";
 
 class ProductDetails extends Component {
   constructor(props) {
@@ -117,7 +117,6 @@ class ProductDetails extends Component {
     ) {
       this.props.fetchProducReview(this.props.params.groupId);
     } else if (this.props.addProductReviewData.status === status.FAILURE) {
-      
     }
     if (
       prevProps.deleteBookMarkData.status !==
@@ -255,7 +254,6 @@ class ProductDetails extends Component {
     }
   }
 
-
   toggleShareMenu = () => {
     this.setState((prevState) => ({ isShareOpen: !prevState.isShareOpen }));
   };
@@ -324,12 +322,6 @@ class ProductDetails extends Component {
                           </ul>
                         </Box> */}
                       </Box>
-                      {!matches && (
-                        <Box className="product-description">
-                          <h3>About Product</h3>
-                          <p>{productItem?.description}</p>
-                        </Box>
-                      )}
                     </Grid>
                     <Grid item xs={12} sm={6} md={7} lg={7}>
                       <Box className="product-info">
@@ -420,7 +412,10 @@ class ProductDetails extends Component {
                             )}
                           </Box>
                         </Box>
-                        <ProductDetailCartUpdateView productItem={productItem}/>
+                        <ProductDetailCartUpdateView
+                          productItem={productItem}
+                        />
+
                         {!matches && (
                           <Box className="choose-promode">
                             <h4>
@@ -470,6 +465,12 @@ class ProductDetails extends Component {
                     </Grid>
                   </Grid>
                 </Box>
+                {!matches && (
+                  <Box className="product-description22">
+                    <h3>About Product</h3>
+                    <p>{productItem?.description}</p>
+                  </Box>
+                )}
                 <SimilarProducts
                   topSellingApiLoader={this.state.topSellingApiLoader}
                   topSellingProductsList={topSellingProductsList}

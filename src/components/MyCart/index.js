@@ -14,7 +14,7 @@ import closeModal from "../../assets/img/closeModalIcon.svg";
 import BackArrow from "../../assets/img/backArrow.svg";
 import cashIcon from "../../assets/img/cashIcon.svg";
 import { Link } from "react-router-dom";
-import AddNewAddressModal from "../../../src/components/AddressModal/addnewaddressmodal";
+import AddAddressModal from "../../../src/components/AddressModal/addaddressmodal";
 import { ErrorMessages, loginDetails } from "Views/Utills/helperFunctions";
 import { LocalStorageCartService } from "Services/localStorageCartService";
 import status from "../../Redux/Constants";
@@ -361,25 +361,25 @@ class MyCart extends Component {
     return "No Address Selected";
   }
 
-  toggleAddNewAddressModal = (e) => {
+  toggleAddAddressModal = (e) => {
     if (e?.stopPropagation) {
       e.stopPropagation();
     }
     this.setState((prevState) => ({
-      isAddNewAddressModalOpen: !prevState.isAddNewAddressModalOpen,
+      isAddAddressModalOpen: !prevState.isAddAddressModalOpen,
     }));
   };
 
   handleAddNewAddressClose = () => {
     this.setState({
-      isAddNewAddressModalOpen: false,
+      isAddAddressModalOpen: false,
     });
   };
 
   render() {
     const { matches, selectedPaymentMethod } = this.state;
     const { open, handleClose } = this.props;
-    const { isAddNewAddressModalOpen, defaultSelectedAddress } = this.state;
+    const { isAddAddressModalOpen, defaultSelectedAddress } = this.state;
 
     return (
       <>
@@ -672,7 +672,7 @@ class MyCart extends Component {
                               className="common-btn pay_now_btn"
                               onClick={() =>
                                 this.setState({
-                                  isAddNewAddressModalOpen: true,
+                                  isAddAddressModalOpen: true,
                                 })
                               }
                             >
@@ -797,9 +797,9 @@ class MyCart extends Component {
           </>
         </Modal>
         {console.log(this.state.selectedSlot, "slotttt id")}
-        {isAddNewAddressModalOpen && (
-          <AddNewAddressModal
-            open={isAddNewAddressModalOpen}
+        {isAddAddressModalOpen && (
+          <AddAddressModal
+            open={isAddAddressModalOpen}
             handleClose={this.handleAddNewAddressClose}
           />
         )}
