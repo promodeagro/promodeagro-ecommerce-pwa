@@ -89,31 +89,26 @@ class MyCart extends Component {
   componentDidUpdate(prevProps, prevState) {
     const items = loginDetails();
     const { handleClose } = this.props;
+  
     if (
-      prevProps.defaultAddressData?.status !==
-        this.props?.defaultAddressData?.status &&
+      prevProps.defaultAddressData?.status !== this.props?.defaultAddressData?.status &&
       this.props?.defaultAddressData?.status === status.SUCCESS &&
       this.props?.defaultAddressData?.data
     ) {
-      this.setState({
-        defaultSelectedAddress: this.props?.defaultAddressData?.data,
-      });
-      // localStorage.setItem(
-      //   "address",
-      //   this.props?.defaultAddressData?.data?.addressId
-      // );
-    }
-
-    if (
-      prevProps.addListOfItemRes.status !== this.props.addListOfItemRes.status
-    ) {
-      if (this.props.addListOfItemRes.status === status.SUCCESS) {
-        this.props.fetchCartItems({
-          userId: items.userId,
+      if (this.state.defaultSelectedAddress !== this.props?.defaultAddressData?.data) {
+        this.setState({
+          defaultSelectedAddress: this.props?.defaultAddressData?.data,
         });
-      } else if (this.props.addListOfItemRes.status === status.FAILURE) {
       }
     }
+  
+    if (
+      prevProps.addListOfItemRes.status !== this.props.addListOfItemRes.status &&
+      this.props.addListOfItemRes.status === status.SUCCESS
+    ) {
+      this.props.fetchCartItems({ userId: items.userId });
+    }
+  
     if (
       prevProps.cartItems.status !== this.props.cartItems.status &&
       this.props.cartItems.status === status.SUCCESS &&
@@ -121,6 +116,7 @@ class MyCart extends Component {
     ) {
       let cartListData = [];
       let itemListData = [];
+  
       this.props?.cartItems?.data?.items?.forEach((item) => {
         let data = {
           mrp: item.Mrp,
@@ -133,60 +129,51 @@ class MyCart extends Component {
           image: item.productImage,
           name: item.productName,
         };
-
+  
         let data1 = {
           productId: item.ProductId,
           quantity: item.Quantity,
           quantityUnits: item.QuantityUnits,
         };
+  
         itemListData.push(data1);
         cartListData.push(data);
       });
-
-      this.setState({
-        cartList: this.props.cartItems.data.items,
-        ListData: this.props.cartItems.data.items,
-        cartListArr: cartListData,
-        itemListArr: itemListData,
-        totalPrice: this.props.cartItems.data.finalTotal,
-        loaderCount: 1,
-      });
-    } else if (this.props.cartItems.status === status.FAILURE) {
-      this.setState({
-        cartList: [],
-        loaderCount: 1,
-      });
+  
+      if (
+        JSON.stringify(this.state.cartListArr) !== JSON.stringify(cartListData) ||
+        JSON.stringify(this.state.itemListArr) !== JSON.stringify(itemListData)
+      ) {
+        this.setState({
+          cartList: this.props.cartItems.data.items,
+          ListData: this.props.cartItems.data.items,
+          cartListArr: cartListData,
+          itemListArr: itemListData,
+          totalPrice: this.props.cartItems.data.finalTotal,
+          loaderCount: 1,
+        });
+      }
     }
+  
     if (
-      prevProps.saveForLaterData.status !==
-        this.props.saveForLaterData.status &&
+      prevProps.saveForLaterData.status !== this.props.saveForLaterData.status &&
       this.props.saveForLaterData.status === status.SUCCESS
     ) {
-      this.props.fetchCartItems({
-        userId: items.userId,
-      });
-      this.setState({
-        bookMarkId: "",
-      });
-      if (
-        this.state.deleteItemId &&
-        typeof this.state.deleteItemId === "string"
-      ) {
+      this.props.fetchCartItems({ userId: items.userId });
+      this.setState({ bookMarkId: "" });
+  
+      if (this.state.deleteItemId && typeof this.state.deleteItemId === "string") {
         LocalStorageCartService.deleteItem(this.state.deleteItemId);
       }
-    } else if (this.props.saveForLaterData.status === status.FAILURE) {
-      this.setState({
-        bookMarkId: "",
-      });
     }
+  
     if (
       prevProps.updateItems.status !== this.props.updateItems.status &&
       this.props.updateItems.status === status.SUCCESS &&
       this.props.updateItems.data
     ) {
-      this.props.fetchCartItems({
-        userId: items.userId,
-      });
+      this.props.fetchCartItems({ userId: items.userId });
+  
       if (
         this.state.deleteItemId &&
         typeof this.state.deleteItemId === "object" &&
@@ -198,77 +185,43 @@ class MyCart extends Component {
         );
         this.setState({ deleteItemId: null });
       }
-    } else if (this.props.updateItems.status === status.FAILURE) {
     }
+  
     if (
       prevProps.deleteItems.status !== this.props.deleteItems.status &&
       this.props.deleteItems.status === status.SUCCESS &&
       this.props.deleteItems.data
     ) {
-      this.props.fetchCartItems({
-        userId: items.userId,
-      });
-      if (
-        this.state.deleteItemId &&
-        typeof this.state.deleteItemId === "string" &&
-        this.state.deleteItemId.length
-      ) {
+      this.props.fetchCartItems({ userId: items.userId });
+  
+      if (this.state.deleteItemId && typeof this.state.deleteItemId === "string") {
         LocalStorageCartService.deleteItem(this.state.deleteItemId);
         this.setState({ deleteItemId: null });
       }
-    } else if (this.props.deleteItems.status === status.FAILURE) {
     }
+  
     if (
       prevProps.placeOrderData.status !== this.props.placeOrderData.status &&
       this.props.placeOrderData.status === status.SUCCESS
     ) {
       if (this.props.placeOrderData.data?.statuscode === 200) {
         if (this.props.placeOrderData.data?.orderId) {
-          this.props.navigate(
-            `/mycart/address/order-placed/${this.props.placeOrderData.data.orderId}`
-          );
+          this.props.navigate(`/mycart/address/order-placed/${this.props.placeOrderData.data.orderId}`);
           handleClose();
           localStorage.removeItem("cartItem");
           localStorage.removeItem("address");
           LocalStorageCartService.saveData({});
-          this.setState({ selectedSlot: "" });
-          this.setState({ selectedPaymentMethod: "cash" });
-          let login = loginDetails();
-          if (login?.userId) {
-            this.props.addListOfItemsToCartReq({
-              userId: login.userId,
-              cartItems: [],
-            });
-            this.props.fetchCartItems({
-              userId: login.userId,
-            });
+          this.setState({ selectedSlot: "", selectedPaymentMethod: "cash", cartList: [] });
+  
+          if (items?.userId) {
+            this.props.addListOfItemsToCartReq({ userId: items.userId, cartItems: [] });
+            this.props.fetchCartItems({ userId: items.userId });
           }
-          this.setState({ cartList: [] });
-        }
-        if (this.props.placeOrderData.data?.paymentLink) {
-          this.setState({
-            paymentLink: this.props.placeOrderData.data.paymentLink,
-          });
-          const openPaymentLink = async () => {
-            if (this.props.placeOrderData.data?.paymentLink) {
-              await new Promise((resolve) => {
-                this.setState(
-                  {
-                    paymentLink: this.props.placeOrderData.data.paymentLink,
-                  },
-                  resolve
-                );
-              });
-              if (this.state.paymentLink) {
-                window.location.href = this.state.paymentLink;
-              }
-            }
-          };
-          openPaymentLink();
         }
       }
     }
   }
+  
   handlePlaceOrder = () => {
     let login = loginDetails();
     let addressId = localStorage.getItem("address"); // Only getting from localStorage
