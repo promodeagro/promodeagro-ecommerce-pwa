@@ -444,11 +444,11 @@ footer p {
                     <td> {index + 1}</td>
                     <td style={{ textAlign: "left" }}>
                       {" "}
-                      {item.productName.split("-").slice(0, -1).join("-")}
+                      {item.productName}
 
                     </td>
                     <td style={{ textAlign: "left" }}>
-                      {item.productName.split("-").pop()}
+                      {item.quantityUnits}{item.unit}
                     </td>
                     <td style={{ textAlign: "center" }}>{item.quantity}</td>
                     <td> ₹{item.price}</td>
