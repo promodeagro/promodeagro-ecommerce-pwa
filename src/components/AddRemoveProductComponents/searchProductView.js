@@ -112,7 +112,7 @@ class SearchProductItemView extends Component {
     const addedProducts = LocalStorageCartService.getData();
     const { productList } = this.props;
     const { qauntityUnits, unitIdPrices } = this.state;
-    
+
     return (
       <>
         {productList.length > 0 ? (
@@ -137,9 +137,9 @@ class SearchProductItemView extends Component {
                         );
                       }}
                     >
-                      <img 
-                        src={item.image || item.images?.[0] || noImage} 
-                        alt={item.name} 
+                      <img
+                        src={item.image || item.images?.[0] || noImage}
+                        alt={item.name}
                       />
                     </Box>
                   </Grid>
@@ -152,7 +152,10 @@ class SearchProductItemView extends Component {
                         );
                       }}
                     >
-                      <Link>{item.name}</Link>
+                      <Link>
+                        {item.name} - {item.totalQuantityInB2c}{" "}
+                        {item.totalquantityB2cUnit}
+                      </Link>
                     </Box>
                     <Box className="price-ratting">
                       <Box className="price">
@@ -163,8 +166,9 @@ class SearchProductItemView extends Component {
                         {(item?.cartItem?.selectedQuantityUnitMrp > 0 ||
                           prices?.price?.mrp > 0 ||
                           item.comparePrice > 0) && (
+                            
                           <span>
-                            {item?.cartItem?.selectedQuantityUnitMrp ||
+                            ₹{item?.cartItem?.selectedQuantityUnitMrp ||
                               prices?.price?.mrp ||
                               item.comparePrice}
                           </span>
@@ -281,41 +285,40 @@ class SearchProductItemView extends Component {
                       <Box className="add-cart">
                         {!item.availability ? (
                           <Box
-  sx={{
-    backgroundColor: "#000000",
-    color: "white",
-    fontSize:'14px',
-    fontWeight:600,
-    paddingX: "8px",
-    paddingY: "8px",
-    borderRadius: "5px",
-    display: "flex", // Enables flexbox
-    justifyContent: "center", // Centers horizontally
-    alignItems: "center", // Centers vertically
-    textAlign: "center", // Ensures text is centered
-    width: "100%", // Optional: Ensures full width if inside a container
-  }}
->
-  Out of Stock
-</Box>
+                            sx={{
+                              backgroundColor: "#000000",
+                              color: "white",
+                              fontSize: "14px",
+                              fontWeight: 600,
+                              paddingX: "8px",
+                              paddingY: "8px",
+                              borderRadius: "5px",
+                              display: "flex", // Enables flexbox
+                              justifyContent: "center", // Centers horizontally
+                              alignItems: "center", // Centers vertically
+                              textAlign: "center", // Ensures text is centered
+                              width: "100%", // Optional: Ensures full width if inside a container
+                            }}
+                          >
+                            Out of Stock
+                          </Box>
+                        ) : (
+                          <Button
+                            variant="outlined"
+                            onClick={() => {
+                              let unitqty = "";
+                              if (item?.unitPrices?.length > 0) {
+                                unitqty = item?.unitPrices[0]?.qty;
+                              } else {
+                                unitqty = 1;
+                              }
 
-) : (
-                        <Button
-                          variant="outlined"
-                          onClick={() => {
-                            let unitqty = "";
-                            if (item?.unitPrices?.length > 0) {
-                              unitqty = item?.unitPrices[0]?.qty;
-                            } else {
-                              unitqty = 1;
-                            }
-
-                            this.handleAddToCart(item.id, unitqty);
-                          }}
-                        >
-                          Add to cart
-                        </Button>
-)}
+                              this.handleAddToCart(item.id, unitqty);
+                            }}
+                          >
+                            Add to cart
+                          </Button>
+                        )}
                       </Box>
                     )}
                   </Grid>
