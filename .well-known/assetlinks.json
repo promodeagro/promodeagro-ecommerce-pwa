@@ -1,0 +1,8 @@
+[{
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.promodeagro.www.twa",
+      "sha256_cert_fingerprints": ["1F:D6:70:A2:CE:C1:9A:51:96:02:50:35:B8:49:B0:58:35:38:62:A6:95:F6:E5:91:F7:78:4C:54:E5:1E:BE:4A"]
+    }
+  }]
