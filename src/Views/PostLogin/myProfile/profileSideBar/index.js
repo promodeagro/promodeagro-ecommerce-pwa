@@ -9,6 +9,8 @@ import addressbookimage from "../../../../assets/img/addressbooksvg.svg";
 import customersupportimage from "../../../../assets/img/customersupportsvg.svg";
 import accountprivacy from "../../../../assets/img/accountprivarysvg.svg";
 import logoutimage from "../../../../assets/img/logountsvg.svg";
+import { loginDetails } from "Views/Utills/helperFunctions";
+import { fetchDefaultAddress } from "../../../../Redux/Address/AddressThunk";
 
 class ProfileSideBar extends Component {
   constructor(props) {
@@ -41,7 +43,32 @@ class ProfileSideBar extends Component {
           ],
         },
       ],
+      phoneNumber: "",
     };
+  }
+
+  async componentDidMount() {
+    const user = loginDetails();
+    const userId = user?.userId;
+
+    if (userId) {
+      try {
+        const response = await this.props.fetchDefaultAddress(userId);
+        console.log("Full API Response:", response.payload); // Debugging log
+
+        const addressData = response.payload?.data || response.payload; // Handle different response structures
+
+        if (addressData?.phoneNumber) {
+          this.setState({
+            phoneNumber: addressData.phoneNumber,
+          });
+        } else {
+          console.warn("Phone number not found in API response.");
+        }
+      } catch (error) {
+        console.error("Error fetching default address:", error);
+      }
+    }
   }
 
   handleLogout = () => {
@@ -51,21 +78,14 @@ class ProfileSideBar extends Component {
 
   render() {
     const path = window.location.pathname;
-    const { sections } = this.state;
-    const defaultAddress = JSON.parse(
-      localStorage.getItem("defaultAddress") || "{}"
-    );
-    const phoneNumber = defaultAddress?.phoneNumber || "N/A"; // Fallback to "N/A" if not available
+    const { sections, phoneNumber } = this.state;
 
     return (
-      <Box
-        className="profilewrap"
-        sx={{ marginLeft: "none", marginTop: "none" }}
-      >
+      <Box className="profilewrap">
         <Box className="profile-sidebar">
           <Box className="heading">
             <img className="imageofheader" src={profileimage} alt="Profile" />
-              <p style={{ marginTop: "6px" }}>{phoneNumber}</p>
+            <p style={{ marginTop: "6px" }}>{phoneNumber}</p>
           </Box>
           {sections.map((section, index) => (
             <Box className="profile-links" key={index}>
@@ -106,12 +126,12 @@ class ProfileSideBar extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {};
-}
+const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = {};
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(navigateRouter(ProfileSideBar));
+const mapDispatchToProps = {
+  fetchDefaultAddress, // Ensure it's passed as a prop
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+  navigateRouter(ProfileSideBar)
+);

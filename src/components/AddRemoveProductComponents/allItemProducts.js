@@ -58,18 +58,19 @@ class ProductItemView extends Component {
   
   handleTouchStart = (e) => {
     this.startY = e.touches[0].clientY;
+    this.isSwipeInsideDrawer = e.target.closest(".drawerbox"); // Check if touch starts inside drawer
   };
   
   handleTouchMove = (e) => {
     const moveY = e.touches[0].clientY;
-    if (this.state.drawerOpen) {
+    if (this.state.drawerOpen && !this.isSwipeInsideDrawer) {
       e.preventDefault(); // Prevent screen scrolling
       if (moveY - this.startY > 50) {
         this.handleDrawerClose();
       }
     }
   };
-      
+        
   componentDidUpdate(prevProps, prevState) {
     if (
       prevProps.deleteBookMarkData.status !==

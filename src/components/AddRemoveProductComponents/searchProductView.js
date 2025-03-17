@@ -159,14 +159,12 @@ class SearchProductItemView extends Component {
                     </Box>
                     <Box className="price-ratting">
                       <Box className="price">
-                        <img src={priceIcon} alt="" />
-                        {item?.cartItem?.selectedQuantityUnitprice ||
+                      ₹{item?.cartItem?.selectedQuantityUnitprice ||
                           prices?.price?.price ||
                           item.sellingPrice}
                         {(item?.cartItem?.selectedQuantityUnitMrp > 0 ||
                           prices?.price?.mrp > 0 ||
                           item.comparePrice > 0) && (
-                            
                           <span>
                             ₹{item?.cartItem?.selectedQuantityUnitMrp ||
                               prices?.price?.mrp ||
