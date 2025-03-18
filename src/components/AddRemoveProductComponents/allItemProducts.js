@@ -47,20 +47,24 @@ class ProductItemView extends Component {
   }
 
   componentDidMount() {
-    document.addEventListener("touchstart", this.handleTouchStart, { passive: false });
-    document.addEventListener("touchmove", this.handleTouchMove, { passive: false });
+    document.addEventListener("touchstart", this.handleTouchStart, {
+      passive: false,
+    });
+    document.addEventListener("touchmove", this.handleTouchMove, {
+      passive: false,
+    });
   }
-  
+
   componentWillUnmount() {
     document.removeEventListener("touchstart", this.handleTouchStart);
     document.removeEventListener("touchmove", this.handleTouchMove);
   }
-  
+
   handleTouchStart = (e) => {
     this.startY = e.touches[0].clientY;
     this.isSwipeInsideDrawer = e.target.closest(".drawerbox"); // Check if touch starts inside drawer
   };
-  
+
   handleTouchMove = (e) => {
     const moveY = e.touches[0].clientY;
     if (this.state.drawerOpen && !this.isSwipeInsideDrawer) {
@@ -70,7 +74,7 @@ class ProductItemView extends Component {
       }
     }
   };
-        
+
   componentDidUpdate(prevProps, prevState) {
     if (
       prevProps.deleteBookMarkData.status !==
@@ -168,14 +172,14 @@ class ProductItemView extends Component {
   // handleTouchStart = (e) => {
   //   this.startY = e.touches[0].clientY;
   // };
-  
+
   // handleTouchMove = (e) => {
   //   const moveY = e.touches[0].clientY;
   //   if (this.state.drawerOpen && moveY - this.startY > 50) {
   //     this.handleDrawerClose();
   //   }
   // };
-  
+
   handleDeleteWishList(groupId) {
     this.setState({
       deleteItemId: groupId,
@@ -549,13 +553,9 @@ class ProductItemView extends Component {
             className="common-modal"
             sx={{
               width: "36vw",
-              padding: 3,
+              padding: 2,
               borderRadius: "10px",
-              overflowY: "auto",
-              height:"24vw",
-              scrollbarWidth: "none", // Hide scrollbar for Firefox
-              msOverflowStyle: "none", // Hide scrollbar for IE/Edge
-            
+              height: "auto",
             }}
           >
             {this.state.selectedProduct ? (
@@ -564,7 +564,7 @@ class ProductItemView extends Component {
                   sx={{
                     fontWeight: "bold",
                     fontSize: "18px",
-                    marginBottom: "15px",
+                    marginBottom: "10px",
                     display: "flex",
                     justifyContent: "space-between",
                   }}
@@ -577,7 +577,14 @@ class ProductItemView extends Component {
                     onClick={this.handleModalClose}
                   />
                 </Box>
-                <Box>
+                <Box
+                  sx={{
+                    maxHeight: "18vw", // Set a max height for scrolling
+                    overflowY: "auto", // Enable vertical scrolling
+                    scrollbarWidth: "none", // Hide scrollbar for Firefox
+                    msOverflowStyle: "none", // Hide scrollbar for IE/Edge
+                  }}
+                >
                   {this.state.selectedProduct.variations.map((variant) => {
                     const variantId = variant.id;
                     const addedProduct =
@@ -626,7 +633,6 @@ class ProductItemView extends Component {
                               display: "flex",
                               height: "42px",
                               alignItems: "center", // Vertically center children
-                              // backgroundColor:"red"
                             }}
                             onClick={() =>
                               this.handleVariantSelect(
@@ -658,12 +664,12 @@ class ProductItemView extends Component {
                                 gap: "3px",
                               }}
                             >
-                              {variant.mrp > 0 && (
-                                <span className="mrpstyle">₹{variant.mrp}</span>
-                              )}
                               <span className="pricebold">
                                 ₹{variant.price}
                               </span>
+                              {variant.mrp > 0 && (
+                                <span className="mrpstyle">₹{variant.mrp}</span>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -748,17 +754,17 @@ class ProductItemView extends Component {
           </Box>
         </Modal>
         <Drawer
-  anchor="bottom"
-  open={this.state.drawerOpen}
-  onClose={this.handleDrawerClose}
-  onTouchStart={(e) => (this.startY = e.touches[0].clientY)}
-  onTouchMove={(e) => {
-    const moveY = e.touches[0].clientY;
-    if (moveY - this.startY > 50) {
-      this.handleDrawerClose();
-    }
-  }}
->
+          anchor="bottom"
+          open={this.state.drawerOpen}
+          onClose={this.handleDrawerClose}
+          onTouchStart={(e) => (this.startY = e.touches[0].clientY)}
+          onTouchMove={(e) => {
+            const moveY = e.touches[0].clientY;
+            if (moveY - this.startY > 50) {
+              this.handleDrawerClose();
+            }
+          }}
+        >
           <Box className="drawerbox">
             {this.state.selectedProduct ? (
               <Box>
@@ -769,11 +775,18 @@ class ProductItemView extends Component {
                     marginBottom: "15px",
                     display: "flex",
                     justifyContent: "space-between",
+                    
                   }}
                 >
                   {this.state.selectedProduct.name}
                 </Box>
-                <Box>
+                <Box                   sx={{
+                    maxHeight: "70vw", // Set a max height for scrolling
+                    overflowY: "auto", // Enable vertical scrolling
+                    scrollbarWidth: "none", // Hide scrollbar for Firefox
+                    msOverflowStyle: "none", // Hide scrollbar for IE/Edge
+                  }}
+>
                   {this.state.selectedProduct.variations.map((variant) => {
                     const variantId = variant.id;
                     const addedProduct =

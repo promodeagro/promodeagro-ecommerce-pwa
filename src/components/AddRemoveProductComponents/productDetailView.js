@@ -192,24 +192,15 @@ class ProductDetailCartUpdateView extends Component {
                   alignItems: "center", // Align items centrally
                 }}
               >
-                <span style={{ fontWeight: "600" }}> ₹{variant.price}</span>
                 {!variant.availability ? (
-                  <button
-                    style={{
-                      backgroundColor: "white",
-                      color: "red",
-                      fontWeight: "600",
-                      border: "none",
-                      marginTop: "4px",
-                      fontSize: "13px",
-                    }}
-                  >
-                    Out of Stock
-                  </button>
+                  <button className="out-of-stock-btn1">Out of Stock</button>
                 ) : (
-                  variant.mrp > 0 && (
-                    <span className="mrpstyle">₹{variant.mrp}</span>
-                  )
+                  <>
+                    <span style={{ fontWeight: "600" }}> ₹{variant.price}</span>
+                    {variant.mrp > 0 && (
+                      <span className="mrpstyle">₹{variant.mrp}</span>
+                    )}
+                  </>
                 )}
               </div>
             </div>

@@ -1109,14 +1109,12 @@ font-weight: 650;
   background-color: #ffffff; /* White background */
   box-shadow: 0px 12px 16px 0px #10182814; /* Shadow for depth */
   padding: 0.8rem; /* Internal padding */
-  border-radius: 8px; /* Smooth rounded corners */
-  height: 48vh; /* Removed fixed height */
-  max-height: 80vh; /* Optional: Limits the height of the modal */
-  overflow-y: auto; /* Ensures scrolling if content overflows */
+  border-radius: 10px; /* Smooth rounded corners */
+  height: auto; /* Removed fixed height */
+  // overflow-y: auto; /* Ensures scrolling if content overflows */
   bottom: 0;
-  scrollbar-width: none; /* Hide scrollbar for Firefox */
-  -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
-
+  // scrollbar-width: none; /* Hide scrollbar for Firefox */
+  // -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
 }
 .out-of-stock-button {
   background: none !important;

@@ -858,3 +858,23 @@
     color: #00000099;
   }
 }
+
+.out-of-stock-btn1 {
+  background-color: white;
+  color: red;
+  font-weight: 600;
+  border: none;
+  margin-top: 4px;
+  font-size: 12px;
+  width: 100%;
+  cursor: default;
+
+  &:hover {
+    cursor: not-allowed;
+  }
+}
+
+.mrpstyle1 {
+  font-weight: 600;
+}
+
