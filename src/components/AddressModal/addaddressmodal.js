@@ -193,7 +193,7 @@ class AddAddressModal extends Component {
             if (!newDefaultAddress || !newDefaultAddress.addressId) {
               console.warn("New default address or addressId not found in the response.");
             } else {
-              // localStorage.setItem("address", newDefaultAddress.addressId);
+               localStorage.setItem("address", newDefaultAddress.addressId);
               console.log("Default address ID saved to local storage:", newDefaultAddress.addressId);
             
                         console.log(
