@@ -343,13 +343,6 @@ class Cart extends Component {
     }
   }
 
-  getDefaultAddress() {
-    const defaultAddress = JSON.parse(localStorage.getItem("defaultAddress"));
-    if (defaultAddress) {
-      return `${defaultAddress.address}, ${defaultAddress.zipCode}`;
-    }
-    return "No Address Selected";
-  }
 
   getDefaultAddress() {
     const { defaultAddressData } = this.props; // Get default address from props
