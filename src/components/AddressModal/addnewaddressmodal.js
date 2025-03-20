@@ -89,15 +89,19 @@ class AddNewAddressModal extends Component {
   }
 
   componentDidMount() {
-    const defaultAddress = localStorage.getItem("address"); // No JSON.parse() needed
+    let defaultAddress = localStorage.getItem("address"); 
+  
+    if (defaultAddress === "undefined" || defaultAddress === null) {
+      defaultAddress = "";
+    }
   
     this.setState({
-      isDefaultAddressPresent: !!defaultAddress, // true if a default address exists
-      isDefaultChecked: !defaultAddress, // If no default address, set checkbox to checked
-      defaultAddressId: defaultAddress || "", // Store the address ID directly
+      isDefaultAddressPresent: !!defaultAddress, // true if a valid address exists
+      isDefaultChecked: !defaultAddress, // Check the box if no valid address
+      defaultAddressId: defaultAddress, // Store the address ID directly
     });
   }
-
+  
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.addressData && prevState.initialLoad) {
       return {
