@@ -310,7 +310,6 @@ class ProductItemView extends Component {
               const displayedVariantId =
                 this.state.selectedVariants[item.groupId]?.id ||
                 item.variations?.[0]?.id;
-
               window.scrollTo({ top: 0, behavior: "smooth" });
               this.props.navigate(
                 `/product-details/${item?.category}/${item?.name}/${item?.groupId}?variant=${displayedVariantId}`
@@ -335,27 +334,25 @@ class ProductItemView extends Component {
             <Link>{item?.name}</Link>
           </Box>
           <>
-            {item?.variations?.length > 0 ? (
-              <Box className="select">
-                <button
-                  className="selettobutton"
-                  onClick={() => this.handleModalOpen(item)}
-                >
-                  {(this.state.selectedVariants[item.groupId]?.quantity ||
-                    item.variations?.[0]?.quantity ||
-                    0) + " "}
-                  {this.state.selectedVariants[item.groupId]?.unit ||
-                    item.variations?.[0]?.unit}
-                  <img
-                    src={selecticon}
-                    alt="Select Icon"
-                    className="selecticon"
-                  />
-                </button>
-              </Box>
-            ) : (
-              <Box className="select">{item?.unit}</Box>
-            )}
+          {item?.variations?.length > 0 ? (
+  <Box className="select">
+    <button
+      className="selettobutton"
+      onClick={() => this.handleModalOpen(item)}
+    >
+      {(
+        this.state.selectedVariants[item.groupId]?.quantity ||
+        item.variations?.find(variant => variant.availability)?.quantity ||
+        0
+      ) + " "}
+      {this.state.selectedVariants[item.groupId]?.unit ||
+        item.variations?.find(variant => variant.availability)?.unit}
+      <img src={selecticon} alt="Select Icon" className="selecticon" />
+    </button>
+  </Box>
+) : (
+  <Box className="select">{item?.unit}</Box>
+)}
           </>
 
           <Box className="price-cart">
