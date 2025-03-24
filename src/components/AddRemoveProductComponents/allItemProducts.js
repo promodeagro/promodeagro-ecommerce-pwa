@@ -626,6 +626,10 @@ class ProductItemView extends Component {
                               objectFit: "cover",
                               borderRadius: "5px",
                               cursor: "pointer",
+                              cursor: variant.availability
+                                ? "pointer"
+                                : "not-allowed", // Show danger cursor
+                              opacity: variant.availability ? "1" : "0.5", // Reduce opacity for out-of-stock variants
                             }}
                           />
                           <div
@@ -633,17 +637,22 @@ class ProductItemView extends Component {
                               display: "flex",
                               height: "42px",
                               alignItems: "center", // Vertically center children
+                              cursor: variant.availability
+                                ? "pointer"
+                                : "not-allowed", // Show danger cursor
+                              opacity: variant.availability ? "1" : "0.5", // Reduce opacity for out-of-stock variants
                             }}
-                            onClick={() =>
+                            onClick={() => {
+                              if (!variant.availability) return; // Prevent selection
                               this.handleVariantSelect(
-                                this.state.selectedProduct.groupId, // Correct product ID
-                                variant.id, // Variant ID
-                                variant.unit, // Variant Name
+                                this.state.selectedProduct.groupId,
+                                variant.id,
+                                variant.unit,
                                 variant.quantity,
                                 variant.mrp,
                                 variant.price
-                              )
-                            }
+                              );
+                            }}
                           >
                             <div
                               style={{
@@ -775,18 +784,18 @@ class ProductItemView extends Component {
                     marginBottom: "15px",
                     display: "flex",
                     justifyContent: "space-between",
-                    
                   }}
                 >
                   {this.state.selectedProduct.name}
                 </Box>
-                <Box                   sx={{
+                <Box
+                  sx={{
                     maxHeight: "70vw", // Set a max height for scrolling
                     overflowY: "auto", // Enable vertical scrolling
                     scrollbarWidth: "none", // Hide scrollbar for Firefox
                     msOverflowStyle: "none", // Hide scrollbar for IE/Edge
                   }}
->
+                >
                   {this.state.selectedProduct.variations.map((variant) => {
                     const variantId = variant.id;
                     const addedProduct =
@@ -827,6 +836,10 @@ class ProductItemView extends Component {
                               height: "50px",
                               objectFit: "cover",
                               borderRadius: "5px",
+                              cursor: variant.availability
+                                ? "pointer"
+                                : "not-allowed", // Show danger cursor
+                              opacity: variant.availability ? "1" : "0.5", // Reduce opacity for out-of-stock variants
                             }}
                           />
                           <div
@@ -834,13 +847,17 @@ class ProductItemView extends Component {
                               display: "flex",
                               height: "42px",
                               alignItems: "center", // Vertically center children
-                              //  backgroundColor:"red"
+                              cursor: variant.availability
+                                ? "pointer"
+                                : "not-allowed", // Show danger cursor
+                              opacity: variant.availability ? "1" : "0.5", // Reduce opacity for out-of-stock variants
                             }}
                             onClick={() => {
+                              if (!variant.availability) return; // Prevent selection
                               this.handleVariantSelect(
-                                this.state.selectedProduct.groupId, // Correct product ID
-                                variant.id, // Variant ID
-                                variant.unit, // Variant Name
+                                this.state.selectedProduct.groupId,
+                                variant.id,
+                                variant.unit,
                                 variant.quantity,
                                 variant.mrp,
                                 variant.price
