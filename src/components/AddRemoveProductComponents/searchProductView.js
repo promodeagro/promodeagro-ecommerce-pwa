@@ -13,6 +13,8 @@ import { fetchCategories } from "../../Redux/AllProducts/AllProductthunk";
 import { fetchDefaultAddress } from "../../Redux/Address/AddressThunk";
 import { fetchPersonalDetails } from "../../Redux/Signin/SigninThunk";
 import AuthModal from "../../components/ModalLogin/LoginModal";
+import CurrencyRupeeOutlinedIcon from "@mui/icons-material/CurrencyRupeeOutlined";
+
 class SearchProductItemView extends Component {
   constructor(props) {
     super(props);
@@ -159,14 +161,15 @@ class SearchProductItemView extends Component {
                     </Box>
                     <Box className="price-ratting">
                       <Box className="price">
-                      ₹{item?.cartItem?.selectedQuantityUnitprice ||
+                      <CurrencyRupeeOutlinedIcon style={{height:"14px", width:"14px"}}/> {item?.cartItem?.selectedQuantityUnitprice ||
                           prices?.price?.price ||
                           item.sellingPrice}
                         {(item?.cartItem?.selectedQuantityUnitMrp > 0 ||
                           prices?.price?.mrp > 0 ||
                           item.comparePrice > 0) && (
                           <span>
-                            ₹{item?.cartItem?.selectedQuantityUnitMrp ||
+                            <CurrencyRupeeOutlinedIcon style={{height:"13px", width:"13px"}}/>
+                            {item?.cartItem?.selectedQuantityUnitMrp ||
                               prices?.price?.mrp ||
                               item.comparePrice}
                           </span>
