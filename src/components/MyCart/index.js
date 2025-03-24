@@ -69,22 +69,17 @@ class MyCart extends Component {
         userId: items.userId,
         cartItems: Object.values(cartData).length ? Object.values(cartData) : [],
       });
-      const addressId = localStorage.getItem("address"); // Get addressId from localStorage
-      
-      if (addressId) {
-        this.props.fetchCartItems({
-          userId: items.userId,
-          addressId: addressId,
-        });
-      } else {
-        console.warn("defaultAddress not available; addressId is undefined");
-      }
-    }
+      const addressId = localStorage.getItem("address");
+      this.props.fetchCartItems({ 
+        userId: items.userId, 
+        addressId: addressId !== null ? addressId : undefined 
+      });
+          }
   }
 
   componentDidUpdate(prevProps, prevState) {
     const items = loginDetails();
-    const addressId = localStorage.getItem("address");
+    const addressId = localStorage.getItem("address") || undefined; // Explicitly set undefined if not found
     const { handleClose } = this.props;
 
     if (
@@ -529,12 +524,10 @@ class MyCart extends Component {
                         </div>
                         <div>
                           <strong>Grand Total</strong>{" "}
-                          <strong>₹{this.state.totalPrice}</strong>
+                          {/* <strong>₹{this.state.totalPrice}</strong> */}
+                          <strong>₹{this.props.cartItems.data?.finalTotal}</strong>
                         </div>
                       </div>
-                      {this.state.selectedAddress?.zipCode == "500091" ||
-                      this.state.selectedAddress?.zipCode == "500030" ||
-                      this.state.selectedAddress?.zipCode == "500086" ? (
                         <span
                           style={{
                             color: "#005F41",
@@ -542,22 +535,7 @@ class MyCart extends Component {
                             fontSize: "16px",
                             marginLeft: "5px",
                           }}
-                        >
-                          "Unlock free shipping on purchases over ₹100"
-                        </span>
-                      ) : (
-                        <span
-                          style={{
-                            color: "#005F41",
-                            fontWeight: "600",
-                            fontSize: "16px",
-                            marginLeft: "5px",
-                          }}
-                        >
-                          "Unlock free shipping on purchases over ₹300"
-                        </span>
-                      )}
-
+                        >"{this.props.cartItems.data?.chargestag}"</span>
                       {defaultSelectedAddress?.addressId ? (
                         <>
                           <div className="payment_container">
