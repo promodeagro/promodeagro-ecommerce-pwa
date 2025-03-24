@@ -43,7 +43,7 @@ export const fetchCartItems = createAsyncThunk("cartitems", async (params, { rej
   try {
     // console.log("📡 Using addressId:", addressId);
 
-    const url = `${config.FETCH_CART_ITEMS}?userId=${params.userId}&addressId=${params.userId}`;
+    const url = `${config.FETCH_CART_ITEMS}?userId=${params.userId}&addressId=${params.addressId}`;
     const response = await postLoginService.get(url);
 
     return response.data;
