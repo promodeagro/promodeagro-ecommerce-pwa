@@ -13,6 +13,8 @@ import { LocalStorageCartService } from "Services/localStorageCartService";
 import { Loader, loginDetails } from "Views/Utills/helperFunctions";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import { saveForLater } from "../../../../Redux/AllProducts/AllProductthunk";
+import { fetchDefaultAddress } from "../../../../Redux/Address/AddressThunk";
+
 import {
   fetchCartItems,
   deleteItemToCart,
@@ -34,76 +36,127 @@ class Carts extends Component {
   componentDidMount() {
     const items = loginDetails();
     if (items?.userId) {
-      let cartData = LocalStorageCartService.getData() || {};
+      this.props.fetchDefaultAddress(items.userId);
+      const cartData = LocalStorageCartService.getData() || {};
       this.props.addListOfItemsToCartReq({
         userId: items.userId,
-        cartItems: Object.values(cartData).length
-          ? Object.values(cartData)
-          : [],
+        cartItems: Object.values(cartData).length ? Object.values(cartData) : [],
       });
-      this.props.fetchCartItems({
-        userId: items.userId,
-      });
-    }
-  }
-  componentDidUpdate(prevProps, prevState) {
-    const items = loginDetails();
-    if (
-      prevProps.addListOfItemRes.status !== this.props.addListOfItemRes.status
-    ) {
-      if (this.props.addListOfItemRes.status === status.SUCCESS) {
+      const addressId = localStorage.getItem("address"); // Get addressId from localStorage
+      
+      if (addressId) {
         this.props.fetchCartItems({
           userId: items.userId,
+          addressId: addressId,
         });
-      } else if (this.props.addListOfItemRes.status === status.FAILURE) {
+      } else {
+        console.warn("defaultAddress not available; addressId is undefined");
       }
     }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    
+    const items = loginDetails();
+    const addressId = localStorage.getItem("address");
+    const { handleClose } = this.props;
+    if (prevProps.triggerFetchCart !== this.props.triggerFetchCart && this.props.triggerFetchCart) {
+      if (items?.userId && addressId) {
+        this.props.fetchCartItems({ userId: items.userId, addressId });
+      }}
+  
+    if (
+      prevProps.defaultAddressData?.status !==
+        this.props?.defaultAddressData?.status &&
+      this.props?.defaultAddressData?.status === status.SUCCESS &&
+      this.props?.defaultAddressData?.data
+    ) {
+      if (
+        JSON.stringify(this.state.defaultSelectedAddress) !==
+        JSON.stringify(this.props.defaultAddressData.data)
+      ) {
+        this.setState({
+          defaultSelectedAddress: this.props.defaultAddressData.data,
+        });
+      }
+    }
+    if (
+      prevProps.addListOfItemRes.status !==
+        this.props.addListOfItemRes.status &&
+      this.props.addListOfItemRes.status === status.SUCCESS && addressId
+    ) {
+      this.props.fetchCartItems({ userId: items.userId, addressId });
+    }
+
     if (
       prevProps.cartItems.status !== this.props.cartItems.status &&
       this.props.cartItems.status === status.SUCCESS &&
       this.props.cartItems.data
     ) {
-      this.setState({
-        cartList: this.props.cartItems.data.items,
-        loaderCount: 1,
+      let cartListData = [];
+      let itemListData = [];
+
+      this.props?.cartItems?.data?.items?.forEach((item) => {
+        let data = {
+          mrp: item.Mrp,
+          price: item.Price,
+          id: item.ProductId,
+          Quantity: item.Quantity,
+          savingsPercentage: item.Savings,
+          subtotal: item.Subtotal,
+          userId: item.UserId,
+          image: item.productImage,
+          name: item.productName,
+        };
+
+        let data1 = {
+          productId: item.ProductId,
+          quantity: item.Quantity,
+          quantityUnits: item.QuantityUnits,
+        };
+
+        itemListData.push(data1);
+        cartListData.push(data);
       });
-    } else if (this.props.cartItems.status === status.FAILURE) {
-      this.setState({
-        cartList: [],
-        loaderCount: 1,
-      });
+
+      if (
+        JSON.stringify(this.state.cartListArr) !== JSON.stringify(cartListData) ||
+        JSON.stringify(this.state.itemListArr) !== JSON.stringify(itemListData)
+      ) {
+        this.setState({
+          cartList: this.props.cartItems.data.items,
+          ListData: this.props.cartItems.data.items,
+          cartListArr: cartListData,
+          itemListArr: itemListData,
+          totalPrice: this.props.cartItems.data.finalTotal,
+          loaderCount: 1,
+        });
+      }
     }
+
     if (
       prevProps.saveForLaterData.status !==
         this.props.saveForLaterData.status &&
-      this.props.saveForLaterData.status === status.SUCCESS
+      this.props.saveForLaterData.status === status.SUCCESS && addressId
     ) {
-      this.props.fetchCartItems({
-        userId: items.userId,
-      });
-      this.setState({
-        bookMarkId: "",
-      });
+      this.props.fetchCartItems({ userId: items.userId, addressId });
+      this.setState({ bookMarkId: "" });
+
       if (
         this.state.deleteItemId &&
         typeof this.state.deleteItemId === "string"
       ) {
         LocalStorageCartService.deleteItem(this.state.deleteItemId);
       }
-    } else if (this.props.saveForLaterData.status === status.FAILURE) {
-      this.setState({
-        bookMarkId: "",
-      });
     }
 
     if (
       prevProps.updateItems.status !== this.props.updateItems.status &&
       this.props.updateItems.status === status.SUCCESS &&
-      this.props.updateItems.data
+      this.props.updateItems.data && addressId
     ) {
-      this.props.fetchCartItems({
-        userId: items.userId,
-      });
+      this.props.fetchCartItems({ userId: items.userId, addressId });
+
       if (
         this.state.deleteItemId &&
         typeof this.state.deleteItemId === "object" &&
@@ -115,28 +168,27 @@ class Carts extends Component {
         );
         this.setState({ deleteItemId: null });
       }
-    } else if (this.props.updateItems.status === status.FAILURE) {
     }
+
     if (
       prevProps.deleteItems.status !== this.props.deleteItems.status &&
       this.props.deleteItems.status === status.SUCCESS &&
-      this.props.deleteItems.data
+      this.props.deleteItems.data && addressId
     ) {
-      this.props.fetchCartItems({
-        userId: items.userId,
-      });
+      this.props.fetchCartItems({ userId: items.userId, addressId });
+
       if (
         this.state.deleteItemId &&
-        typeof this.state.deleteItemId === "string" &&
-        this.state.deleteItemId.length
+        typeof this.state.deleteItemId === "string"
       ) {
         LocalStorageCartService.deleteItem(this.state.deleteItemId);
         this.setState({ deleteItemId: null });
       }
-    } else if (this.props.deleteItems.status === status.FAILURE) {
     }
-  }
 
+        }
+      
+  
   handleQuantityChange(id, increment, productQuantity = 0, qty) {
     const items = loginDetails();
     if (increment < 0 && productQuantity != 0) {
@@ -326,6 +378,8 @@ const mapDispatchToProps = {
   updateItemToCart,
   saveForLater,
   addListOfItemsToCartReq,
+  fetchDefaultAddress,
+
 };
 
 export default connect(

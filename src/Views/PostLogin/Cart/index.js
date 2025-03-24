@@ -60,6 +60,8 @@ class Cart extends Component {
       cartListArr: [],
       totalPrice: "",
       defaultSelectedAddress: {},
+      triggerFetchCart: false, // New state to trigger fetch
+
     };
   }
 
@@ -69,53 +71,54 @@ class Cart extends Component {
       .addEventListener("change", (e) => this.setState({ matches: e.matches }));
 
     const items = loginDetails();
-
     if (items?.userId) {
-      this.props.fetchDefaultAddress(items?.userId);
-    }
-
-    if (items?.userId) {
-      let cartData = LocalStorageCartService.getData() || {};
+      this.props.fetchDefaultAddress(items.userId);
+      const cartData = LocalStorageCartService.getData() || {};
       this.props.addListOfItemsToCartReq({
         userId: items.userId,
-        cartItems: Object.values(cartData).length
-          ? Object.values(cartData)
-          : [],
+        cartItems: Object.values(cartData).length ? Object.values(cartData) : [],
       });
-      this.props.fetchCartItems({
-        userId: items.userId,
-      });
+      const addressId = localStorage.getItem("address"); // Get addressId from localStorage
+      
+      if (addressId) {
+        this.props.fetchCartItems({
+          userId: items.userId,
+          addressId: addressId,
+        });
+      } else {
+        console.warn("defaultAddress not available; addressId is undefined");
+      }
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
     const items = loginDetails();
+    const addressId = localStorage.getItem("address");
     const { handleClose } = this.props;
+
     if (
       prevProps.defaultAddressData?.status !==
         this.props?.defaultAddressData?.status &&
       this.props?.defaultAddressData?.status === status.SUCCESS &&
       this.props?.defaultAddressData?.data
     ) {
-      this.setState({
-        defaultSelectedAddress: this.props?.defaultAddressData?.data,
-      });
-      localStorage.setItem(
-        "address",
-        this.props?.defaultAddressData?.data?.addressId
-      );
-    }
-
-    if (
-      prevProps.addListOfItemRes.status !== this.props.addListOfItemRes.status
-    ) {
-      if (this.props.addListOfItemRes.status === status.SUCCESS) {
-        this.props.fetchCartItems({
-          userId: items.userId,
+      if (
+        JSON.stringify(this.state.defaultSelectedAddress) !==
+        JSON.stringify(this.props.defaultAddressData.data)
+      ) {
+        this.setState({
+          defaultSelectedAddress: this.props.defaultAddressData.data,
         });
-      } else if (this.props.addListOfItemRes.status === status.FAILURE) {
       }
     }
+    if (
+      prevProps.addListOfItemRes.status !==
+        this.props.addListOfItemRes.status &&
+      this.props.addListOfItemRes.status === status.SUCCESS && addressId
+    ) {
+      this.props.fetchCartItems({ userId: items.userId, addressId });
+    }
+
     if (
       prevProps.cartItems.status !== this.props.cartItems.status &&
       this.props.cartItems.status === status.SUCCESS &&
@@ -123,7 +126,8 @@ class Cart extends Component {
     ) {
       let cartListData = [];
       let itemListData = [];
-      this.props.cartItems.data.items.forEach((item) => {
+
+      this.props?.cartItems?.data?.items?.forEach((item) => {
         let data = {
           mrp: item.Mrp,
           price: item.Price,
@@ -141,54 +145,49 @@ class Cart extends Component {
           quantity: item.Quantity,
           quantityUnits: item.QuantityUnits,
         };
+
         itemListData.push(data1);
         cartListData.push(data);
       });
 
-      this.setState({
-        cartList: this.props.cartItems.data.items,
-        ListData: this.props.cartItems.data.items,
-        cartListArr: cartListData,
-        itemListArr: itemListData,
-        totalPrice: this.props.cartItems.data.finalTotal,
-        loaderCount: 1,
-      });
-    } else if (this.props.cartItems.status === status.FAILURE) {
-      this.setState({
-        cartList: [],
-        loaderCount: 1,
-      });
+      if (
+        JSON.stringify(this.state.cartListArr) !== JSON.stringify(cartListData) ||
+        JSON.stringify(this.state.itemListArr) !== JSON.stringify(itemListData)
+      ) {
+        this.setState({
+          cartList: this.props.cartItems.data.items,
+          ListData: this.props.cartItems.data.items,
+          cartListArr: cartListData,
+          itemListArr: itemListData,
+          totalPrice: this.props.cartItems.data.finalTotal,
+          loaderCount: 1,
+        });
+      }
     }
+
     if (
       prevProps.saveForLaterData.status !==
         this.props.saveForLaterData.status &&
-      this.props.saveForLaterData.status === status.SUCCESS
+      this.props.saveForLaterData.status === status.SUCCESS && addressId
     ) {
-      this.props.fetchCartItems({
-        userId: items.userId,
-      });
-      this.setState({
-        bookMarkId: "",
-      });
+      this.props.fetchCartItems({ userId: items.userId, addressId });
+      this.setState({ bookMarkId: "" });
+
       if (
         this.state.deleteItemId &&
         typeof this.state.deleteItemId === "string"
       ) {
         LocalStorageCartService.deleteItem(this.state.deleteItemId);
       }
-    } else if (this.props.saveForLaterData.status === status.FAILURE) {
-      this.setState({
-        bookMarkId: "",
-      });
     }
+
     if (
       prevProps.updateItems.status !== this.props.updateItems.status &&
       this.props.updateItems.status === status.SUCCESS &&
-      this.props.updateItems.data
+      this.props.updateItems.data && addressId
     ) {
-      this.props.fetchCartItems({
-        userId: items.userId,
-      });
+      this.props.fetchCartItems({ userId: items.userId, addressId });
+
       if (
         this.state.deleteItemId &&
         typeof this.state.deleteItemId === "object" &&
@@ -200,79 +199,54 @@ class Cart extends Component {
         );
         this.setState({ deleteItemId: null });
       }
-    } else if (this.props.updateItems.status === status.FAILURE) {
     }
+
     if (
       prevProps.deleteItems.status !== this.props.deleteItems.status &&
       this.props.deleteItems.status === status.SUCCESS &&
-      this.props.deleteItems.data
+      this.props.deleteItems.data && addressId
     ) {
-      this.props.fetchCartItems({
-        userId: items.userId,
-      });
+      this.props.fetchCartItems({ userId: items.userId, addressId });
+
       if (
         this.state.deleteItemId &&
-        typeof this.state.deleteItemId === "string" &&
-        this.state.deleteItemId.length
+        typeof this.state.deleteItemId === "string"
       ) {
-        LocalStorageCartService.deleteItem(this.state.deleteItemId);
-        this.setState({ deleteItemId: null });
-      }
-    } else if (this.props.deleteItems.status === status.FAILURE) {
-    }
-    if (
-      prevProps.placeOrderData.status !== this.props.placeOrderData.status &&
-      this.props.placeOrderData.status === status.SUCCESS
-    ) {
-      if (this.props.placeOrderData.data?.statuscode === 200) {
-        if (this.props.placeOrderData.data?.orderId) {
-          this.props.navigate(
-            `/mycart/address/order-placed/${this.props.placeOrderData.data.orderId}`
-          );
-          localStorage.removeItem("cartItem");
-          localStorage.removeItem("address");
-          LocalStorageCartService.saveData({});
-          this.setState({ selectedSlot: "" });
-          this.setState({ selectedPaymentMethod: "cash" });
-          let login = loginDetails();
-          if (login?.userId) {
-            this.props.addListOfItemsToCartReq({
-              userId: login.userId,
-              cartItems: [],
-            });
-            this.props.fetchCartItems({
-              userId: login.userId,
-            });
-          }
-          this.setState({ cartList: [] });
-        }
-        if (!this.props.placeOrderData.data?.orderId) {
-          ErrorMessages.error(this.props?.placeOrderData?.data?.error);
-        }
-        if (this.props.placeOrderData.data?.paymentLink) {
-          this.setState({
-            paymentLink: this.props.placeOrderData.data.paymentLink,
-          });
-          const openPaymentLink = async () => {
-            if (this.props.placeOrderData.data?.paymentLink) {
-              await new Promise((resolve) => {
-                this.setState(
-                  {
-                    paymentLink: this.props.placeOrderData.data.paymentLink,
-                  },
-                  resolve
-                );
-              });
-              if (this.state.paymentLink) {
-                window.location.href = this.state.paymentLink;
+             LocalStorageCartService.deleteItem(this.state.deleteItemId);
+                this.setState({ deleteItemId: null });
               }
             }
-          };
-          openPaymentLink();
-        }
-      }
-    }
-  }
+        
+            if (
+              prevProps.placeOrderData.status !== this.props.placeOrderData.status &&
+              this.props.placeOrderData.status === status.SUCCESS
+            ) {
+              if (this.props.placeOrderData.data?.statuscode === 200) {
+                if (this.props.placeOrderData.data?.orderId) {
+                  this.props.navigate(
+                   `/mycart/address/order-placed/${this.props.placeOrderData.data.orderId}`
+                  );
+                  
+                  localStorage.removeItem("cartItem");
+                  localStorage.removeItem("address");
+                  LocalStorageCartService.saveData({});
+                  this.setState({
+                    selectedSlot: "",
+                    selectedPaymentMethod: "cash",
+                    cartList: [],
+                  });
+        
+                  if (items?.userId && addressId) {
+                    this.props.addListOfItemsToCartReq({
+                      userId: items.userId,
+                      cartItems: [],
+                    });
+                    this.props.fetchCartItems({ userId: items.userId, addressId });
+                  }
+                }
+              }
+            }
+          }
 
   handlePlaceOrder = () => {
     let login = loginDetails();
@@ -375,6 +349,13 @@ class Cart extends Component {
       isAddNewAddressModalOpen: false,
     });
   };
+
+  handleDrawerClose = () => {
+    this.setState({ TabSelectAddressPopupOpen: false, triggerFetchCart: true }, () => {
+      setTimeout(() => this.setState({ triggerFetchCart: false }), 500); // Reset trigger after a short delay
+    });
+  };
+  St
 
   render() {
     const { matches, selectedPaymentMethod } = this.state;
@@ -520,7 +501,7 @@ class Cart extends Component {
                     Clear Cart
                   </Button>
                 </Box>
-                <CartItems />
+<CartItems triggerFetchCart={this.state.triggerFetchCart} />
                 {this.state.cartList?.length > 0 ? (
                   <>
                     <div
@@ -763,11 +744,13 @@ class Cart extends Component {
           open={this.state.TabSelectAddressPopupOpen}
           anchor="bottom"
           onClose={() => {
-            this.setState({
-              TabSelectAddressPopupOpen: false,
+            this.setState({ TabSelectAddressPopupOpen: false }, () => {
+              this.setState({ triggerFetchCart: true }, () => {
+                setTimeout(() => this.setState({ triggerFetchCart: false }), 500);
+              });
             });
           }}
-        >
+                  >
           <Box className="tab_popup">
             <Box className="tab_select_delivery_container">
               <h2>Select Delivery Address</h2>
