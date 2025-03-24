@@ -42,23 +42,18 @@ class Carts extends Component {
         userId: items.userId,
         cartItems: Object.values(cartData).length ? Object.values(cartData) : [],
       });
-      const addressId = localStorage.getItem("address"); // Get addressId from localStorage
-      
-      if (addressId) {
-        this.props.fetchCartItems({
-          userId: items.userId,
-          addressId: addressId,
-        });
-      } else {
-        console.warn("defaultAddress not available; addressId is undefined");
-      }
-    }
+      const addressId = localStorage.getItem("address");
+      this.props.fetchCartItems({ 
+        userId: items.userId, 
+        addressId: addressId !== null ? addressId : undefined 
+      });
+          }
   }
 
   componentDidUpdate(prevProps, prevState) {
     
     const items = loginDetails();
-    const addressId = localStorage.getItem("address");
+    const addressId = localStorage.getItem("address") || undefined; // Explicitly set undefined if not found
     const { handleClose } = this.props;
     if (prevProps.triggerFetchCart !== this.props.triggerFetchCart && this.props.triggerFetchCart) {
       if (items?.userId && addressId) {
