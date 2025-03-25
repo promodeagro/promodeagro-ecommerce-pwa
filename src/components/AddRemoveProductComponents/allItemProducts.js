@@ -209,8 +209,11 @@ class ProductItemView extends Component {
   };
 
   handleModalOpen = (product) => {
+    if (product.variations.length === 1) {
+      return; // Prevent modal from opening if there's only one variant
+    }
+
     if (window.innerWidth <= 600) {
-      // Adjust breakpoint as needed
       this.setState({
         drawerOpen: true,
         selectedProduct: product,
@@ -334,25 +337,35 @@ class ProductItemView extends Component {
             <Link>{item?.name}</Link>
           </Box>
           <>
-          {item?.variations?.length > 0 ? (
-  <Box className="select">
-    <button
-      className="selettobutton"
-      onClick={() => this.handleModalOpen(item)}
-    >
-      {(
-        this.state.selectedVariants[item.groupId]?.quantity ||
-        item.variations?.find(variant => variant.availability)?.quantity ||
-        0
-      ) + " "}
-      {this.state.selectedVariants[item.groupId]?.unit ||
-        item.variations?.find(variant => variant.availability)?.unit}
-      <img src={selecticon} alt="Select Icon" className="selecticon" />
-    </button>
-  </Box>
-) : (
-  <Box className="select">{item?.unit}</Box>
-)}
+            {item?.variations?.length > 0 ? (
+              <Box className="select">
+                <button
+                  style={{
+                    cursor:
+                      item?.variations?.length > 1 ? "pointer" : "default",
+                  }}
+                  className="selettobutton"
+                  onClick={() => this.handleModalOpen(item)}
+                >
+                  {(this.state.selectedVariants[item.groupId]?.quantity ||
+                    item.variations?.find((variant) => variant.availability)
+                      ?.quantity ||
+                    0) + " "}
+                  {this.state.selectedVariants[item.groupId]?.unit ||
+                    item.variations?.find((variant) => variant.availability)
+                      ?.unit}
+                  {item?.variations?.length > 1 && (
+                    <img
+                      src={selecticon}
+                      alt="Select Icon"
+                      className="selecticon"
+                    />
+                  )}
+                </button>
+              </Box>
+            ) : (
+              <Box className="select">{item?.unit}</Box>
+            )}
           </>
 
           <Box className="price-cart">
@@ -360,16 +373,18 @@ class ProductItemView extends Component {
               <strong>
                 <CurrencyRupeeOutlinedIcon />
                 {this.state.selectedVariants[item.groupId]?.price ||
-                  item.variations?.[0]?.price ||
+                  item.variations?.find((v) => v.availability !== false)
+                    ?.price ||
                   item?.price}
               </strong>
               {(this.state.selectedVariants[item.groupId]?.mrp ||
-                item.variations?.[0]?.mrp ||
+                item.variations?.find((v) => v.availability !== false)?.mrp ||
                 item?.mrp) > 0 && (
                 <span>
                   <CurrencyRupeeOutlinedIcon />
                   {this.state.selectedVariants[item.groupId]?.mrp ||
-                    item.variations?.[0]?.mrp ||
+                    item.variations?.find((v) => v.availability !== false)
+                      ?.mrp ||
                     item?.mrp}
                 </span>
               )}
@@ -377,13 +392,14 @@ class ProductItemView extends Component {
             {addedProducts &&
             addedProducts[
               this.state.selectedVariants[item.groupId]?.id ||
-                item?.variations?.[0]?.id ||
+                item.variations?.find((v) => v.availability !== false)?.id ||
                 item?.groupId
             ] ? (
               <Box className="number-input-container">
                 {addedProducts[
                   this.state.selectedVariants[item.groupId]?.id ||
-                    item?.variations?.[0]?.id ||
+                    item.variations?.find((v) => v.availability !== false)
+                      ?.id ||
                     item?.groupId
                 ]?.quantity !== 0 ? (
                   <Box
@@ -395,7 +411,8 @@ class ProductItemView extends Component {
                           : 1;
                       let selectedVariantId =
                         this.state.selectedVariants[item.groupId]?.id ||
-                        item?.variations?.[0]?.id ||
+                        item.variations?.find((v) => v.availability !== false)
+                          ?.id ||
                         item?.groupId;
 
                       this.handleQuantityChange(
@@ -413,7 +430,8 @@ class ProductItemView extends Component {
                   {
                     addedProducts[
                       this.state.selectedVariants[item.groupId]?.id ||
-                        item?.variations?.[0]?.id ||
+                        item.variations?.find((v) => v.availability !== false)
+                          ?.id ||
                         item?.groupId
                     ]?.quantity
                   }
@@ -427,7 +445,8 @@ class ProductItemView extends Component {
                         : 1;
                     let selectedVariantId =
                       this.state.selectedVariants[item.groupId]?.id ||
-                      item?.variations?.[0]?.id ||
+                      item.variations?.find((v) => v.availability !== false)
+                        ?.id ||
                       item?.groupId;
 
                     this.handleQuantityChange(
@@ -452,7 +471,8 @@ class ProductItemView extends Component {
                         : 1;
                     let selectedVariantId =
                       this.state.selectedVariants[item.groupId]?.id ||
-                      item?.variations?.[0]?.id ||
+                      item.variations?.find((v) => v.availability !== false)
+                        ?.id ||
                       item?.groupId;
 
                     this.setState({ isUpdateIncrease: true });
@@ -461,13 +481,16 @@ class ProductItemView extends Component {
                 >
                   {addedProducts[
                     this.state.selectedVariants[item.groupId]?.id ||
-                      item?.variations?.[0]?.id ||
+                      item.variations?.find((v) => v.availability !== false)
+                        ?.id ||
                       item?.groupId
                   ]
                     ? `Added (${
                         addedProducts[
                           this.state.selectedVariants[item.groupId]?.id ||
-                            item?.variations?.[0]?.id ||
+                            item.variations?.find(
+                              (v) => v.availability !== false
+                            )?.id ||
                             item?.groupId
                         ]?.quantity
                       })`
