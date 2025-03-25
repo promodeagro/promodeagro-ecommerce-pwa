@@ -135,7 +135,7 @@ class SearchProductItemView extends Component {
                       className="image"
                       onClick={() => {
                         this.props.navigate(
-                          `/product-details/${item.category}/${item.name}/${item.groupId}`
+                          `/product-details/${item.category}/${item.name}/${item.groupId}?variant=${item.id}`
                         );
                       }}
                     >
@@ -150,7 +150,7 @@ class SearchProductItemView extends Component {
                       className="name"
                       onClick={() => {
                         this.props.navigate(
-                          `/product-details/${item.category}/${item.name}/${item.groupId}`
+                          `/product-details/${item.category}/${item.name}/${item.groupId}?variant=${item.id}`
                         );
                       }}
                     >
