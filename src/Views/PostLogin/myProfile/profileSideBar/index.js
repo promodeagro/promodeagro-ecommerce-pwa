@@ -39,7 +39,7 @@ class ProfileSideBar extends Component {
               to: "/my-profile/account-privacy",
               icon: accountprivacy,
             },
-            { name: "Logout", to: "#", icon: logoutimage },
+            { name: "Logout", to: "#", icon: logoutimage, onClick: this.handleLogout },
           ],
         },
       ],
@@ -72,10 +72,26 @@ class ProfileSideBar extends Component {
   }
 
   handleLogout = () => {
-    localStorage.removeItem("login");
-    this.props.navigate("/");
+    if (window.location.hostname === "localhost") {
+      document.cookie = "login=; path=/; max-age=0"; // Delete login cookie
+    }
+    localStorage.removeItem("defaultAddress"); // Remove stored default address
+    localStorage.removeItem("cartItem"); // Remove cart data
+    localStorage.removeItem("address");
+    document.cookie = "login=; path=/; domain=.promodeagro.com; max-age=0";
+  
+    this.props.navigate("/"); // Navigate to home
+  
+    setTimeout(() => {
+      window.scrollTo(0, 0); // Scroll to top after 1 second
+    }, 100);
+    setTimeout(() => {
+      window.location.reload();
+    }, 200); // Reload after another delay to preserve scroll behavior
+  
+    
   };
-
+  
   render() {
     const path = window.location.pathname;
     const { sections, phoneNumber } = this.state;
@@ -101,7 +117,7 @@ class ProfileSideBar extends Component {
                         justifyContent: "center",
                       }}
                     >
-                      <Link to={link.to}>
+                      <Link to={link.to} onClick={link.onClick || undefined}>
                         <div style={{ display: "flex", gap: "6px" }}>
                           <img
                             src={link.icon}
