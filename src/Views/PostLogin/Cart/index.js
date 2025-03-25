@@ -61,7 +61,6 @@ class Cart extends Component {
       totalPrice: "",
       defaultSelectedAddress: {},
       triggerFetchCart: false, // New state to trigger fetch
-
     };
   }
 
@@ -76,14 +75,16 @@ class Cart extends Component {
       const cartData = LocalStorageCartService.getData() || {};
       this.props.addListOfItemsToCartReq({
         userId: items.userId,
-        cartItems: Object.values(cartData).length ? Object.values(cartData) : [],
+        cartItems: Object.values(cartData).length
+          ? Object.values(cartData)
+          : [],
       });
       const addressId = localStorage.getItem("address");
-      this.props.fetchCartItems({ 
-        userId: items.userId, 
-        addressId: addressId !== null ? addressId : undefined 
+      this.props.fetchCartItems({
+        userId: items.userId,
+        addressId: addressId !== null ? addressId : undefined,
       });
-          }
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -109,7 +110,8 @@ class Cart extends Component {
     if (
       prevProps.addListOfItemRes.status !==
         this.props.addListOfItemRes.status &&
-      this.props.addListOfItemRes.status === status.SUCCESS && addressId
+      this.props.addListOfItemRes.status === status.SUCCESS &&
+      addressId
     ) {
       this.props.fetchCartItems({ userId: items.userId, addressId });
     }
@@ -146,7 +148,8 @@ class Cart extends Component {
       });
 
       if (
-        JSON.stringify(this.state.cartListArr) !== JSON.stringify(cartListData) ||
+        JSON.stringify(this.state.cartListArr) !==
+          JSON.stringify(cartListData) ||
         JSON.stringify(this.state.itemListArr) !== JSON.stringify(itemListData)
       ) {
         this.setState({
@@ -163,7 +166,8 @@ class Cart extends Component {
     if (
       prevProps.saveForLaterData.status !==
         this.props.saveForLaterData.status &&
-      this.props.saveForLaterData.status === status.SUCCESS && addressId
+      this.props.saveForLaterData.status === status.SUCCESS &&
+      addressId
     ) {
       this.props.fetchCartItems({ userId: items.userId, addressId });
       this.setState({ bookMarkId: "" });
@@ -179,7 +183,8 @@ class Cart extends Component {
     if (
       prevProps.updateItems.status !== this.props.updateItems.status &&
       this.props.updateItems.status === status.SUCCESS &&
-      this.props.updateItems.data && addressId
+      this.props.updateItems.data &&
+      addressId
     ) {
       this.props.fetchCartItems({ userId: items.userId, addressId });
 
@@ -199,7 +204,8 @@ class Cart extends Component {
     if (
       prevProps.deleteItems.status !== this.props.deleteItems.status &&
       this.props.deleteItems.status === status.SUCCESS &&
-      this.props.deleteItems.data && addressId
+      this.props.deleteItems.data &&
+      addressId
     ) {
       this.props.fetchCartItems({ userId: items.userId, addressId });
 
@@ -207,41 +213,41 @@ class Cart extends Component {
         this.state.deleteItemId &&
         typeof this.state.deleteItemId === "string"
       ) {
-             LocalStorageCartService.deleteItem(this.state.deleteItemId);
-                this.setState({ deleteItemId: null });
-              }
-            }
-        
-            if (
-              prevProps.placeOrderData.status !== this.props.placeOrderData.status &&
-              this.props.placeOrderData.status === status.SUCCESS
-            ) {
-              if (this.props.placeOrderData.data?.statuscode === 200) {
-                if (this.props.placeOrderData.data?.orderId) {
-                  this.props.navigate(
-                   `/mycart/address/order-placed/${this.props.placeOrderData.data.orderId}`
-                  );
-                  
-                  localStorage.removeItem("cartItem");
-                  localStorage.removeItem("address");
-                  LocalStorageCartService.saveData({});
-                  this.setState({
-                    selectedSlot: "",
-                    selectedPaymentMethod: "cash",
-                    cartList: [],
-                  });
-        
-                  if (items?.userId && addressId) {
-                    this.props.addListOfItemsToCartReq({
-                      userId: items.userId,
-                      cartItems: [],
-                    });
-                    this.props.fetchCartItems({ userId: items.userId, addressId });
-                  }
-                }
-              }
-            }
+        LocalStorageCartService.deleteItem(this.state.deleteItemId);
+        this.setState({ deleteItemId: null });
+      }
+    }
+
+    if (
+      prevProps.placeOrderData.status !== this.props.placeOrderData.status &&
+      this.props.placeOrderData.status === status.SUCCESS
+    ) {
+      if (this.props.placeOrderData.data?.statuscode === 200) {
+        if (this.props.placeOrderData.data?.orderId) {
+          this.props.navigate(
+            `/mycart/address/order-placed/${this.props.placeOrderData.data.orderId}`
+          );
+
+          localStorage.removeItem("cartItem");
+          localStorage.removeItem("address");
+          LocalStorageCartService.saveData({});
+          this.setState({
+            selectedSlot: "",
+            selectedPaymentMethod: "cash",
+            cartList: [],
+          });
+
+          if (items?.userId && addressId) {
+            this.props.addListOfItemsToCartReq({
+              userId: items.userId,
+              cartItems: [],
+            });
+            this.props.fetchCartItems({ userId: items.userId, addressId });
           }
+        }
+      }
+    }
+  }
 
   handlePlaceOrder = () => {
     let login = loginDetails();
@@ -312,7 +318,6 @@ class Cart extends Component {
     }
   }
 
-
   getDefaultAddress() {
     const { defaultAddressData } = this.props; // Get default address from props
 
@@ -346,11 +351,14 @@ class Cart extends Component {
   };
 
   handleDrawerClose = () => {
-    this.setState({ TabSelectAddressPopupOpen: false, triggerFetchCart: true }, () => {
-      setTimeout(() => this.setState({ triggerFetchCart: false }), 500); // Reset trigger after a short delay
-    });
+    this.setState(
+      { TabSelectAddressPopupOpen: false, triggerFetchCart: true },
+      () => {
+        setTimeout(() => this.setState({ triggerFetchCart: false }), 500); // Reset trigger after a short delay
+      }
+    );
   };
-  St
+  St;
 
   render() {
     const { matches, selectedPaymentMethod } = this.state;
@@ -496,7 +504,7 @@ class Cart extends Component {
                     Clear Cart
                   </Button>
                 </Box>
-<CartItems triggerFetchCart={this.state.triggerFetchCart} />
+                <CartItems triggerFetchCart={this.state.triggerFetchCart} />
                 {this.state.cartList?.length > 0 ? (
                   <>
                     <div
@@ -529,18 +537,21 @@ class Cart extends Component {
                       </div>
                       <div>
                         <strong>Grand Total</strong>{" "}
-                        <strong>₹{this.props.cartItems.data?.finalTotal}</strong>
-                        </div>
+                        <strong>
+                          ₹{this.props.cartItems.data?.finalTotal}
+                        </strong>
+                      </div>
                     </div>
-                      <span
-                        style={{
-                          color: "#005F41",
-                          fontWeight: "600",
-                          fontSize: "16px",
-                          marginLeft: "5px",
-                        }}
-                      >
-"{this.props.cartItems.data?.chargestag}"                                </span>
+                    <span
+                      style={{
+                        color: "#005F41",
+                        fontWeight: "600",
+                        fontSize: "13px",
+                        marginLeft: "5px",
+                      }}
+                    >
+                      "{this.props.cartItems.data?.chargestag}"{" "}
+                    </span>
                     {defaultSelectedAddress?.addressId ? (
                       <>
                         <div className="payment_container">
@@ -724,11 +735,14 @@ class Cart extends Component {
           onClose={() => {
             this.setState({ TabSelectAddressPopupOpen: false }, () => {
               this.setState({ triggerFetchCart: true }, () => {
-                setTimeout(() => this.setState({ triggerFetchCart: false }), 500);
+                setTimeout(
+                  () => this.setState({ triggerFetchCart: false }),
+                  500
+                );
               });
             });
           }}
-                  >
+        >
           <Box className="tab_popup">
             <Box className="tab_select_delivery_container">
               <h2>Select Delivery Address</h2>
