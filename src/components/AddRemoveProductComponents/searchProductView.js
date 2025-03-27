@@ -112,7 +112,7 @@ class SearchProductItemView extends Component {
 
   render() {
     const addedProducts = LocalStorageCartService.getData();
-    const { productList } = this.props;
+    const { productList, searchTerm, setSearchTerm } = this.props;
     const { qauntityUnits, unitIdPrices } = this.state;
 
     return (
@@ -134,6 +134,7 @@ class SearchProductItemView extends Component {
                     <Box
                       className="image"
                       onClick={() => {
+                        setSearchTerm("");
                         this.props.navigate(
                           `/product-details/${item.category}/${item.name}/${item.groupId}?variant=${item.id}`
                         );
@@ -149,6 +150,7 @@ class SearchProductItemView extends Component {
                     <Box
                       className="name"
                       onClick={() => {
+                        setSearchTerm("");
                         this.props.navigate(
                           `/product-details/${item.category}/${item.name}/${item.groupId}?variant=${item.id}`
                         );

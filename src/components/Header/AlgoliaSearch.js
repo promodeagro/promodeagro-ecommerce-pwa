@@ -56,7 +56,30 @@ const AlgoliaSearch = ({ showResult = true, onFocus = () => {}, inputRef }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
- 
+  // Handle mobile back button press
+  useEffect(() => {
+    const handlePopState = () => {
+      if (inputRef?.current) {
+        inputRef.current.blur();
+      }
+      setSearchTerm("");
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [inputRef]);
+
+  // Add effect to control body scroll
+  useEffect(() => {
+    if (searchTerm) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [searchTerm]);
 
   return (
     <InstantSearch searchClient={searchClient} indexName="products">
@@ -68,7 +91,7 @@ const AlgoliaSearch = ({ showResult = true, onFocus = () => {}, inputRef }) => {
           setSearchTerm={setSearchTerm}
           searchTerm={searchTerm}
         />
-        <SearchResults showResult={showResult} matches={matches} />
+        <SearchResults showResult={showResult} matches={matches} searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       </Box>
       <Configure restrictSearchableAttributes={["search_name", "sellingPrice"]} hitsPerPage={25} />
       <SearchResultsBg searchTerm={searchTerm} />
@@ -87,7 +110,7 @@ const SearchResultsBg = ({ searchTerm }) => {
   );
 };
 
-const SearchResults = ({ showResult, matches }) => {
+const SearchResults = ({ showResult, matches, searchTerm, setSearchTerm }) => {
   const { results } = useInstantSearch();
   const hasResults = results?.nbHits !== 0;
   const hasQuery = results?.query?.length > 0;
@@ -97,7 +120,7 @@ const SearchResults = ({ showResult, matches }) => {
       className={`search-results ${showResult && hasQuery ? "active" : ""}`}
       style={matches ? { width: "100vw", marginTop: "20px" } : {}}
     >
-      {showResult && hasResults ? <CustomHits /> : <p className="no-data">No data found</p>}
+      {showResult && hasResults ? <CustomHits searchTerm={searchTerm} setSearchTerm={setSearchTerm} /> : <p className="no-data">No data found</p>}
     </Box>
   );
 };
@@ -156,12 +179,20 @@ const CustomSearchBox = ({ onFocus, placeholder, inputRef, setSearchTerm, search
   );
 };
 
-const CustomHits = () => {
+const CustomHits = ({ searchTerm, setSearchTerm }) => {
   const { results } = useInstantSearch();
   const hits = results?.hits || [];
   const empty = results.nbHits === 0;
 
-  return empty ? <p className="no-data">No data found</p> : <SearchProductItemView productList={hits} />;
+  return empty ? (
+    <p className="no-data">No data found</p>
+  ) : (
+    <SearchProductItemView 
+      productList={hits} 
+      searchTerm={searchTerm}
+      setSearchTerm={setSearchTerm}
+    />
+  );
 };
 
 export default AlgoliaSearch;

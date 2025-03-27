@@ -52,6 +52,8 @@ const AuthModal = (props) => {
   const [isSubmitMobOrEmail, setSubmitMobOrEmail] = useState(false);
   const [isOtpSubmitted, setOtpSubmitted] = useState(false);
   const [validateOtp, setValidateOtp] = useState("");
+  const [isLoginSuccess, setIsLoginSuccess] = useState(false);
+  const [isOtpValidationSuccess, setIsOtpValidationSuccess] = useState(false);
 
   const [seconds, setSeconds] = useState(30);
   const [isActive, setIsActive] = useState(true);
@@ -74,24 +76,26 @@ const AuthModal = (props) => {
   }, [isActive, seconds]);
 
   useEffect(() => {
-    if (props.loginData.status === status.SUCCESS && isSubmitMobOrEmail) {
+    if (props.loginData.status === status.SUCCESS && isSubmitMobOrEmail && !isOtpValidationSuccess) {
       if (props.loginData.data) {
         setSubmitMobOrEmail(false);
         if (props.loginData.data.statusCode === 200) {
           resetTimer();
           setFormType("otp");
+          setIsLoginSuccess(true);
         } else if (props.loginData.data.message) {
           ErrorMessages.error(props.loginData.data.message);
         }
       }
     }
-  }, [props.loginData]);
+  }, [props.loginData, isSubmitMobOrEmail, isOtpValidationSuccess]);
 
   useEffect(() => {
-    if (props.validateOtpRes.status === status.SUCCESS && isSubmitMobOrEmail) {
+    if (props.validateOtpRes.status === status.SUCCESS && isSubmitMobOrEmail && isLoginSuccess) {
       if (props.validateOtpRes?.data) {
         setSubmitMobOrEmail(false);
         if (props.validateOtpRes?.data?.statusCode === 200) {
+          setIsOtpValidationSuccess(true);
           handleModalClose();
           const loginData = JSON.stringify(props?.validateOtpRes?.data?.data);
           if (window.location.hostname === "localhost") {
@@ -106,7 +110,7 @@ const AuthModal = (props) => {
         }
       }
     }
-  }, [props.validateOtpRes]);
+  }, [props.validateOtpRes, isSubmitMobOrEmail, isLoginSuccess]);
 
   const resetTimer = () => {
     setSeconds(30);
@@ -169,31 +173,41 @@ const AuthModal = (props) => {
   const inputRefs = useRef([]);
   // Function to extract OTP from the message using regex
   const extractOtp = (message) => {
-    // Regex to match the 6 digits before "is your OTP"
-    const regex = /\b(\d{6})\b/;
+    // Regex to match 6 digits followed by "is your OTP to login to Promode Agro Application"
+    const regex = /(\d{6})\s+is your OTP to login to Promode Agro Application/;
     const match = message.match(regex);
-    return match ? match[0] : null; // If match found, return OTP, otherwise null
+    return match ? match[1] : null; // If match found, return OTP, otherwise null
   };
 
-  // Placeholder for WebOTP functionality
+  // WebOTP API implementation
   useEffect(() => {
     if ("OTPCredential" in window) {
-      // Register WebOTP API
-      const handleOtpReceived = (event) => {
-        const otpFromSms = event.data; // Your OTP message from SMS
-        const otp = extractOtp(otpFromSms); // Extract OTP using the function
+      const ac = new AbortController();
+      
+      navigator.credentials.get({
+        otp: { 
+          transport: ["sms"],
+          // Add origin to match your domain
+          origin: window.location.origin
+        },
+        signal: ac.signal
+      }).then(otp => {
         if (otp) {
-          setOtp(otp.split("")); // Set OTP digits in the state
+          const otpValue = extractOtp(otp.code);
+          if (otpValue) {
+            setOtp(otpValue.split(""));
+            setValidateOtp(otpValue);
+          }
         }
-      };
-
-      window.addEventListener("otpreceived", handleOtpReceived);
+      }).catch(err => {
+        console.log("Error getting OTP:", err);
+      });
 
       return () => {
-        window.removeEventListener("otpreceived", handleOtpReceived);
+        ac.abort();
       };
     }
-  }, []);
+  }, [formType]); // Only run when formType changes to "otp"
 
   const handleChange = (index, event) => {
     const value = event.target.value;
@@ -557,13 +571,14 @@ const AuthModal = (props) => {
                       value={digit}
                       onChange={(e) => handleChange(index, e)}
                       onKeyDown={(e) => handleKeyDown(index, e)}
-                      onPaste={handlePaste} // Add paste handler
+                      onPaste={handlePaste}
                       inputRef={(el) => (inputRefs.current[index] = el)}
                       variant="outlined"
                       size="small"
                       type="tel"
                       inputMode="numeric"
                       pattern="[0-9]"
+                      autoComplete={index === 0 ? "one-time-code" : "off"}
                       inputProps={{
                         maxLength: 1,
                         style: { textAlign: "center", fontSize: "18px" },
@@ -628,6 +643,8 @@ const AuthModal = (props) => {
     setSubmitMobOrEmail(false);
     setOtpSubmitted(false);
     setValidateOtp("");
+    setIsLoginSuccess(false);
+    setIsOtpValidationSuccess(false);
     props.handleClose();
   };
   return (
