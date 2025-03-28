@@ -13,6 +13,8 @@ import { fetchCategories } from "../../Redux/AllProducts/AllProductthunk";
 import { fetchDefaultAddress } from "../../Redux/Address/AddressThunk";
 import { fetchPersonalDetails } from "../../Redux/Signin/SigninThunk";
 import AuthModal from "../../components/ModalLogin/LoginModal";
+import CurrencyRupeeOutlinedIcon from "@mui/icons-material/CurrencyRupeeOutlined";
+
 class SearchProductItemView extends Component {
   constructor(props) {
     super(props);
@@ -112,7 +114,7 @@ class SearchProductItemView extends Component {
     const addedProducts = LocalStorageCartService.getData();
     const { productList, searchTerm, setSearchTerm } = this.props;
     const { qauntityUnits, unitIdPrices } = this.state;
-    
+
     return (
       <>
         {productList.length > 0 ? (
@@ -134,13 +136,13 @@ class SearchProductItemView extends Component {
                       onClick={() => {
                         setSearchTerm("");
                         this.props.navigate(
-                          `/product-details/${item.category}/${item.name}/${item.groupId}`
+                          `/product-details/${item.category}/${item.name}/${item.groupId}?variant=${item.id}`
                         );
                       }}
                     >
-                      <img 
-                        src={item.image || item.images?.[0] || noImage} 
-                        alt={item.name} 
+                      <img
+                        src={item.image || item.images?.[0] || noImage}
+                        alt={item.name}
                       />
                     </Box>
                   </Grid>
@@ -150,22 +152,25 @@ class SearchProductItemView extends Component {
                       onClick={() => {
                         setSearchTerm("");
                         this.props.navigate(
-                          `/product-details/${item.category}/${item.name}/${item.groupId}`
+                          `/product-details/${item.category}/${item.name}/${item.groupId}?variant=${item.id}`
                         );
                       }}
                     >
-                      <Link>{item.name}</Link>
+                      <Link>
+                        {item.name} - {item.totalQuantityInB2c}{" "}
+                        {item.totalquantityB2cUnit}
+                      </Link>
                     </Box>
                     <Box className="price-ratting">
                       <Box className="price">
-                        <img src={priceIcon} alt="" />
-                        {item?.cartItem?.selectedQuantityUnitprice ||
+                      <CurrencyRupeeOutlinedIcon style={{height:"14px", width:"14px"}}/> {item?.cartItem?.selectedQuantityUnitprice ||
                           prices?.price?.price ||
                           item.sellingPrice}
                         {(item?.cartItem?.selectedQuantityUnitMrp > 0 ||
                           prices?.price?.mrp > 0 ||
                           item.comparePrice > 0) && (
                           <span>
+                            <CurrencyRupeeOutlinedIcon style={{height:"13px", width:"13px"}}/>
                             {item?.cartItem?.selectedQuantityUnitMrp ||
                               prices?.price?.mrp ||
                               item.comparePrice}
@@ -283,41 +288,40 @@ class SearchProductItemView extends Component {
                       <Box className="add-cart">
                         {!item.availability ? (
                           <Box
-  sx={{
-    backgroundColor: "#000000",
-    color: "white",
-    fontSize:'14px',
-    fontWeight:600,
-    paddingX: "8px",
-    paddingY: "8px",
-    borderRadius: "5px",
-    display: "flex", // Enables flexbox
-    justifyContent: "center", // Centers horizontally
-    alignItems: "center", // Centers vertically
-    textAlign: "center", // Ensures text is centered
-    width: "100%", // Optional: Ensures full width if inside a container
-  }}
->
-  Out of Stock
-</Box>
+                            sx={{
+                              backgroundColor: "#000000",
+                              color: "white",
+                              fontSize: "14px",
+                              fontWeight: 600,
+                              paddingX: "8px",
+                              paddingY: "8px",
+                              borderRadius: "5px",
+                              display: "flex", // Enables flexbox
+                              justifyContent: "center", // Centers horizontally
+                              alignItems: "center", // Centers vertically
+                              textAlign: "center", // Ensures text is centered
+                              width: "100%", // Optional: Ensures full width if inside a container
+                            }}
+                          >
+                            Out of Stock
+                          </Box>
+                        ) : (
+                          <Button
+                            variant="outlined"
+                            onClick={() => {
+                              let unitqty = "";
+                              if (item?.unitPrices?.length > 0) {
+                                unitqty = item?.unitPrices[0]?.qty;
+                              } else {
+                                unitqty = 1;
+                              }
 
-) : (
-                        <Button
-                          variant="outlined"
-                          onClick={() => {
-                            let unitqty = "";
-                            if (item?.unitPrices?.length > 0) {
-                              unitqty = item?.unitPrices[0]?.qty;
-                            } else {
-                              unitqty = 1;
-                            }
-
-                            this.handleAddToCart(item.id, unitqty);
-                          }}
-                        >
-                          Add to cart
-                        </Button>
-)}
+                              this.handleAddToCart(item.id, unitqty);
+                            }}
+                          >
+                            Add to cart
+                          </Button>
+                        )}
                       </Box>
                     )}
                   </Grid>

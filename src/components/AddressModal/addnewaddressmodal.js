@@ -89,13 +89,19 @@ class AddNewAddressModal extends Component {
   }
 
   componentDidMount() {
-    const defaultAddress = JSON.parse(localStorage.getItem("defaultAddress"));
+    let defaultAddress = localStorage.getItem("address"); 
+  
+    if (defaultAddress === "undefined" || defaultAddress === null) {
+      defaultAddress = "";
+    }
+  
     this.setState({
-      isDefaultAddressPresent: !!defaultAddress, // true if a default address exists
-      isDefaultChecked: !defaultAddress, // If no default address, set checkbox to checked
+      isDefaultAddressPresent: !!defaultAddress, // true if a valid address exists
+      isDefaultChecked: !defaultAddress, // Check the box if no valid address
+      defaultAddressId: defaultAddress, // Store the address ID directly
     });
   }
-
+  
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.addressData && prevState.initialLoad) {
       return {
@@ -188,14 +194,13 @@ class AddNewAddressModal extends Component {
             await this.props.fetchDefaultAddress(userId);
           if (fetchDefaultAddressResponse?.payload) {
             const newDefaultAddress = fetchDefaultAddressResponse.payload;
-            if (!newDefaultAddress) {
-              console.warn("New default address not found in the response.");
+            if (!newDefaultAddress || !newDefaultAddress.addressId) {
+              console.warn("New default address or addressId not found in the response.");
             } else {
-              localStorage.setItem(
-                "defaultAddress",
-                JSON.stringify(newDefaultAddress)
-              );
-              console.log(
+               localStorage.setItem("address", newDefaultAddress.addressId);
+              console.log("Default address ID saved to local storage:", newDefaultAddress.addressId);
+            
+                        console.log(
                 "Default address saved to local storage:",
                 newDefaultAddress
               );
