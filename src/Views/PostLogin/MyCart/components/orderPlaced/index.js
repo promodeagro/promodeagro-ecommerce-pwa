@@ -181,9 +181,15 @@ const OrderPlaced = (props) => {
 </Box>
 
 <Box sx={{ marginTop: "20px", marginBottom: "20px" }}>
-  <Button onClick={() => navigate("/")} className="common-btn">
-    Continue Shopping
-  </Button>
+<Button
+  onClick={() => {
+    navigate("/");
+    window.scrollTo(0, 0);
+  }}
+  className="common-btn"
+>
+  Continue Shopping
+</Button>
 </Box>
         </Container>
       )}

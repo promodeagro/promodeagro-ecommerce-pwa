@@ -9,6 +9,8 @@ import addressbookimage from "../../../../assets/img/addressbooksvg.svg";
 import customersupportimage from "../../../../assets/img/customersupportsvg.svg";
 import accountprivacy from "../../../../assets/img/accountprivarysvg.svg";
 import logoutimage from "../../../../assets/img/logountsvg.svg";
+import { loginDetails } from "Views/Utills/helperFunctions";
+import { fetchDefaultAddress } from "../../../../Redux/Address/AddressThunk";
 
 class ProfileSideBar extends Component {
   constructor(props) {
@@ -37,35 +39,69 @@ class ProfileSideBar extends Component {
               to: "/my-profile/account-privacy",
               icon: accountprivacy,
             },
-            { name: "Logout", to: "#", icon: logoutimage },
+            { name: "Logout", to: "#", icon: logoutimage, onClick: this.handleLogout },
           ],
         },
       ],
+      phoneNumber: "",
     };
   }
 
-  handleLogout = () => {
-    localStorage.removeItem("login");
-    this.props.navigate("/");
-  };
+  async componentDidMount() {
+    const user = loginDetails();
+    const userId = user?.userId;
 
+    if (userId) {
+      try {
+        const response = await this.props.fetchDefaultAddress(userId);
+        console.log("Full API Response:", response.payload); // Debugging log
+
+        const addressData = response.payload?.data || response.payload; // Handle different response structures
+
+        if (addressData?.phoneNumber) {
+          this.setState({
+            phoneNumber: addressData.phoneNumber,
+          });
+        } else {
+          console.warn("Phone number not found in API response.");
+        }
+      } catch (error) {
+        console.error("Error fetching default address:", error);
+      }
+    }
+  }
+
+  handleLogout = () => {
+    if (window.location.hostname === "localhost") {
+      document.cookie = "login=; path=/; max-age=0"; // Delete login cookie
+    }
+    localStorage.removeItem("defaultAddress"); // Remove stored default address
+    localStorage.removeItem("cartItem"); // Remove cart data
+    localStorage.removeItem("address");
+    document.cookie = "login=; path=/; domain=.promodeagro.com; max-age=0";
+  
+    this.props.navigate("/"); // Navigate to home
+  
+    setTimeout(() => {
+      window.scrollTo(0, 0); // Scroll to top after 1 second
+    }, 100);
+    setTimeout(() => {
+      window.location.reload();
+    }, 200); // Reload after another delay to preserve scroll behavior
+  
+    
+  };
+  
   render() {
     const path = window.location.pathname;
-    const { sections } = this.state;
-    const defaultAddress = JSON.parse(
-      localStorage.getItem("defaultAddress") || "{}"
-    );
-    const phoneNumber = defaultAddress?.phoneNumber || "N/A"; // Fallback to "N/A" if not available
+    const { sections, phoneNumber } = this.state;
 
     return (
-      <Box
-        className="profilewrap"
-        sx={{ marginLeft: "none", marginTop: "none" }}
-      >
+      <Box className="profilewrap">
         <Box className="profile-sidebar">
           <Box className="heading">
             <img className="imageofheader" src={profileimage} alt="Profile" />
-              <p style={{ marginTop: "6px" }}>{phoneNumber}</p>
+            <p style={{ marginTop: "6px" }}>{phoneNumber}</p>
           </Box>
           {sections.map((section, index) => (
             <Box className="profile-links" key={index}>
@@ -81,7 +117,7 @@ class ProfileSideBar extends Component {
                         justifyContent: "center",
                       }}
                     >
-                      <Link to={link.to}>
+                      <Link to={link.to} onClick={link.onClick || undefined}>
                         <div style={{ display: "flex", gap: "6px" }}>
                           <img
                             src={link.icon}
@@ -106,12 +142,12 @@ class ProfileSideBar extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {};
-}
+const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = {};
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(navigateRouter(ProfileSideBar));
+const mapDispatchToProps = {
+  fetchDefaultAddress, // Ensure it's passed as a prop
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+  navigateRouter(ProfileSideBar)
+);

@@ -47,29 +47,34 @@ class ProductItemView extends Component {
   }
 
   componentDidMount() {
-    document.addEventListener("touchstart", this.handleTouchStart, { passive: false });
-    document.addEventListener("touchmove", this.handleTouchMove, { passive: false });
+    document.addEventListener("touchstart", this.handleTouchStart, {
+      passive: false,
+    });
+    document.addEventListener("touchmove", this.handleTouchMove, {
+      passive: false,
+    });
   }
-  
+
   componentWillUnmount() {
     document.removeEventListener("touchstart", this.handleTouchStart);
     document.removeEventListener("touchmove", this.handleTouchMove);
   }
-  
+
   handleTouchStart = (e) => {
     this.startY = e.touches[0].clientY;
+    this.isSwipeInsideDrawer = e.target.closest(".drawerbox"); // Check if touch starts inside drawer
   };
-  
+
   handleTouchMove = (e) => {
     const moveY = e.touches[0].clientY;
-    if (this.state.drawerOpen) {
+    if (this.state.drawerOpen && !this.isSwipeInsideDrawer) {
       e.preventDefault(); // Prevent screen scrolling
       if (moveY - this.startY > 50) {
         this.handleDrawerClose();
       }
     }
   };
-      
+
   componentDidUpdate(prevProps, prevState) {
     if (
       prevProps.deleteBookMarkData.status !==
@@ -167,14 +172,14 @@ class ProductItemView extends Component {
   // handleTouchStart = (e) => {
   //   this.startY = e.touches[0].clientY;
   // };
-  
+
   // handleTouchMove = (e) => {
   //   const moveY = e.touches[0].clientY;
   //   if (this.state.drawerOpen && moveY - this.startY > 50) {
   //     this.handleDrawerClose();
   //   }
   // };
-  
+
   handleDeleteWishList(groupId) {
     this.setState({
       deleteItemId: groupId,
@@ -204,8 +209,11 @@ class ProductItemView extends Component {
   };
 
   handleModalOpen = (product) => {
+    if (product.variations.length === 1) {
+      return; // Prevent modal from opening if there's only one variant
+    }
+
     if (window.innerWidth <= 600) {
-      // Adjust breakpoint as needed
       this.setState({
         drawerOpen: true,
         selectedProduct: product,
@@ -305,7 +313,6 @@ class ProductItemView extends Component {
               const displayedVariantId =
                 this.state.selectedVariants[item.groupId]?.id ||
                 item.variations?.[0]?.id;
-
               window.scrollTo({ top: 0, behavior: "smooth" });
               this.props.navigate(
                 `/product-details/${item?.category}/${item?.name}/${item?.groupId}?variant=${displayedVariantId}`
@@ -333,19 +340,27 @@ class ProductItemView extends Component {
             {item?.variations?.length > 0 ? (
               <Box className="select">
                 <button
+                  style={{
+                    cursor:
+                      item?.variations?.length > 1 ? "pointer" : "default",
+                  }}
                   className="selettobutton"
                   onClick={() => this.handleModalOpen(item)}
                 >
                   {(this.state.selectedVariants[item.groupId]?.quantity ||
-                    item.variations?.[0]?.quantity ||
+                    item.variations?.find((variant) => variant.availability)
+                      ?.quantity ||
                     0) + " "}
                   {this.state.selectedVariants[item.groupId]?.unit ||
-                    item.variations?.[0]?.unit}
-                  <img
-                    src={selecticon}
-                    alt="Select Icon"
-                    className="selecticon"
-                  />
+                    item.variations?.find((variant) => variant.availability)
+                      ?.unit}
+                  {item?.variations?.length > 1 && (
+                    <img
+                      src={selecticon}
+                      alt="Select Icon"
+                      className="selecticon"
+                    />
+                  )}
                 </button>
               </Box>
             ) : (
@@ -358,16 +373,18 @@ class ProductItemView extends Component {
               <strong>
                 <CurrencyRupeeOutlinedIcon />
                 {this.state.selectedVariants[item.groupId]?.price ||
-                  item.variations?.[0]?.price ||
+                  item.variations?.find((v) => v.availability !== false)
+                    ?.price ||
                   item?.price}
               </strong>
               {(this.state.selectedVariants[item.groupId]?.mrp ||
-                item.variations?.[0]?.mrp ||
+                item.variations?.find((v) => v.availability !== false)?.mrp ||
                 item?.mrp) > 0 && (
                 <span>
                   <CurrencyRupeeOutlinedIcon />
                   {this.state.selectedVariants[item.groupId]?.mrp ||
-                    item.variations?.[0]?.mrp ||
+                    item.variations?.find((v) => v.availability !== false)
+                      ?.mrp ||
                     item?.mrp}
                 </span>
               )}
@@ -375,13 +392,14 @@ class ProductItemView extends Component {
             {addedProducts &&
             addedProducts[
               this.state.selectedVariants[item.groupId]?.id ||
-                item?.variations?.[0]?.id ||
+                item.variations?.find((v) => v.availability !== false)?.id ||
                 item?.groupId
             ] ? (
               <Box className="number-input-container">
                 {addedProducts[
                   this.state.selectedVariants[item.groupId]?.id ||
-                    item?.variations?.[0]?.id ||
+                    item.variations?.find((v) => v.availability !== false)
+                      ?.id ||
                     item?.groupId
                 ]?.quantity !== 0 ? (
                   <Box
@@ -393,7 +411,8 @@ class ProductItemView extends Component {
                           : 1;
                       let selectedVariantId =
                         this.state.selectedVariants[item.groupId]?.id ||
-                        item?.variations?.[0]?.id ||
+                        item.variations?.find((v) => v.availability !== false)
+                          ?.id ||
                         item?.groupId;
 
                       this.handleQuantityChange(
@@ -411,7 +430,8 @@ class ProductItemView extends Component {
                   {
                     addedProducts[
                       this.state.selectedVariants[item.groupId]?.id ||
-                        item?.variations?.[0]?.id ||
+                        item.variations?.find((v) => v.availability !== false)
+                          ?.id ||
                         item?.groupId
                     ]?.quantity
                   }
@@ -425,7 +445,8 @@ class ProductItemView extends Component {
                         : 1;
                     let selectedVariantId =
                       this.state.selectedVariants[item.groupId]?.id ||
-                      item?.variations?.[0]?.id ||
+                      item.variations?.find((v) => v.availability !== false)
+                        ?.id ||
                       item?.groupId;
 
                     this.handleQuantityChange(
@@ -450,7 +471,8 @@ class ProductItemView extends Component {
                         : 1;
                     let selectedVariantId =
                       this.state.selectedVariants[item.groupId]?.id ||
-                      item?.variations?.[0]?.id ||
+                      item.variations?.find((v) => v.availability !== false)
+                        ?.id ||
                       item?.groupId;
 
                     this.setState({ isUpdateIncrease: true });
@@ -459,13 +481,16 @@ class ProductItemView extends Component {
                 >
                   {addedProducts[
                     this.state.selectedVariants[item.groupId]?.id ||
-                      item?.variations?.[0]?.id ||
+                      item.variations?.find((v) => v.availability !== false)
+                        ?.id ||
                       item?.groupId
                   ]
                     ? `Added (${
                         addedProducts[
                           this.state.selectedVariants[item.groupId]?.id ||
-                            item?.variations?.[0]?.id ||
+                            item.variations?.find(
+                              (v) => v.availability !== false
+                            )?.id ||
                             item?.groupId
                         ]?.quantity
                       })`
@@ -548,13 +573,9 @@ class ProductItemView extends Component {
             className="common-modal"
             sx={{
               width: "36vw",
-              padding: 3,
+              padding: 2,
               borderRadius: "10px",
-              overflowY: "auto",
-              height:"24vw",
-              scrollbarWidth: "none", // Hide scrollbar for Firefox
-              msOverflowStyle: "none", // Hide scrollbar for IE/Edge
-            
+              height: "auto",
             }}
           >
             {this.state.selectedProduct ? (
@@ -563,7 +584,7 @@ class ProductItemView extends Component {
                   sx={{
                     fontWeight: "bold",
                     fontSize: "18px",
-                    marginBottom: "15px",
+                    marginBottom: "10px",
                     display: "flex",
                     justifyContent: "space-between",
                   }}
@@ -576,7 +597,14 @@ class ProductItemView extends Component {
                     onClick={this.handleModalClose}
                   />
                 </Box>
-                <Box>
+                <Box
+                  sx={{
+                    maxHeight: "18vw", // Set a max height for scrolling
+                    overflowY: "auto", // Enable vertical scrolling
+                    scrollbarWidth: "none", // Hide scrollbar for Firefox
+                    msOverflowStyle: "none", // Hide scrollbar for IE/Edge
+                  }}
+                >
                   {this.state.selectedProduct.variations.map((variant) => {
                     const variantId = variant.id;
                     const addedProduct =
@@ -618,6 +646,10 @@ class ProductItemView extends Component {
                               objectFit: "cover",
                               borderRadius: "5px",
                               cursor: "pointer",
+                              cursor: variant.availability
+                                ? "pointer"
+                                : "not-allowed", // Show danger cursor
+                              opacity: variant.availability ? "1" : "0.5", // Reduce opacity for out-of-stock variants
                             }}
                           />
                           <div
@@ -625,18 +657,22 @@ class ProductItemView extends Component {
                               display: "flex",
                               height: "42px",
                               alignItems: "center", // Vertically center children
-                              // backgroundColor:"red"
+                              cursor: variant.availability
+                                ? "pointer"
+                                : "not-allowed", // Show danger cursor
+                              opacity: variant.availability ? "1" : "0.5", // Reduce opacity for out-of-stock variants
                             }}
-                            onClick={() =>
+                            onClick={() => {
+                              if (!variant.availability) return; // Prevent selection
                               this.handleVariantSelect(
-                                this.state.selectedProduct.groupId, // Correct product ID
-                                variant.id, // Variant ID
-                                variant.unit, // Variant Name
+                                this.state.selectedProduct.groupId,
+                                variant.id,
+                                variant.unit,
                                 variant.quantity,
                                 variant.mrp,
                                 variant.price
-                              )
-                            }
+                              );
+                            }}
                           >
                             <div
                               style={{
@@ -657,12 +693,12 @@ class ProductItemView extends Component {
                                 gap: "3px",
                               }}
                             >
-                              {variant.mrp > 0 && (
-                                <span className="mrpstyle">₹{variant.mrp}</span>
-                              )}
                               <span className="pricebold">
                                 ₹{variant.price}
                               </span>
+                              {variant.mrp > 0 && (
+                                <span className="mrpstyle">₹{variant.mrp}</span>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -747,17 +783,17 @@ class ProductItemView extends Component {
           </Box>
         </Modal>
         <Drawer
-  anchor="bottom"
-  open={this.state.drawerOpen}
-  onClose={this.handleDrawerClose}
-  onTouchStart={(e) => (this.startY = e.touches[0].clientY)}
-  onTouchMove={(e) => {
-    const moveY = e.touches[0].clientY;
-    if (moveY - this.startY > 50) {
-      this.handleDrawerClose();
-    }
-  }}
->
+          anchor="bottom"
+          open={this.state.drawerOpen}
+          onClose={this.handleDrawerClose}
+          onTouchStart={(e) => (this.startY = e.touches[0].clientY)}
+          onTouchMove={(e) => {
+            const moveY = e.touches[0].clientY;
+            if (moveY - this.startY > 50) {
+              this.handleDrawerClose();
+            }
+          }}
+        >
           <Box className="drawerbox">
             {this.state.selectedProduct ? (
               <Box>
@@ -772,7 +808,14 @@ class ProductItemView extends Component {
                 >
                   {this.state.selectedProduct.name}
                 </Box>
-                <Box>
+                <Box
+                  sx={{
+                    maxHeight: "70vw", // Set a max height for scrolling
+                    overflowY: "auto", // Enable vertical scrolling
+                    scrollbarWidth: "none", // Hide scrollbar for Firefox
+                    msOverflowStyle: "none", // Hide scrollbar for IE/Edge
+                  }}
+                >
                   {this.state.selectedProduct.variations.map((variant) => {
                     const variantId = variant.id;
                     const addedProduct =
@@ -813,6 +856,10 @@ class ProductItemView extends Component {
                               height: "50px",
                               objectFit: "cover",
                               borderRadius: "5px",
+                              cursor: variant.availability
+                                ? "pointer"
+                                : "not-allowed", // Show danger cursor
+                              opacity: variant.availability ? "1" : "0.5", // Reduce opacity for out-of-stock variants
                             }}
                           />
                           <div
@@ -820,13 +867,17 @@ class ProductItemView extends Component {
                               display: "flex",
                               height: "42px",
                               alignItems: "center", // Vertically center children
-                              //  backgroundColor:"red"
+                              cursor: variant.availability
+                                ? "pointer"
+                                : "not-allowed", // Show danger cursor
+                              opacity: variant.availability ? "1" : "0.5", // Reduce opacity for out-of-stock variants
                             }}
                             onClick={() => {
+                              if (!variant.availability) return; // Prevent selection
                               this.handleVariantSelect(
-                                this.state.selectedProduct.groupId, // Correct product ID
-                                variant.id, // Variant ID
-                                variant.unit, // Variant Name
+                                this.state.selectedProduct.groupId,
+                                variant.id,
+                                variant.unit,
                                 variant.quantity,
                                 variant.mrp,
                                 variant.price

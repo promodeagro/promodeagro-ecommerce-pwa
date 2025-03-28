@@ -41,17 +41,11 @@ export const deleteItemToCart = createAsyncThunk(
 
 export const fetchCartItems = createAsyncThunk("cartitems", async (params, { rejectWithValue }) => {
   try {
-    const addressId = localStorage.getItem("address"); // Fetch addressId from localStorage
+    // console.log("📡 Using addressId:", addressId);
 
-    if (!addressId || addressId === "undefined" || addressId === "null") {
-      console.warn("⚠️ No valid addressId found in localStorage");
-      return rejectWithValue("No valid addressId available");
-    }
-
-    const url = `${config.FETCH_CART_ITEMS}?userId=${params.userId}&addressId=${addressId}`;
-    console.log("📡 Fetching cart items with URL:", url);
-    
+    const url = `${config.FETCH_CART_ITEMS}?userId=${params.userId}&addressId=${params.addressId}`;
     const response = await postLoginService.get(url);
+
     return response.data;
   } catch (error) {
     console.error("Error fetching cart items:", error);

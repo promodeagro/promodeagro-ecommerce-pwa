@@ -211,20 +211,30 @@
             font-weight: 500;
             color: #1a1a1a;
             align-items: center;
+            gap:"10px"
 
             img {
               max-width: 8px;
               height: 12px;
               margin-right: 2px;
+
             }
 
             span {
-              margin-left: 7px;
-              color: #adadad;
+              display: flex;
+              align-items: center;
+              width: 100%;
+              color: #808080;
+              font-size: 13px;
               font-weight: 400;
               text-decoration: line-through;
+              margin-left: 4px;
+              svg {
+                max-width: 13px;
+                height: 13px;
+              }
             }
-          }
+              }
 
           .ratting {
             display: inline-flex;

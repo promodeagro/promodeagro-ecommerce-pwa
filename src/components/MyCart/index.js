@@ -63,52 +63,48 @@ class MyCart extends Component {
   componentDidMount() {
     const items = loginDetails();
     if (items?.userId) {
-      // Fetch the default address (assuming it updates props synchronously)
       this.props.fetchDefaultAddress(items.userId);
-
-      // Optionally add any items already in the cart
       const cartData = LocalStorageCartService.getData() || {};
       this.props.addListOfItemsToCartReq({
         userId: items.userId,
-        cartItems: Object.values(cartData).length
-          ? Object.values(cartData)
-          : [],
+        cartItems: Object.values(cartData).length ? Object.values(cartData) : [],
       });
-      const addressId = localStorage.getItem("addressId") || ""; // Get addressId from localStorage
-      if (addressId) {
-        this.props.fetchCartItems({
-          userId: items.userId,
-          addressId: addressId,
-        });
-      } else {
-        console.warn("defaultAddress not available; addressId is undefined");
-      }
-    }
+      const addressId = localStorage.getItem("address");
+      this.props.fetchCartItems({ 
+        userId: items.userId, 
+        addressId: addressId !== null ? addressId : undefined 
+      });
+          }
   }
 
   componentDidUpdate(prevProps, prevState) {
     const items = loginDetails();
+    const addressId = localStorage.getItem("address") || undefined; // Explicitly set undefined if not found
     const { handleClose } = this.props;
-  
+
     if (
-      prevProps.defaultAddressData?.status !== this.props?.defaultAddressData?.status &&
+      prevProps.defaultAddressData?.status !==
+        this.props?.defaultAddressData?.status &&
       this.props?.defaultAddressData?.status === status.SUCCESS &&
       this.props?.defaultAddressData?.data
     ) {
-      if (this.state.defaultSelectedAddress !== this.props?.defaultAddressData?.data) {
+      if (
+        JSON.stringify(this.state.defaultSelectedAddress) !==
+        JSON.stringify(this.props.defaultAddressData.data)
+      ) {
         this.setState({
-          defaultSelectedAddress: this.props?.defaultAddressData?.data,
+          defaultSelectedAddress: this.props.defaultAddressData.data,
         });
       }
     }
-  
     if (
-      prevProps.addListOfItemRes.status !== this.props.addListOfItemRes.status &&
-      this.props.addListOfItemRes.status === status.SUCCESS
+      prevProps.addListOfItemRes.status !==
+        this.props.addListOfItemRes.status &&
+      this.props.addListOfItemRes.status === status.SUCCESS && addressId
     ) {
-      this.props.fetchCartItems({ userId: items.userId });
+      this.props.fetchCartItems({ userId: items.userId, addressId });
     }
-  
+
     if (
       prevProps.cartItems.status !== this.props.cartItems.status &&
       this.props.cartItems.status === status.SUCCESS &&
@@ -116,7 +112,7 @@ class MyCart extends Component {
     ) {
       let cartListData = [];
       let itemListData = [];
-  
+
       this.props?.cartItems?.data?.items?.forEach((item) => {
         let data = {
           mrp: item.Mrp,
@@ -129,17 +125,17 @@ class MyCart extends Component {
           image: item.productImage,
           name: item.productName,
         };
-  
+
         let data1 = {
           productId: item.ProductId,
           quantity: item.Quantity,
           quantityUnits: item.QuantityUnits,
         };
-  
+
         itemListData.push(data1);
         cartListData.push(data);
       });
-  
+
       if (
         JSON.stringify(this.state.cartListArr) !== JSON.stringify(cartListData) ||
         JSON.stringify(this.state.itemListArr) !== JSON.stringify(itemListData)
@@ -154,26 +150,30 @@ class MyCart extends Component {
         });
       }
     }
-  
+
     if (
-      prevProps.saveForLaterData.status !== this.props.saveForLaterData.status &&
-      this.props.saveForLaterData.status === status.SUCCESS
+      prevProps.saveForLaterData.status !==
+        this.props.saveForLaterData.status &&
+      this.props.saveForLaterData.status === status.SUCCESS && addressId
     ) {
-      this.props.fetchCartItems({ userId: items.userId });
+      this.props.fetchCartItems({ userId: items.userId, addressId });
       this.setState({ bookMarkId: "" });
-  
-      if (this.state.deleteItemId && typeof this.state.deleteItemId === "string") {
+
+      if (
+        this.state.deleteItemId &&
+        typeof this.state.deleteItemId === "string"
+      ) {
         LocalStorageCartService.deleteItem(this.state.deleteItemId);
       }
     }
-  
+
     if (
       prevProps.updateItems.status !== this.props.updateItems.status &&
       this.props.updateItems.status === status.SUCCESS &&
-      this.props.updateItems.data
+      this.props.updateItems.data && addressId
     ) {
-      this.props.fetchCartItems({ userId: items.userId });
-  
+      this.props.fetchCartItems({ userId: items.userId, addressId });
+
       if (
         this.state.deleteItemId &&
         typeof this.state.deleteItemId === "object" &&
@@ -186,61 +186,66 @@ class MyCart extends Component {
         this.setState({ deleteItemId: null });
       }
     }
-  
+
     if (
       prevProps.deleteItems.status !== this.props.deleteItems.status &&
       this.props.deleteItems.status === status.SUCCESS &&
-      this.props.deleteItems.data
+      this.props.deleteItems.data && addressId
     ) {
-      this.props.fetchCartItems({ userId: items.userId });
-  
-      if (this.state.deleteItemId && typeof this.state.deleteItemId === "string") {
+      this.props.fetchCartItems({ userId: items.userId, addressId });
+
+      if (
+        this.state.deleteItemId &&
+        typeof this.state.deleteItemId === "string"
+      ) {
         LocalStorageCartService.deleteItem(this.state.deleteItemId);
         this.setState({ deleteItemId: null });
       }
     }
-  
+
     if (
       prevProps.placeOrderData.status !== this.props.placeOrderData.status &&
       this.props.placeOrderData.status === status.SUCCESS
     ) {
       if (this.props.placeOrderData.data?.statuscode === 200) {
         if (this.props.placeOrderData.data?.orderId) {
-          this.props.navigate(`/mycart/address/order-placed/${this.props.placeOrderData.data.orderId}`);
+          this.props.navigate(
+           `/mycart/address/order-placed/${this.props.placeOrderData.data.orderId}`
+          );
           handleClose();
           localStorage.removeItem("cartItem");
           localStorage.removeItem("address");
           LocalStorageCartService.saveData({});
-          this.setState({ selectedSlot: "", selectedPaymentMethod: "cash", cartList: [] });
-  
-          if (items?.userId) {
-            this.props.addListOfItemsToCartReq({ userId: items.userId, cartItems: [] });
-            this.props.fetchCartItems({ userId: items.userId });
+          this.setState({
+            selectedSlot: "",
+            selectedPaymentMethod: "cash",
+            cartList: [],
+          });
+
+          if (items?.userId && addressId) {
+            this.props.addListOfItemsToCartReq({
+              userId: items.userId,
+              cartItems: [],
+            });
+            this.props.fetchCartItems({ userId: items.userId, addressId });
           }
         }
       }
     }
   }
-  
   handlePlaceOrder = () => {
     let login = loginDetails();
     let addressId = localStorage.getItem("address"); // Only getting from localStorage
-
     const { selectedPaymentMethod, itemListArr, selectedSlot } = this.state;
-
-    // Check if a slot is selected
     if (!selectedSlot) {
       this.setState({ showSlotError: true });
       ErrorMessages.error("Please select a delivery slot.");
       return;
     }
-
-    // Ensure addressId is available before proceeding
     if (!addressId) {
       ErrorMessages.error("No address selected. Please choose an address.");
       return;
     }
-
     const Data = {
       addressId: addressId, // Only using addressId from localStorage
       deliverySlotId: selectedSlot.id,
@@ -294,7 +299,10 @@ class MyCart extends Component {
   getDefaultAddress() {
     const { defaultAddressData } = this.props; // Get default address from props
 
-    if (defaultAddressData?.status === status.SUCCESS && defaultAddressData?.data) {
+    if (
+      defaultAddressData?.status === status.SUCCESS &&
+      defaultAddressData?.data
+    ) {
       return `${defaultAddressData.data.house_number}, ${defaultAddressData.data.landmark_area}...`;
     }
 
@@ -402,34 +410,39 @@ class MyCart extends Component {
                     <Box className="select_delivery_slot">
                       <h2>Select Delivery Slot</h2>
                       <span className="select_delivery_slot_wrapper">
-                      <div
-      className={this.state.showAddressError ? "address-error" : ""}
-      onClick={() => {
-        const hasValidAddress =
-          this.state.selectedAddress?.addressId ||
-          (this.getDefaultAddress() && this.getDefaultAddress() !== "No Address Selected");
+                        <div
+                          className={
+                            this.state.showAddressError ? "address-error" : ""
+                          }
+                          onClick={() => {
+                            const hasValidAddress =
+                              this.state.selectedAddress?.addressId ||
+                              (this.getDefaultAddress() &&
+                                this.getDefaultAddress() !==
+                                  "No Address Selected");
 
-        if (!hasValidAddress) {
-          this.setState({ showAddressError: true });
-          ErrorMessages.error("Please select an address before selecting a slot.");
-          return;
-        }
+                            if (!hasValidAddress) {
+                              this.setState({ showAddressError: true });
+                              ErrorMessages.error(
+                                "Please select an address before selecting a slot."
+                              );
+                              return;
+                            }
 
-        this.setState({
-          slotOpen: true,
-          showSlotError: false, // Reset slot error if applicable
-          showAddressError: false, // Reset address error
-        });
-      }}
-    >
-      <span>
-        {this.state.selectedSlot
-          ? `${this.state.selectedSlot.start} ${this.state.selectedSlot.startAmPm} - ${this.state.selectedSlot.end} ${this.state.selectedSlot.endAmPm}`
-          : "Select Slot"}
-      </span>
-      <img src={ArrowDown} alt="Open Slots" />
-    </div>
-
+                            this.setState({
+                              slotOpen: true,
+                              showSlotError: false, // Reset slot error if applicable
+                              showAddressError: false, // Reset address error
+                            });
+                          }}
+                        >
+                          <span>
+                            {this.state.selectedSlot
+                              ? `${this.state.selectedSlot.start} ${this.state.selectedSlot.startAmPm} - ${this.state.selectedSlot.end} ${this.state.selectedSlot.endAmPm}`
+                              : "Select Slot"}
+                          </span>
+                          <img src={ArrowDown} alt="Open Slots" />
+                        </div>
                       </span>
 
                       {/* Error message */}
@@ -523,14 +536,10 @@ class MyCart extends Component {
                         </div>
                         <div>
                           <strong>Grand Total</strong>{" "}
-                          <strong>₹{this.state.totalPrice}</strong>
+                          {/* <strong>₹{this.state.totalPrice}</strong> */}
+                          <strong>₹{this.props.cartItems.data?.finalTotal}</strong>
                         </div>
                       </div>
-                      {this.state.selectedAddress?.zipCode == "500091" ||
-                      this.state.selectedAddress?.zipCode == "500030" ||
-                      this.state.selectedAddress?.zipCode == "500093" ||
-
-                      this.state.selectedAddress?.zipCode == "500086" ? (
                         <span
                           style={{
                             color: "#005F41",
@@ -538,22 +547,7 @@ class MyCart extends Component {
                             fontSize: "16px",
                             marginLeft: "5px",
                           }}
-                        >
-                          "Unlock free shipping on purchases over ₹100"
-                        </span>
-                      ) : (
-                        <span
-                          style={{
-                            color: "#005F41",
-                            fontWeight: "600",
-                            fontSize: "16px",
-                            marginLeft: "5px",
-                          }}
-                        >
-                          "Unlock free shipping on purchases over ₹300"
-                        </span>
-                      )}
-
+                        >"{this.props.cartItems.data?.chargestag}"</span>
                       {defaultSelectedAddress?.addressId ? (
                         <>
                           <div className="payment_container">
@@ -669,7 +663,7 @@ class MyCart extends Component {
                   <h2>Select Delivery Address</h2>
                 </Box>
                 <Box className="delivery_slots_container">
-                  <AllAddresses
+                <AllAddresses
                     onAddressSelect={(address) =>
                       this.setState({ 
                         selectedAddress: address,
