@@ -521,19 +521,31 @@ class Cart extends Component {
                         <strong>₹{this.props.cartItems.data?.subTotal}</strong>
                       </div>
                       <div>
-                        <span>Delivery Charges</span>
-                        <div>
-                          {this.props.cartItems.data?.deliveryCharges <= 0 ? (
-                            <>
-                              <span className="mrp">₹50</span>
-                              <span className="free">Free</span>
-                            </>
-                          ) : (
-                            <strong style={{ marginLeft: "5px" }}>
-                              ₹{this.props.cartItems.data?.deliveryCharges}
-                            </strong>
-                          )}
-                        </div>
+                          <span>Delivery Charges</span>
+                          <div>
+                            {this.props.cartItems.data?.deliveryCharges <= 0 ? (
+                              <>
+                                 {this.state.selectedAddress?.zipCode == "500091" ||
+                      this.state.selectedAddress?.zipCode == "500030" ||
+                      this.state.selectedAddress?.zipCode == "500093" ||
+
+                      this.state.selectedAddress?.zipCode == "500086" ? (
+                        <span className="mrp">₹20</span>
+
+                      ) : (
+                      
+                                <span className="mrp">₹50</span>
+                              
+                      )}
+                              
+                                <span className="free">Free</span>
+                              </>
+                            ) : (
+                              <strong style={{ marginLeft: "5px" }}>
+                                ₹{this.props.cartItems.data?.deliveryCharges}
+                              </strong>
+                            )}
+                          </div>
                       </div>
                       <div>
                         <strong>Grand Total</strong>{" "}
@@ -719,11 +731,14 @@ class Cart extends Component {
               </Box>
               <Box className="select_delivery_slot"></Box>
               <Box className="delivery_slots_container">
-                <AllAddresses
-                  onAddressSelect={(address) =>
-                    this.setState({ selectedAddress: address })
-                  }
-                />
+              <AllAddresses
+                    onAddressSelect={(address) =>
+                      this.setState({ 
+                        selectedAddress: address,
+                        showAddressPopup: true 
+                      })
+                    }
+                  />
               </Box>
             </Box>
           )}
@@ -749,7 +764,11 @@ class Cart extends Component {
             </Box>
             <AllAddresses
               onAddressSelect={(address) =>
-                this.setState({ selectedAddress: address })
+                this.setState({ 
+                  selectedAddress: address,
+                  showAddressPopup: true,
+                  TabSelectAddressPopupOpen: false
+                })
               }
             />
           </Box>
