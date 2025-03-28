@@ -544,17 +544,32 @@ import "../../../assets/sass/components/myCart.scss"
                        <strong>₹{this.props.cartItems.data?.subTotal}</strong>
                      </div>
                      <div>
-                       <span>Delivery Charges</span>
-                       <div>
-                          {this.props.cartItems.data?.deliveryCharges <= 0 ? (
-                           <>
-                            <span className="mrp">₹50</span>
-                            <span className="free">Free</span>
-                           </>
-                         ) : (
-                           <strong style={{ marginLeft: "5px" }}>₹{this.props.cartItems.data?.deliveryCharges}</strong>
-                         )}
-                       </div>
+                          <span>Delivery Charges</span>
+                          <div>
+                            {this.props.cartItems.data?.deliveryCharges <= 0 ? (
+                              <>
+                                 {this.state.selectedAddress?.zipCode == "500091" ||
+                      this.state.selectedAddress?.zipCode == "500030" ||
+                      this.state.selectedAddress?.zipCode == "500093" ||
+
+                      this.state.selectedAddress?.zipCode == "500086" ? (
+                        <span className="mrp">₹20</span>
+
+                      ) : (
+                      
+                                <span className="mrp">₹50</span>
+                              
+                      )}
+                              
+                                <span className="free">Free</span>
+                              </>
+                            ) : (
+                              <strong style={{ marginLeft: "5px" }}>
+                                ₹{this.props.cartItems.data?.deliveryCharges}
+                              </strong>
+                            )}
+                          </div>
+                        </div>
                      </div>
                      <div>
                        <strong>Grand Total</strong>{" "}
