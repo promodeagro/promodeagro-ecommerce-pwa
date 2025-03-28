@@ -499,7 +499,19 @@ class MyCart extends Component {
                           <div>
                             {this.props.cartItems.data?.deliveryCharges <= 0 ? (
                               <>
+                                 {this.state.selectedAddress?.zipCode == "500091" ||
+                      this.state.selectedAddress?.zipCode == "500030" ||
+                      this.state.selectedAddress?.zipCode == "500093" ||
+
+                      this.state.selectedAddress?.zipCode == "500086" ? (
+                        <span className="mrp">₹20</span>
+
+                      ) : (
+                      
                                 <span className="mrp">₹50</span>
+                              
+                      )}
+                              
                                 <span className="free">Free</span>
                               </>
                             ) : (
@@ -516,6 +528,8 @@ class MyCart extends Component {
                       </div>
                       {this.state.selectedAddress?.zipCode == "500091" ||
                       this.state.selectedAddress?.zipCode == "500030" ||
+                      this.state.selectedAddress?.zipCode == "500093" ||
+
                       this.state.selectedAddress?.zipCode == "500086" ? (
                         <span
                           style={{
@@ -657,7 +671,10 @@ class MyCart extends Component {
                 <Box className="delivery_slots_container">
                   <AllAddresses
                     onAddressSelect={(address) =>
-                      this.setState({ selectedAddress: address })
+                      this.setState({ 
+                        selectedAddress: address,
+                        showAddressPopup: true 
+                      })
                     }
                   />
                 </Box>
@@ -680,7 +697,11 @@ class MyCart extends Component {
             </Box>
             <AllAddresses
               onAddressSelect={(address) =>
-                this.setState({ selectedAddress: address })
+                this.setState({ 
+                  selectedAddress: address,
+                  showAddressPopup: true,
+                  TabSelectAddressPopupOpen: false
+                })
               }
             />
           </Box>

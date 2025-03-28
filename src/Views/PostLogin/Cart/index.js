@@ -740,9 +740,12 @@ import "../../../assets/sass/components/myCart.scss"
                 <Box className="select_delivery_slot">
                 </Box>
                 <Box className="delivery_slots_container">
-                  <AllAddresses
+                <AllAddresses
                     onAddressSelect={(address) =>
-                      this.setState({ selectedAddress: address })
+                      this.setState({ 
+                        selectedAddress: address,
+                        showAddressPopup: true 
+                      })
                     }
                   />
                 </Box>
@@ -764,10 +767,14 @@ import "../../../assets/sass/components/myCart.scss"
                          <h2>Select Delivery Address</h2> 
                       </Box>
                       <AllAddresses
-                        onAddressSelect={(address) =>
-                          this.setState({ selectedAddress: address })
-                        }
-                      />
+              onAddressSelect={(address) =>
+                this.setState({ 
+                  selectedAddress: address,
+                  showAddressPopup: true,
+                  TabSelectAddressPopupOpen: false
+                })
+              }
+            />
                     </Box>
                   </Drawer>
                   <Drawer

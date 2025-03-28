@@ -585,13 +585,12 @@ class MyOrder extends Component {
                                 ) : (
                                   <></>
                                 )}
-
-                                <Box
+                                  <Box
                                   sx={{}}
                                   className="d-flex justify-content-between "
                                 >
                                   <span className="d-block summary-title">
-                                    Final Amount
+                                    Delivery Charges
                                   </span>
                                   <span
                                     style={{
@@ -601,7 +600,26 @@ class MyOrder extends Component {
                                     className="d-block order-amount"
                                   >
                                     Rs.{" "}
-                                    {item?.totalPrice - (item?.discount || 0)}
+                                    {item?.deliveryCharges}
+                                  </span>
+                                </Box>
+
+                                <Box
+                                  sx={{}}
+                                  className="d-flex justify-content-between "
+                                >
+                                  <span className="d-block summary-title">
+                                    Grand Total
+                                  </span>
+                                  <span
+                                    style={{
+                                      width: "60px",
+                                      textAlign: "start",
+                                    }}
+                                    className="d-block order-amount"
+                                  >
+                                    Rs.{" "}
+                                    {item?.finalTotal - (item?.discount || 0)}
                                   </span>
                                 </Box>
                                 <Invoice
