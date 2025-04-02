@@ -60,11 +60,11 @@ class Header extends Component {
       .matchMedia("(max-width: 600px)")
       .addEventListener("change", (e) => this.setState({ matches: e.matches }));
     let items = loginDetails();
-    //   if (!localStorage.getItem("defaultAddress")) {
-    //     localStorage.setItem("defaultAddress", JSON.stringify({
-    //         "addressId": "gwskddsfsd",
-    //     }));
-    // }
+  //   if (!localStorage.getItem("defaultAddress")) {
+  //     localStorage.setItem("defaultAddress", JSON.stringify({
+  //         "addressId": "gwskddsfsd",
+  //     }));
+  // } 
     if (items?.userId) {
       this.props.fetchDefaultAddress(items?.userId);
     }
@@ -74,8 +74,8 @@ class Header extends Component {
       });
     }
     if (!loginDetails()?.userId) {
-      localStorage.removeItem("cartItem");
-      LocalStorageCartService.saveData({});
+      localStorage.removeItem('cartItem');
+       LocalStorageCartService.saveData({});
     }
     this.props.fetchCategories();
   }
@@ -242,7 +242,7 @@ class Header extends Component {
       }
     });
   };
-  handleAddAddressClose = () => {
+    handleAddAddressClose = () => {
     this.setState({
       isAddAddressModalOpen: false, // Close the AddAddressModal
     });
@@ -290,8 +290,7 @@ class Header extends Component {
                         >
                           <strong>Deliver Now</strong>
                           <span>
-                            {currentAddress?.house_number},{" "}
-                            {currentAddress?.landmark_area}, ...
+                            {currentAddress?.house_number},{" "} {currentAddress?.landmark_area}, ...
                             <KeyboardArrowDownIcon />
                           </span>
                         </Box>
@@ -353,9 +352,7 @@ class Header extends Component {
                       className="login profile_modal_par"
                     >
                       <span className="users_name">
-                        {currentAddress?.name || "User"}{" "}
-                      </span>
-                      <KeyboardArrowDownIcon />
+                      {currentAddress?.name || "User"} </span><KeyboardArrowDownIcon />
                       {profileModal && (
                         <>
                           <Box
@@ -382,14 +379,10 @@ class Header extends Component {
                                 </Link>
                               </li>
                               <li onClick={() => this.handleProfileModal()}>
-                                <Link to="/my-profile/contact-us">
-                                  Customer Support
-                                </Link>
+                                <Link to="/my-profile/contact-us">Customer Support</Link>
                               </li>
                               <li onClick={() => this.handleProfileModal()}>
-                                <Link to="/my-profile/account-privacy">
-                                  Account Privacy
-                                </Link>
+                                <Link to="/my-profile/account-privacy">Account Privacy</Link>
                               </li>
 
                               {/* <li onClick={() => this.handleProfileModal()}>
@@ -481,14 +474,12 @@ class Header extends Component {
               <Box
                 className="mobile-deliver-box"
                 // onClick={() =>
-                //   this.props.navigate("/my-profile
-                // /manage-addresses")
+                //   this.props.navigate("/my-profile/manage-addresses")
                 // }
                 onClick={this.toggleAddressModal}
               >
-                {currentAddress?.house_number}, {currentAddress?.landmark_area},
-                ...
-                <KeyboardArrowDownIcon />
+                            {currentAddress?.house_number},{" "} {currentAddress?.landmark_area}, ...
+                            <KeyboardArrowDownIcon />
               </Box>
             )}
           </>
