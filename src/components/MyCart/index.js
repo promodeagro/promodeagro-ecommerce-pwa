@@ -18,6 +18,7 @@ import AddAddressModal from "../../../src/components/AddressModal/addaddressmoda
 import { ErrorMessages, loginDetails } from "Views/Utills/helperFunctions";
 import { LocalStorageCartService } from "Services/localStorageCartService";
 import status from "../../Redux/Constants";
+
 import {
   fetchCartItems,
   deleteItemToCart,
@@ -465,8 +466,8 @@ class MyCart extends Component {
                       justifyContent: "space-between",
                     }}
                   >
-                    <h2>Item Details</h2>
-                    <Button
+<h2>Item Details ({this.state.cartList.length})</h2>
+<Button
                       sx={{
                         color: "#1f9151",
                         fontSize: "14px",
