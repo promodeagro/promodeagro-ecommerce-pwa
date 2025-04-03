@@ -364,8 +364,10 @@ class Cart extends Component {
     const { matches, selectedPaymentMethod } = this.state;
     const { open, handleClose } = this.props;
     const { isAddNewAddressModalOpen, defaultSelectedAddress } = this.state;
+
     return (
       <>
+      
         <Box className="cart_popup">
           {this.state.showAddressPopup ? (
             <Box className="my_cart_container">
@@ -461,7 +463,7 @@ class Cart extends Component {
                           }}
                           className="common-btn select_slot_btn"
                         >
-                          Select Slot 123
+                          Select Slot
                         </Button>
                       )}
                     </span>
@@ -525,19 +527,17 @@ class Cart extends Component {
                           <div>
                             {this.props.cartItems.data?.deliveryCharges <= 0 ? (
                               <>
-                                 {this.state.selectedAddress?.zipCode == "500091" ||
-                      this.state.selectedAddress?.zipCode == "500030" ||
-                      this.state.selectedAddress?.zipCode == "500093" ||
-
-                      this.state.selectedAddress?.zipCode == "500086" ? (
-                        <span className="mrp">₹20</span>
-
-                      ) : (
-                      
-                                <span className="mrp">₹50</span>
-                              
-                      )}
-                              
+                                {this.state.selectedAddress?.zipCode === "500091" ||
+                                this.state.selectedAddress?.zipCode === "500030" ||
+                                this.state.selectedAddress?.zipCode === "500093" ||
+                                this.state.selectedAddress?.zipCode === "500086" ? (
+                                  <span className="mrp">₹20</span>
+                                ) : this.state.selectedAddress?.zipCode !== "500091" &&
+                                  this.state.selectedAddress?.zipCode !== "500030" &&
+                                  this.state.selectedAddress?.zipCode !== "500093" &&
+                                  this.state.selectedAddress?.zipCode !== "500086" ? (
+                                  <span className="mrp">₹50</span>
+                                ) : null}
                                 <span className="free">Free</span>
                               </>
                             ) : (

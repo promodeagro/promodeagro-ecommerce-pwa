@@ -92,9 +92,7 @@ componentDidUpdate(prevProps){
                        <Box
                       onClick={() => {
                         if (loginDetails()?.userId) {
-                          {
-                            this.props.navigate("/cart");
-                          }
+                          this.props.navigate("/cart");
                         } else {
                           this.setState({ authModalOpen: true });
                         }

@@ -29,16 +29,15 @@ class SearchProductItemView extends Component {
     };
   }
 
-  handleAddToCart(id, qty) {
+  handleAddToCart(id, item, totalQuantityInB2c, totalquantityB2cUnit) {
     const items = loginDetails();
     this.setState({ dataId: id });
     if (items?.userId) {
       LocalStorageCartService.addItem(id, {
         productId: id,
         quantity: 1,
-        quantityUnits: this.state.qauntityUnits[id]
-          ? parseInt(this.state.qauntityUnits[id])
-          : qty,
+        // quantityUnits: `${this.state.qauntityUnits[id] ? parseInt(this.state.qauntityUnits[id]) : qty} ${unit}`,
+        quantityUnits: `${totalQuantityInB2c} ${totalquantityB2cUnit} `,
       });
     } else {
       this.setState({
@@ -60,12 +59,13 @@ class SearchProductItemView extends Component {
 
     productQuantity = productQuantity + increment;
     if (productQuantity > 0) {
+        // Get the current item from localStorage
+        const cartData = LocalStorageCartService.getData() || {};
+        const currentItem = cartData[id];
       LocalStorageCartService.updateItem(id, {
         productId: id,
         quantity: parseInt(productQuantity),
-        quantityUnits: this.state.qauntityUnits[id]
-          ? parseInt(this.state.qauntityUnits[id])
-          : qty,
+        quantityUnits: currentItem?.quantityUnits
       });
     } else {
       LocalStorageCartService.deleteItem(id);
@@ -316,7 +316,11 @@ class SearchProductItemView extends Component {
                                 unitqty = 1;
                               }
 
-                              this.handleAddToCart(item.id, unitqty);
+                              this.handleAddToCart(item.id,item,
+                                item.totalQuantityInB2c,
+                                item.totalquantityB2cUnit,
+
+                                item, unitqty);
                             }}
                           >
                             Add to cart

@@ -93,19 +93,18 @@ class ProductItemView extends Component {
     }
   }
 
-  handleAddToCart(groupId, qty) {
+  handleAddToCart(groupId, unit, quantity, qty) {
     const items = loginDetails();
     this.setState({
       dataId: groupId,
     });
     if (items?.userId) {
-      LocalStorageCartService.addItem(groupId, {
+      const cartItem = {
         productId: groupId,
         quantity: 1,
-        quantityUnits: this.state.qauntityUnits[groupId]
-          ? parseInt(this.state.qauntityUnits[groupId])
-          : qty,
-      });
+        quantityUnits: `${quantity} ${unit}`,
+      };
+      LocalStorageCartService.addItem(groupId, cartItem);
     } else {
       this.setState({
         authModalOpen: true,
@@ -127,12 +126,14 @@ class ProductItemView extends Component {
     productQuantity = productQuantity + increment;
 
     if (productQuantity != 0) {
+      // Get the current item from localStorage
+      const cartData = LocalStorageCartService.getData() || {};
+      const currentItem = cartData[groupId];
+      
       LocalStorageCartService.updateItem(groupId, {
         productId: groupId,
         quantity: parseInt(productQuantity),
-        quantityUnits: this.state.qauntityUnits[groupId]
-          ? parseInt(this.state.qauntityUnits[groupId])
-          : qty,
+        quantityUnits: currentItem?.quantityUnits,
       });
     } else {
       LocalStorageCartService.deleteItem(groupId);
@@ -217,11 +218,13 @@ class ProductItemView extends Component {
       this.setState({
         drawerOpen: true,
         selectedProduct: product,
+      }, () => {
       });
     } else {
       this.setState({
         modalOpen: true,
         selectedProduct: product,
+      }, () => {
       });
     }
   };
@@ -248,32 +251,37 @@ class ProductItemView extends Component {
     variantMrp,
     variantPrice
   ) => {
-    console.log(
-      "Selected Variant Updated:",
+    console.log('Variant selection details:', {
       productId,
       variantId,
       variantUnit,
       variantQuantity,
       variantMrp,
       variantPrice
-    );
-    this.setState((prevState) => ({
-      selectedVariants: {
-        ...prevState.selectedVariants,
-        [productId]: {
-          id: variantId,
-          unit: variantUnit,
-          quantity: variantQuantity,
-          mrp: variantMrp,
-          price: variantPrice,
-        }, // Store both ID and name
-      },
-      modalOpen: false, // Close modal when variant is selected
-    }));
+    });
+    
+    this.setState((prevState) => {
+      const newState = {
+        selectedVariants: {
+          ...prevState.selectedVariants,
+          [productId]: {
+            id: variantId,
+            unit: variantUnit,
+            quantity: variantQuantity,
+            mrp: variantMrp,
+            price: variantPrice,
+          },
+        },
+        modalOpen: false,
+      };
+      console.log('New state after variant selection:', JSON.stringify(newState, null, 2));
+      return newState;
+    });
   };
 
   renderProductItems = (productList, showDeleteWishlist) => {
-    const addedProducts = LocalStorageCartService.getData();
+    const addedProducts = this.props.localStorageCartItems;
+   
     const { qauntityUnits, unitIdPrices } = this.state;
 
     return productList.map((item) => {
@@ -281,6 +289,10 @@ class ProductItemView extends Component {
       const allVariationsOutOfStock = item?.variations?.every(
         (variant) => !variant.availability
       );
+      // console.log(productList, "productList");
+      // console.log(item, "item");
+      // console.log(addedProducts, "addedProducts");
+      // console.log(this.state.selectedVariants, "this.state.selectedVariants");
 
       return (
         <Box
@@ -477,7 +489,16 @@ class ProductItemView extends Component {
                       item?.groupId;
 
                     this.setState({ isUpdateIncrease: true });
-                    this.handleAddToCart(selectedVariantId, unitqty);
+                    this.handleAddToCart(
+                      selectedVariantId,
+                      this.state.selectedVariants[item.groupId]?.unit ||
+                      item.variations?.find((variant) => variant.availability)
+                        ?.unit,
+                       this.state.selectedVariants[item.groupId]?.quantity ||
+                      item.variations?.find((variant) => variant.availability)
+                        ?.quantity,
+                        unitqty
+                    );
                   }}
                 >
                   {addedProducts[
@@ -511,6 +532,7 @@ class ProductItemView extends Component {
       productList,
       showDeleteWishlist = false,
     } = this.props;
+    console.log('Current selectedProduct in render:', this.state.selectedProduct);
     const settings = {
       dots: false,
       arrows: productList?.length > 5 ? true : false,
@@ -609,7 +631,7 @@ class ProductItemView extends Component {
                   {this.state.selectedProduct.variations.map((variant) => {
                     const variantId = variant.id;
                     const addedProduct =
-                      LocalStorageCartService.getData()?.[variantId] || null;
+                      this.props.localStorageCartItems?.[variantId] || null;
                     return (
                       <Box
                         key={variantId}
@@ -764,7 +786,12 @@ class ProductItemView extends Component {
                                 this.setState(
                                   { isUpdateIncrease: true },
                                   () => {
-                                    this.handleAddToCart(variantId, unitqty);
+                                    this.handleAddToCart(
+                                      variantId,
+                                      variant.unit,
+                                      variant.quantity,
+                                      unitqty
+                                    );
                                   }
                                 );
                               }}
@@ -818,9 +845,10 @@ class ProductItemView extends Component {
                   }}
                 >
                   {this.state.selectedProduct.variations.map((variant) => {
+                    console.log(variant, "variant");
                     const variantId = variant.id;
                     const addedProduct =
-                      LocalStorageCartService.getData()?.[variantId] || null;
+                      this.props.localStorageCartItems?.[variantId] || null;
                     return (
                       <Box
                         key={variantId}
@@ -975,7 +1003,12 @@ class ProductItemView extends Component {
                                 this.setState(
                                   { isUpdateIncrease: true },
                                   () => {
-                                    this.handleAddToCart(variantId, unitqty);
+                                    this.handleAddToCart(
+                                      variantId,
+                                      variant.unit,
+                                      variant.quantity,
+                                      unitqty
+                                    );
                                   }
                                 );
                               }}
@@ -1048,7 +1081,11 @@ class ProductItemView extends Component {
 
 function mapStateToProps(state) {
   const { deleteBookMarkData } = state.allproducts;
-  return { deleteBookMarkData };
+  const { localStorageCartItems } = state.cartitem;
+  return { 
+    deleteBookMarkData,
+    localStorageCartItems 
+  };
 }
 
 const mapDispatchToProps = {

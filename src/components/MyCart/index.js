@@ -66,9 +66,11 @@ class MyCart extends Component {
     if (items?.userId) {
       this.props.fetchDefaultAddress(items.userId);
       const cartData = LocalStorageCartService.getData() || {};
+      console.log(cartData, "cartData");
       this.props.addListOfItemsToCartReq({
         userId: items.userId,
-        cartItems: Object.values(cartData).length ? Object.values(cartData) : [],
+        cartItems:
+         Object.values(cartData).length ? Object.values(cartData) : [],
       });
       const addressId = localStorage.getItem("address");
       this.props.fetchCartItems({ 
@@ -333,7 +335,8 @@ class MyCart extends Component {
   };
 
   render() {
-    const { matches, selectedPaymentMethod } = this.state;
+    const { matches, selectedPaymentMethod,itemListArr } = this.state;
+    console.log(itemListArr, "itemListArr");
     const { open, handleClose } = this.props;
     const { isAddAddressModalOpen, defaultSelectedAddress } = this.state;
 
