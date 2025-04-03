@@ -83,7 +83,7 @@ componentDidUpdate(prevProps){
                            </span>
 
                            {/* <span>
-                             ₹ {this.totalPrice} 230
+                             ₹ {this.totalPrice} 240
                            </span> */}
                          
                          </Box>
