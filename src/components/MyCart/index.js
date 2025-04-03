@@ -420,9 +420,9 @@ class MyCart extends Component {
                       <h2>Select Delivery Slot</h2>
                       <span className="select_delivery_slot_wrapper">
                         <div
-className={`${
-  this.state.showAddressError ? "address-error" : ""
-} ${this.state.showSlotError ? "slot-error" : ""}`}
+                          className={`${
+                            this.state.showAddressError ? "address-error" : ""
+                          } ${this.state.showSlotError ? "slot-error" : ""}`}
                           onClick={() => {
                             const hasValidAddress =
                               this.state.selectedAddress?.addressId ||
@@ -515,13 +515,12 @@ className={`${
                           <strong>
                             <CurrencyRupeeOutlinedIcon
                               style={{
-                                fontSize: "14px", /* Adjusted size to better match text */
+                                fontSize:
+                                  "14px" /* Adjusted size to better match text */,
                                 display: "inline-flex",
                                 alignItems: "center",
                                 position: "relative",
-                                top: "1px" /* Small vertical adjustment if needed */
-
-                            
+                                top: "1px" /* Small vertical adjustment if needed */,
                               }}
                             />
                             {this.props.cartItems.data?.subTotal}
@@ -541,28 +540,31 @@ className={`${
                                 this.state.selectedAddress?.zipCode ==
                                   "500086" ? (
                                   <span className="mrp">
-<CurrencyRupeeOutlinedIcon
-  style={{
-    fontSize: "14px", /* Adjusted size to better match text */
-    display: "inline-flex",
-    alignItems: "center",
-    position: "relative",
-    top: "1px" /* Small vertical adjustment if needed */
-  }}
-/>
+                                    <CurrencyRupeeOutlinedIcon
+                                                                          style={{
+                                                                            fontSize:
+                                                                              "14px" /* Adjusted size to better match text */,
+                                                                            display: "inline-flex",
+                                                                            alignItems: "center",
+                                                                            position: "relative",
+                                                                            top: "1px" /* Small vertical adjustment if needed */,
+                                                                          }}
+                                              
+                                    />
                                     20
                                   </span>
                                 ) : (
                                   <span className="mrp">
-<CurrencyRupeeOutlinedIcon
-  style={{
-    fontSize: "14px", /* Adjusted size to better match text */
-    display: "inline-flex",
-    alignItems: "center",
-    position: "relative",
-    top: "1px" /* Small vertical adjustment if needed */
-  }}
-/>
+                                    <CurrencyRupeeOutlinedIcon
+                                      style={{
+                                        fontSize:
+                                          "14px" /* Adjusted size to better match text */,
+                                        display: "inline-flex",
+                                        alignItems: "center",
+                                        position: "relative",
+                                        top: "1px" /* Small vertical adjustment if needed */,
+                                      }}
+                                    />
                                     50
                                   </span>
                                 )}
@@ -570,16 +572,17 @@ className={`${
                               </>
                             ) : (
                               <strong style={{ marginLeft: "5px" }}>
-<CurrencyRupeeOutlinedIcon
-  style={{
-    fontSize: "14px", /* Adjusted size to better match text */
-    display: "inline-flex",
-    alignItems: "center",
-    marginRight: "2px",
-    position: "relative",
-    top: "-1px",  /* Moves rupee slightly up */
-  }}
-/>
+                                <CurrencyRupeeOutlinedIcon
+                                  style={{
+                                    fontSize:
+                                      "14px" /* Adjusted size to better match text */,
+                                    display: "inline-flex",
+                                    alignItems: "center",
+                                    marginRight: "1px",
+                                    position: "relative",
+                                    top: "1px" /* Moves rupee slightly up */,
+                                  }}
+                                />
                                 {this.props.cartItems.data?.deliveryCharges}
                               </strong>
                             )}
@@ -587,16 +590,15 @@ className={`${
                         </div>
                         <div>
                           <strong>Grand Total</strong>
-                                                    <strong>
+                          <strong>
                             <CurrencyRupeeOutlinedIcon
                               style={{
-                                fontSize: "14px", /* Adjusted size to better match text */
+                                fontSize:
+                                  "14px" /* Adjusted size to better match text */,
                                 display: "inline-flex",
                                 alignItems: "center",
                                 position: "relative",
-                                top: "1px" /* Small vertical adjustment if needed */
-
-                            
+                                top: "1px" /* Small vertical adjustment if needed */,
                               }}
                             />
                             {this.props.cartItems.data?.finalTotal}
