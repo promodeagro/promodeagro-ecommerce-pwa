@@ -59,7 +59,6 @@ class ProductDetailCartUpdateView extends Component {
   handleAddToCart() {
     const items = loginDetails();
     const { selectedVariant } = this.state;
-
     if (!selectedVariant) {
       return; // Ensure a variant is selected before adding to cart
     }
@@ -67,15 +66,17 @@ class ProductDetailCartUpdateView extends Component {
     this.setState({
       dataId: selectedVariant.id,
     });
+    const cartItem = {
+      productId: selectedVariant.id,
+      quantity: 1,
+      quantityUnits: `${this.state.qauntityUnits
+        ? parseInt(this.state.qauntityUnits)
+        : selectedVariant.quantity} ${selectedVariant.unit}`,
+    };
 
     if (items?.userId) {
-      LocalStorageCartService.addItem(selectedVariant.id, {
-        productId: selectedVariant.id,
-        quantity: 1,
-        quantityUnits: this.state.qauntityUnits
-          ? parseInt(this.state.qauntityUnits)
-          : selectedVariant.quantity,
-      });
+      LocalStorageCartService.addItem(selectedVariant.id, cartItem);
+       
     } else {
       this.setState({
         authModalOpen: true,
@@ -98,12 +99,12 @@ class ProductDetailCartUpdateView extends Component {
 
     productQuantity = productQuantity + increment;
     if (productQuantity != 0) {
+      const cartData = LocalStorageCartService.getData() || {};
+      const currentItem = cartData[id];
       LocalStorageCartService.updateItem(id, {
         productId: id,
         quantity: productQuantity,
-        quantityUnits: this.state.qauntityUnits
-          ? parseInt(this.state.qauntityUnits)
-          : qty,
+        quantityUnits: currentItem?.quantityUnits,
       });
     } else {
       LocalStorageCartService.deleteItem(id);
@@ -304,7 +305,9 @@ class ProductDetailCartUpdateView extends Component {
 }
 
 function mapStateToProps(state) {
-  return {};
+  const { localStorageCartItems } = state.cartitem;
+
+  return {localStorageCartItems};
 }
 
 const mapDispatchToProps = {

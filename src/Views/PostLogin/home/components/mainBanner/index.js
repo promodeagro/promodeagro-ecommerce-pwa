@@ -71,7 +71,7 @@ class MainBanner extends Component {
         {
           breakpoint: 600,
           settings: {
-            slidesToShow: 1.2,
+            slidesToShow: 1,
             slidesToScroll: 1,
             initialSlide: 1,
           },
@@ -79,7 +79,7 @@ class MainBanner extends Component {
         {
           breakpoint: 480,
           settings: {
-            slidesToShow: 1.2,
+            slidesToShow: 1,
             slidesToScroll: 1,
           },
         },

@@ -1,5 +1,5 @@
 import { LOCALSTORAGE_ITEMS } from "../Redux/Constants";
-import { updateNoOfcartItemsInLS } from "../Redux/Cart/CartSlice";
+import { updateNoOfcartItemsInLS, updateLocalStorageCart } from "../Redux/Cart/CartSlice";
 import store from "../Redux/store";
 
 export const LocalStorageCartService = {
@@ -12,6 +12,7 @@ export const LocalStorageCartService = {
     if (value && Object.prototype.toString.call(value) === "[object Object]") {
       localStorage.setItem(LOCALSTORAGE_ITEMS.cartItem, JSON.stringify(value));
       store.dispatch(updateNoOfcartItemsInLS(getNumberOfItemsOnChart()));
+      store.dispatch(updateLocalStorageCart(value));
     }
   },
 
@@ -25,8 +26,7 @@ export const LocalStorageCartService = {
       if (
         value.quantity &&
         typeof value.quantity === "number" &&
-        value.quantityUnits &&
-        typeof value.quantityUnits === "number"
+        value.quantityUnits
       ) {
         cartData[productId] = value;
       }

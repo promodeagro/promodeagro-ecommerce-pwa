@@ -104,7 +104,7 @@ class Footer extends Component {
     const { categories } = this.state;
     return (
       <ul>
-        {categories.length ? (
+        {categories && categories.length ? (
           categories.map((item, index) => {
             let c = item.CategoryName.replaceAll(" ", "%20");
             const isActive = window.location.pathname.split("/").includes(c);

@@ -38,6 +38,7 @@ class Carts extends Component {
     if (items?.userId) {
       this.props.fetchDefaultAddress(items.userId);
       const cartData = LocalStorageCartService.getData() || {};
+      console.log(cartData, "cartData");
       this.props.addListOfItemsToCartReq({
         userId: items.userId,
         cartItems: Object.values(cartData).length ? Object.values(cartData) : [],
@@ -223,6 +224,10 @@ class Carts extends Component {
 
   render() {
     const { dataId, isUpdateIncrease } = this.state;
+    const cartData = LocalStorageCartService.getData() || {};
+    console.log(cartData, "cartData");
+    console.log(this.state.cartList, "cartList");
+
     return (
       <>
         {this.props.cartItems.status === status.IN_PROGRESS ? (
@@ -267,6 +272,9 @@ class Carts extends Component {
                     <Box className="item_details" flexGrow={1}>
                       <span>{item?.productName}</span>
                       <span>{item?.quantity}</span>
+                      <span style={{fontSize: "12px"}}>{item?.QuantityUnits}</span>
+                    
+
                       <Box display="flex" alignItems="center">
                         <span className="price">₹{item?.Price}</span>
                         <span className="mrp">₹{item?.Mrp}</span>
