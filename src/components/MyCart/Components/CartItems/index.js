@@ -52,138 +52,161 @@ class Carts extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    
     const items = loginDetails();
-    const addressId = localStorage.getItem("address") || undefined; // Explicitly set undefined if not found
+    const addressId = localStorage.getItem("address") || undefined; // Allow undefined explicitly
     const { handleClose } = this.props;
+
+    // Fetch cart items when triggerFetchCart changes
     if (prevProps.triggerFetchCart !== this.props.triggerFetchCart && this.props.triggerFetchCart) {
-      if (items?.userId && addressId) {
-        this.props.fetchCartItems({ userId: items.userId, addressId });
-      }}
-  
-    if (
-      prevProps.defaultAddressData?.status !==
-        this.props?.defaultAddressData?.status &&
-      this.props?.defaultAddressData?.status === status.SUCCESS &&
-      this.props?.defaultAddressData?.data
-    ) {
-      if (
-        JSON.stringify(this.state.defaultSelectedAddress) !==
-        JSON.stringify(this.props.defaultAddressData.data)
-      ) {
-        this.setState({
-          defaultSelectedAddress: this.props.defaultAddressData.data,
-        });
-      }
-    }
-    if (
-      prevProps.addListOfItemRes.status !==
-        this.props.addListOfItemRes.status &&
-      this.props.addListOfItemRes.status === status.SUCCESS && addressId
-    ) {
-      this.props.fetchCartItems({ userId: items.userId, addressId });
-    }
-
-    if (
-      prevProps.cartItems.status !== this.props.cartItems.status &&
-      this.props.cartItems.status === status.SUCCESS &&
-      this.props.cartItems.data
-    ) {
-      let cartListData = [];
-      let itemListData = [];
-
-      this.props?.cartItems?.data?.items?.forEach((item) => {
-        let data = {
-          mrp: item.Mrp,
-          price: item.Price,
-          id: item.ProductId,
-          Quantity: item.Quantity,
-          savingsPercentage: item.Savings,
-          subtotal: item.Subtotal,
-          userId: item.UserId,
-          image: item.productImage,
-          name: item.productName,
-        };
-
-        let data1 = {
-          productId: item.ProductId,
-          quantity: item.Quantity,
-          quantityUnits: item.QuantityUnits,
-        };
-
-        itemListData.push(data1);
-        cartListData.push(data);
-      });
-
-      if (
-        JSON.stringify(this.state.cartListArr) !== JSON.stringify(cartListData) ||
-        JSON.stringify(this.state.itemListArr) !== JSON.stringify(itemListData)
-      ) {
-        this.setState({
-          cartList: this.props.cartItems.data.items,
-          ListData: this.props.cartItems.data.items,
-          cartListArr: cartListData,
-          itemListArr: itemListData,
-          totalPrice: this.props.cartItems.data.finalTotal,
-          loaderCount: 1,
-        });
-      }
-    }
-
-    if (
-      prevProps.saveForLaterData.status !==
-        this.props.saveForLaterData.status &&
-      this.props.saveForLaterData.status === status.SUCCESS && addressId
-    ) {
-      this.props.fetchCartItems({ userId: items.userId, addressId });
-      this.setState({ bookMarkId: "" });
-
-      if (
-        this.state.deleteItemId &&
-        typeof this.state.deleteItemId === "string"
-      ) {
-        LocalStorageCartService.deleteItem(this.state.deleteItemId);
-      }
-    }
-
-    if (
-      prevProps.updateItems.status !== this.props.updateItems.status &&
-      this.props.updateItems.status === status.SUCCESS &&
-      this.props.updateItems.data && addressId
-    ) {
-      this.props.fetchCartItems({ userId: items.userId, addressId });
-
-      if (
-        this.state.deleteItemId &&
-        typeof this.state.deleteItemId === "object" &&
-        this.state.deleteItemId.productId
-      ) {
-        LocalStorageCartService.updateItem(
-          this.state.deleteItemId.productId,
-          this.state.deleteItemId
-        );
-        this.setState({ deleteItemId: null });
-      }
-    }
-
-    if (
-      prevProps.deleteItems.status !== this.props.deleteItems.status &&
-      this.props.deleteItems.status === status.SUCCESS &&
-      this.props.deleteItems.data && addressId
-    ) {
-      this.props.fetchCartItems({ userId: items.userId, addressId });
-
-      if (
-        this.state.deleteItemId &&
-        typeof this.state.deleteItemId === "string"
-      ) {
-        LocalStorageCartService.deleteItem(this.state.deleteItemId);
-        this.setState({ deleteItemId: null });
-      }
-    }
-
+        if (items?.userId) {  // Removed addressId condition
+            this.props.fetchCartItems({ userId: items.userId, addressId });
         }
-      
+    }
+
+    // Update default selected address if it changes
+    if (
+        prevProps.defaultAddressData?.status !== this.props?.defaultAddressData?.status &&
+        this.props?.defaultAddressData?.status === status.SUCCESS &&
+        this.props?.defaultAddressData?.data
+    ) {
+        if (
+            JSON.stringify(this.state.defaultSelectedAddress) !== JSON.stringify(this.props.defaultAddressData.data)
+        ) {
+            this.setState({
+                defaultSelectedAddress: this.props.defaultAddressData.data,
+            });
+        }
+    }
+
+    // Handle cart item updates
+    if (
+        prevProps.cartItems.status !== this.props.cartItems.status &&
+        this.props.cartItems.status === status.SUCCESS &&
+        this.props.cartItems.data
+    ) {
+        let cartListData = [];
+        let itemListData = [];
+
+        this.props?.cartItems?.data?.items?.forEach((item) => {
+            let data = {
+                mrp: item.Mrp,
+                price: item.Price,
+                id: item.ProductId,
+                Quantity: item.Quantity,
+                savingsPercentage: item.Savings,
+                subtotal: item.Subtotal,
+                userId: item.UserId,
+                image: item.productImage,
+                name: item.productName,
+            };
+
+            let data1 = {
+                productId: item.ProductId,
+                quantity: item.Quantity,
+                quantityUnits: item.QuantityUnits,
+            };
+
+            itemListData.push(data1);
+            cartListData.push(data);
+        });
+
+        if (
+            JSON.stringify(this.state.cartListArr) !== JSON.stringify(cartListData) ||
+            JSON.stringify(this.state.itemListArr) !== JSON.stringify(itemListData)
+        ) {
+            this.setState({
+                cartList: this.props.cartItems.data.items,
+                ListData: this.props.cartItems.data.items,
+                cartListArr: cartListData,
+                itemListArr: itemListData,
+                totalPrice: this.props.cartItems.data.finalTotal,
+                loaderCount: 1,
+            });
+        }
+    }
+
+    // Save for later functionality
+    if (
+        prevProps.saveForLaterData.status !== this.props.saveForLaterData.status &&
+        this.props.saveForLaterData.status === status.SUCCESS
+    ) {
+        this.props.fetchCartItems({ userId: items.userId, addressId });
+        this.setState({ bookMarkId: "" });
+
+        if (this.state.deleteItemId && typeof this.state.deleteItemId === "string") {
+            LocalStorageCartService.deleteItem(this.state.deleteItemId);
+        }
+    }
+
+    // ✅ Fix: Allow updates to local storage even if addressId is undefined
+    if (
+        prevProps.updateItems.status !== this.props.updateItems.status &&
+        this.props.updateItems.status === status.SUCCESS &&
+        this.props.updateItems.data
+    ) {
+        if (this.state.deleteItemId && typeof this.state.deleteItemId === "object" && this.state.deleteItemId.productId) {
+            LocalStorageCartService.updateItem(
+                this.state.deleteItemId.productId,
+                this.state.deleteItemId
+            );
+            this.setState({ deleteItemId: null });
+        }
+
+        // Fetch cart items only if userId exists
+        if (items?.userId) {
+            this.props.fetchCartItems({ userId: items.userId, addressId });
+        }
+    }
+
+    // Handle delete items
+    if (
+        prevProps.deleteItems.status !== this.props.deleteItems.status &&
+        this.props.deleteItems.status === status.SUCCESS &&
+        this.props.deleteItems.data
+    ) {
+        if (items?.userId) {
+            this.props.fetchCartItems({ userId: items.userId, addressId });
+        }
+
+        if (this.state.deleteItemId && typeof this.state.deleteItemId === "string") {
+            LocalStorageCartService.deleteItem(this.state.deleteItemId);
+            this.setState({ deleteItemId: null });
+        }
+    }
+}
+
+// ✅ Fix: Update local storage immediately inside handleQuantityChange()
+handleQuantityChange(id, increment, productQuantity = 0, qty) {
+    const items = loginDetails();
+    let newQuantity = productQuantity + increment;
+
+    // Always update Local Storage, even if addressId is undefined
+    if (newQuantity > 0) {
+        LocalStorageCartService.updateItem(id, {
+            productId: id,
+            quantity: parseInt(newQuantity),
+            quantityUnits: qty,
+        });
+    } else {
+        LocalStorageCartService.deleteItem(id);
+    }
+
+    this.setState({
+        deleteItemId: newQuantity > 0 ? { productId: id, quantity: newQuantity, quantityUnits: qty } : id,
+    });
+
+    // Fetch cart items only if userId exists
+    if (items?.userId) {
+        this.props.updateItemToCart({
+            userId: items.userId,
+            productId: id,
+            quantity: parseInt(newQuantity),
+            quantityUnits: qty,
+        });
+    }
+
+    console.log("Updated Local Storage:", LocalStorageCartService.getData());
+}
   
   handleQuantityChange(id, increment, productQuantity = 0, qty) {
     const items = loginDetails();
