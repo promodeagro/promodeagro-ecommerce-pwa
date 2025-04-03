@@ -18,6 +18,7 @@ import AddAddressModal from "../../../src/components/AddressModal/addaddressmoda
 import { ErrorMessages, loginDetails } from "Views/Utills/helperFunctions";
 import { LocalStorageCartService } from "Services/localStorageCartService";
 import status from "../../Redux/Constants";
+
 import {
   fetchCartItems,
   deleteItemToCart,
@@ -81,9 +82,9 @@ class MyCart extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const items = loginDetails();
-    const addressId = localStorage.getItem("address") || undefined; // Explicitly set undefined if not found
+    const addressId = localStorage.getItem("address") || undefined;
     const { handleClose } = this.props;
-
+  
     if (
       prevProps.defaultAddressData?.status !==
         this.props?.defaultAddressData?.status &&
@@ -99,14 +100,14 @@ class MyCart extends Component {
         });
       }
     }
+  
     if (
-      prevProps.addListOfItemRes.status !==
-        this.props.addListOfItemRes.status &&
-      this.props.addListOfItemRes.status === status.SUCCESS && addressId
+      prevProps.addListOfItemRes.status !== this.props.addListOfItemRes.status &&
+      this.props.addListOfItemRes.status === status.SUCCESS
     ) {
       this.props.fetchCartItems({ userId: items.userId, addressId });
     }
-
+  
     if (
       prevProps.cartItems.status !== this.props.cartItems.status &&
       this.props.cartItems.status === status.SUCCESS &&
@@ -114,7 +115,7 @@ class MyCart extends Component {
     ) {
       let cartListData = [];
       let itemListData = [];
-
+  
       this.props?.cartItems?.data?.items?.forEach((item) => {
         let data = {
           mrp: item.Mrp,
@@ -127,17 +128,17 @@ class MyCart extends Component {
           image: item.productImage,
           name: item.productName,
         };
-
+  
         let data1 = {
           productId: item.ProductId,
           quantity: item.Quantity,
           quantityUnits: item.QuantityUnits,
         };
-
+  
         itemListData.push(data1);
         cartListData.push(data);
       });
-
+  
       if (
         JSON.stringify(this.state.cartListArr) !== JSON.stringify(cartListData) ||
         JSON.stringify(this.state.itemListArr) !== JSON.stringify(itemListData)
@@ -152,30 +153,26 @@ class MyCart extends Component {
         });
       }
     }
-
+  
     if (
-      prevProps.saveForLaterData.status !==
-        this.props.saveForLaterData.status &&
-      this.props.saveForLaterData.status === status.SUCCESS && addressId
+      prevProps.saveForLaterData.status !== this.props.saveForLaterData.status &&
+      this.props.saveForLaterData.status === status.SUCCESS
     ) {
       this.props.fetchCartItems({ userId: items.userId, addressId });
       this.setState({ bookMarkId: "" });
-
-      if (
-        this.state.deleteItemId &&
-        typeof this.state.deleteItemId === "string"
-      ) {
+  
+      if (this.state.deleteItemId && typeof this.state.deleteItemId === "string") {
         LocalStorageCartService.deleteItem(this.state.deleteItemId);
       }
     }
-
+  
     if (
       prevProps.updateItems.status !== this.props.updateItems.status &&
       this.props.updateItems.status === status.SUCCESS &&
-      this.props.updateItems.data && addressId
+      this.props.updateItems.data
     ) {
       this.props.fetchCartItems({ userId: items.userId, addressId });
-
+  
       if (
         this.state.deleteItemId &&
         typeof this.state.deleteItemId === "object" &&
@@ -188,23 +185,20 @@ class MyCart extends Component {
         this.setState({ deleteItemId: null });
       }
     }
-
+  
     if (
       prevProps.deleteItems.status !== this.props.deleteItems.status &&
       this.props.deleteItems.status === status.SUCCESS &&
-      this.props.deleteItems.data && addressId
+      this.props.deleteItems.data
     ) {
       this.props.fetchCartItems({ userId: items.userId, addressId });
-
-      if (
-        this.state.deleteItemId &&
-        typeof this.state.deleteItemId === "string"
-      ) {
+  
+      if (this.state.deleteItemId && typeof this.state.deleteItemId === "string") {
         LocalStorageCartService.deleteItem(this.state.deleteItemId);
         this.setState({ deleteItemId: null });
       }
     }
-
+  
     if (
       prevProps.placeOrderData.status !== this.props.placeOrderData.status &&
       this.props.placeOrderData.status === status.SUCCESS
@@ -212,7 +206,7 @@ class MyCart extends Component {
       if (this.props.placeOrderData.data?.statuscode === 200) {
         if (this.props.placeOrderData.data?.orderId) {
           this.props.navigate(
-           `/mycart/address/order-placed/${this.props.placeOrderData.data.orderId}`
+            `/mycart/address/order-placed/${this.props.placeOrderData.data.orderId}`
           );
           handleClose();
           localStorage.removeItem("cartItem");
@@ -223,8 +217,8 @@ class MyCart extends Component {
             selectedPaymentMethod: "cash",
             cartList: [],
           });
-
-          if (items?.userId && addressId) {
+  
+          if (items?.userId) {
             this.props.addListOfItemsToCartReq({
               userId: items.userId,
               cartItems: [],
@@ -235,6 +229,7 @@ class MyCart extends Component {
       }
     }
   }
+  
   handlePlaceOrder = () => {
     let login = loginDetails();
     let addressId = localStorage.getItem("address"); // Only getting from localStorage
@@ -474,8 +469,8 @@ class MyCart extends Component {
                       justifyContent: "space-between",
                     }}
                   >
-                    <h2>Item Details</h2>
-                    <Button
+<h2>Item Details ({this.state.cartList.length})</h2>
+<Button
                       sx={{
                         color: "#1f9151",
                         fontSize: "14px",

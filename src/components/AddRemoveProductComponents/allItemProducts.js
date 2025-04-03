@@ -319,35 +319,36 @@ class ProductItemView extends Component {
               <DeleteOutlineOutlinedIcon />
             </Box>
           ) : null}
-          <Box
-            className="image"
-            onClick={() => {
-              const displayedVariantId =
-                this.state.selectedVariants[item.groupId]?.id ||
-                item.variations?.[0]?.id;
-              window.scrollTo({ top: 0, behavior: "smooth" });
-              this.props.navigate(
-                `/product-details/${item?.category}/${item?.name}/${item?.groupId}?variant=${displayedVariantId}`
-              );
-            }}
-          >
-            <img src={item?.image ? item?.image : noImage} alt={item?.name} />
-          </Box>
-          <Box
-            className="name"
-            onClick={() => {
-              const displayedVariantId =
-                this.state.selectedVariants[item.groupId]?.id ||
-                item.variations?.[0]?.id;
-
-              window.scrollTo({ top: 0, behavior: "smooth" });
-              this.props.navigate(
-                `/product-details/${item?.category}/${item?.name}/${item?.groupId}?variant=${displayedVariantId}`
-              );
-            }}
-          >
-            <Link>{item?.name}</Link>
-          </Box>
+  <Box
+    className="image"
+    onClick={() => {
+      const displayedVariantId =
+        this.state.selectedVariants[item.groupId]?.id ||
+        item.variations?.[0]?.id;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      this.props.navigate(
+        `/product-details/${item?.category}/${item?.name}/${item?.groupId}?variant=${displayedVariantId}`
+      );
+    }}
+    style={{ pointerEvents: "auto" }} // Ensures it's clickable
+  >
+    <img src={item?.image ? item?.image : noImage} alt={item?.name} />
+  </Box>
+  <Box
+    className="name"
+    onClick={() => {
+      const displayedVariantId =
+        this.state.selectedVariants[item.groupId]?.id ||
+        item.variations?.[0]?.id;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      this.props.navigate(
+        `/product-details/${item?.category}/${item?.name}/${item?.groupId}?variant=${displayedVariantId}`
+      );
+    }}
+    style={{ pointerEvents: "auto" }} // Ensures it's clickable
+  >
+    <Link>{item?.name}</Link>
+  </Box>
           <>
             {item?.variations?.length > 0 ? (
               <Box className="select">
@@ -362,10 +363,12 @@ class ProductItemView extends Component {
                   {(this.state.selectedVariants[item.groupId]?.quantity ||
                     item.variations?.find((variant) => variant.availability)
                       ?.quantity ||
+                    item.variations?.[0]?.quantity ||
                     0) + " "}
                   {this.state.selectedVariants[item.groupId]?.unit ||
                     item.variations?.find((variant) => variant.availability)
-                      ?.unit}
+                      ?.unit ||
+                    item.variations?.[0]?.unit}
                   {item?.variations?.length > 1 && (
                     <img
                       src={selecticon}
@@ -385,19 +388,17 @@ class ProductItemView extends Component {
               <strong>
                 <CurrencyRupeeOutlinedIcon />
                 {this.state.selectedVariants[item.groupId]?.price ||
-                  item.variations?.find((v) => v.availability !== false)
-                    ?.price ||
-                  item?.price}
+                  item.variations?.find((v) => v.availability)?.price ||
+                  item.variations?.[0]?.price}
               </strong>
               {(this.state.selectedVariants[item.groupId]?.mrp ||
-                item.variations?.find((v) => v.availability !== false)?.mrp ||
-                item?.mrp) > 0 && (
+                item.variations?.find((v) => v.availability)?.mrp ||
+                item.variations?.[0]?.mrp) > 0 && (
                 <span>
                   <CurrencyRupeeOutlinedIcon />
                   {this.state.selectedVariants[item.groupId]?.mrp ||
-                    item.variations?.find((v) => v.availability !== false)
-                      ?.mrp ||
-                    item?.mrp}
+                    item.variations?.find((v) => v.availability)?.mrp ||
+                    item.variations?.[0]?.mrp}
                 </span>
               )}
             </Box>
