@@ -18,6 +18,7 @@ import AddAddressModal from "../../../src/components/AddressModal/addaddressmoda
 import { ErrorMessages, loginDetails } from "Views/Utills/helperFunctions";
 import { LocalStorageCartService } from "Services/localStorageCartService";
 import status from "../../Redux/Constants";
+import CurrencyRupeeOutlinedIcon from "@mui/icons-material/CurrencyRupeeOutlined";
 
 import {
   fetchCartItems,
@@ -69,22 +70,23 @@ class MyCart extends Component {
       console.log(cartData, "cartData");
       this.props.addListOfItemsToCartReq({
         userId: items.userId,
-        cartItems:
-         Object.values(cartData).length ? Object.values(cartData) : [],
+        cartItems: Object.values(cartData).length
+          ? Object.values(cartData)
+          : [],
       });
       const addressId = localStorage.getItem("address");
-      this.props.fetchCartItems({ 
-        userId: items.userId, 
-        addressId: addressId !== null ? addressId : undefined 
+      this.props.fetchCartItems({
+        userId: items.userId,
+        addressId: addressId !== null ? addressId : undefined,
       });
-          }
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
     const items = loginDetails();
     const addressId = localStorage.getItem("address") || undefined;
     const { handleClose } = this.props;
-  
+
     if (
       prevProps.defaultAddressData?.status !==
         this.props?.defaultAddressData?.status &&
@@ -100,14 +102,15 @@ class MyCart extends Component {
         });
       }
     }
-  
+
     if (
-      prevProps.addListOfItemRes.status !== this.props.addListOfItemRes.status &&
+      prevProps.addListOfItemRes.status !==
+        this.props.addListOfItemRes.status &&
       this.props.addListOfItemRes.status === status.SUCCESS
     ) {
       this.props.fetchCartItems({ userId: items.userId, addressId });
     }
-  
+
     if (
       prevProps.cartItems.status !== this.props.cartItems.status &&
       this.props.cartItems.status === status.SUCCESS &&
@@ -115,7 +118,7 @@ class MyCart extends Component {
     ) {
       let cartListData = [];
       let itemListData = [];
-  
+
       this.props?.cartItems?.data?.items?.forEach((item) => {
         let data = {
           mrp: item.Mrp,
@@ -128,19 +131,20 @@ class MyCart extends Component {
           image: item.productImage,
           name: item.productName,
         };
-  
+
         let data1 = {
           productId: item.ProductId,
           quantity: item.Quantity,
           quantityUnits: item.QuantityUnits,
         };
-  
+
         itemListData.push(data1);
         cartListData.push(data);
       });
-  
+
       if (
-        JSON.stringify(this.state.cartListArr) !== JSON.stringify(cartListData) ||
+        JSON.stringify(this.state.cartListArr) !==
+          JSON.stringify(cartListData) ||
         JSON.stringify(this.state.itemListArr) !== JSON.stringify(itemListData)
       ) {
         this.setState({
@@ -153,26 +157,30 @@ class MyCart extends Component {
         });
       }
     }
-  
+
     if (
-      prevProps.saveForLaterData.status !== this.props.saveForLaterData.status &&
+      prevProps.saveForLaterData.status !==
+        this.props.saveForLaterData.status &&
       this.props.saveForLaterData.status === status.SUCCESS
     ) {
       this.props.fetchCartItems({ userId: items.userId, addressId });
       this.setState({ bookMarkId: "" });
-  
-      if (this.state.deleteItemId && typeof this.state.deleteItemId === "string") {
+
+      if (
+        this.state.deleteItemId &&
+        typeof this.state.deleteItemId === "string"
+      ) {
         LocalStorageCartService.deleteItem(this.state.deleteItemId);
       }
     }
-  
+
     if (
       prevProps.updateItems.status !== this.props.updateItems.status &&
       this.props.updateItems.status === status.SUCCESS &&
       this.props.updateItems.data
     ) {
       this.props.fetchCartItems({ userId: items.userId, addressId });
-  
+
       if (
         this.state.deleteItemId &&
         typeof this.state.deleteItemId === "object" &&
@@ -185,20 +193,23 @@ class MyCart extends Component {
         this.setState({ deleteItemId: null });
       }
     }
-  
+
     if (
       prevProps.deleteItems.status !== this.props.deleteItems.status &&
       this.props.deleteItems.status === status.SUCCESS &&
       this.props.deleteItems.data
     ) {
       this.props.fetchCartItems({ userId: items.userId, addressId });
-  
-      if (this.state.deleteItemId && typeof this.state.deleteItemId === "string") {
+
+      if (
+        this.state.deleteItemId &&
+        typeof this.state.deleteItemId === "string"
+      ) {
         LocalStorageCartService.deleteItem(this.state.deleteItemId);
         this.setState({ deleteItemId: null });
       }
     }
-  
+
     if (
       prevProps.placeOrderData.status !== this.props.placeOrderData.status &&
       this.props.placeOrderData.status === status.SUCCESS
@@ -217,7 +228,7 @@ class MyCart extends Component {
             selectedPaymentMethod: "cash",
             cartList: [],
           });
-  
+
           if (items?.userId) {
             this.props.addListOfItemsToCartReq({
               userId: items.userId,
@@ -229,7 +240,7 @@ class MyCart extends Component {
       }
     }
   }
-  
+
   handlePlaceOrder = () => {
     let login = loginDetails();
     let addressId = localStorage.getItem("address"); // Only getting from localStorage
@@ -335,7 +346,7 @@ class MyCart extends Component {
   };
 
   render() {
-    const { matches, selectedPaymentMethod,itemListArr } = this.state;
+    const { matches, selectedPaymentMethod, itemListArr } = this.state;
     console.log(itemListArr, "itemListArr");
     const { open, handleClose } = this.props;
     const { isAddAddressModalOpen, defaultSelectedAddress } = this.state;
@@ -409,9 +420,9 @@ class MyCart extends Component {
                       <h2>Select Delivery Slot</h2>
                       <span className="select_delivery_slot_wrapper">
                         <div
-                          className={
-                            this.state.showAddressError ? "address-error" : ""
-                          }
+className={`${
+  this.state.showAddressError ? "address-error" : ""
+} ${this.state.showSlotError ? "slot-error" : ""}`}
                           onClick={() => {
                             const hasValidAddress =
                               this.state.selectedAddress?.addressId ||
@@ -469,8 +480,8 @@ class MyCart extends Component {
                       justifyContent: "space-between",
                     }}
                   >
-<h2>Item Details ({this.state.cartList.length})</h2>
-<Button
+                    <h2>Item Details ({this.state.cartList.length})</h2>
+                    <Button
                       sx={{
                         color: "#1f9151",
                         fontSize: "14px",
@@ -502,7 +513,18 @@ class MyCart extends Component {
                         <div>
                           <span>Item total</span>
                           <strong>
-                            ₹{this.props.cartItems.data?.subTotal}
+                            <CurrencyRupeeOutlinedIcon
+                              style={{
+                                fontSize: "14px", /* Adjusted size to better match text */
+                                display: "inline-flex",
+                                alignItems: "center",
+                                position: "relative",
+                                top: "1px" /* Small vertical adjustment if needed */
+
+                            
+                              }}
+                            />
+                            {this.props.cartItems.data?.subTotal}
                           </strong>
                         </div>
                         <div>
@@ -510,42 +532,87 @@ class MyCart extends Component {
                           <div>
                             {this.props.cartItems.data?.deliveryCharges <= 0 ? (
                               <>
-                                 {this.state.selectedAddress?.zipCode == "500091" ||
-                      this.state.selectedAddress?.zipCode == "500030" ||
-                      this.state.selectedAddress?.zipCode == "500093" ||
-
-                      this.state.selectedAddress?.zipCode == "500086" ? (
-                        <span className="mrp">₹20</span>
-
-                      ) : (
-                      
-                                <span className="mrp">₹50</span>
-                              
-                      )}
-                              
+                                {this.state.selectedAddress?.zipCode ==
+                                  "500091" ||
+                                this.state.selectedAddress?.zipCode ==
+                                  "500030" ||
+                                this.state.selectedAddress?.zipCode ==
+                                  "500093" ||
+                                this.state.selectedAddress?.zipCode ==
+                                  "500086" ? (
+                                  <span className="mrp">
+<CurrencyRupeeOutlinedIcon
+  style={{
+    fontSize: "14px", /* Adjusted size to better match text */
+    display: "inline-flex",
+    alignItems: "center",
+    position: "relative",
+    top: "1px" /* Small vertical adjustment if needed */
+  }}
+/>
+                                    20
+                                  </span>
+                                ) : (
+                                  <span className="mrp">
+<CurrencyRupeeOutlinedIcon
+  style={{
+    fontSize: "14px", /* Adjusted size to better match text */
+    display: "inline-flex",
+    alignItems: "center",
+    position: "relative",
+    top: "1px" /* Small vertical adjustment if needed */
+  }}
+/>
+                                    50
+                                  </span>
+                                )}
                                 <span className="free">Free</span>
                               </>
                             ) : (
                               <strong style={{ marginLeft: "5px" }}>
-                                ₹{this.props.cartItems.data?.deliveryCharges}
+<CurrencyRupeeOutlinedIcon
+  style={{
+    fontSize: "14px", /* Adjusted size to better match text */
+    display: "inline-flex",
+    alignItems: "center",
+    marginRight: "2px",
+    position: "relative",
+    top: "-1px",  /* Moves rupee slightly up */
+  }}
+/>
+                                {this.props.cartItems.data?.deliveryCharges}
                               </strong>
                             )}
                           </div>
                         </div>
                         <div>
-                          <strong>Grand Total</strong>{" "}
-                          {/* <strong>₹{this.state.totalPrice}</strong> */}
-                          <strong>₹{this.props.cartItems.data?.finalTotal}</strong>
+                          <strong>Grand Total</strong>
+                                                    <strong>
+                            <CurrencyRupeeOutlinedIcon
+                              style={{
+                                fontSize: "14px", /* Adjusted size to better match text */
+                                display: "inline-flex",
+                                alignItems: "center",
+                                position: "relative",
+                                top: "1px" /* Small vertical adjustment if needed */
+
+                            
+                              }}
+                            />
+                            {this.props.cartItems.data?.finalTotal}
+                          </strong>
                         </div>
                       </div>
-                        <span
-                          style={{
-                            color: "#005F41",
-                            fontWeight: "600",
-                            fontSize: "16px",
-                            marginLeft: "5px",
-                          }}
-                        >"{this.props.cartItems.data?.chargestag}"</span>
+                      <span
+                        style={{
+                          color: "#005F41",
+                          fontWeight: "600",
+                          fontSize: "16px",
+                          marginLeft: "5px",
+                        }}
+                      >
+                        "{this.props.cartItems.data?.chargestag}"
+                      </span>
                       {defaultSelectedAddress?.addressId ? (
                         <>
                           <div className="payment_container">
@@ -661,11 +728,11 @@ class MyCart extends Component {
                   <h2>Select Delivery Address</h2>
                 </Box>
                 <Box className="delivery_slots_container">
-                <AllAddresses
+                  <AllAddresses
                     onAddressSelect={(address) =>
-                      this.setState({ 
+                      this.setState({
                         selectedAddress: address,
-                        showAddressPopup: true 
+                        showAddressPopup: true,
                       })
                     }
                   />
@@ -689,10 +756,10 @@ class MyCart extends Component {
             </Box>
             <AllAddresses
               onAddressSelect={(address) =>
-                this.setState({ 
+                this.setState({
                   selectedAddress: address,
                   showAddressPopup: true,
-                  TabSelectAddressPopupOpen: false
+                  TabSelectAddressPopupOpen: false,
                 })
               }
             />

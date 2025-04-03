@@ -18,6 +18,8 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { ErrorMessages, loginDetails } from "Views/Utills/helperFunctions";
 import { LocalStorageCartService } from "Services/localStorageCartService";
 import status from "../../../Redux/Constants";
+import CurrencyRupeeOutlinedIcon from "@mui/icons-material/CurrencyRupeeOutlined";
+
 import {
   fetchCartItems,
   deleteItemToCart,
@@ -438,14 +440,31 @@ class Cart extends Component {
                     <h2>Select Delivery Slot</h2>
                     <span className="select_delivery_slot_wrapper">
                       <div
-                        className={this.state.showSlotError ? "slot-error" : ""}
-                        onClick={() => {
-                          this.setState({
-                            slotOpen: true,
-                            showSlotError: false, // Reset error when opening the slot selection
-                          });
-                        }}
-                      >
+className={`${
+  this.state.showAddressError ? "address-error" : ""
+} ${this.state.showSlotError ? "slot-error" : ""}`}
+                          onClick={() => {
+                            const hasValidAddress =
+                              this.state.selectedAddress?.addressId ||
+                              (this.getDefaultAddress() &&
+                                this.getDefaultAddress() !==
+                                  "No Address Selected");
+
+                            if (!hasValidAddress) {
+                              this.setState({ showAddressError: true });
+                              ErrorMessages.error(
+                                "Please select an address before selecting a slot."
+                              );
+                              return;
+                            }
+
+                            this.setState({
+                              slotOpen: true,
+                              showSlotError: false, // Reset slot error if applicable
+                              showAddressError: false, // Reset address error
+                            });
+                          }}
+                        >
                         <span>
                           {this.state.selectedSlot
                             ? `${this.state.selectedSlot.start} ${this.state.selectedSlot.startAmPm} - ${this.state.selectedSlot.end} ${this.state.selectedSlot.endAmPm}`
@@ -520,7 +539,18 @@ class Cart extends Component {
                           this.props.cartItems.data,
                           "delivery s;pts"
                         )}
-                        <strong>₹{this.props.cartItems.data?.subTotal}</strong>
+                        <strong>                            <CurrencyRupeeOutlinedIcon
+                                                      style={{
+                                                        fontSize: "14px", /* Adjusted size to better match text */
+                                                        display: "inline-flex",
+                                                        alignItems: "center",
+                                                        position: "relative",
+                                                        top: "1px" /* Small vertical adjustment if needed */
+                        
+                                                    
+                                                      }}
+                                                    />
+                        {this.props.cartItems.data?.subTotal}</strong>
                       </div>
                       <div>
                           <span>Delivery Charges</span>
@@ -531,18 +561,51 @@ class Cart extends Component {
                                 this.state.selectedAddress?.zipCode === "500030" ||
                                 this.state.selectedAddress?.zipCode === "500093" ||
                                 this.state.selectedAddress?.zipCode === "500086" ? (
-                                  <span className="mrp">₹20</span>
+                                  <span className="mrp">                            <CurrencyRupeeOutlinedIcon
+                                                                style={{
+                                                                  fontSize: "14px", /* Adjusted size to better match text */
+                                                                  display: "inline-flex",
+                                                                  alignItems: "center",
+                                                                  position: "relative",
+                                                                  top: "1px" /* Small vertical adjustment if needed */
+                                  
+                                                              
+                                                                }}
+                                                              />
+                                  20</span>
                                 ) : this.state.selectedAddress?.zipCode !== "500091" &&
                                   this.state.selectedAddress?.zipCode !== "500030" &&
                                   this.state.selectedAddress?.zipCode !== "500093" &&
                                   this.state.selectedAddress?.zipCode !== "500086" ? (
-                                  <span className="mrp">₹50</span>
+                                  <span className="mrp">                            <CurrencyRupeeOutlinedIcon
+                                                                style={{
+                                                                  fontSize: "14px", /* Adjusted size to better match text */
+                                                                  display: "inline-flex",
+                                                                  alignItems: "center",
+                                                                  position: "relative",
+                                                                  top: "1px" /* Small vertical adjustment if needed */
+                                  
+                                                              
+                                                                }}
+                                                              />
+                                  50</span>
                                 ) : null}
                                 <span className="free">Free</span>
                               </>
                             ) : (
                               <strong style={{ marginLeft: "5px" }}>
-                                ₹{this.props.cartItems.data?.deliveryCharges}
+                                                            <CurrencyRupeeOutlinedIcon
+                                                              style={{
+                                                                fontSize: "14px", /* Adjusted size to better match text */
+                                                                display: "inline-flex",
+                                                                alignItems: "center",
+                                                                position: "relative",
+                                                                top: "1px" /* Small vertical adjustment if needed */
+                                
+                                                            
+                                                              }}
+                                                            />
+                                {this.props.cartItems.data?.deliveryCharges}
                               </strong>
                             )}
                           </div>
@@ -550,7 +613,18 @@ class Cart extends Component {
                       <div>
                         <strong>Grand Total</strong>{" "}
                         <strong>
-                          ₹{this.props.cartItems.data?.finalTotal}
+                                                      <CurrencyRupeeOutlinedIcon
+                                                        style={{
+                                                          fontSize: "14px", /* Adjusted size to better match text */
+                                                          display: "inline-flex",
+                                                          alignItems: "center",
+                                                          position: "relative",
+                                                          top: "1px" /* Small vertical adjustment if needed */
+                          
+                                                      
+                                                        }}
+                                                      />
+                          {this.props.cartItems.data?.finalTotal}
                         </strong>
                       </div>
                     </div>
