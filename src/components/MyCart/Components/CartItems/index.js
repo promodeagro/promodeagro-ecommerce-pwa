@@ -14,6 +14,8 @@ import { Loader, loginDetails } from "Views/Utills/helperFunctions";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import { saveForLater } from "../../../../Redux/AllProducts/AllProductthunk";
 import { fetchDefaultAddress } from "../../../../Redux/Address/AddressThunk";
+import rupee3 from "../../../../assets/img/rupee3.svg";
+import CurrencyRupeeOutlinedIcon from "@mui/icons-material/CurrencyRupeeOutlined";
 
 import {
   fetchCartItems,
@@ -41,14 +43,16 @@ class Carts extends Component {
       console.log(cartData, "cartData");
       this.props.addListOfItemsToCartReq({
         userId: items.userId,
-        cartItems: Object.values(cartData).length ? Object.values(cartData) : [],
+        cartItems: Object.values(cartData).length
+          ? Object.values(cartData)
+          : [],
       });
       const addressId = localStorage.getItem("address");
-      this.props.fetchCartItems({ 
-        userId: items.userId, 
-        addressId: addressId !== null ? addressId : undefined 
+      this.props.fetchCartItems({
+        userId: items.userId,
+        addressId: addressId !== null ? addressId : undefined,
       });
-          }
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -57,157 +61,178 @@ class Carts extends Component {
     const { handleClose } = this.props;
 
     // Fetch cart items when triggerFetchCart changes
-    if (prevProps.triggerFetchCart !== this.props.triggerFetchCart && this.props.triggerFetchCart) {
-        if (items?.userId) {  // Removed addressId condition
-            this.props.fetchCartItems({ userId: items.userId, addressId });
-        }
+    if (
+      prevProps.triggerFetchCart !== this.props.triggerFetchCart &&
+      this.props.triggerFetchCart
+    ) {
+      if (items?.userId) {
+        // Removed addressId condition
+        this.props.fetchCartItems({ userId: items.userId, addressId });
+      }
     }
 
     // Update default selected address if it changes
     if (
-        prevProps.defaultAddressData?.status !== this.props?.defaultAddressData?.status &&
-        this.props?.defaultAddressData?.status === status.SUCCESS &&
-        this.props?.defaultAddressData?.data
+      prevProps.defaultAddressData?.status !==
+        this.props?.defaultAddressData?.status &&
+      this.props?.defaultAddressData?.status === status.SUCCESS &&
+      this.props?.defaultAddressData?.data
     ) {
-        if (
-            JSON.stringify(this.state.defaultSelectedAddress) !== JSON.stringify(this.props.defaultAddressData.data)
-        ) {
-            this.setState({
-                defaultSelectedAddress: this.props.defaultAddressData.data,
-            });
-        }
+      if (
+        JSON.stringify(this.state.defaultSelectedAddress) !==
+        JSON.stringify(this.props.defaultAddressData.data)
+      ) {
+        this.setState({
+          defaultSelectedAddress: this.props.defaultAddressData.data,
+        });
+      }
     }
 
     // Handle cart item updates
     if (
-        prevProps.cartItems.status !== this.props.cartItems.status &&
-        this.props.cartItems.status === status.SUCCESS &&
-        this.props.cartItems.data
+      prevProps.cartItems.status !== this.props.cartItems.status &&
+      this.props.cartItems.status === status.SUCCESS &&
+      this.props.cartItems.data
     ) {
-        let cartListData = [];
-        let itemListData = [];
+      let cartListData = [];
+      let itemListData = [];
 
-        this.props?.cartItems?.data?.items?.forEach((item) => {
-            let data = {
-                mrp: item.Mrp,
-                price: item.Price,
-                id: item.ProductId,
-                Quantity: item.Quantity,
-                savingsPercentage: item.Savings,
-                subtotal: item.Subtotal,
-                userId: item.UserId,
-                image: item.productImage,
-                name: item.productName,
-            };
+      this.props?.cartItems?.data?.items?.forEach((item) => {
+        let data = {
+          mrp: item.Mrp,
+          price: item.Price,
+          id: item.ProductId,
+          Quantity: item.Quantity,
+          savingsPercentage: item.Savings,
+          subtotal: item.Subtotal,
+          userId: item.UserId,
+          image: item.productImage,
+          name: item.productName,
+        };
 
-            let data1 = {
-                productId: item.ProductId,
-                quantity: item.Quantity,
-                quantityUnits: item.QuantityUnits,
-            };
+        let data1 = {
+          productId: item.ProductId,
+          quantity: item.Quantity,
+          quantityUnits: item.QuantityUnits,
+        };
 
-            itemListData.push(data1);
-            cartListData.push(data);
+        itemListData.push(data1);
+        cartListData.push(data);
+      });
+
+      if (
+        JSON.stringify(this.state.cartListArr) !==
+          JSON.stringify(cartListData) ||
+        JSON.stringify(this.state.itemListArr) !== JSON.stringify(itemListData)
+      ) {
+        this.setState({
+          cartList: this.props.cartItems.data.items,
+          ListData: this.props.cartItems.data.items,
+          cartListArr: cartListData,
+          itemListArr: itemListData,
+          totalPrice: this.props.cartItems.data.finalTotal,
+          loaderCount: 1,
         });
-
-        if (
-            JSON.stringify(this.state.cartListArr) !== JSON.stringify(cartListData) ||
-            JSON.stringify(this.state.itemListArr) !== JSON.stringify(itemListData)
-        ) {
-            this.setState({
-                cartList: this.props.cartItems.data.items,
-                ListData: this.props.cartItems.data.items,
-                cartListArr: cartListData,
-                itemListArr: itemListData,
-                totalPrice: this.props.cartItems.data.finalTotal,
-                loaderCount: 1,
-            });
-        }
+      }
     }
 
     // Save for later functionality
     if (
-        prevProps.saveForLaterData.status !== this.props.saveForLaterData.status &&
-        this.props.saveForLaterData.status === status.SUCCESS
+      prevProps.saveForLaterData.status !==
+        this.props.saveForLaterData.status &&
+      this.props.saveForLaterData.status === status.SUCCESS
     ) {
-        this.props.fetchCartItems({ userId: items.userId, addressId });
-        this.setState({ bookMarkId: "" });
+      this.props.fetchCartItems({ userId: items.userId, addressId });
+      this.setState({ bookMarkId: "" });
 
-        if (this.state.deleteItemId && typeof this.state.deleteItemId === "string") {
-            LocalStorageCartService.deleteItem(this.state.deleteItemId);
-        }
+      if (
+        this.state.deleteItemId &&
+        typeof this.state.deleteItemId === "string"
+      ) {
+        LocalStorageCartService.deleteItem(this.state.deleteItemId);
+      }
     }
 
     // ✅ Fix: Allow updates to local storage even if addressId is undefined
     if (
-        prevProps.updateItems.status !== this.props.updateItems.status &&
-        this.props.updateItems.status === status.SUCCESS &&
-        this.props.updateItems.data
+      prevProps.updateItems.status !== this.props.updateItems.status &&
+      this.props.updateItems.status === status.SUCCESS &&
+      this.props.updateItems.data
     ) {
-        if (this.state.deleteItemId && typeof this.state.deleteItemId === "object" && this.state.deleteItemId.productId) {
-            LocalStorageCartService.updateItem(
-                this.state.deleteItemId.productId,
-                this.state.deleteItemId
-            );
-            this.setState({ deleteItemId: null });
-        }
+      if (
+        this.state.deleteItemId &&
+        typeof this.state.deleteItemId === "object" &&
+        this.state.deleteItemId.productId
+      ) {
+        LocalStorageCartService.updateItem(
+          this.state.deleteItemId.productId,
+          this.state.deleteItemId
+        );
+        this.setState({ deleteItemId: null });
+      }
 
-        // Fetch cart items only if userId exists
-        if (items?.userId) {
-            this.props.fetchCartItems({ userId: items.userId, addressId });
-        }
+      // Fetch cart items only if userId exists
+      if (items?.userId) {
+        this.props.fetchCartItems({ userId: items.userId, addressId });
+      }
     }
 
     // Handle delete items
     if (
-        prevProps.deleteItems.status !== this.props.deleteItems.status &&
-        this.props.deleteItems.status === status.SUCCESS &&
-        this.props.deleteItems.data
+      prevProps.deleteItems.status !== this.props.deleteItems.status &&
+      this.props.deleteItems.status === status.SUCCESS &&
+      this.props.deleteItems.data
     ) {
-        if (items?.userId) {
-            this.props.fetchCartItems({ userId: items.userId, addressId });
-        }
+      if (items?.userId) {
+        this.props.fetchCartItems({ userId: items.userId, addressId });
+      }
 
-        if (this.state.deleteItemId && typeof this.state.deleteItemId === "string") {
-            LocalStorageCartService.deleteItem(this.state.deleteItemId);
-            this.setState({ deleteItemId: null });
-        }
+      if (
+        this.state.deleteItemId &&
+        typeof this.state.deleteItemId === "string"
+      ) {
+        LocalStorageCartService.deleteItem(this.state.deleteItemId);
+        this.setState({ deleteItemId: null });
+      }
     }
-}
+  }
 
-// ✅ Fix: Update local storage immediately inside handleQuantityChange()
-handleQuantityChange(id, increment, productQuantity = 0, qty) {
+  // ✅ Fix: Update local storage immediately inside handleQuantityChange()
+  handleQuantityChange(id, increment, productQuantity = 0, qty) {
     const items = loginDetails();
     let newQuantity = productQuantity + increment;
 
     // Always update Local Storage, even if addressId is undefined
     if (newQuantity > 0) {
-        LocalStorageCartService.updateItem(id, {
-            productId: id,
-            quantity: parseInt(newQuantity),
-            quantityUnits: qty,
-        });
+      LocalStorageCartService.updateItem(id, {
+        productId: id,
+        quantity: parseInt(newQuantity),
+        quantityUnits: qty,
+      });
     } else {
-        LocalStorageCartService.deleteItem(id);
+      LocalStorageCartService.deleteItem(id);
     }
 
     this.setState({
-        deleteItemId: newQuantity > 0 ? { productId: id, quantity: newQuantity, quantityUnits: qty } : id,
+      deleteItemId:
+        newQuantity > 0
+          ? { productId: id, quantity: newQuantity, quantityUnits: qty }
+          : id,
     });
 
     // Fetch cart items only if userId exists
     if (items?.userId) {
-        this.props.updateItemToCart({
-            userId: items.userId,
-            productId: id,
-            quantity: parseInt(newQuantity),
-            quantityUnits: qty,
-        });
+      this.props.updateItemToCart({
+        userId: items.userId,
+        productId: id,
+        quantity: parseInt(newQuantity),
+        quantityUnits: qty,
+      });
     }
 
     console.log("Updated Local Storage:", LocalStorageCartService.getData());
-}
-  
+  }
+
   handleQuantityChange(id, increment, productQuantity = 0, qty) {
     const items = loginDetails();
     if (increment < 0 && productQuantity != 0) {
@@ -295,12 +320,31 @@ handleQuantityChange(id, increment, productQuantity = 0, qty) {
                     <Box className="item_details" flexGrow={1}>
                       <span>{item?.productName}</span>
                       <span>{item?.quantity}</span>
-                      <span style={{fontSize: "12px"}}>{item?.QuantityUnits}</span>
-                    
+                      <span style={{ fontSize: "12px" }}>
+                        {item?.QuantityUnits}
+                      </span>
 
                       <Box display="flex" alignItems="center">
-                        <span className="price">₹{item?.Price}</span>
-                        <span className="mrp">₹{item?.Mrp}</span>
+                        <Box className="price">
+                          <CurrencyRupeeOutlinedIcon
+                            style={{
+                              fontSize: "16px",
+                              verticalAlign: "middle",
+                            }}
+                          />
+                          {item?.Price}
+                        </Box>
+                        {item?.Mrp > 0 && (
+                          <span className="mrp">
+                            <CurrencyRupeeOutlinedIcon
+                              style={{
+                                fontSize: "13px",
+                                verticalAlign: "middle",
+                              }}
+                            />
+                            {item?.Mrp}
+                          </span>
+                        )}
                       </Box>
                     </Box>
                     <Box
@@ -405,7 +449,6 @@ const mapDispatchToProps = {
   saveForLater,
   addListOfItemsToCartReq,
   fetchDefaultAddress,
-
 };
 
 export default connect(
