@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import React, { Component } from "react";
 import ArrowDown from "../../../assets/img/ArrowDown.svg";
-import closeModal from "../../../assets/img/closeModalIcon.svg";
+import iconclosesvg from "../../../assets/img/Iconclosesvg.svg";
 import BackArrow from "../../../assets/img/backArrow.svg";
 import cashIcon from "../../../assets/img/cashIcon.svg";
 import { Link } from "react-router-dom";
@@ -369,15 +369,17 @@ class Cart extends Component {
 
     return (
       <>
-      
         <Box className="cart_popup">
           {this.state.showAddressPopup ? (
             <Box className="my_cart_container">
               <Box className="my_cart">
                 <h2>My Cart</h2>
                 <img
+                style={{height:"18ox",
+                  width:"18px"
+                }}
                   onClick={() => this.props.navigate("/")}
-                  src={closeModal}
+                  src={iconclosesvg}
                   alt=""
                 />
               </Box>
@@ -440,31 +442,31 @@ class Cart extends Component {
                     <h2>Select Delivery Slot</h2>
                     <span className="select_delivery_slot_wrapper">
                       <div
-className={`${
-  this.state.showAddressError ? "address-error" : ""
-} ${this.state.showSlotError ? "slot-error" : ""}`}
-                          onClick={() => {
-                            const hasValidAddress =
-                              this.state.selectedAddress?.addressId ||
-                              (this.getDefaultAddress() &&
-                                this.getDefaultAddress() !==
-                                  "No Address Selected");
+                        className={`${
+                          this.state.showAddressError ? "address-error" : ""
+                        } ${this.state.showSlotError ? "slot-error" : ""}`}
+                        onClick={() => {
+                          const hasValidAddress =
+                            this.state.selectedAddress?.addressId ||
+                            (this.getDefaultAddress() &&
+                              this.getDefaultAddress() !==
+                                "No Address Selected");
 
-                            if (!hasValidAddress) {
-                              this.setState({ showAddressError: true });
-                              ErrorMessages.error(
-                                "Please select an address before selecting a slot."
-                              );
-                              return;
-                            }
+                          if (!hasValidAddress) {
+                            this.setState({ showAddressError: true });
+                            ErrorMessages.error(
+                              "Please select an address before selecting a slot."
+                            );
+                            return;
+                          }
 
-                            this.setState({
-                              slotOpen: true,
-                              showSlotError: false, // Reset slot error if applicable
-                              showAddressError: false, // Reset address error
-                            });
-                          }}
-                        >
+                          this.setState({
+                            slotOpen: true,
+                            showSlotError: false, // Reset slot error if applicable
+                            showAddressError: false, // Reset address error
+                          });
+                        }}
+                      >
                         <span>
                           {this.state.selectedSlot
                             ? `${this.state.selectedSlot.start} ${this.state.selectedSlot.startAmPm} - ${this.state.selectedSlot.end} ${this.state.selectedSlot.endAmPm}`
@@ -505,7 +507,7 @@ className={`${
 
               <Box className="item_details_container">
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                  <h2>Item Details</h2>
+                    <h2>Item Details ({this.state.cartList.length})</h2>
                   <Button
                     sx={{
                       color: "#1f9151",
@@ -539,91 +541,103 @@ className={`${
                           this.props.cartItems.data,
                           "delivery s;pts"
                         )}
-                        <strong>                            <CurrencyRupeeOutlinedIcon
-                                                      style={{
-                                                        fontSize: "14px", /* Adjusted size to better match text */
-                                                        display: "inline-flex",
-                                                        alignItems: "center",
-                                                        position: "relative",
-                                                        top: "1px" /* Small vertical adjustment if needed */
-                        
-                                                    
-                                                      }}
-                                                    />
-                        {this.props.cartItems.data?.subTotal}</strong>
-                      </div>
-                      <div>
-                          <span>Delivery Charges</span>
-                          <div>
-                            {this.props.cartItems.data?.deliveryCharges <= 0 ? (
-                              <>
-                                {this.state.selectedAddress?.zipCode === "500091" ||
-                                this.state.selectedAddress?.zipCode === "500030" ||
-                                this.state.selectedAddress?.zipCode === "500093" ||
-                                this.state.selectedAddress?.zipCode === "500086" ? (
-                                  <span className="mrp">                            <CurrencyRupeeOutlinedIcon
-                                                                style={{
-                                                                  fontSize: "14px", /* Adjusted size to better match text */
-                                                                  display: "inline-flex",
-                                                                  alignItems: "center",
-                                                                  position: "relative",
-                                                                  top: "1px" /* Small vertical adjustment if needed */
-                                  
-                                                              
-                                                                }}
-                                                              />
-                                  20</span>
-                                ) : this.state.selectedAddress?.zipCode !== "500091" &&
-                                  this.state.selectedAddress?.zipCode !== "500030" &&
-                                  this.state.selectedAddress?.zipCode !== "500093" &&
-                                  this.state.selectedAddress?.zipCode !== "500086" ? (
-                                  <span className="mrp">                            <CurrencyRupeeOutlinedIcon
-                                                                style={{
-                                                                  fontSize: "14px", /* Adjusted size to better match text */
-                                                                  display: "inline-flex",
-                                                                  alignItems: "center",
-                                                                  position: "relative",
-                                                                  top: "1px" /* Small vertical adjustment if needed */
-                                  
-                                                              
-                                                                }}
-                                                              />
-                                  50</span>
-                                ) : null}
-                                <span className="free">Free</span>
-                              </>
-                            ) : (
-                              <strong style={{ marginLeft: "5px" }}>
-                                                            <CurrencyRupeeOutlinedIcon
-                                                              style={{
-                                                                fontSize: "14px", /* Adjusted size to better match text */
-                                                                display: "inline-flex",
-                                                                alignItems: "center",
-                                                                position: "relative",
-                                                                top: "1px" /* Small vertical adjustment if needed */
-                                
-                                                            
-                                                              }}
-                                                            />
-                                {this.props.cartItems.data?.deliveryCharges}
-                              </strong>
-                            )}
-                          </div>
-                      </div>
-                      <div>
-                        <strong>Grand Total</strong>{" "}
                         <strong>
-                                                      <CurrencyRupeeOutlinedIcon
-                                                        style={{
-                                                          fontSize: "14px", /* Adjusted size to better match text */
-                                                          display: "inline-flex",
-                                                          alignItems: "center",
-                                                          position: "relative",
-                                                          top: "1px" /* Small vertical adjustment if needed */
-                          
-                                                      
-                                                        }}
-                                                      />
+                          {" "}
+                          <CurrencyRupeeOutlinedIcon
+                            style={{
+                              fontSize:
+                                "14px" /* Adjusted size to better match text */,
+                              display: "inline-flex",
+                              alignItems: "center",
+                              position: "relative",
+                              top: "1px" /* Small vertical adjustment if needed */,
+                            }}
+                          />
+                          {this.props.cartItems.data?.subTotal}
+                        </strong>
+                      </div>
+                      <div>
+                        <span>Delivery Charges</span>
+                        <div>
+                          {this.props.cartItems.data?.deliveryCharges <= 0 ? (
+                            <>
+                              {this.state.selectedAddress?.zipCode ===
+                                "500091" ||
+                              this.state.selectedAddress?.zipCode ===
+                                "500030" ||
+                              this.state.selectedAddress?.zipCode ===
+                                "500093" ||
+                              this.state.selectedAddress?.zipCode ===
+                                "500086" ? (
+                                <span className="mrp">
+                                  {" "}
+                                  <CurrencyRupeeOutlinedIcon
+                                    style={{
+                                      fontSize:
+                                        "14px" /* Adjusted size to better match text */,
+                                      display: "inline-flex",
+                                      alignItems: "center",
+                                      position: "relative",
+                                      top: "1px" /* Small vertical adjustment if needed */,
+                                    }}
+                                  />
+                                  20
+                                </span>
+                              ) : this.state.selectedAddress?.zipCode !==
+                                  "500091" &&
+                                this.state.selectedAddress?.zipCode !==
+                                  "500030" &&
+                                this.state.selectedAddress?.zipCode !==
+                                  "500093" &&
+                                this.state.selectedAddress?.zipCode !==
+                                  "500086" ? (
+                                <span className="mrp">
+                                  {" "}
+                                  <CurrencyRupeeOutlinedIcon
+                                    style={{
+                                      fontSize:
+                                        "14px" /* Adjusted size to better match text */,
+                                      display: "inline-flex",
+                                      alignItems: "center",
+                                      position: "relative",
+                                      top: "1px" /* Small vertical adjustment if needed */,
+                                    }}
+                                  />
+                                  50
+                                </span>
+                              ) : null}
+                              <span className="free">Free</span>
+                            </>
+                          ) : (
+                            <strong style={{ marginLeft: "5px" }}>
+                              <CurrencyRupeeOutlinedIcon
+                                style={{
+                                  fontSize:
+                                    "14px" /* Adjusted size to better match text */,
+                                  display: "inline-flex",
+                                  alignItems: "center",
+                                  position: "relative",
+                                  top: "1px" /* Small vertical adjustment if needed */,
+                                }}
+                              />
+                              {this.props.cartItems.data?.deliveryCharges}
+                            </strong>
+                          )}
+                        </div>
+                      </div>
+                      <div>
+                        <strong>Grand Total</strong>
+                        <strong>
+                          <CurrencyRupeeOutlinedIcon
+                            style={{
+                              fontSize:
+                                "14px" /* Adjusted size to better match text */,
+                              display: "inline-flex",
+                              alignItems: "center",
+                              position: "relative",
+                              top: "1px" /* Small vertical adjustment if needed */,
+                            }}
+                          />
                           {this.props.cartItems.data?.finalTotal}
                         </strong>
                       </div>
@@ -805,14 +819,14 @@ className={`${
               </Box>
               <Box className="select_delivery_slot"></Box>
               <Box className="delivery_slots_container">
-              <AllAddresses
-                    onAddressSelect={(address) =>
-                      this.setState({ 
-                        selectedAddress: address,
-                        showAddressPopup: true 
-                      })
-                    }
-                  />
+                <AllAddresses
+                  onAddressSelect={(address) =>
+                    this.setState({
+                      selectedAddress: address,
+                      showAddressPopup: true,
+                    })
+                  }
+                />
               </Box>
             </Box>
           )}
@@ -838,10 +852,10 @@ className={`${
             </Box>
             <AllAddresses
               onAddressSelect={(address) =>
-                this.setState({ 
+                this.setState({
                   selectedAddress: address,
                   showAddressPopup: true,
-                  TabSelectAddressPopupOpen: false
+                  TabSelectAddressPopupOpen: false,
                 })
               }
             />
