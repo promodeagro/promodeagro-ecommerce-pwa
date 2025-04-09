@@ -53,20 +53,33 @@
     border: 1px solid #dfdada; /* Gray border color */
     padding: 0.8rem; /* Add padding for spacing inside the box */
     transition: background-color 0.3s ease; /* Smooth transition for background color */
+    margin-bottom: 10px;
   }
   .alladdressbox {
     font-size: 12px;
     display: flex;
     flex-direction: column; /* Ensure address components are stacked vertically */
-gap: 16px;
+gap: 10px;
   }
+
+  .addressfirstbox{
+    overflow-y: auto; /* Enables scrolling if content overflows */
+    max-height: 42vh;
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none; /* For Internet Explorer and Edge */
+  }
+
+  .addressfirstbox::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+}
 
   
   .addressmainbox {
     display: flex; /* Enable flexbox */
     flex-direction: column; /* Stack items vertically */
-    gap: 1rem; /* Adds gap between child elements */  
-  }
+
+}
+
 
   .smallbutton{
     background-color: #1f9151;
@@ -97,8 +110,7 @@ gap: 16px;
     padding: 0.8rem; /* Internal padding */
     border-radius: 8px; /* Smooth rounded corners */
     height: auto; /* Removed fixed height */
-    max-height: 80vh; /* Optional: Limits the height of the modal */
-    overflow-y: auto; /* Ensures scrolling if content overflows */
+    max-height: 62vh; /* Optional: Limits the height of the modal */
   }
 
   .address-item {
@@ -311,7 +323,7 @@ gap: 20px;
   justify-content: center;
   align-items: center;
   display: flex;
-  margin-top: 20px;
+   margin-top: 10px;
 
 }
 
@@ -444,12 +456,12 @@ color: black;
     box-shadow: 0px 12px 16px 0px #10182814; /* Shadow for depth */
     padding: 0.8rem; /* Internal padding */
     border-radius: 8px; /* Smooth rounded corners */
-    height: 70vh; /* Removed fixed height */
-    max-height: 80vh; /* Optional: Limits the height of the modal */
-    overflow-y: auto; /* Ensures scrolling if content overflows */
+    height: auto; /* Removed fixed height */
+    max-height: 70vh; /* Optional: Limits the height of the modal */
     bottom: 0;
   }
 }
+
 
 .icons-wrapper{
   cursor: pointer;
@@ -479,4 +491,30 @@ color: black;
 .loaderspacing{
   margin-left: 20px;
   margin-top: 10px;
+}
+
+.address_modal_par {
+  position: relative; /* Ensures absolute positioning works */
+}
+
+.close-float-btn {
+  position: absolute;
+  top: -40px;  /* Move it further outside the Drawer */
+  right: 10px;
+  background: red;  /* Temporary: Make it visible */
+  border: none;
+  border-radius: 50%;
+  width: 50px;  /* Temporary: Increase size */
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 99999;  /* Ensure it's above the Drawer */
+  cursor: pointer;
+}
+
+.close-float-btn img {
+  width: 25px; /* Adjust size */
+  height: 25px;
 }
