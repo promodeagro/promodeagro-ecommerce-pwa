@@ -2,7 +2,7 @@ const BASE_URL1 = "https://fakestoreapi.com";
 // const BASE_URL = "https://khs9kwylpc.execute-api.us-east-1.amazonaws.com";
 
 // const BASE_URL = "https://9ti4fcd117.execute-api.ap-south-1.amazonaws.com";
-const BASE_URL = "https://ijy06nbhob.execute-api.ap-south-1.amazonaws.com";
+const BASE_URL = "https://7x29t2x9xk.execute-api.ap-south-1.amazonaws.com/prod";
 
 const Config = {
   BASE_URL,

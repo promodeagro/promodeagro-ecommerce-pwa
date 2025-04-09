@@ -11,6 +11,7 @@ import {
 } from "../../Redux/Address/AddressThunk";
 import { loginDetails } from "Views/Utills/helperFunctions";
 import AddAddressModal from "./addaddressmodal";
+import closesvg from "../../assets/img/closeModalIcon.svg"
 
 class AddressModal extends Component {
   constructor(props) {
@@ -22,14 +23,13 @@ class AddressModal extends Component {
       addressToEdit: null, // Store the address data to be edited
       isDeleting: false, // Add loading state for deletion
       matches: window.matchMedia("(max-width: 600px)").matches,
-
     };
   }
 
   componentDidMount() {
     window
-    .matchMedia("(max-width: 600px)")
-    .addEventListener("change", (e) => this.setState({ matches: e.matches }));
+      .matchMedia("(max-width: 600px)")
+      .addEventListener("change", (e) => this.setState({ matches: e.matches }));
     const { getAllAddress } = this.props;
     const loginData = loginDetails();
     const userId = loginData?.userId;
@@ -121,7 +121,6 @@ class AddressModal extends Component {
     }
   };
 
-
   handleEditClick = (address) => {
     this.setState({
       addressToEdit: address, // Set the address data to be edited
@@ -160,8 +159,13 @@ class AddressModal extends Component {
 
   render() {
     const { open, allAddressData, handleClose } = this.props;
-    const { submitAddress,matches , openDeleteModal, addressToEdit, isDeleting } =
-      this.state;
+    const {
+      submitAddress,
+      matches,
+      openDeleteModal,
+      addressToEdit,
+      isDeleting,
+    } = this.state;
     const { defaultAddressId, addresses } = allAddressData || {};
     if (!addresses || addresses.length === 0) return null;
     const defaultAddress = addresses.find(
@@ -196,98 +200,103 @@ class AddressModal extends Component {
                 </Box>
               </Box>
             </Box>
-            <Box className="addressmainbox">
-              <Box className="addressbox" variant="contained" fullWidth>
-                <span className="iconcontainer1">
-                  <span>
-                    <span className="underlinetext">
-                      {defaultAddress.address_type}
+            <Box className="addressfirstbox">
+              <Box className="addressmainbox">
+                <Box className="addressbox" variant="contained" fullWidth>
+                  <span className="iconcontainer1">
+                    <span>
+                      <span className="underlinetext">
+                        {defaultAddress.address_type}
+                      </span>
+                      <span className="roundDiv">Default</span>
                     </span>
-                    <span className="roundDiv">Default</span>
+                    <img
+                      src={Editicon}
+                      alt="Edit"
+                      className="icons"
+                      onClick={() => this.handleEditClick(defaultAddress)} // Only edit icon for default address
+                    />
                   </span>
-                  <img
-                    src={Editicon}
-                    alt="Edit"
-                    className="icons"
-                    onClick={() => this.handleEditClick(defaultAddress)} // Only edit icon for default address
-                  />
-                </span>
-                <div style={{ marginTop: "8px" }}>
-                  {defaultAddress.house_number} {defaultAddress.landmark_area} {defaultAddress.address}, {defaultAddress.zipCode}
-                </div>
-              </Box>
-              <Box className="alladdressbox">
-                {otherAddresses.length > 0 ? (
-                  otherAddresses.map((address) => (
-                    <div key={address.addressId} className="address-item">
-                      <Box className="iconcontainer1">
-                        <span
-                          style={{ width: "80%" }}
+                  <div style={{ marginTop: "8px" }}>
+                    {defaultAddress.house_number} {defaultAddress.landmark_area}{" "}
+                    {defaultAddress.address}, {defaultAddress.zipCode}
+                  </div>
+                </Box>
+                <Box className="alladdressbox">
+                  {otherAddresses.length > 0 ? (
+                    otherAddresses.map((address) => (
+                      <div key={address.addressId} className="address-item">
+                        <Box className="iconcontainer1">
+                          <span
+                            style={{ width: "80%" }}
+                            onClick={() =>
+                              this.handleSetDefaultAddress(address.addressId)
+                            }
+                          >
+                            <span className="underlinetext">
+                              {address.address_type || "No address type"}
+                            </span>
+                          </span>
+                          <Box className="iconcontainer2">
+                            <img
+                              src={Deleteicon}
+                              alt="Delete"
+                              className="icons"
+                              onClick={() =>
+                                this.handleDeleteClick(address.addressId)
+                              }
+                            />
+                            <img
+                              src={Editicon}
+                              alt="Edit"
+                              className="icons"
+                              onClick={() => this.handleEditClick(address)} // Open for edit
+                            />
+                          </Box>
+                        </Box>
+                        <Box
+                          sx={{ marginTop: "8px" }}
+                          className="containerheight"
                           onClick={() =>
                             this.handleSetDefaultAddress(address.addressId)
                           }
                         >
-                          <span className="underlinetext">
-                            {address.address_type || "No address type"}
-                          </span>
-                        </span>
-                        <Box className="iconcontainer2">
-                          <img
-                            src={Deleteicon}
-                            alt="Delete"
-                            className="icons"
-                            onClick={() =>
-                              this.handleDeleteClick(address.addressId)
-                            }
-                          />
-                          <img
-                            src={Editicon}
-                            alt="Edit"
-                            className="icons"
-                            onClick={() => this.handleEditClick(address)} // Open for edit
-                          />
+                          {address.house_number} {address.landmark_area}{" "}
+                          {address.address}, {address.zipCode}
                         </Box>
-                      </Box>
-                      <Box
-                        sx={{ marginTop: "8px" }}
-                        className="containerheight"
-                        onClick={() =>
-                          this.handleSetDefaultAddress(address.addressId)
-                        }
-                      >
-                        {address.house_number} {address.landmark_area} {address.address}, {address.zipCode}
-                      </Box>
-                    </div>
-                  ))
-                ) : (
-                  <></>
-                )}
+                      </div>
+                    ))
+                  ) : (
+                    <></>
+                  )}
+                </Box>
               </Box>
             </Box>
             <span className="viewbutton">
-            {
-  matches ? (
-    <button
-      variant="contained"
-      className="smallbutton1"
-      type="button"
-      onClick={() => window.location.href = "/my-profile/alladdress"}
-    >
-      View Saved Address
-    </button>
-  ) : (
-    <button
-      variant="contained"
-      className="smallbutton1"
-      type="button"
-      onClick={() => window.location.href = "/my-profile/manage-addresses"}
-    >
-      View Saved Address
-    </button>
-  )
-}
-
-</span>
+              {matches ? (
+                <button
+                  variant="contained"
+                  className="smallbutton1"
+                  type="button"
+                  onClick={() =>
+                    (window.location.href = "/my-profile/alladdress")
+                  }
+                >
+                  View Saved Address
+                </button>
+              ) : (
+                <button
+                  variant="contained"
+                  className="smallbutton1"
+                  type="button"
+                  onClick={() =>
+                    (window.location.href = "/my-profile/manage-addresses")
+                  }
+                >
+                  View Saved Address
+                </button>
+              )}
+            </span>
           </Box>
           <AddAddressModal
             open={submitAddress}
@@ -306,7 +315,7 @@ class AddressModal extends Component {
                 Are you sure you want to delete this address?
               </Box>
               <Box className="buttongap">
-              <button
+                <button
                   onClick={this.handleConfirmDelete}
                   className="confirmbutton"
                   variant="contained"
@@ -316,12 +325,10 @@ class AddressModal extends Component {
                     alignItems: "center",
                     justifyContent: "center",
                   }}
-                >Delete
+                >
+                  Delete
                   {isDeleting && (
-                    <CircularProgress
-                      size={20}
-                      style={{ marginLeft: "4px" }}
-                    />
+                    <CircularProgress size={20} style={{ marginLeft: "4px" }} />
                   )}
                 </button>
 
