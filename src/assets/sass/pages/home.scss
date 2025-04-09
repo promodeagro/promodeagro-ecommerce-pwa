@@ -1156,3 +1156,10 @@ font-weight: 650;
   }
 
 }
+.custom-slider.hide-prev .slick-prev {
+  display: none !important;
+}
+
+.custom-slider.hide-next .slick-next {
+  display: none !important;
+}

@@ -43,6 +43,8 @@ class ProductItemView extends Component {
       selectedProduct: null,
       drawerOpen: false, // New state for drawer
       selectedVariants: {}, // Stores selected variant per product ID
+      currentSlide: 0, // 👈 new state for current slide
+
     };
   }
 
@@ -242,6 +244,28 @@ class ProductItemView extends Component {
       selectedProduct: null, // Clear the selected product when modal is closed
     });
   };
+
+  handleResize = () => {
+    this.setState({ slidesToShow: this.getSlidesToShow() });
+  };
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.handleResize);
+  }
+  componentDidMount() {
+    this.setState({ slidesToShow: this.getSlidesToShow() });
+  
+    window.addEventListener("resize", this.handleResize);
+  }
+  getSlidesToShow = () => {
+    const width = window.innerWidth;
+  
+    if (width < 480) return 1.5;
+    if (width < 600) return 2.5;
+    if (width < 1024) return 3;
+  
+    return 5.05;
+  };
+        
 
   handleVariantSelect = (
     productId,
@@ -532,15 +556,26 @@ class ProductItemView extends Component {
       productList,
       showDeleteWishlist = false,
     } = this.props;
-    console.log('Current selectedProduct in render:', this.state.selectedProduct);
+    const { currentSlide, slidesToShow } = this.state;
+
+  
+    const noProducts = !productList || productList.length === 0;
+  
+    const showArrows = productList?.length > 5;
+
+  
     const settings = {
       dots: false,
-      arrows: productList?.length > 5 ? true : false,
+      arrows: showArrows,
       infinite: false,
       speed: 500,
       slidesToShow: 5.05,
       slidesToScroll: 1,
       initialSlide: 0,
+      beforeChange: (oldIndex, newIndex) => {
+        this.setState({ currentSlide: newIndex });
+      },
+      
       responsive: [
         {
           breakpoint: 1024,
@@ -566,15 +601,29 @@ class ProductItemView extends Component {
         },
       ],
     };
-    return (
+
+
+    const isEndOfSlide = currentSlide + slidesToShow >= productList.length;
+    
+  
+    const sliderClass = [
+      "custom-slider",
+      currentSlide === 0 ? "hide-prev" : "",
+      isEndOfSlide ? "hide-next" : "",
+    ]
+      .filter(Boolean)
+      .join(" ");
+        return (
       <>
-        {sliderView ? (
-          <Slider {...settings}>
-            {this.renderProductItems(productList, showDeleteWishlist)}
-          </Slider>
-        ) : (
-          <>{this.renderProductItems(productList, showDeleteWishlist)}</>
-        )}
+      {noProducts ? (
+        <Box className="no-data">No products available</Box>
+      ) : sliderView ? (
+<Slider {...settings} className={sliderClass}>
+  {this.renderProductItems(productList, showDeleteWishlist)}
+</Slider>
+      ) : (
+        <>{this.renderProductItems(productList, showDeleteWishlist)}</>
+      )}
         <AuthModal
           open={this.state.authModalOpen}
           handleDefaultAddress={() => {
@@ -726,80 +775,128 @@ class ProductItemView extends Component {
                           </div>
                         </div>
                         {addedProduct ? (
-                          <Box className="number-input-containermodal">
-                            {addedProduct.quantity !== 0 ? (
-                              <Box
-                                className="symbolbutton"
-                                onClick={() => {
-                                  let unitqty =
-                                    variant?.unitPrices?.length > 0
-                                      ? variant?.unitPrices[0]?.qty
-                                      : 1;
-                                  this.handleQuantityChange(
-                                    variantId,
-                                    -1,
-                                    addedProduct.quantity,
-                                    unitqty
-                                  );
-                                }}
-                              >
-                                -
-                              </Box>
-                            ) : null}
-                            <Box className="Numberbutton">
-                              {addedProduct.quantity}
-                            </Box>
-                            <Box
-                              className="symbolbutton"
-                              onClick={() => {
-                                let unitqty =
-                                  variant?.unitPrices?.length > 0
-                                    ? variant?.unitPrices[0]?.qty
-                                    : 1;
-                                this.handleQuantityChange(
-                                  variantId,
-                                  1,
-                                  addedProduct.quantity,
-                                  unitqty
-                                );
-                              }}
-                            >
-                              +
-                            </Box>
-                          </Box>
-                        ) : (
-                          <Box className="add-cart">
-                            <button
-                              className={`buttonvaradd ${
-                                !variant?.availability
-                                  ? "out-of-stock-button"
-                                  : ""
-                              }`}
-                              variant="outlined"
-                              disabled={!variant?.availability} // Disable button for out of stock items
-                              onClick={() => {
-                                if (!variant?.availability) return;
-                                let unitqty =
-                                  variant?.unitPrices?.length > 0
-                                    ? variant?.unitPrices[0]?.qty
-                                    : 1;
-                                this.setState(
-                                  { isUpdateIncrease: true },
-                                  () => {
-                                    this.handleAddToCart(
-                                      variantId,
-                                      variant.unit,
-                                      variant.quantity,
-                                      unitqty
-                                    );
-                                  }
-                                );
-                              }}
-                            >
-                              {variant?.availability ? "Add" : "Out of Stock"}
-                            </button>
-                          </Box>
-                        )}
+  <Box className="number-input-containermodal">
+    {addedProduct.quantity !== 0 ? (
+  <Box
+  className="symbolbutton"
+  onClick={() => {
+    const unitqty =
+      variant?.unitPrices?.length > 0
+        ? variant?.unitPrices[0]?.qty
+        : 1;
+
+    this.setState(
+      (prevState) => ({
+        selectedVariants: {
+          ...prevState.selectedVariants,
+          [this.state.selectedProduct?.groupId]: {
+            id: variant.id,
+            unit: variant.unit,
+            quantity: variant.quantity,
+            mrp: variant.mrp,
+            price: variant.price,
+          },
+        },
+      }),
+      () => {
+        this.handleQuantityChange(
+          variantId,
+          -1,
+          addedProduct.quantity,
+          unitqty
+        );
+      }
+    );
+  }}
+>
+  -
+</Box>
+  ) : null}
+    <Box className="Numberbutton">
+      {addedProduct.quantity}
+    </Box>
+    <Box
+      className="symbolbutton"
+      onClick={() => {
+        const unitqty =
+          variant?.unitPrices?.length > 0
+            ? variant?.unitPrices[0]?.qty
+            : 1;
+
+        this.setState(
+          (prevState) => ({
+            isUpdateIncrease: true,
+            selectedVariants: {
+              ...prevState.selectedVariants,
+              [this.state.selectedProduct?.groupId]: {
+                id: variant.id,
+                unit: variant.unit,
+                quantity: variant.quantity,
+                mrp: variant.mrp,
+                price: variant.price,
+              },
+            },
+          }),
+          () => {
+            this.handleQuantityChange(
+              variantId,
+              1,
+              addedProduct.quantity,
+              unitqty
+            );
+          }
+        );
+      }}
+    >
+      +
+    </Box>
+  </Box>
+) : (
+  <Box className="add-cart">
+    <button
+      className={`buttonvaradd ${
+        !variant?.availability ? "out-of-stock-button" : ""
+      }`}
+      variant="outlined"
+      disabled={!variant?.availability}
+      onClick={() => {
+        if (!variant?.availability) return;
+
+        const unitqty =
+          variant?.unitPrices?.length > 0
+            ? variant?.unitPrices[0]?.qty
+            : 1;
+
+        this.setState(
+          (prevState) => ({
+            isUpdateIncrease: true,
+            selectedVariants: {
+              ...prevState.selectedVariants,
+              [this.state.selectedProduct?.groupId]: {
+                id: variant.id,
+                unit: variant.unit,
+                quantity: variant.quantity,
+                mrp: variant.mrp,
+                price: variant.price,
+              },
+            },
+          }),
+          () => {
+            this.handleAddToCart(
+              variant.id,
+              variant.unit,
+              variant.quantity,
+              unitqty
+            );
+            this.handleModalClose(); // Optionally close modal
+          }
+        );
+      }}
+    >
+      {variant?.availability ? "Add" : "Out of Stock"}
+    </button>
+  </Box>
+)}
                       </Box>
                     );
                   })}
@@ -948,18 +1045,34 @@ class ProductItemView extends Component {
                               <Box
                                 className="symbolbutton"
                                 onClick={() => {
-                                  let unitqty =
-                                    variant?.unitPrices?.length > 0
-                                      ? variant?.unitPrices[0]?.qty
-                                      : 1;
-                                  this.handleQuantityChange(
-                                    variantId,
-                                    -1,
-                                    addedProduct.quantity,
-                                    unitqty
+                                  const unitqty =
+                                    variant?.unitPrices?.length > 0 ? variant?.unitPrices[0]?.qty : 1;
+                                
+                                  this.setState(
+                                    (prevState) => ({
+                                      isUpdateIncrease: false, // optional depending on how you use it
+                                      selectedVariants: {
+                                        ...prevState.selectedVariants,
+                                        [this.state.selectedProduct?.groupId]: {
+                                          id: variant.id,
+                                          unit: variant.unit,
+                                          quantity: variant.quantity,
+                                          mrp: variant.mrp,
+                                          price: variant.price,
+                                        },
+                                      },
+                                    }),
+                                    () => {
+                                      this.handleQuantityChange(
+                                        variantId,
+                                        -1,
+                                        addedProduct.quantity,
+                                        unitqty
+                                      );
+                                    }
                                   );
                                 }}
-                              >
+                                                              >
                                 -
                               </Box>
                             ) : null}
@@ -969,18 +1082,34 @@ class ProductItemView extends Component {
                             <Box
                               className="symbolbutton"
                               onClick={() => {
-                                let unitqty =
-                                  variant?.unitPrices?.length > 0
-                                    ? variant?.unitPrices[0]?.qty
-                                    : 1;
-                                this.handleQuantityChange(
-                                  variantId,
-                                  1,
-                                  addedProduct.quantity,
-                                  unitqty
+                                const unitqty =
+                                  variant?.unitPrices?.length > 0 ? variant?.unitPrices[0]?.qty : 1;
+                              
+                                this.setState(
+                                  (prevState) => ({
+                                    isUpdateIncrease: true,
+                                    selectedVariants: {
+                                      ...prevState.selectedVariants,
+                                      [this.state.selectedProduct?.groupId]: {
+                                        id: variant.id,
+                                        unit: variant.unit,
+                                        quantity: variant.quantity,
+                                        mrp: variant.mrp,
+                                        price: variant.price,
+                                      },
+                                    },
+                                  }),
+                                  () => {
+                                    this.handleQuantityChange(
+                                      variantId,
+                                      1,
+                                      addedProduct.quantity,
+                                      unitqty
+                                    );
+                                  }
                                 );
                               }}
-                            >
+                                                          >
                               +
                             </Box>
                           </Box>
@@ -996,23 +1125,37 @@ class ProductItemView extends Component {
                               disabled={!variant?.availability} // Disable button for out of stock items
                               onClick={() => {
                                 if (!variant?.availability) return;
-                                let unitqty =
-                                  variant?.unitPrices?.length > 0
-                                    ? variant?.unitPrices[0]?.qty
-                                    : 1;
+                              
+                                const unitqty =
+                                  variant?.unitPrices?.length > 0 ? variant?.unitPrices[0]?.qty : 1;
+                              
                                 this.setState(
-                                  { isUpdateIncrease: true },
+                                  (prevState) => ({
+                                    isUpdateIncrease: true,
+                                    selectedVariants: {
+                                      ...prevState.selectedVariants,
+                                      [this.state.selectedProduct?.groupId]: {
+                                        id: variant.id,
+                                        unit: variant.unit,
+                                        quantity: variant.quantity,
+                                        mrp: variant.mrp,
+                                        price: variant.price,
+                                      },
+                                    },
+                                  }),
                                   () => {
                                     this.handleAddToCart(
-                                      variantId,
+                                      variant.id,
                                       variant.unit,
                                       variant.quantity,
                                       unitqty
                                     );
+                                    this.setState({ drawerOpen: false }); // Close the drawer after adding
+
                                   }
                                 );
                               }}
-                            >
+                                                          >
                               {variant?.availability ? "Add" : "Out of Stock"}
                             </button>
                           </Box>
