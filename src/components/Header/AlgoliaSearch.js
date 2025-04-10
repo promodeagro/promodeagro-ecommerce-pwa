@@ -81,6 +81,18 @@ const AlgoliaSearch = ({ showResult = true, onFocus = () => {}, inputRef }) => {
     };
   }, [searchTerm]);
 
+  // Handle touch events to close keyboard
+  useEffect(() => {
+    const handleTouchStart = () => {
+      if (inputRef?.current) {
+        inputRef.current.blur();
+      }
+    };
+
+    document.addEventListener('touchstart', handleTouchStart);
+    return () => document.removeEventListener('touchstart', handleTouchStart);
+  }, [inputRef]);
+
   return (
     <InstantSearch searchClient={searchClient} indexName="products">
       <Box ref={searchContainerRef} className="search-container">
