@@ -5,7 +5,7 @@ import Deleteicon from "../../../../assets/img/trash-2.png";
 import Editicon from "../../../../assets/img/editicon.svg";
 import { Loader } from "../../../Utills/helperFunctions";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
-import AddNewAddress from "../addaddress/addnewwaddress"
+import AddNewAddress from "../addaddress/addnewwaddress";
 
 import {
   fetchDefaultAddress,
@@ -14,7 +14,7 @@ import {
 } from "../../../../Redux/Address/AddressThunk";
 import status from "../../../../Redux/Constants";
 import { loginDetails } from "../../../Utills/helperFunctions";
-import BackArrow from "../../../../assets/img/backArrow.svg";
+import BackArrow from "../../../../assets/img/accountbackicon.svg";
 
 class AllAddress extends Component {
   constructor(props) {
@@ -32,7 +32,6 @@ class AllAddress extends Component {
       isDeleting: false,
       selectedAddress: null, // Store selected address here
       navigateToAdd: false, // Control navigation within component
-
     };
   }
 
@@ -130,16 +129,12 @@ class AllAddress extends Component {
       isDeleting,
       navigateToAdd, // Check if navigating
       allAddresses,
-      selectedAddress // Extract selectedAddress from state
-
-
+      selectedAddress, // Extract selectedAddress from state
     } = this.state;
 
     if (navigateToAdd) {
-      return <AddNewAddress addressData={this.state.selectedAddress} 
-      />;
+      return <AddNewAddress addressData={this.state.selectedAddress} />;
     }
-
 
     let sortedAddresses = allAddresses;
     if (allAddresses && allAddresses.length > 1 && defaultAddressId) {
@@ -158,13 +153,23 @@ class AllAddress extends Component {
           ) : (
             <Box>
               <Box className="headerboxoftheaddress">
-                <div style={{ display: "flex", gap: "8px" }}>
-                  <img src={BackArrow} alt="Back"  style={{cursor:"pointer"}}   onClick={() => window.location.href = "/account"}
+              <div
+                style={{ display: "flex", gap: "10px", alignItems: "center" }}
+              >
+                <img
+                  src={BackArrow}
+                  alt="Back"
+                  style={{ cursor: "pointer", height: "18px", width: "18px" }}
+                    onClick={() => (window.location.href = "/account")}
                   />
                   <h2>Address Book</h2>
                 </div>
-                <button className="buttonheightwidth"                   onClick={() => this.setState({ navigateToAdd: true })}
-                >+ Add Address</button>
+                <button
+                  className="buttonheightwidth"
+                  onClick={() => this.setState({ navigateToAdd: true })}
+                >
+                  + Add Address
+                </button>
               </Box>
               <div style={{ marginTop: "40px" }}>
                 {sortedAddresses && sortedAddresses.length > 0 ? (

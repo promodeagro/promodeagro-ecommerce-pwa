@@ -433,6 +433,7 @@
 
 @media (max-width: 600px) {
   .header {
+     padding-bottom: 8px;
     .logo {
       display: none;
     }
@@ -451,39 +452,55 @@
     .profile-icon {
       display: inline-flex;
       color: #ffffff;
-      margin-left: 15px;
+      cursor: pointer;
+
     }
-    .search-box {
-      .back-button {
-        color: #ffffff;
-        display: inline-flex;
+  }
+  
+  .mobile-deliver-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    width: 100%;
+    padding-bottom: 4px;
+    font-size: 12px;
+  
+    .location-section {
+      display: flex;
+      flex-direction: column; 
+      align-items: flex-start;
+      cursor: pointer;
+      line-height: 1.2; // reduces vertical spacing between lines
+      gap: 0px; // remove any spacing between the p elements
+      
+      .label {
+        font-size: 10px;
+        font-weight: 500;
+        color: #ccc; 
+      }
+  
+      .address {
+        display: flex;
         align-items: center;
-        width: 40px;
-        height: 40px;
-        &.none {
-          display: none;
-        }
+        gap: 2px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #fff;
+        line-height: 1.2; // reduces vertical spacing between lines
+
+
       }
     }
+  
+    .profile-icon {
+      display: inline-flex;
+      color: #ffffff;
+      cursor: pointer;
+    }
   }
-  .mobile-deliver-box {
-    cursor: pointer;
-    position: fixed;
-    z-index: 10;
-    top: 70px;
-    left: 0;
-    align-items: center;
-    justify-content: space-between;
-    display: flex;
-    font-weight: 500;
-    line-height: 18px;
-    font-size: 13px;
-    color: #ffffff;
-    padding: 10px 15px;
-    width: 100%;
-    background-color: #1f9151;
-  }
-  .categories-container {
+  
+      .categories-container {
     &.category {
       display: none;
     }
@@ -544,8 +561,6 @@
       }
     }
   }
-
-  // Add this block for the image background
   img {
     background-color: #1f9151; /* Green background for img */
     padding: 5px; /* Optional: add some padding if needed */

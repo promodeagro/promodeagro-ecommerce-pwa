@@ -18,7 +18,7 @@ import { createFeedback } from "../../../../Redux/FeedBack/FeedBackThunk";
 
 import { connect } from "react-redux";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
-import BackArrow from "../../../../assets/img/backArrow.svg";
+import BackArrow from "../../../../assets/img/accountbackicon.svg";
 
 const validationSchema = {
   typeOfEnquiry: [
@@ -141,11 +141,13 @@ class CustomerSupport extends Component {
     return (
       <Box className="main-container">
         <Box className="headerboxofthecustomer">
-          <div style={{ display: "flex", gap: "8px" }}>
-            <img
-              src={BackArrow}
-              alt="Back"
-              style={{ cursor: "pointer" }}
+        <div
+                style={{ display: "flex", gap: "10px", alignItems: "center" }}
+              >
+                <img
+                  src={BackArrow}
+                  alt="Back"
+                  style={{ cursor: "pointer", height: "18px", width: "18px" }}
               onClick={() => (window.location.href = "/account")}
             />
             <h2>Customer Support</h2>

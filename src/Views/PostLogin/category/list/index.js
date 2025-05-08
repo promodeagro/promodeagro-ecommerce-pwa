@@ -103,6 +103,13 @@ class List extends Component {
   render() {
     const { data } = this.props;
     const { sortOrder } = this.state;
+    const isLoggedIn = loginDetails()?.token;
+    const isSmallScreen = window.innerWidth <= 600;
+
+const productStyle = isSmallScreen
+  ? { marginTop: isLoggedIn ? "46px" : "2px" }
+  : {};
+
 
     // Sort data based on sortOrder
     const sortedData = sortOrder
@@ -118,8 +125,8 @@ class List extends Component {
             </Grid>
           </Grid>
         </Box>
-        <Box className="products">
-          <ProductItemView productList={sortedData} />
+        <Box className="products" style={productStyle}>
+        <ProductItemView productList={sortedData} />
         </Box>
       </Box>
     );

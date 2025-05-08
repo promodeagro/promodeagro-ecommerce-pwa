@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 import { setShopByCategory } from "../../../../../Redux/AllProducts/AllProductSlice";
 import noImage from "../../../../../assets/img/no-image.png";
 import { Link } from "react-router-dom";
+import { loginDetails } from "../../../../Utills/helperFunctions";
+
 
 class MainBanner extends Component {
   constructor(props) {
@@ -41,10 +43,9 @@ class MainBanner extends Component {
         );
       case 1:
         return (
-          <p>
-             Unlock free delivery on orders above <span className="taglie_highlight">₹300</span> in Hyderabad!
-            
-          </p>
+<p>
+  Free delivery in Hyderabad on orders over <span className="taglie_highlight">₹300</span>!
+</p>
         );
       case 2:
         return (
@@ -87,8 +88,15 @@ class MainBanner extends Component {
     };
 
     const { allOffersList } = this.props;
+    const isLoggedIn = loginDetails()?.token;
+    const isSmallScreen = window.innerWidth <= 600;
+
+    const productStyle = isSmallScreen
+      ? { marginTop: isLoggedIn ? "110px" : "65px" }
+      : {};
+  
     return (
-      <Box className="main-banner-container">
+      <Box className="main-banner-container" style={productStyle}>
         <Container>
           <Box className="tagline-container">
             <div className="hyderabad_tag_line">{this.renderTagline()}</div>

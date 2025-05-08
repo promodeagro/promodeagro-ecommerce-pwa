@@ -5,6 +5,8 @@ import { fetchFilteredProducts } from "../../../../Redux/AllProducts/AllProductt
 import { connect } from "react-redux";
 import _ from "lodash";
 import noImage from "../../../../assets/img/no-image.png";
+import { loginDetails } from "Views/Utills/helperFunctions";
+
 
 class SideBar extends Component {
   constructor(props) {
@@ -66,7 +68,6 @@ class SideBar extends Component {
                       alt={subcat.name}
                     />
                   </span>
-                
                     <strong>{subcat.name}</strong>
                 
                 </Link>
@@ -81,9 +82,19 @@ class SideBar extends Component {
   };
 
   render() {
+    const isLoggedIn = loginDetails()?.token;
+    const isSmallScreen = window.innerWidth <= 600;
+    
+    const sidebarStyle = isSmallScreen
+      ? {
+          top: isLoggedIn ? "144px" : "102px",
+        }
+      : {};
+    
+    
     return (
-      <Box className="sidebar">
-        <Box className="sub-categories">{this.renderCategories()}</Box>
+<Box className="sidebar" style={sidebarStyle}>
+<Box className="sub-categories">{this.renderCategories()}</Box>
       </Box>
     );
   }
