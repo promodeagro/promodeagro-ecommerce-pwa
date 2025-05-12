@@ -357,7 +357,7 @@ const Invoice = ({ orderData, flag }) => {
     // Add payment details only once after last table
     addPaymentDetails();
   
-    doc.save(`Invoice_${orderData?.orderId || "N/A"}.pdf`);
+    doc.save(`Invoice_${orderData?.id || "N/A"}.pdf`);
     setIsLoading(false);
   };
 
