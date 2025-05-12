@@ -28,6 +28,7 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import { deleteProductWishList } from "../../Redux/AllProducts/AllProductthunk";
 import selecticon from "../../assets/img/dropdown3.svg";
 import closeicon from "../../assets/img/closeModalIcon.svg";
+import { updateItemToCart, deleteItemToCart } from "../../Redux/Cart/CartThunk";
 
 class ProductItemView extends Component {
   constructor(props) {
@@ -137,8 +138,26 @@ class ProductItemView extends Component {
         quantity: parseInt(productQuantity),
         quantityUnits: currentItem?.quantityUnits,
       });
+
+      // Sync with Redux store
+      if (items?.userId) {
+        this.props.updateItemToCart({
+          userId: items.userId,
+          productId: groupId,
+          quantity: parseInt(productQuantity),
+          quantityUnits: currentItem?.quantityUnits,
+        });
+      }
     } else {
       LocalStorageCartService.deleteItem(groupId);
+      
+      // Sync with Redux store
+      if (items?.userId) {
+        this.props.deleteItemToCart({
+          userId: items.userId,
+          productId: groupId,
+        });
+      }
     }
   }
 
@@ -1236,6 +1255,8 @@ const mapDispatchToProps = {
   fetchDefaultAddress,
   fetchPersonalDetails,
   deleteProductWishList,
+  updateItemToCart,
+  deleteItemToCart,
 };
 
 export default connect(
