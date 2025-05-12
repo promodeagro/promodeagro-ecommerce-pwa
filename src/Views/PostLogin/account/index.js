@@ -13,6 +13,8 @@ import customersupportimage from "../../../assets/img/customersupportsvg.svg";
 import accountprivacy from "../../../assets/img/accountprivarysvg.svg";
 import logoutimage from "../../../assets/img/logountsvg.svg";
 import sideiconimage from "../../../assets/img/sideiconsvg.svg";
+import accountbackicon from "../../../assets/img/accountbackicon.svg";
+
 
 class Account extends Component {
   state = {
@@ -26,9 +28,9 @@ class Account extends Component {
     if (userId) {
       try {
         const response = await this.props.fetchDefaultAddress(userId);
-        console.log("Full API Response:", response.payload); // Debugging log
+        console.log("Full API Response:", response.payload); 
   
-        const addressData = response.payload; // Directly assign response payload
+        const addressData = response.payload;
   
         if (addressData?.phoneNumber) {
           this.setState({
@@ -54,12 +56,18 @@ class Account extends Component {
     window.location.reload();
   };
 
+  handleBackClick = () => {
+    this.props.navigate("/");
+  };
+
   render() {
     return (
       <Box className="account_page">
         <ul>
           <li>
             <Box className="gapinthespanmain">
+            <img src={accountbackicon} alt="Account" className="accountbackicon" onClick={this.handleBackClick}
+            />
               <img src={profileimage} alt="Account" className="account-image" />
               <span>{this.state.phoneNumber}</span>
             </Box>
@@ -105,5 +113,4 @@ class Account extends Component {
   }
 }
 
-// Connect Redux actions and state
 export default connect(null, { fetchDefaultAddress })(navigateRouter(Account));

@@ -1,17 +1,10 @@
 import React, { Component } from "react";
 import {
   Box,
-  Button,
   Container,
   Grid,
-  FormControl,
-  NativeSelect,
 } from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
 import noImage from "../../../assets/img/no-image.png";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import mdiRupee from "../../../assets/img/mdi-rupee.png";
-import rupeeIcon from "../../../assets/img/rupee.png";
 import deliveryTruck from "../../../assets/img/delivery-truck.png";
 import customerSupport from "../../../assets/img/customer-support.png";
 import securePayment from "../../../assets/img/secure-payment.png";
@@ -44,8 +37,7 @@ import {
   ErrorMessages,
 } from "Views/Utills/helperFunctions";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
-import AuthModal from "../../../components/ModalLogin/LoginModal";
-import { Link } from "react-router-dom";
+  import { Link } from "react-router-dom";
 import SimilarProducts from "./similarProducts";
 import {
   FacebookShareButton,
@@ -93,7 +85,6 @@ class ProductDetails extends Component {
       });
     }
   }
-
   componentDidUpdate(prevProps, prevState) {
     const items = loginDetails();
 
@@ -109,7 +100,6 @@ class ProductDetails extends Component {
         userId: items?.userId ? items?.userId : "",
       });
     }
-
     if (
       prevProps.addProductReviewData.status !==
         this.props.addProductReviewData.status &&
@@ -132,7 +122,6 @@ class ProductDetails extends Component {
         ErrorMessages.error(this.props.deleteBookMarkData?.data?.message);
       }
     }
-
     if (
       prevProps.setBookmarksData.status !==
         this.props.setBookmarksData.status &&
@@ -143,7 +132,6 @@ class ProductDetails extends Component {
         userId: items?.userId ? items?.userId : "",
       });
     }
-
     if (
       prevProps.productDetailsData.status !==
         this.props.productDetailsData.status &&
@@ -155,7 +143,6 @@ class ProductDetails extends Component {
         loaderCount: 1,
         currentSelectedImage: this.props?.productDetailsData?.data?.image,
       });
-
       let data = localStorage.getItem("recentviewitems");
       if (data) {
         let path = window.location.pathname.split("/");
@@ -164,7 +151,6 @@ class ProductDetails extends Component {
         const isItemInList = recentViewList.some(
           (item) => item.id === path[path.length - 1]
         );
-
         if (!isItemInList) {
           if (this.props.productDetailsData?.data?.groupId) {
             recentViewList.unshift(this.props.productDetailsData?.data);
@@ -189,7 +175,6 @@ class ProductDetails extends Component {
         currentSelectedImage: "",
       });
     }
-
     if (
       prevProps.topSellingCategoriesData.status !==
         this.props.topSellingCategoriesData.status &&
@@ -201,7 +186,6 @@ class ProductDetails extends Component {
             this.props.topSellingCategoriesData?.data?.data
               ?.topSellingSubcategories,
         });
-
         if (
           this.props.topSellingCategoriesData?.data?.data
             ?.topSellingSubcategories?.length > 0
@@ -220,7 +204,6 @@ class ProductDetails extends Component {
         ErrorMessages.error(this.props.topSellingCategoriesData?.data.message);
       }
     }
-
     if (
       prevProps.topSellingProductsData.status !==
         this.props.topSellingProductsData.status &&
@@ -268,6 +251,12 @@ class ProductDetails extends Component {
       isShareOpen,
       matches,
     } = this.state;
+    const isLoggedIn = loginDetails()?.token;
+    const isSmallScreen = window.innerWidth <= 600;
+
+    const productStyle = isSmallScreen
+      ? { marginTop: isLoggedIn ? "110px" : "70px" }
+      : {};
 
     return (
       <Box className="main-container">
@@ -276,7 +265,7 @@ class ProductDetails extends Component {
         ) : (
           <>
             {productItem?.groupId ? (
-              <Container>
+              <Container style={productStyle}>
                 <Box className="details-container">
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6} md={5} lg={5}>
@@ -293,34 +282,6 @@ class ProductDetails extends Component {
                             />
                           </Zoom>
                         </Box>
-                        {/* <Box className="thumbnail-images">
-                          <ul>
-                            {productItem?.images?.length > 0 ? (
-                              productItem?.images?.map((image) => {
-                                return (
-                                  <li
-                                    className={`${
-                                      currentSelectedImage === image
-                                        ? "active"
-                                        : ""
-                                    }`}
-                                    onClick={() => {
-                                      this.setState({
-                                        currentSelectedImage: image,
-                                      });
-                                    }}
-                                  >
-                                    <a>
-                                      <img src={image} alt="" />
-                                    </a>
-                                  </li>
-                                );
-                              })
-                            ) : (
-                              <></>
-                            )}
-                          </ul>
-                        </Box> */}
                       </Box>
                     </Grid>
                     <Grid item xs={12} sm={6} md={7} lg={7}>
@@ -362,7 +323,7 @@ class ProductDetails extends Component {
                                     quote={"find best products"}
                                     hashtag={`share your thoughts about ${productItem?.subCategory}`}
                                   >
-                                    <FacebookIcon size={20} round={true} />{" "}
+                                    <FacebookIcon size={20} round={true} />
                                     Facebook
                                   </FacebookShareButton>
                                 </li>
@@ -415,7 +376,6 @@ class ProductDetails extends Component {
                         <ProductDetailCartUpdateView
                           productItem={productItem}
                         />
-
                         {!matches && (
                           <Box className="choose-promode">
                             <h4>

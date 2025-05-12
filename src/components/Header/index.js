@@ -6,7 +6,6 @@ import { setShopByCategory } from "../../Redux/AllProducts/AllProductSlice";
 import { fetchCategories } from "../../Redux/AllProducts/AllProductthunk";
 import { fetchPersonalDetails } from "../../Redux/Signin/SigninThunk";
 import Logo from "../../assets/img/logo.png";
-import cardIcon from "../../assets/img/card-icon.png";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import status from "../../Redux/Constants";
@@ -15,9 +14,6 @@ import { getAllAddress } from "../../Redux/Address/AddressThunk";
 import SearchResults from "./searchResults";
 import _ from "lodash";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import logouticon from "../../assets/img/logouticon.svg";
-import filledicon from "../../assets/img/filledicon.svg";
-import callicon from "../../assets/img/callicon.svg";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import { fetchDefaultAddress } from "../../Redux/Address/AddressThunk";
 import { fetchCartItems } from "../../Redux/Cart/CartThunk";
@@ -48,9 +44,9 @@ class Header extends Component {
       matches: window.matchMedia("(max-width: 600px)").matches,
       myCartOpen: false,
       profileModal: false,
-      isAddressModalOpen: false, // State to control AddressModal visibility
-      currentAddress: {}, // Current address details
-      isAddAddressModalOpen: false, // State for AddAddressModal
+      isAddressModalOpen: false,
+      currentAddress: {},
+      isAddAddressModalOpen: false,
     };
     this.profileModalRef = React.createRef();
   }
@@ -60,11 +56,11 @@ class Header extends Component {
       .matchMedia("(max-width: 600px)")
       .addEventListener("change", (e) => this.setState({ matches: e.matches }));
     let items = loginDetails();
-  //   if (!localStorage.getItem("defaultAddress")) {
-  //     localStorage.setItem("defaultAddress", JSON.stringify({
-  //         "addressId": "gwskddsfsd",
-  //     }));
-  // } 
+    //   if (!localStorage.getItem("defaultAddress")) {
+    //     localStorage.setItem("defaultAddress", JSON.stringify({
+    //         "addressId": "gwskddsfsd",
+    //     }));
+    // }
     if (items?.userId) {
       this.props.fetchDefaultAddress(items?.userId);
     }
@@ -74,8 +70,8 @@ class Header extends Component {
       });
     }
     if (!loginDetails()?.userId) {
-      localStorage.removeItem('cartItem');
-       LocalStorageCartService.saveData({});
+      localStorage.removeItem("cartItem");
+      LocalStorageCartService.saveData({});
     }
     this.props.fetchCategories();
   }
@@ -242,15 +238,15 @@ class Header extends Component {
       }
     });
   };
-    handleAddAddressClose = () => {
+  handleAddAddressClose = () => {
     this.setState({
-      isAddAddressModalOpen: false, // Close the AddAddressModal
+      isAddAddressModalOpen: false,
     });
   };
 
   toggleAddAddressModal = (e) => {
     if (e?.stopPropagation) {
-      e.stopPropagation(); // Prevent click from bubbling up to parent element
+      e.stopPropagation();
     }
     this.setState((prevState) => ({
       isAddAddressModalOpen: !prevState.isAddAddressModalOpen,
@@ -258,8 +254,8 @@ class Header extends Component {
   };
 
   render() {
-    const { cartList, currentAddress, matches, currentPathName, profileModal } =
-      this.state;
+  const { cartList, currentAddress, matches, currentPathName, profileModal } =
+  this.state;
     const { noOfcartItemsInLS } = this.props;
     const { isAddressModalOpen } = this.state;
     const { isAddAddressModalOpen } = this.state;
@@ -272,7 +268,11 @@ class Header extends Component {
       <>
         <Box className="header">
           <Container maxWidth={false}>
-            <Grid container spacing={2} alignItems={"center"}>
+            <Grid
+              {...(!this.state.matches
+                ? { container: true, spacing: 2, alignItems: "center" }
+                : {})}
+            >
               {console.log(currentAddress, "sss")}
               {!matches && (
                 <Grid item xs={0} sm={5} md={5} lg={4}>
@@ -290,7 +290,8 @@ class Header extends Component {
                         >
                           <strong>Deliver Now</strong>
                           <span>
-                            {currentAddress?.house_number},{" "} {currentAddress?.landmark_area}, ...
+                            {currentAddress?.house_number},{" "}
+                            {currentAddress?.landmark_area}, ...
                             <KeyboardArrowDownIcon />
                           </span>
                         </Box>
@@ -318,15 +319,39 @@ class Header extends Component {
                 </Grid>
               )}
               <Grid item xs={11} sm={4} md={4} lg={6}>
+                {matches && currentAddress?.address && (
+                  <Box className="mobile-deliver-box">
+                    <Box
+                      className="location-section"
+                      onClick={this.toggleAddressModal}
+                    >
+                      <p className="label">Delivery Address</p>
+                      <p className="address">
+                        {currentAddress?.landmark_area}
+                        <KeyboardArrowDownIcon sx={{ mt: 0.2 }} />
+                      </p>
+                    </Box>
+                    <Box
+                      className="profile-icon"
+                      onClick={() =>
+                        loginDetails()?.userId
+                          ? this.props.navigate("/account")
+                          : this.setState({ authModalOpen: true })
+                      }
+                    >
+                      <AccountCircleOutlinedIcon sx={{ cursor: "pointer" }} />
+                    </Box>
+                  </Box>
+                )}
                 <Box className="search-box">
-                  <Box
+                  {/* <Box
                     onClick={() => this.props.navigate("/")}
                     className={`back-button ${
                       currentPathName === "/" ? "none" : ""
                     }`}
                   >
                     <ArrowBackIosNewOutlinedIcon />
-                  </Box>
+                  </Box> */}
                   <SearchResults cartItemsData={cartList} />
                 </Box>
               </Grid>
@@ -352,7 +377,9 @@ class Header extends Component {
                       className="login profile_modal_par"
                     >
                       <span className="users_name">
-                      {currentAddress?.name || "User"} </span><KeyboardArrowDownIcon />
+                        {currentAddress?.name || "User"}
+                      </span>
+                      <KeyboardArrowDownIcon />
                       {profileModal && (
                         <>
                           <Box
@@ -379,12 +406,15 @@ class Header extends Component {
                                 </Link>
                               </li>
                               <li onClick={() => this.handleProfileModal()}>
-                                <Link to="/my-profile/contact-us">Customer Support</Link>
+                                <Link to="/my-profile/contact-us">
+                                  Customer Support
+                                </Link>
                               </li>
                               <li onClick={() => this.handleProfileModal()}>
-                                <Link to="/my-profile/account-privacy">Account Privacy</Link>
+                                <Link to="/my-profile/account-privacy">
+                                  Account Privacy
+                                </Link>
                               </li>
-
                               {/* <li onClick={() => this.handleProfileModal()}>
                                 <Link to="/my-profile/notification">
                                   <PermIdentityOutlinedIcon /> Notification
@@ -441,26 +471,11 @@ class Header extends Component {
                         ) : (
                           <></>
                         )} */}
-
                         {noOfcartItemsInLS ? <p>{noOfcartItemsInLS}</p> : <></>}
-
                         {/* <img src={cardIcon} alt="Shopping" /> */}
                         <ShoppingCartIcon style={{ color: "white" }} />
                         <span>Cart </span>
                       </Link>
-                    </Box>
-                  )}
-
-                  {matches && (
-                    <Box
-                      className="profile-icon"
-                      onClick={() =>
-                        loginDetails()?.userId
-                          ? this.props.navigate("/account")
-                          : this.setState({ authModalOpen: true })
-                      }
-                    >
-                      <AccountCircleOutlinedIcon sx={{ cursor: "pointer" }} />
                     </Box>
                   )}
                 </Box>
@@ -468,22 +483,6 @@ class Header extends Component {
             </Grid>
           </Container>
         </Box>
-        {matches && (
-          <>
-            {currentAddress?.address && loginDetails()?.userId && (
-              <Box
-                className="mobile-deliver-box"
-                // onClick={() =>
-                //   this.props.navigate("/my-profile/manage-addresses")
-                // }
-                onClick={this.toggleAddressModal}
-              >
-                            {currentAddress?.house_number},{" "} {currentAddress?.landmark_area}, ...
-                            <KeyboardArrowDownIcon />
-              </Box>
-            )}
-          </>
-        )}
         <Box
           className={`categories-container ${
             currentPathName.includes("category/") ? "category" : ""

@@ -11,8 +11,9 @@ import { ErrorMessages } from "Views/Utills/helperFunctions";
 import status from "../../../Redux/Constants";
 import { Loader, loginDetails } from "Views/Utills/helperFunctions";
 import _ from "lodash";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom"; // updated
 import { fetchCategories } from "../../../Redux/AllProducts/AllProductthunk";
+import backarrow from "../../../assets/img/accountbackicon.svg"
 
 function Category(props) {
   const { category, subcategory } = useParams();
@@ -21,6 +22,15 @@ function Category(props) {
   const [subCategoryApiLoader, setSubCatergoryLoader] = useState(false);
   const [APIDataLoaded, setAPIDataLoaded] = useState(false);
   const [categories, setCategories] = useState([]);
+  const navigate = useNavigate(); // added
+  const isLoggedIn = loginDetails()?.token; // adjust this based on your actual login check
+const isSmallScreen = window.innerWidth <= 600;
+
+const currentCategoryStyle = isSmallScreen
+  ? {
+      top: isLoggedIn ? "105px" : "64px",
+    }
+  : {};
 
   useEffect(() => {
     if (subcategory) {
@@ -89,9 +99,23 @@ function Category(props) {
 
   return (
     <Box className="main-container categories">
-      <Box className="current-category">
-        {subcategory ? subcategory : category}
-      </Box>
+<Box className="current-category" style={currentCategoryStyle}>
+  <img
+    onClick={() => navigate("/")}
+    src={backarrow}
+    alt="Back"
+    style={{
+      width: "18px",
+      height: "16px",
+      cursor: "pointer",
+      objectFit: "contain",
+      zIndex: 2,
+    }}
+  />
+  <span className="category-title">
+    {subcategory ? subcategory : category}
+  </span>
+</Box>
       <Container>
         <Grid container spacing={2} alignItems={"flex-start"}>
           <Grid item xs={3} sm={3} md={2} lg={2}>
@@ -100,7 +124,7 @@ function Category(props) {
               categories={categories}
               subcategory={subcategory}
             />
-          </Grid>
+          </Grid> 
           <Grid item xs={9} sm={9} md={10} lg={10}>
             {APIDataLoaded ? (
               Loader.commonLoader()

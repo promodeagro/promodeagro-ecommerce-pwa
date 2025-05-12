@@ -8,7 +8,7 @@ import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import { connect } from "react-redux";
 import sideiconimage from "../../../../assets/img/sideicon.png";
 import { fetchDefaultAddress, updateAddress } from "../../../../Redux/Address/AddressThunk";
-import BackArrow from "../../../../assets/img/backArrow.svg";
+import BackArrow from "../../../../assets/img/accountbackicon.svg";
 
 
 class Privacy extends Component {
@@ -80,11 +80,13 @@ class Privacy extends Component {
     return (
       <Box className="main-container">
         <Box className="headerboxofthecustomer">
-          <div style={{ display: "flex", gap: "8px" }}>
-            <img
-              src={BackArrow}
-              alt="Back"
-              style={{ cursor: "pointer" }}
+        <div
+                style={{ display: "flex", gap: "10px", alignItems: "center" }}
+              >
+                <img
+                  src={BackArrow}
+                  alt="Back"
+                  style={{ cursor: "pointer", height: "18px", width: "18px" }}
               onClick={() => (window.location.href = "/account")}
             />
             <h2>Account Privacy</h2>

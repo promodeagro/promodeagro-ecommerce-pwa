@@ -1,19 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Box, Button, Grid, FormControl, NativeSelect } from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
 import { navigateRouter } from "Views/Utills/Navigate/navigateRouter";
 import _ from "lodash";
 import { loginDetails } from "Views/Utills/helperFunctions";
-
 import { fetchCategories } from "../../Redux/AllProducts/AllProductthunk";
 import { fetchDefaultAddress } from "../../Redux/Address/AddressThunk";
 import { fetchPersonalDetails } from "../../Redux/Signin/SigninThunk";
 import { LocalStorageCartService } from "Services/localStorageCartService";
-import CircularProgress from "@mui/material/CircularProgress";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import mdiRupee from "../../assets/img/mdi-rupee.png";
-import rupeeIcon from "../../assets/img/rupee.png";
-import status from "../../Redux/Constants";
 import "react-medium-image-zoom/dist/styles.css";
 import AuthModal from "../../components/ModalLogin/LoginModal";
 
@@ -60,7 +55,7 @@ class ProductDetailCartUpdateView extends Component {
     const items = loginDetails();
     const { selectedVariant } = this.state;
     if (!selectedVariant) {
-      return; // Ensure a variant is selected before adding to cart
+      return; 
     }
 
     this.setState({
@@ -76,7 +71,6 @@ class ProductDetailCartUpdateView extends Component {
 
     if (items?.userId) {
       LocalStorageCartService.addItem(selectedVariant.id, cartItem);
-       
     } else {
       this.setState({
         authModalOpen: true,
@@ -86,7 +80,6 @@ class ProductDetailCartUpdateView extends Component {
 
   handleQuantityChange(id, increment, productQuantity, qty) {
     const items = loginDetails();
-
     if (increment < 0 && productQuantity != 0) {
       this.setState({ isUpdateIncrease: false });
     } else if (productQuantity != 0) {
@@ -115,7 +108,6 @@ class ProductDetailCartUpdateView extends Component {
     let priceOfItem = item?.unitPrices?.find(
       (d) => d.qty === parseInt(event.target.value)
     );
-
     this.setState({
       qauntityUnits: event.target.value,
       quantityUnitPrice: priceOfItem ? priceOfItem : "",
@@ -137,7 +129,6 @@ class ProductDetailCartUpdateView extends Component {
 
     return (
       <>
-        {" "}
         <Box className="mainboxforthescroll">
           {productItem?.variants?.map((variant) => (
             <div
@@ -145,7 +136,6 @@ class ProductDetailCartUpdateView extends Component {
               onClick={() => {
                 if (!variant.availability) return; // Prevent click if out of stock
                 this.setState({ selectedVariant: variant });
-
                 this.props.navigate(
                   `/product-details/${encodeURIComponent(
                     productItem?.category
@@ -220,7 +210,6 @@ class ProductDetailCartUpdateView extends Component {
               {productItem?.variants?.every(
                 (variant) => !variant.availability
               ) ? (
-                // If all variants are out of stock, show "Out of Stock" button
                 <Button className="add-cart-btn" variant="contained" disabled>
                   Out Of Stock
                   <ShoppingCartOutlinedIcon style={{ marginLeft: "10px" }} />
@@ -229,7 +218,6 @@ class ProductDetailCartUpdateView extends Component {
                 addedProducts[this.state.selectedVariant?.id]?.quantity &&
                 addedProducts[this.state.selectedVariant?.id]?.quantity !==
                   0 ? (
-                // Quantity adjustment UI if the product is already in the cart
                 <Box className="number-input-container">
                   <Box
                     className={"symbol"}
@@ -248,11 +236,9 @@ class ProductDetailCartUpdateView extends Component {
                   >
                     -
                   </Box>
-
                   <Box className="Number">
                     {addedProducts[this.state.selectedVariant?.id]?.quantity}
                   </Box>
-
                   <Box
                     className={"symbol"}
                     onClick={() => {
@@ -272,7 +258,6 @@ class ProductDetailCartUpdateView extends Component {
                   </Box>
                 </Box>
               ) : (
-                // "Add to Cart" button for available variants
                 <Button
                   className="add-cart-btn"
                   variant="contained"
