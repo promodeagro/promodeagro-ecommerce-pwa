@@ -215,11 +215,14 @@ class MyCart extends Component {
       this.props.placeOrderData.status === status.SUCCESS
     ) {
       if (this.props.placeOrderData.data?.statuscode === 200) {
-        if (this.props.placeOrderData.data?.orderId) {
+        const { orderId, paymentLink } = this.props.placeOrderData.data;
+        if (this.state.selectedPaymentMethod === "online" && paymentLink) {
+          window.location.href = paymentLink;
+        } else if (orderId) {
           this.props.navigate(
-            `/mycart/address/order-placed/${this.props.placeOrderData.data.orderId}`
+            `/mycart/address/order-placed/${orderId}`
           );
-          handleClose();
+          handleClose && handleClose();
           localStorage.removeItem("cartItem");
           localStorage.removeItem("address");
           LocalStorageCartService.saveData({});
@@ -620,7 +623,7 @@ class MyCart extends Component {
                           <div className="payment_container">
                             <Box className="Payment_methods_box">
                               <h2>Payment Method</h2>
-                              {/* <div
+                              <div
                                 onClick={() =>
                                   this.setState({
                                     selectedPaymentMethod: "online",
@@ -634,7 +637,7 @@ class MyCart extends Component {
                                   checked={selectedPaymentMethod === "online"}
                                   color="success"
                                 />
-                              </div> */}
+                              </div> 
                               <div
                                 onClick={() =>
                                   this.setState({
