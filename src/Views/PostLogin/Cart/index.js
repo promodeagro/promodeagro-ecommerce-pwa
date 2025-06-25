@@ -667,7 +667,7 @@ class Cart extends Component {
                              }
                            >
                              <span>
-                               <span>Online Payment Options</span>
+                               <span>Prepaid</span>
                              </span>
                              <Radio
                                checked={selectedPaymentMethod === "online"}
