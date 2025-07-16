@@ -7,6 +7,8 @@ import {
   useSearchBox,
   useInstantSearch,
 } from "react-instantsearch-hooks-web";
+import { loginDetails } from "../../Views/Utills/helperFunctions";
+
 import { useMediaQuery } from "@mui/material";
 import { Clear as ClearIcon } from "@mui/icons-material";
 import { Box, TextField, InputAdornment } from "@mui/material";
@@ -22,6 +24,7 @@ const AlgoliaSearch = ({ showResult = true, onFocus = () => {}, inputRef }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const searchContainerRef = useRef(null);
   const location = useLocation();
+  const isLoggedIn = loginDetails()?.token;
 
   const placeholderTexts = [
     'Search "Pui saag"',
@@ -103,7 +106,7 @@ const AlgoliaSearch = ({ showResult = true, onFocus = () => {}, inputRef }) => {
           setSearchTerm={setSearchTerm}
           searchTerm={searchTerm}
         />
-        <SearchResults showResult={showResult} matches={matches} searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        <SearchResults showResult={showResult} matches={matches} searchTerm={searchTerm} setSearchTerm={setSearchTerm} isLoggedIn={isLoggedIn} />
       </Box>
       <Configure restrictSearchableAttributes={["search_name", "sellingPrice"]} hitsPerPage={25} />
       <SearchResultsBg searchTerm={searchTerm} />
@@ -122,7 +125,7 @@ const SearchResultsBg = ({ searchTerm }) => {
   );
 };
 
-const SearchResults = ({ showResult, matches, searchTerm, setSearchTerm }) => {
+const SearchResults = ({ showResult, matches, searchTerm, setSearchTerm, isLoggedIn }) => {
   const { results } = useInstantSearch();
   const hasResults = results?.nbHits !== 0;
   const hasQuery = results?.query?.length > 0;
@@ -130,7 +133,7 @@ const SearchResults = ({ showResult, matches, searchTerm, setSearchTerm }) => {
   return (
     <Box
       className={`search-results ${showResult && hasQuery ? "active" : ""}`}
-      style={matches ? { width: "100vw", marginTop: "20px" } : {}}
+      style={matches ? { width: "100vw", marginTop: isLoggedIn?"55px":"20px" } : {}}
     >
       {showResult && hasResults ? <CustomHits searchTerm={searchTerm} setSearchTerm={setSearchTerm} /> : <p className="no-data">No data found</p>}
     </Box>
